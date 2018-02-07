@@ -1,0 +1,43 @@
+{
+    "name": "xpertbot/craft-wheelform",
+    "description": "Craft CMS 3 Form administrator with Database integration",
+    "type": "craft-plugin",
+    "version": "0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "Wheel Form"
+    ],
+    "support": {
+        "docs": "https://github.com/xpertbot/craft-wheelform/blob/master/README.md",
+        "issues": "https://github.com/xpertbot/craft-wheelform/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wheel Interactive",
+            "homepage": "https://wheelinteractive.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "Wheelform\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Wheel Form",
+        "handle": "wheelform",
+        "schemaVersion": "0.1",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "https://github.com/xpertbot/craft-wheelform/CHANGELOG.md",
+        "components": {
+            "mailer": "Wheelform\\Mailer"
+        }
+    }
+}
