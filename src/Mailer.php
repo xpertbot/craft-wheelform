@@ -1,5 +1,4 @@
 <?php
-
 namespace Wheelform;
 
 use Craft;
@@ -16,26 +15,20 @@ use yii\helpers\Markdown;
 
 class Mailer extends Component
 {
-    // Constants
-    // =========================================================================
-
     const EVENT_BEFORE_SEND = 'beforeSend';
 
     const EVENT_AFTER_SEND = 'afterSend';
-
-    // Public Methods
-    // =========================================================================
 
     public function send(Submission $submission, bool $runValidation = true): bool
     {
         // Get the plugin settings and make sure they validate before doing anything
         $settings = Plugin::getInstance()->getSettings();
         if (!$settings->validate()) {
-            throw new InvalidConfigException('The Contact Form settings don’t validate.');
+            throw new InvalidConfigException('Form settings don’t validate.');
         }
 
         if ($runValidation && !$submission->validate()) {
-            Craft::info('Contact form submission not saved due to validation error.', __METHOD__);
+            Craft::info('Form submission not saved due to validation error.', __METHOD__);
             return false;
         }
 
@@ -76,7 +69,7 @@ class Mailer extends Component
         $this->trigger(self::EVENT_BEFORE_SEND, $event);
 
         if ($event->isSpam) {
-            Craft::info('Contact form submission suspected to be spam.', __METHOD__);
+            Craft::info('Form submission suspected to be spam.', __METHOD__);
             return true;
         }
 
@@ -131,8 +124,8 @@ class Mailer extends Component
     public function compileTextBody(Submission $submission): string
     {
         $fields = [
-            Craft::t('contact-form', 'Name') => $submission->fromName,
-            Craft::t('contact-form', 'Email') => $submission->fromEmail,
+            Craft::t('wheelform', 'Name') => $submission->fromName,
+            Craft::t('wheelform', 'Email') => $submission->fromEmail,
         ];
 
         if (is_array($submission->message)) {

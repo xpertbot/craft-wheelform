@@ -1,0 +1,38 @@
+{% extends "_layouts/cp" %}
+
+{% import "_includes/forms" as forms %}
+
+{% set pluginName = craft.wheelform.name %}
+{% set title = (formId is defined ? 'Edit Form'|t : 'New Form'|t) %}
+{% set docsUrl = 'https://github.com/xpertbot/craft-wheelform' %}
+
+{% set crumbs = [
+    { label: pluginName, url: url('wheelform') },
+    { label: title, url: '#' }
+] %}
+
+{% set content %}
+    <form id="contact-form" method="post" accept-charset="UTF-8" data-saveshortcut="1" data-saveshortcut-redirect="wheelform">
+        {{ getCsrfInput() }}
+
+        <input type="hidden" name="action" value="wheelform/form/save">
+        <input type="hidden" name="redirect" value="wheelform">
+        {% if formId is defined %}<input type="hidden" name="formId" value="{{ formId }}">{% endif %}
+
+        {{ forms.textField({
+            label: "Form Name"|t,
+            id: 'name',
+            name: 'name',
+            value: form.name,
+            errors: form.getErrors('name'),
+            first: true,
+            autofocus: true,
+            required: true,
+            instructions: 'Name of this Form in the CP.'|t
+        }) }}
+
+        <div class="buttons">
+            <input type="submit" class="btn submit" value="{{ 'Save'|t }}">
+        </div>
+    </form>
+{% endset %}

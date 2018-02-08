@@ -1,0 +1,15 @@
+{% extends '_layouts/cp' %}
+{% set title = "Single Entry"|t %}
+{% set content %}
+    <div class="tableview">
+    {% if entry is not empty %}
+        <p><strong>Name</strong>: {{entry.name}}</p>
+        <p><strong>Email</strong>: {{entry.email}}</p>
+        {% if entry.attachment is defined %}
+            <p><strong>Attachments</strong>: {{entry.attachment}}</p>
+        {% endif %}
+        <p><strong>Message</strong></p>
+        <p>{{entry.message | nl2br}}</p>
+    {% endif %}
+</div>
+{% endset %}

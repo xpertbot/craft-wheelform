@@ -1,34 +1,47 @@
 <?php
-namespace Dashform\models;
+namespace Wheelform\Models;
 
 use craft\base\Model;
 
-/**
- * @author    Wheel Interactive
- * @package   DashForm
- * @since     0.1
- */
 class Settings extends Model
 {
-    // Public Properties
-    // =========================================================================
+    public $toEmail;
 
-    /**
-     * @var string
-     */
-    public $someAttribute = 'Some Default';
+    public $prependSender;
 
-    // Public Methods
-    // =========================================================================
+    public $prependSubject;
 
-    /**
-     * @inheritdoc
-     */
+    public $allowAttachments = false;
+
+    public $successFlashMessage;
+
+    public function init()
+    {
+        parent::init();
+
+        if ($this->prependSender === null)
+        {
+            $this->prependSender = \Craft::t('wheelform', 'On behalf of');
+        }
+
+        if ($this->prependSubject === null)
+        {
+            $this->prependSubject = \Craft::t('wheelform', 'New message from {siteName}', [
+                'siteName' => \Craft::$app->getSites()->currentSite->name
+            ]);
+        }
+
+        if ($this->successFlashMessage === null)
+        {
+            $this->successFlashMessage = \Craft::t('wheelform', 'Your message has been sent.');
+        }
+    }
+
     public function rules()
     {
         return [
-            ['someAttribute', 'string'],
-            ['someAttribute', 'default', 'value' => 'Some Default'],
+            [['toEmail', 'successFlashMessage'], 'required'],
+            [['toEmail', 'prependSender', 'prependSubject', 'successFlashMessage'], 'string'],
         ];
     }
 }

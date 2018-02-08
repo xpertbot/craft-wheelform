@@ -1,0 +1,57 @@
+{% extends '_layouts/cp' %}
+{% set title = "Forms"|t %}
+{% if currentUser.admin %}
+    {% set extraPageHeaderHtml %}
+        <div class="buttons right">
+            <div class="btngroup submit">
+                <a class="btn submit add icon" href="{{ url('contactform/form/new') }}">{{ 'New Form'|t }}</a>
+            </div>
+        </div>
+    {% endset %}
+{% endif %}
+{% set content %}
+    <div class="tableview">
+    {% if forms is not empty %}
+        <table class="data fullwidth">
+            <thead>
+                <tr>
+                    <th scope="col" data-attribute="formId">
+                        Form ID
+                    </th>
+                    <th scope="col" data-attribute="Email">
+                        Form Name
+                    </th>
+                    <th scope="col" data-attribute="Form">
+                        Entries
+                    </th>
+                    {% if currentUser.admin %}
+                        <th scope="col" data-attribute="dateCreated">
+                            Settings
+                        </th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in forms %}
+                    <tr data-id="{{ form.id }}" data-name="{{ form.name|t }}">
+                        <td class="thin">{{ form.id }}</td>
+                        <td>{{ form.name }}</td>
+                        <td>
+                        {% if form.entryCount > 0 %}<a href="{{ url('contactform/form/' ~ form.id ~ '/entries')}}">{% endif %}
+                        {{ form.entryCount }}
+                        {% if form.entryCount > 0 %}</a>{% endif %}
+                        </td>
+                        {% if currentUser.admin %}
+                            <td class="thin">
+                                <a href="{{ url('contactform/form/' ~ form.id ~ '/edit') }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No forms</p>
+    {% endif %}
+</div>
+{% endset %}

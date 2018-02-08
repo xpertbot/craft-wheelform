@@ -1,0 +1,42 @@
+{% extends '_layouts/cp' %}
+{% set title = "Entries"|t %}
+{% set content %}
+    <div class="tableview">
+    {% if entries is not empty %}
+        <table class="data fullwidth">
+            <thead>
+                <tr>
+                    <th scope="col" data-attribute="formId">
+                        Entry Id
+                    </th>
+                    <th scope="col" data-attribute="Email">
+                        Name
+                    </th>
+                    <th scope="col" data-attribute="Form">
+                        Email
+                    </th>
+                    <th scope="col" data-attribute="dateSubmitted">
+                        Date Submitted
+                    </th>
+                    <th scope="col" data-attribute="View">
+                        View Message
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                    <tr data-id="{{ entry.id }}" data-name="{{ entry.name|t }}">
+                        <td class="thin">{{ entry.id }}</td>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.email }}</td>
+                        <td>{{ entry.dateCreated }}</td>
+                        <td><a href="{{ url('contactform/entry/' ~ entry.id)}}">View</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No Entries</p>
+    {% endif %}
+</div>
+{% endset %}

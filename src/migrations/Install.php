@@ -1,42 +1,14 @@
 <?php
-/**
- * Wheel Form plugin for Craft CMS 3.x
- *
- * Free Form Builder with Database Integration
- *
- * @link      https://wheelinteractive.com
- * @copyright Copyright (c) 2018 Wheel Interactive
- */
-
-namespace Dashform\migrations;
-
-use Dashform\DashForm;
+ namespace Wheelform\Migrations;
 
 use Craft;
-use craft\config\DbConfig;
 use craft\db\Migration;
 
-/**
- * @author    Wheel Interactive
- * @package   DashForm
- * @since     0.1
- */
 class Install extends Migration
 {
-    // Public Properties
-    // =========================================================================
 
-    /**
-     * @var string The database driver to use
-     */
     public $driver;
 
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function safeUp()
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
@@ -51,9 +23,6 @@ class Install extends Migration
         return true;
     }
 
-   /**
-     * @inheritdoc
-     */
     public function safeDown()
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
@@ -62,28 +31,36 @@ class Install extends Migration
         return true;
     }
 
-    // Protected Methods
-    // =========================================================================
-
-    /**
-     * @return bool
-     */
     protected function createTables()
     {
         $tablesCreated = false;
 
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%dashform_dashform}}');
+        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%wheelform_forms}}');
         if ($tableSchema === null) {
             $tablesCreated = true;
             $this->createTable(
-                '{{%dashform_dashform}}',
+                '{{%wheelform_forms}}',
                 [
                     'id' => $this->primaryKey(),
+                    'site_id' => $this->integer()->notNull(),
+                    'name' => $this->string(255)->notNull(),
+                    'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
+                ]
+            );
+
+            $this->createTable(
+                '{{%wheelform_messages}}',
+                [
+                    'id' => $this->primaryKey(),
+                    'name' => $this->string(100)->notNull(),
+                    'email' => $this->string(100)->notNull(),
+                    'message' => $this->text()->notNull(),
+                    'form_id' => $this->integer()->notNull(),
                     'uid' => $this->uid(),
-                    'siteId' => $this->integer()->notNull(),
-                    'some_field' => $this->string(255)->notNull()->defaultValue(''),
+                    'dateCreated' => $this->dateTime()->notNull(),
+                    'dateUpdated' => $this->dateTime()->notNull(),
                 ]
             );
         }
@@ -91,58 +68,54 @@ class Install extends Migration
         return $tablesCreated;
     }
 
-    /**
-     * @return void
-     */
     protected function createIndexes()
     {
         $this->createIndex(
             $this->db->getIndexName(
-                '{{%dashform_dashform}}',
-                'some_field',
+                '{{%wheelform_forms}}',
+                'name',
                 true
             ),
-            '{{%dashform_dashform}}',
-            'some_field',
+            '{{%wheelform_forms}}',
+            'name',
             true
         );
-        // Additional commands depending on the db driver
-        switch ($this->driver) {
-            case DbConfig::DRIVER_MYSQL:
-                break;
-            case DbConfig::DRIVER_PGSQL:
-                break;
-        }
     }
 
-    /**
-     * @return void
-     */
     protected function addForeignKeys()
     {
         $this->addForeignKey(
-            $this->db->getForeignKeyName('{{%dashform_dashform}}', 'siteId'),
-            '{{%dashform_dashform}}',
-            'siteId',
+            $this->db->getForeignKeyName('{{%wheelform_forms}}', 'site_id'),
+            '{{%wheelform_forms}}',
+            'site_id',
             '{{%sites}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            $this->db->getForeignKeyName('{{%wheelform_messages}}', 'form_id'),
+            '{{%wheelform_messages}}',
+            'form_id',
+            '{{%wheelform_forms}}',
             'id',
             'CASCADE',
             'CASCADE'
         );
     }
 
-    /**
-     * @return void
-     */
     protected function insertDefaultData()
     {
+        $this->insert(
+            '{{%wheelform_forms}}',
+            ['name' => "Contact Form"]
+        );
     }
 
-    /**
-     * @return void
-     */
     protected function removeTables()
     {
-        $this->dropTableIfExists('{{%dashform_dashform}}');
+        $this->dropTableIfExists('{{%wheelform_forms}}');
+        $this->dropTableIfExists('{{%wheelform_messages}}');
     }
 }
