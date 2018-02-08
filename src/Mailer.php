@@ -97,14 +97,6 @@ class Mailer extends Component
         return true;
     }
 
-    /**
-     * Returns the "From" email value on the given mailer $from property object.
-     *
-     * @param string|array|User|User[]|null $from
-     *
-     * @return string
-     * @throws InvalidConfigException if it can’t be determined
-     */
     public function getFromEmail($from): string
     {
         if (is_string($from)) {
@@ -124,39 +116,18 @@ class Mailer extends Component
         throw new InvalidConfigException('Can\'t determine "From" email from email config settings.');
     }
 
-    /**
-     * Compiles the "From" name value from the submitted name.
-     *
-     * @param string|null $fromName
-     *
-     * @return string
-     */
     public function compileFromName(string $fromName = null): string
     {
         $settings = Plugin::getInstance()->getSettings();
         return $settings->prependSender.($settings->prependSender && $fromName ? ' ' : '').$fromName;
     }
 
-    /**
-     * Compiles the real email subject from the submitted subject.
-     *
-     * @param string|null $subject
-     *
-     * @return string
-     */
     public function compileSubject(string $subject = null): string
     {
         $settings = Plugin::getInstance()->getSettings();
         return $settings->prependSubject.($settings->prependSubject && $subject ? ' - ' : '').$subject;
     }
 
-    /**
-     * Compiles the real email textual body from the submitted message.
-     *
-     * @param Submission $submission
-     *
-     * @return string
-     */
     public function compileTextBody(Submission $submission): string
     {
         $fields = [
@@ -190,13 +161,6 @@ class Mailer extends Component
         return $text;
     }
 
-    /**
-     * Compiles the real email HTML body from the compiled textual body.
-     *
-     * @param string $textBody
-     *
-     * @return string
-     */
     public function compileHtmlBody(string $textBody): string
     {
         $html = Markdown::process($textBody);

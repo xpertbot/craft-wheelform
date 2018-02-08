@@ -2,10 +2,10 @@
 namespace Wheelform;
 
 use Craft;
-use craft\base\Plugin;
+use craft\base\Plugin as BasePlugin;
 use Wheelform\models\Settings;
 
-class Wheelform extends Plugin
+class Plugin extends BasePlugin
 {
 
     public $hasCpSettings = true;
