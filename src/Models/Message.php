@@ -4,10 +4,10 @@ namespace Wheelform\Models;
 use craft\base\Model;
 use craft\web\UploadedFile;
 
-class Submission extends Model
+class Message extends Model
 {
 
-    public $fromName;
+    public $values;
 
     public $fromEmail;
 
@@ -20,7 +20,7 @@ class Submission extends Model
     public function attributeLabels()
     {
         return [
-            'fromName' => \Craft::t('wheelform', 'Your Name'),
+            'values' => \Craft::t('wheelform', 'Your Name'),
             'fromEmail' => \Craft::t('wheelform', 'Your Email'),
             'message' => \Craft::t('wheelform', 'Message'),
             'subject' => \Craft::t('wheelform', 'Subject'),

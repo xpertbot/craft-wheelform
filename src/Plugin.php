@@ -3,7 +3,7 @@ namespace Wheelform;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
-use Wheelform\models\Settings;
+use Wheelform\Models\Settings;
 
 class Plugin extends BasePlugin
 {
@@ -22,14 +22,12 @@ class Plugin extends BasePlugin
 
     protected function settingsHtml(): string
     {
+        // Get and pre-validate the settings
         $settings = $this->getSettings();
         $settings->validate();
 
-        $overrides = Craft::$app->getConfig()->getConfigFromFile(strtolower($this->handle));
-
         return Craft::$app->view->renderTemplate('wheelform/_settings', [
             'settings' => $settings,
-            'overrides' => array_keys($overrides),
         ]);
     }
 }

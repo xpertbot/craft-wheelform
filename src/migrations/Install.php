@@ -43,7 +43,9 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'site_id' => $this->integer()->notNull(),
-                    'name' => $this->string(255)->notNull(),
+                    'name' => $this->string()->notNull(),
+                    'settings' => $this->text()->notNull(),
+                    'fields' => $this->text()->notNull(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
@@ -54,9 +56,7 @@ class Install extends Migration
                 '{{%wheelform_messages}}',
                 [
                     'id' => $this->primaryKey(),
-                    'name' => $this->string(100)->notNull(),
-                    'email' => $this->string(100)->notNull(),
-                    'message' => $this->text()->notNull(),
+                    'values' => $this->text()->notNull(),
                     'form_id' => $this->integer()->notNull(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
@@ -70,16 +70,7 @@ class Install extends Migration
 
     protected function createIndexes()
     {
-        $this->createIndex(
-            $this->db->getIndexName(
-                '{{%wheelform_forms}}',
-                'name',
-                true
-            ),
-            '{{%wheelform_forms}}',
-            'name',
-            true
-        );
+        return true;
     }
 
     protected function addForeignKeys()
@@ -109,13 +100,30 @@ class Install extends Migration
     {
         $this->insert(
             '{{%wheelform_forms}}',
-            ['name' => "Contact Form"]
+            [
+                'site_id' => Craft::$app->sites->currentSite->id,
+                'name' => 'Contact Form',
+                'settings' => json_encode([
+                    "to_email" => "user@example.com",
+                ]),
+                'fields' => json_encode([
+                    "user_name" => [
+                        "required" => true,
+                    ],
+                    "email" => [
+                        "required" => true,
+                    ],
+                    "message" => [
+                        "required" => true,
+                    ],
+                ])
+            ]
         );
     }
 
     protected function removeTables()
     {
-        $this->dropTableIfExists('{{%wheelform_forms}}');
         $this->dropTableIfExists('{{%wheelform_messages}}');
+        $this->dropTableIfExists('{{%wheelform_forms}}');
     }
 }
