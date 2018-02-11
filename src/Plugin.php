@@ -15,6 +15,20 @@ class Plugin extends BasePlugin
         return $this->get('Mailer');
     }
 
+    public function getCpNavItem(): Array
+    {
+        $ret = [
+            'label' => $this->getSettings()->cp_label ? $this->getSettings()->cp_label : $this->name,
+            'url' => $this->id,
+        ];
+
+        if (($iconPath = $this->cpNavIconPath()) !== null) {
+            $ret['icon'] = $iconPath;
+        }
+
+        return $ret;
+    }
+
     protected function createSettingsModel(): Settings
     {
         return new Settings();

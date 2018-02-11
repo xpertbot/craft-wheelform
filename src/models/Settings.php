@@ -7,6 +7,8 @@ class Settings extends Model
 {
     public $from_email;
 
+    public $cp_label;
+
     public function init()
     {
         parent::init();
@@ -18,6 +20,7 @@ class Settings extends Model
         return [
             [['from_email'], 'required'],
             [['from_email'], 'email'],
+            [['cp_label'], 'safe'],
         ];
     }
 }

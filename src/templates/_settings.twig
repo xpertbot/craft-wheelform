@@ -1,14 +1,25 @@
 {% import "_includes/forms" as forms %}
 
 {{ forms.textField({
-    first:        true,
-    label:        "From Email"|t('wheelform'),
-    required:     true,
-    id:           'from_email',
-    name:         'from_email',
+    first: true,
+    label: "From Email"|t('wheelform'),
+    required: true,
+    id: 'from_email',
+    name: 'from_email',
     instructions: "The email address that the contact form will send from."|t('wheelform'),
-    value:        settings.from_email,
-    autofocus:    true,
-    errors:       settings.getErrors('from_email')
+    value: settings.from_email,
+    autofocus: true,
+    errors: settings.getErrors('from_email')
+}) }}
+
+{{ forms.textField({
+    label: "CP Nav Label"|t('wheelform'),
+    required: false,
+    id: 'cp_label',
+    name: 'cp_label',
+    instructions: "Label displayed on Admin sidebar navigation."|t('wheelform'),
+    value: settings.cp_label | default('Forms'),
+    autofocus: true,
+    errors: settings.getErrors('cp_label')
 }) }}
 
