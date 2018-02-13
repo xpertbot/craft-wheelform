@@ -1,0 +1,60 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Wheel Forms"|t('wheelform') %}
+
+{% block actionButton %}
+    <div class="buttons">
+        <a class="btn submit icon" href="{{ url('wheelform/form/new') }}">{{ 'New Form'|t('wheelform') }}</a>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="tableview">
+        {% if wheelforms is not empty %}
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th scope="col" data-attribute="formId">
+                            Form ID
+                        </th>
+                        <th scope="col" data-attribute="Email">
+                            Form Name
+                        </th>
+                        <th scope="col" data-attribute="Form">
+                            Entries
+                        </th>
+                        {% if currentUser.admin %}
+                            <th scope="col" data-attribute="dateCreated">
+                                Settings
+                            </th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <pre>
+                        {{ dump(wheelforms) }}
+                    </pre>
+                    {% for form in wheelforms %}
+                        <tr data-id="{{ form.id }}" data-name="{{ form.name|t }}">
+                            <td class="thin">{{ form.id }}</td>
+                            <td>{{ form.name }}</td>
+                            <td>
+                            {% if form.getEntryCount() > 0 %}<a href="{{ url('contactform/form/' ~ form.id ~ '/entries')}}">{% endif %}
+                            {{ form.entryCount }}
+                            {% if form.getEntryCount() > 0 %}</a>{% endif %}
+                            </td>
+                            {% if currentUser.admin %}
+                                <td class="thin">
+                                    <a href="{{ url('contactform/form/' ~ form.id ~ '/edit') }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No forms</p>
+        {% endif %}
+    </div>
+{% endblock %}

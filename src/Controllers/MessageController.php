@@ -8,7 +8,7 @@ use craft\web\Controller;
 use craft\web\UploadedFile;
 use yii\web\Response;
 
-class SendController extends Controller
+class MessageController extends Controller
 {
 
     public $allowAnonymous = true;

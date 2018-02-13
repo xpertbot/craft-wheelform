@@ -1,10 +1,10 @@
 <?php
 namespace Wheelform\Models;
 
-use craft\base\Model;
-use craft\web\UploadedFile;
+use craft\db\ActiveRecord;
 
-class Message extends Model
+//Using Active Record because it extends Models.
+class Message extends Activerecord
 {
 
     public $values;
@@ -16,16 +16,6 @@ class Message extends Model
     public $message;
 
     public $attachment;
-
-    public function attributeLabels()
-    {
-        return [
-            'values' => \Craft::t('wheelform', 'Your Name'),
-            'fromEmail' => \Craft::t('wheelform', 'Your Email'),
-            'message' => \Craft::t('wheelform', 'Message'),
-            'subject' => \Craft::t('wheelform', 'Subject'),
-        ];
-    }
 
     public function rules()
     {

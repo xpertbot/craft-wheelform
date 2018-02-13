@@ -5,10 +5,30 @@ use Craft;
 use craft\base\Plugin as BasePlugin;
 use Wheelform\Models\Settings;
 
+use yii\base\Event;
+use craft\web\UrlManager;
+use craft\events\RegisterUrlRulesEvent;
+
 class Plugin extends BasePlugin
 {
 
+    public static $plugin;
+
     public $hasCpSettings = true;
+
+    public $controllerNamespace = "Wheelform\\Controllers";
+
+    public function init()
+    {
+        self::$plugin = $this;
+        Event::on(
+            UrlManager::class,
+            UrlManager::EVENT_REGISTER_CP_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
+                $event->rules[$this->id] = $this->id.'/default/index';
+            }
+        );
+    }
 
     public function getMailer(): Mailer
     {
