@@ -43,8 +43,8 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'site_id' => $this->integer()->notNull(),
-                    'name' => $this->string()->notNull(),
-                    'settings' => $this->text()->notNull(),
+                    'form_name' => $this->string()->notNull(),
+                    'to_email' => $this->string()->notNull(),
                     'fields' => $this->text()->notNull(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
@@ -56,8 +56,8 @@ class Install extends Migration
                 '{{%wheelform_messages}}',
                 [
                     'id' => $this->primaryKey(),
-                    'values' => $this->text()->notNull(),
                     'form_id' => $this->integer()->notNull(),
+                    'values' => $this->text()->notNull(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
@@ -102,10 +102,8 @@ class Install extends Migration
             '{{%wheelform_forms}}',
             [
                 'site_id' => Craft::$app->sites->currentSite->id,
-                'name' => 'Contact Form',
-                'settings' => json_encode([
-                    "to_email" => "user@example.com",
-                ]),
+                'form_name' => 'Contact Form',
+                "to_email" => "user@example.com",
                 'fields' => json_encode([
                     "user_name" => [
                         "required" => true,

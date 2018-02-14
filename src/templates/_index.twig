@@ -4,7 +4,7 @@
 
 {% block actionButton %}
     <div class="buttons">
-        <a class="btn submit icon" href="{{ url('wheelform/form/new') }}">{{ 'New Form'|t('wheelform') }}</a>
+        <a class="btn submit icon" href="{{ url('wheelform/form/edit') }}">{{ 'New Form'|t('wheelform') }}</a>
     </div>
 {% endblock %}
 
@@ -32,21 +32,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <pre>
-                        {{ dump(wheelforms) }}
-                    </pre>
                     {% for form in wheelforms %}
-                        <tr data-id="{{ form.id }}" data-name="{{ form.name|t }}">
+                        <tr data-id="{{ form.id }}" data-name="{{ form.form_name|t }}">
                             <td class="thin">{{ form.id }}</td>
-                            <td>{{ form.name }}</td>
+                            <td>{{ form.form_name }}</td>
                             <td>
-                            {% if form.getEntryCount() > 0 %}<a href="{{ url('contactform/form/' ~ form.id ~ '/entries')}}">{% endif %}
+                            {% if form.getEntryCount() > 0 %}<a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">{% endif %}
                             {{ form.entryCount }}
                             {% if form.getEntryCount() > 0 %}</a>{% endif %}
                             </td>
                             {% if currentUser.admin %}
                                 <td class="thin">
-                                    <a href="{{ url('contactform/form/' ~ form.id ~ '/edit') }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
+                                    <a href="{{ url('wheelform/form/' ~ form.id ~ '/edit') }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
                                 </td>
                             {% endif %}
                         </tr>

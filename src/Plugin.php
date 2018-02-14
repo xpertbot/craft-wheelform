@@ -12,20 +12,21 @@ use craft\events\RegisterUrlRulesEvent;
 class Plugin extends BasePlugin
 {
 
-    public static $plugin;
-
     public $hasCpSettings = true;
 
     public $controllerNamespace = "Wheelform\\Controllers";
 
     public function init()
     {
-        self::$plugin = $this;
+
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules[$this->id] = $this->id.'/default/index';
+                $event->rules[$this->id] = $this->id.'/form/index';
+                $event->rules[$this->id . '/form/edit'] = $this->id.'/form/edit';
+                $event->rules[$this->id . '/form/save'] = $this->id.'/form/save';
+                $event->rules[$this->id . '/form/<id:\d+>/edit'] = $this->id.'/form/save';
             }
         );
     }

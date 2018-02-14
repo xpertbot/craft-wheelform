@@ -2,36 +2,27 @@
 namespace Wheelform\Models;
 
 use craft\db\ActiveRecord;
+use Wheelform\Helpers\FormFields;
+use Wheelform\Helpers\FormSettings;
 
 //Using Active Record because it extends Models.
 class Form extends ActiveRecord
 {
-    public $name;
-    public $settings;
 
-    protected $_entriesCount;
+    protected $_entryCount;
 
     public static function tableName(): String
     {
         return '{{%wheelform_forms}}';
     }
 
-    public function init()
-    {
-        parent::init();
-
-        if ($this->name === null)
-        {
-            $this->name = \Craft::t('wheelform', 'Contact Form');
-        }
-
-    }
-
     public function rules(): Array
     {
         return [
-            [['name', 'settings'], 'required'],
-            [['name', 'settings'], 'safe'],
+            [['form_name', 'to_email'], 'required'],
+            ['form_name', 'string'],
+            [['to_email'], 'email'],
+            [['form_name', 'to_email'], 'safe'],
         ];
     }
 
@@ -40,16 +31,17 @@ class Form extends ActiveRecord
         return $this->hasMany(Message::className(), ['form_id' => 'id']);
     }
 
-    public function getEntryCount()
+    public function getEntryCount(): int
     {
          if ($this->isNewRecord) {
             return null; // this avoid calling a query searching for null primary keys
         }
 
-        if($this->_entriesCount == null){
-            $this->_entriesCount = $this->getEntries()->count();
+        if($this->_entryCount == null){
+            $this->_entryCount = $this->getEntries()->count();
         }
 
-        return $this->_entriesCount;
+        return $this->_entryCount;
     }
+
 }

@@ -2,89 +2,41 @@
 
 {% import "_includes/forms" as formEl %}
 
-{% set pluginName = craft.wheelform.name %}
-{% set title = (form_id is defined ? 'Edit Form'|t : 'New Form'|t) %}
+{% set title = (form.id is defined ? 'Edit Form'|t : 'New Form'|t) %}
 {% set docsUrl = 'https://github.com/xpertbot/craft-wheelform' %}
 
 {% set crumbs = [
-    { label: pluginName, url: url('wheelform') },
-    { label: title, url: '#' }
+    { label: 'Wheel Form', url: url('wheelform') },
 ] %}
 
-{% set content %}
-    {% if form is not empty %}
-        <form id="contact-form" method="post" accept-charset="UTF-8" data-saveshortcut="1"
-            data-saveshortcut-redirect="wheelform">
-            {{ csrfInput() }}
+{% set fullPageForm = true %}
 
-            <input type="hidden" name="action" value="wheelform/form/save">
-            <input type="hidden" name="redirect" value="wheelform">
-            {{ formEl.textField({
-                label: "Form Name"|t,
-                id: 'name',
-                name: 'forms[' ~ form.id ~ '][name]',
-                value: form.settings.name,
-                errors: form.getErrors('name'),
-                first: true,
-                required: true,
-                instructions: 'Name of this Form in the CP.'|t
-            }) }}
+{% block content %}
 
-            {{ formEl.textField({
-                first: true,
-                label: "To Email"|t('wheelform'),
-                required: true,
-                id: 'to_email',
-                name: 'forms[' ~ form.id ~ '][to_email]',
-                instructions: "The email address(es) that the form will send to. Separate multiple email addresses with commas."|t('wheelform'),
-                value: form.settings.to_email,
-                disabled: 'to_email' in overrides,
-                errors: form.settings.getErrors('to_email')
-            }) }}
+    <input type="hidden" name="action" value="wheelform/form/save">
+    {{ redirectInput('wheelform') }}
+    {% if form.id is defined %}<input type="hidden" name="form_id" value="{{ form.id }}">{% endif %}
 
-            {{ formEl.textField({
-                label: "Sender Text"|t('wheelform'),
-                id: 'prepend_sender',
-                name: 'forms[' ~ form.id ~ '][prepend_sender]',
-                instructions: "Text that will be prepended to the email’s From Name to inform who the Form actually was sent by."|t('wheelform'),
-                value: (form.settings.prepend_sender ? form.settings.prepend_sender : ""),
-                disabled: 'prepend_sender' in overrides,
-                errors: form.settings.getErrors('prepend_sender')
-            }) }}
+    {{ formEl.textField({
+        label: "Form Name"|t,
+        id: 'form_name',
+        name: 'form_name',
+        value: form.form_name,
+        errors: form.getErrors('form_name'),
+        first: true,
+        autofocus: true,
+        required: true,
+        instructions: 'Name of this Form in the CP.'|t,
+    }) }}
 
-            {{ formEl.textField({
-                label: "Subject Text"|t('wheelform'),
-                id: 'prepend_subject',
-                name: 'forms[' ~ form.id ~ '][prepend_subject]',
-                instructions: "Text that will be prepended to the email’s Subject to flag that it comes from the Form."|t('wheelform'),
-                value: (form.settings.prepend_subject ? form.settings.prepend_subject : ""),
-                disabled: 'prepend_subject' in overrides,
-                errors: form.settings.getErrors('prepend_subject')
-            }) }}
+    {{ formEl.textField({
+        label: "To Email"|t,
+        id: 'to_email',
+        name: 'to_email',
+        value: form.to_email,
+        errors: form.getErrors('to_email'),
+        required: true,
+        instructions: 'Email notifications will be sent to.'|t,
+    }) }}
 
-            {{ formEl.lightswitchField({
-                label: "Allow attachments?"|t('wheelform'),
-                id: 'allow_attachments',
-                name: 'forms[' ~ form.id ~ '][allow_attachments]',
-                on: form.settings.allow_attachments,
-                disabled: 'allow_attachments' in overrides,
-                errors: form.settings.getErrors('allow_attachments')
-            }) }}
-
-            {{ formEl.textField({
-                label: "Success Flash Message"|t('wheelform'),
-                id: "success_message",
-                name: 'forms[' ~ form.id ~ '][success_message]',
-                instructions: "The flash message displayed after successfully sending a message."|t('wheelform'),
-                value: form.settings.success_message,
-                disabled: 'success_message' in overrides,
-                errors: form.settings.getErrors('success_message')
-            }) }}
-            <div class="buttons">
-                <input type="submit" class="btn submit" value="{{ 'Save'|t }}">
-            </div>
-        </form>
-    {% else %}
-        <h2>No forms created</h2>
-    {% endif %}
-{% endset %}
+{% endblock %}
