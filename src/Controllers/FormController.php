@@ -20,26 +20,28 @@ class FormController extends Controller
         ]);
     }
 
-    function actionEdit($variables = [])
+    function actionEdit()
     {
-        if (! empty($variables['id'])) {
-            $variables['form'] = Form::find()->where(["id" => $variables['id']])->one();
-            if (! $variables['form']) {
+        $params = Craft::$app->getUrlManager()->getRouteParams();
+
+        if (! empty($params['id']))
+        {
+            $form = Form::find()->where(["id" => $params['id']])->one();
+            if (! $form) {
                 throw new HttpException(404);
             }
-            $variables['form']->validate();
-        } else {
-            $params = Craft::$app->getUrlManager()->getRouteParams();
-
-            if(empty($params['form'])){
-                $variables['form'] = new Form();
-            } else {
-                $variables['form'] = $params['form'];
-            }
+        }
+        elseif(! empty($params['form']))
+        {
+            $form = $params['form'];
+        }
+        else
+        {
+            $form = new Form();
         }
 
         // Render the template
-        return $this->renderTemplate('wheelform/_edit-form.twig', $variables);
+        return $this->renderTemplate('wheelform/_edit-form.twig', ['form' => $form]);
     }
 
     function actionSave()
@@ -48,12 +50,15 @@ class FormController extends Controller
         $request = Craft::$app->getRequest();
 
         $form_id = $request->getBodyParam('form_id');
-        if ($form_id) {
+        if ($form_id)
+        {
             $form = Form::find()->where(['id' => $form_id])->one();
             if (! $form) {
                 throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form_id)));
             }
-        } else {
+        }
+        else
+        {
             $form = new Form();
         }
 
@@ -67,7 +72,8 @@ class FormController extends Controller
             'form' => $form
         ]);
 
-        if($result){
+        if($result)
+        {
             Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
             return $this->redirectToPostedUrl();
         }

@@ -4,7 +4,7 @@
 
 {% block actionButton %}
     <div class="buttons">
-        <a class="btn submit icon" href="{{ url('wheelform/form/edit') }}">{{ 'New Form'|t('wheelform') }}</a>
+        <a class="btn submit icon" href="{{ url('wheelform/form/new') }}">{{ 'New Form'|t('wheelform') }}</a>
     </div>
 {% endblock %}
 
@@ -43,7 +43,7 @@
                             </td>
                             {% if currentUser.admin %}
                                 <td class="thin">
-                                    <a href="{{ url('wheelform/form/' ~ form.id ~ '/edit') }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
+                                    <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
                                 </td>
                             {% endif %}
                         </tr>
