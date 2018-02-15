@@ -105,15 +105,22 @@ class Install extends Migration
                 'form_name' => 'Contact Form',
                 "to_email" => "user@example.com",
                 'fields' => json_encode([
-                    "user_name" => [
-                        "required" => true,
+                    [
+                    "type" => 'email',
+                    "name" => "email",
+                    "required" => true,
                     ],
-                    "email" => [
-                        "required" => true,
+                    [
+                    "type" => 'text',
+                    "name" => "user_name",
+                    "required" => true,
                     ],
-                    "message" => [
-                        "required" => true,
+                    [
+                    "type" => 'text',
+                    "name" => "message",
+                    "required" => true,
                     ],
+
                 ])
             ]
         );

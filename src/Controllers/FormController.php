@@ -8,6 +8,7 @@ use yii\web\Response;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
+use Wheelform\Helpers\FormFields;
 
 class FormController extends Controller
 {
@@ -62,9 +63,14 @@ class FormController extends Controller
             $form = new Form();
         }
 
+        $fields = $request->getBodyParam('fields', '');
+        if(! empty($fields)){
+            $form->setFields($fields);
+        }
+
         $form->form_name = $request->getBodyParam('form_name');
         $form->to_email = $request->getBodyParam('to_email');
-        $form->fields = $request->getBodyParam('fields', '');
+
         $form->site_id = Craft::$app->sites->currentSite->id;
         $result = $form->save();
 

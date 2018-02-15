@@ -39,4 +39,24 @@
         instructions: 'Email notifications will be sent to.'|t,
     }) }}
 
+    <table class="data fullwidth">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Type</th>
+                <th>Settings</th>
+                <th class="thin">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="form-fields">
+            {% set fieldIndex = 0 %}
+            {% for field in form.getFields() %}
+                {% include 'wheelform/embeds/_edit-form-field.twig' %}
+                {% set fieldIndex = loop.index1 %}
+            {% endfor %}
+
+            {% include 'wheelform/embeds/_edit-form-field.twig' %}
+        </tbody>
+    </table>
+
 {% endblock %}
