@@ -17,6 +17,8 @@ class FormField extends ActiveRecord
             ['name', 'required'],
             ['form_id', 'integer'],
             ['name', 'safe'],
+            ['required', 'integer', 'integerOnly' => true, 'min' => 0],
+            ['required', 'default', 'value' => 0],
             ['type', 'required', 'when' => function($model){
                 return (in_array($model->type, [
                     'text',

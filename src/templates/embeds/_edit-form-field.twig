@@ -1,24 +1,33 @@
+{% import "_includes/forms" as form %}
 <tr>
     <td>
-        <input type="text" name="fields[{{ index }}][name]"
-            value="{% if field is defined %}{{ field.name }}{% endif %}" class="text fullwidth">
+        {{ form.textField({
+            name: 'fields['~ index ~'][name]',
+            required: true,
+            value: field.name | default(''),
+        }) }}
     </td>
     <td>
-        <div class="select">
-        <select name="fields[{{ index }}][type]" class="fieldtoggle">
-            <option {% if field is defined %}{{ field.type == "text" ? 'selected' : '' }}{% endif %} value="text">Text</option>
-            <option {% if field is defined %}{{ field.type == "email" ? 'selected' : '' }}{% endif %} value="email">Email</option>
-            <option {% if field is defined %}{{ field.type == "radio" ? 'selected' : '' }}{% endif %} value="radio">Radio</option>
-            <option {% if field is defined %}{{ field.type == "checkbox" ? 'selected' : '' }}{% endif %} value="checkbox">Checkbox</option>
-            <option {% if field is defined %}{{ field.type == "dropdown" ? 'selected' : '' }}{% endif %} value="dropdown">Dropdown</option>
-        </select>
-        </div>
+        {{ form.selectField({
+            name: "fields["~ index ~"][type]",
+            required: true,
+            options: [
+                {label: 'Text', value:'text'},
+                {label: 'Email', value:'email'},
+                {label: 'Radio', value:'radio'},
+                {label: 'Checkbox', value:'checkbox'},
+                {label: 'Dropdown', value:'dropdown'},
+            ],
+            value: field.type | default('')
+        }) }}
     </td>
     <td>
-        <label>
-            <input type="checkbox" name="fields[{{ index }}][required]"
-                value="{% if field is defined %}{{ field.required }}{% endif %}">&nbsp;Required
-        </label>
+        {{ form.checkboxField({
+            label: "Required",
+            name: 'fields['~ index ~'][required]',
+            value: 1,
+            checked: field.required | default(0),
+        }) }}
     </td>
     <td>
         <a href="#" class="form-field-rm success" data-icon="plus"></a>
