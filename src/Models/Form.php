@@ -2,8 +2,6 @@
 namespace Wheelform\Models;
 
 use craft\db\ActiveRecord;
-use Wheelform\Helpers\FormField;
-use Wheelform\Helpers\FormSettings;
 
 //Using Active Record because it extends Models.
 //__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
@@ -11,8 +9,6 @@ class Form extends ActiveRecord
 {
 
     protected $_entryCount;
-    protected $_fields;
-    private $_errors = [];
 
     public static function tableName(): String
     {
@@ -34,6 +30,11 @@ class Form extends ActiveRecord
         return $this->hasMany(Message::className(), ['form_id' => 'id']);
     }
 
+    public function getFields()
+    {
+        return $this->hasMany(FormField::className(), ['form_id' => 'id']);
+    }
+
     public function getEntryCount(): int
     {
          if ($this->isNewRecord)
@@ -47,59 +48,6 @@ class Form extends ActiveRecord
         }
 
         return $this->_entryCount;
-    }
-
-    public function setFields(Array $fields = [])
-    {
-        if(! empty($fields)){
-            foreach($fields as $field)
-            {
-                $formField = new FormField($field);
-
-                if($formField->validate())
-                {
-                    $this->_fields[] = $formField;
-                }
-                else
-                {
-                    $this->_errors = $formField->getErrors();
-                }
-            }
-        }
-    }
-
-    public function getFields()
-    {
-        if($this->_fields == null)
-        {
-            $fields = json_decode($this->fields);
-            if(! empty($fields)){
-                foreach($fields as $field)
-                {
-                    $formField = new FormField();
-                    $formField->load($field);
-                    if(! $formField->validate())
-                    {
-                        $this->_errors = $formField->getErrors();
-                        continue;
-                    }
-
-                    $this->_fields[] = $formField;
-                }
-            }
-        }
-
-        return $this->_fields;
-    }
-
-    public function beforeValidate()
-    {
-        if(! empty($this->_errors))
-        {
-            return false;
-        }
-        $this->fields = json_encode($this->_fields);
-        return true;
     }
 
 }

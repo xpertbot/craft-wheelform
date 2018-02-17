@@ -1,21 +1,23 @@
 <tr>
     <td>
-        <input type="text" name="fields[{{ fieldIndex }}][name]" value="" class="text fullwidth">
+        <input type="text" name="fields[{{ fieldIndex }}][name]"
+            value="{% if field is defined %}{{ field.name }}{% endif %}" class="text fullwidth">
     </td>
     <td>
         <div class="select">
         <select name="fields[{{ fieldIndex }}][type]" class="fieldtoggle">
-            <option value="text">Text</option>
-            <option value="email">Email</option>
-            <option value="radio">Radio</option>
-            <option value="checkbox">Checkbox</option>
-            <option value="dropdown">Dropdown</option>
+            <option {% if field is defined %}{{ field.type == "text" ? 'selected' : '' }}{% endif %} value="text">Text</option>
+            <option {% if field is defined %}{{ field.type == "email" ? 'selected' : '' }}{% endif %} value="email">Email</option>
+            <option {% if field is defined %}{{ field.type == "radio" ? 'selected' : '' }}{% endif %} value="radio">Radio</option>
+            <option {% if field is defined %}{{ field.type == "checkbox" ? 'selected' : '' }}{% endif %} value="checkbox">Checkbox</option>
+            <option {% if field is defined %}{{ field.type == "dropdown" ? 'selected' : '' }}{% endif %} value="dropdown">Dropdown</option>
         </select>
         </div>
     </td>
     <td>
         <label>
-            <input type="checkbox" name="fields[{{ fieldIndex }}][required]" value="1">&nbsp;Required
+            <input type="checkbox" name="fields[{{ fieldIndex }}][required]"
+                value="{% if field is defined %}{{ field.required }}{% endif %}">&nbsp;Required
         </label>
     </td>
     <td>

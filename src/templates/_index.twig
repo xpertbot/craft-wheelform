@@ -15,8 +15,11 @@
             <table class="data fullwidth">
                 <thead>
                     <tr>
-                        <th scope="col">
+                        <th scope="col" class="thin">
                             Form ID
+                        </th>
+                        <th class="thin">
+                            Active
                         </th>
                         <th scope="col">
                             Form Name
@@ -25,7 +28,7 @@
                             Entries
                         </th>
                         {% if currentUser.admin %}
-                            <th scope="col">
+                            <th scope="col" class="thin">
                                 Settings
                             </th>
                         {% endif %}
@@ -33,16 +36,17 @@
                 </thead>
                 <tbody>
                     {% for form in wheelforms %}
-                        <tr data-id="{{ form.id }}" data-name="{{ form.form_name|t }}">
-                            <td class="thin">{{ form.id }}</td>
-                            <td>{{ form.form_name }}</td>
+                        <tr data-id="{{ form.id }}" data-name="{{ form.name|t }}">
+                            <td>{{ form.id }}</td>
+                            <td><span class="status {{ form.active ? 'active' : 'disabled' }}"></span></td>
+                            <td>{{ form.name }}</td>
                             <td>
-                            {% if form.getEntryCount() > 0 %}<a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">{% endif %}
+                            {% if form.entryCount > 0 %}<a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">{% endif %}
                             {{ form.entryCount }}
-                            {% if form.getEntryCount() > 0 %}</a>{% endif %}
+                            {% if form.entryCount > 0 %}</a>{% endif %}
                             </td>
                             {% if currentUser.admin %}
-                                <td class="thin">
+                                <td>
                                     <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
                                 </td>
                             {% endif %}

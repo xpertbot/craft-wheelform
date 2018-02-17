@@ -43,12 +43,23 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'site_id' => $this->integer()->notNull(),
-                    'form_name' => $this->string()->notNull(),
+                    'name' => $this->string()->notNull(),
                     'to_email' => $this->string()->notNull(),
-                    'fields' => $this->text()->notNull(),
+                    'active' => $this->boolean()->defaultValue(0)->notNull(),
                     'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime()->notNull(),
+                ]
+            );
+
+            $this->createTable(
+                '{{%wheelform_form_fields}}',
+                [
+                    'id' => $this->primaryKey(),
+                    'form_id' => $this->integer()->notNull(),
+                    'name' => $this->string()->notNull(),
+                    'type' => $this->string()->notNull(),
+                    'required' => $this->boolean()->defaultValue(0)->notNull(),
                 ]
             );
 
@@ -86,6 +97,16 @@ class Install extends Migration
         );
 
         $this->addForeignKey(
+            $this->db->getForeignKeyName('{{%wheelform_form_fields}}', 'form_id'),
+            '{{%wheelform_form_fields}}',
+            'form_id',
+            '{{%wheelform_forms}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
             $this->db->getForeignKeyName('{{%wheelform_messages}}', 'form_id'),
             '{{%wheelform_messages}}',
             'form_id',
@@ -102,33 +123,47 @@ class Install extends Migration
             '{{%wheelform_forms}}',
             [
                 'site_id' => Craft::$app->sites->currentSite->id,
-                'form_name' => 'Contact Form',
+                'name' => 'Contact Form',
                 "to_email" => "user@example.com",
-                'fields' => json_encode([
-                    [
-                    "type" => 'email',
-                    "name" => "email",
-                    "required" => true,
-                    ],
-                    [
-                    "type" => 'text',
-                    "name" => "user_name",
-                    "required" => true,
-                    ],
-                    [
-                    "type" => 'text',
-                    "name" => "message",
-                    "required" => true,
-                    ],
-
-                ])
+                'active' => 1,
             ]
+        );
+        $this->insert(
+            '{{%wheelform_form_fields}}',
+            [
+            "form_id" => 1,
+            "type" => 'email',
+            "name" => "user_email",
+            "required" => 1,
+            ],
+            false
+        );
+        $this->insert(
+            '{{%wheelform_form_fields}}',
+            [
+            "form_id" => 1,
+            "type" => 'text',
+            "name" => "user_name",
+            "required" => 1,
+            ],
+            false
+        );
+        $this->insert(
+            '{{%wheelform_form_fields}}',
+            [
+            "form_id" => 1,
+            "type" => 'text',
+            "name" => "user_message",
+            "required" => 0,
+            ],
+            false
         );
     }
 
     protected function removeTables()
     {
         $this->dropTableIfExists('{{%wheelform_messages}}');
+        $this->dropTableIfExists('{{%wheelform_form_fields}}');
         $this->dropTableIfExists('{{%wheelform_forms}}');
     }
 }

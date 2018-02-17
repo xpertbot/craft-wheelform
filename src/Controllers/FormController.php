@@ -8,7 +8,6 @@ use yii\web\Response;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
-use Wheelform\Helpers\FormFields;
 
 class FormController extends Controller
 {
@@ -54,7 +53,7 @@ class FormController extends Controller
         $form_id = $request->getBodyParam('form_id');
         if ($form_id)
         {
-            $form = Form::find()->where(['id' => $form_id])->one();
+            $form = Form::findOne(intval($form_id));
             if (! $form) {
                 throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form_id)));
             }
