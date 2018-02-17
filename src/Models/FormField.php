@@ -14,7 +14,7 @@ class FormField extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'form_id'], 'required'],
+            ['name', 'required'],
             ['form_id', 'integer'],
             ['name', 'safe'],
             ['type', 'required', 'when' => function($model){

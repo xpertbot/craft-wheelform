@@ -45,10 +45,10 @@ class Install extends Migration
                     'site_id' => $this->integer()->notNull(),
                     'name' => $this->string()->notNull(),
                     'to_email' => $this->string()->notNull(),
-                    'active' => $this->boolean()->defaultValue(0)->notNull(),
-                    'uid' => $this->uid(),
+                    'active' => $this->boolean()->notNull(),
                     'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime()->notNull(),
+                    'dateUpdated' => $this->dateTime(),
+                    'uid' => $this->uid(),
                 ]
             );
 
@@ -56,10 +56,13 @@ class Install extends Migration
                 '{{%wheelform_form_fields}}',
                 [
                     'id' => $this->primaryKey(),
-                    'form_id' => $this->integer()->notNull(),
+                    'form_id' => $this->integer(),
                     'name' => $this->string()->notNull(),
                     'type' => $this->string()->notNull(),
-                    'required' => $this->boolean()->defaultValue(0)->notNull(),
+                    'required' => $this->boolean()->notNull(),
+                    'dateCreated' => $this->dateTime()->notNull(),
+                    'dateUpdated' => $this->dateTime(),
+                    'uid' => $this->uid(),
                 ]
             );
 
@@ -69,9 +72,9 @@ class Install extends Migration
                     'id' => $this->primaryKey(),
                     'form_id' => $this->integer()->notNull(),
                     'values' => $this->text()->notNull(),
-                    'uid' => $this->uid(),
                     'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime()->notNull(),
+                    'dateUpdated' => $this->dateTime(),
+                    'uid' => $this->uid(),
                 ]
             );
         }
@@ -135,8 +138,7 @@ class Install extends Migration
             "type" => 'email',
             "name" => "user_email",
             "required" => 1,
-            ],
-            false
+            ]
         );
         $this->insert(
             '{{%wheelform_form_fields}}',
@@ -145,8 +147,7 @@ class Install extends Migration
             "type" => 'text',
             "name" => "user_name",
             "required" => 1,
-            ],
-            false
+            ]
         );
         $this->insert(
             '{{%wheelform_form_fields}}',
@@ -155,8 +156,7 @@ class Install extends Migration
             "type" => 'text',
             "name" => "user_message",
             "required" => 0,
-            ],
-            false
+            ]
         );
     }
 

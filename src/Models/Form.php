@@ -18,10 +18,12 @@ class Form extends ActiveRecord
     public function rules(): Array
     {
         return [
-            [['form_name', 'to_email'], 'required'],
-            ['form_name', 'string'],
+            [['name', 'to_email'], 'required'],
+            ['name', 'string'],
             [['to_email'], 'email'],
-            [['form_name', 'to_email'], 'safe'],
+            ['active', 'integer', 'integerOnly' => true, 'min' => 0],
+            ['active', 'default', 'value' => 0],
+            [['name', 'to_email'], 'safe'],
         ];
     }
 
@@ -48,6 +50,11 @@ class Form extends ActiveRecord
         }
 
         return $this->_entryCount;
+    }
+
+    public function unlinkFields()
+    {
+        $this->unlinkAll('fields', true);
     }
 
 }

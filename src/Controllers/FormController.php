@@ -4,6 +4,7 @@ namespace Wheelform\Controllers;
 use Craft;
 use craft\web\Controller;
 use Wheelform\Models\Form;
+use Wheelform\Models\FormField;
 use yii\web\Response;
 use yii\web\HttpException;
 use yii\base\Exception;
@@ -63,16 +64,29 @@ class FormController extends Controller
             $form = new Form();
         }
 
-        $fields = $request->getBodyParam('fields', '');
-        if(! empty($fields)){
-            $form->setFields($fields);
-        }
-
-        $form->form_name = $request->getBodyParam('form_name');
+        $form->name = $request->getBodyParam('name');
         $form->to_email = $request->getBodyParam('to_email');
+        $form->active = $request->getBodyParam('active', 0);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
+        //Delete all fields.
+        $form->unlinkFields();
+
+        //Rebuild fields
+        $fields = $request->getBodyParam('fields', []);
+        if(! empty($fields)){
+            foreach($fields as $field){
+               $formField = new FormField($field);
+               if($formField->validate())
+               {
+                    $form->link('fields', $formField);
+               }
+
+            }
+        }
+
         $result = $form->save();
+
 
         Craft::$app->getUrlManager()->setRouteParams([
             'form' => $form

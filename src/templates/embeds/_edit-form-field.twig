@@ -1,11 +1,11 @@
 <tr>
     <td>
-        <input type="text" name="fields[{{ fieldIndex }}][name]"
+        <input type="text" name="fields[{{ index }}][name]"
             value="{% if field is defined %}{{ field.name }}{% endif %}" class="text fullwidth">
     </td>
     <td>
         <div class="select">
-        <select name="fields[{{ fieldIndex }}][type]" class="fieldtoggle">
+        <select name="fields[{{ index }}][type]" class="fieldtoggle">
             <option {% if field is defined %}{{ field.type == "text" ? 'selected' : '' }}{% endif %} value="text">Text</option>
             <option {% if field is defined %}{{ field.type == "email" ? 'selected' : '' }}{% endif %} value="email">Email</option>
             <option {% if field is defined %}{{ field.type == "radio" ? 'selected' : '' }}{% endif %} value="radio">Radio</option>
@@ -16,7 +16,7 @@
     </td>
     <td>
         <label>
-            <input type="checkbox" name="fields[{{ fieldIndex }}][required]"
+            <input type="checkbox" name="fields[{{ index }}][required]"
                 value="{% if field is defined %}{{ field.required }}{% endif %}">&nbsp;Required
         </label>
     </td>

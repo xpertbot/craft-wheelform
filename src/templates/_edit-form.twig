@@ -38,17 +38,14 @@
         required: true,
         instructions: 'Email notifications will be sent to.'|t,
     }) }}
-    <div class="field">
-        <div class="heading">
-            <label for="active">Active</label>
-        </div>
-        {{ formEl.lightSwitch({
-            label: "Active"|t,
-            id: 'active',
-            name: 'active',
-            on: form.active,
-        }) }}
-    </div>
+
+    {{ formEl.lightswitchField({
+        label: "Active"|t,
+        id: 'active',
+        name: 'active',
+        on: form.active,
+    }) }}
+
 
     <table class="data fullwidth">
         <thead>
@@ -60,13 +57,14 @@
             </tr>
         </thead>
         <tbody id="form-fields">
-            {% set fieldIndex = 0 %}
             {% for field in form.fields %}
-                {% include 'wheelform/embeds/_edit-form-field.twig' %}
-                {% set fieldIndex = loop.index %}
+                {% embed 'wheelform/embeds/_edit-form-field.twig' with {'field': field, 'index': loop.index} only %}{% endembed %}
+                {% if loop.last %}
+                    {% embed 'wheelform/embeds/_edit-form-field.twig' with {'index': loop.index + 1} only %}{% endembed %}
+                {% endif %}
+            {% else %}
+                {% embed 'wheelform/embeds/_edit-form-field.twig' with {'index': loop.index} only %}{% endembed %}
             {% endfor %}
-
-            {% include 'wheelform/embeds/_edit-form-field.twig' %}
         </tbody>
     </table>
 
