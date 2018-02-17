@@ -12,6 +12,7 @@ use Wheelform\Helpers\FormFields;
 
 class FormController extends Controller
 {
+
     function actionIndex()
     {
         $forms = Form::find()->all();
@@ -27,7 +28,7 @@ class FormController extends Controller
 
         if (! empty($params['id']))
         {
-            $form = Form::find()->where(["id" => $params['id']])->one();
+            $form = Form::findOne(intval($params['id']));
             if (! $form) {
                 throw new HttpException(404);
             }
@@ -70,8 +71,8 @@ class FormController extends Controller
 
         $form->form_name = $request->getBodyParam('form_name');
         $form->to_email = $request->getBodyParam('to_email');
-
         $form->site_id = Craft::$app->sites->currentSite->id;
+
         $result = $form->save();
 
         Craft::$app->getUrlManager()->setRouteParams([

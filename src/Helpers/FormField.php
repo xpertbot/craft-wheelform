@@ -1,7 +1,9 @@
 <?php
 namespace Wheelform\Helpers;
 
-class FormField implements \JsonSerializable
+use yii\base\Model;
+
+class FormField extends Model implements \JsonSerializable
 {
     public $type;
     public $name;
@@ -14,44 +16,22 @@ class FormField implements \JsonSerializable
     ];
     private $_errors = [];
 
-    public function __construct(Array $settings = [])
+    public function jsonSerialize()
     {
-        if(! empty($settings))
-        {
-            if(empty($settings['type']) || empty($settings['name']) )
-            {
-                $this->_errors['fields'] = "Field Type and Name are required";
-                return $this;
-            }
-            if(! in_array($settings['type'], $this->_defaultTypes))
-            {
-                $this->_errors['fields'] = $settings['name']. " has not supported field type.";
-                return $this;
-            }
-            $this->type = $settings['type'];
-            $this->name = $settings['name'];
-            $this->required = $settings['required'];
-        }
+        return $this->toArray();
     }
 
-    public function jsonSerialize() {
-        $return = [];
-        $return['type'] = $this->type;
-        $return['name'] = $this->name;
-        $return['required'] = $this->required;
-
-        return $return;
-
-    }
-
-    public function validate()
+    public function rules()
     {
-        return (empty($this->_errors));
+        return [
+            ['name', 'required'],
+            ['type', 'required', 'when' => function($model){
+                return (in_array($model->type, [
+                    'text',
+                    'dropdown',
+                    'email',
+                ]));
+            }],
+        ];
     }
-
-    public function getErrors()
-    {
-        return $this->_errors;
-    }
-
 }

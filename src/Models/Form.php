@@ -6,26 +6,13 @@ use Wheelform\Helpers\FormField;
 use Wheelform\Helpers\FormSettings;
 
 //Using Active Record because it extends Models.
+//__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
 class Form extends ActiveRecord
 {
 
     protected $_entryCount;
     protected $_fields;
     private $_errors = [];
-
-    public function init()
-    {
-
-        if(! empty($this->fields))
-        {
-            $fields = json_decode($this->fields);
-            foreach($fields as $field)
-            {
-                $this->_fields[] = new FormField($field);
-            }
-        }
-        parent::init();
-    }
 
     public static function tableName(): String
     {
@@ -49,11 +36,13 @@ class Form extends ActiveRecord
 
     public function getEntryCount(): int
     {
-         if ($this->isNewRecord) {
+         if ($this->isNewRecord)
+         {
             return null; // this avoid calling a query searching for null primary keys
         }
 
-        if($this->_entryCount == null){
+        if($this->_entryCount == null)
+        {
             $this->_entryCount = $this->getEntries()->count();
         }
 
@@ -81,20 +70,35 @@ class Form extends ActiveRecord
 
     public function getFields()
     {
+        if($this->_fields == null)
+        {
+            $fields = json_decode($this->fields);
+            if(! empty($fields)){
+                foreach($fields as $field)
+                {
+                    $formField = new FormField();
+                    $formField->load($field);
+                    if(! $formField->validate())
+                    {
+                        $this->_errors = $formField->getErrors();
+                        continue;
+                    }
+
+                    $this->_fields[] = $formField;
+                }
+            }
+        }
+
         return $this->_fields;
     }
 
     public function beforeValidate()
     {
-
         if(! empty($this->_errors))
         {
             return false;
         }
-
         $this->fields = json_encode($this->_fields);
-        var_dump($this->fields);
-        die;
         return true;
     }
 
