@@ -2,20 +2,20 @@
 namespace Wheelform\assets;
 
 use craft\web\AssetBundle;
-use craft\web\assets\cp\CpAsset;
+use yii\web\JqueryAsset;
 
-class WheelformAsset extends AssetBundle
+class WheelformFrontAsset extends AssetBundle
 {
     public function init()
     {
         $this->sourcePath = "@Wheelform/assets";
 
         $this->depends = [
-            CpAsset::class,
+            JqueryAsset::class,
         ];
 
         $this->js = [
-            'js/cp-edit-form.js',
+            'js/front-end-form.js',
         ];
 
         parent::init();

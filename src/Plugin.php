@@ -31,6 +31,14 @@ class Plugin extends BasePlugin
                 $event->rules[$this->id . '/form/save'] = $this->id.'/form/save';
             }
         );
+
+        Event::on(
+            UrlManager::class,
+            UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function (RegisterUrlRulesEvent $event) {
+                $event->rules[$this->id . '/mesage'] = $this->id.'/message/send';
+            }
+        );
     }
 
     public function getMailer(): Mailer
