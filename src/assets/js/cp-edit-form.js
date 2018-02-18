@@ -6,12 +6,14 @@ jQuery(document).ready(function($){
         var dirtyFields = $('#changed_fields');
         setIndex();
 
-        $form.find('.form-field-add').click(function(ev){
-            ev.preventDefault();
-
+        $form.find('input').focus(function(){
             if(dirtyFields.val() == '0'){
                 dirtyFields.val('1');
             }
+        });
+
+        $form.find('.form-field-add').click(function(ev){
+            ev.preventDefault();
 
             $parent = $(this).parents('tr');
             setIndex();
@@ -21,9 +23,6 @@ jQuery(document).ready(function($){
         $form.find('.form-field-rm').click(function(ev){
             ev.preventDefault();
 
-            if(dirtyFields.val() == '0'){
-                dirtyFields.val('1');
-            }
             $(this).parents('tr').remove();
         });
 
