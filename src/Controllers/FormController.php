@@ -5,7 +5,6 @@ use Craft;
 use craft\web\Controller;
 use Wheelform\Models\Form;
 use Wheelform\Models\FormField;
-use yii\web\Response;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
@@ -43,7 +42,7 @@ class FormController extends Controller
         }
 
         // Render the template
-        return $this->renderTemplate('wheelform/_edit-form.twig', ['form' => $form]);
+        return $this->renderTemplate('wheelform/_edit-form.twig', ['form' => $form, 'fieldTypes' => FormField::FIELD_TYPES]);
     }
 
     function actionSave()

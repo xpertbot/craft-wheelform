@@ -24,6 +24,8 @@ class Plugin extends BasePlugin
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
                 $event->rules[$this->id] = $this->id.'/form/index';
+
+                //forms
                 $event->rules[$this->id . '/form/new'] = $this->id.'/form/edit';
                 $event->rules[$this->id . '/form/edit/<id:\d+>'] = $this->id.'/form/edit';
                 $event->rules[$this->id . '/form/save'] = $this->id.'/form/save';

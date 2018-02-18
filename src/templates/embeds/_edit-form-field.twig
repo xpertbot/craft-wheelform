@@ -1,36 +1,40 @@
 {% import "_includes/forms" as form %}
+
+{% set fieldOptions = [] %}
+{% for type in fieldTypes %}
+    {% set label = type | capitalize %}
+    {% set option = {label:label , value: type} %}
+    {% set fieldOptions = fieldOptions | merge([option]) %}
+{% endfor %}
 <tr>
     <td>
         {{ form.textField({
             name: 'fields['~ index ~'][name]',
+            class: 'form-name',
             required: true,
             value: field.name | default(''),
         }) }}
     </td>
     <td>
         {{ form.selectField({
-            name: "fields["~ index ~"][type]",
+            name: 'fields['~ index ~'][type]',
+            class: 'form-type',
             required: true,
-            options: [
-                {label: 'Text', value:'text'},
-                {label: 'Email', value:'email'},
-                {label: 'Radio', value:'radio'},
-                {label: 'Checkbox', value:'checkbox'},
-                {label: 'Dropdown', value:'dropdown'},
-            ],
+            options: fieldOptions,
             value: field.type | default('')
         }) }}
     </td>
     <td>
         {{ form.checkboxField({
-            label: "Required",
+            label: 'Required',
             name: 'fields['~ index ~'][required]',
+            class: 'form-required',
             value: 1,
             checked: field.required | default(0),
         }) }}
     </td>
     <td>
-        <a href="#" class="form-field-rm success" data-icon="plus"></a>
-        <a href="#" class="form-field-add error right" data-icon="remove"></a>
+        <a href="#" class="form-field-add success" data-icon="plus"></a>
+        <a href="#" class="form-field-rm error right" data-icon="remove"></a>
     </td>
 </tr>

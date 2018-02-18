@@ -2,6 +2,8 @@
 
 {% import "_includes/forms" as formEl %}
 
+{% do view.registerAssetBundle("Wheelform\\assets\\WheelFormAsset") %}
+
 {% set title = (form.id is defined ? 'Edit Form'|t : 'New Form'|t) %}
 {% set docsUrl = 'https://github.com/xpertbot/craft-wheelform' %}
 
@@ -46,7 +48,6 @@
         on: form.active,
     }) }}
 
-
     <table class="data fullwidth">
         <thead>
             <tr>
@@ -58,12 +59,18 @@
         </thead>
         <tbody id="form-fields">
             {% for field in form.fields %}
-                {% embed 'wheelform/embeds/_edit-form-field.twig' with {'field': field, 'index': loop.index} only %}{% endembed %}
+                {% embed 'wheelform/embeds/_edit-form-field.twig'
+                    with {'field': field, 'index': loop.index, 'fieldTypes': fieldTypes} only %}
+                {% endembed %}
                 {% if loop.last %}
-                    {% embed 'wheelform/embeds/_edit-form-field.twig' with {'index': loop.index + 1} only %}{% endembed %}
+                    {% embed 'wheelform/embeds/_edit-form-field.twig'
+                        with {'index': loop.index + 1, 'lastRow': true, 'fieldTypes': fieldTypes} only %}
+                    {% endembed %}
                 {% endif %}
             {% else %}
-                {% embed 'wheelform/embeds/_edit-form-field.twig' with {'index': loop.index} only %}{% endembed %}
+                {% embed 'wheelform/embeds/_edit-form-field.twig'
+                    with {'index': loop.index, 'lastRow': true, 'fieldTypes': fieldTypes} only %}
+                {% endembed %}
             {% endfor %}
         </tbody>
     </table>
