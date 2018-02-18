@@ -23,6 +23,10 @@ jQuery(document).ready(function($){
         $form.find('.form-field-rm').click(function(ev){
             ev.preventDefault();
 
+            if(dirtyFields.val() == '0'){
+                dirtyFields.val('1');
+            }
+
             $(this).parents('tr').remove();
         });
 
