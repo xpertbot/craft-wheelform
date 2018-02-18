@@ -35,4 +35,11 @@ class FormField extends ActiveRecord
     {
         return $this->hasOne(Form::classname(), ['id' => 'form_id']);
     }
+
+    public function beforeSave($insert)
+    {
+        $this->name = strtolower($this->name);
+        $this->name = trim(preg_replace('/[^a-z0-9_]/', "_", $this->name));
+        return parent::beforeSave($insert);
+    }
 }

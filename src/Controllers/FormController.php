@@ -82,6 +82,7 @@ class FormController extends Controller
         $changedFields = $request->getBodyParam('changed_fields', 0);
         if($changedFields){
             //Delete all fields.
+            // $oldFields = $form->fields;
             $form->unlinkFields();
 
             //Rebuild fields
