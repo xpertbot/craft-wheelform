@@ -68,19 +68,23 @@ class FormController extends Controller
         $form->active = $request->getBodyParam('active', 0);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
-        //Delete all fields.
-        $form->unlinkFields();
+        //Check if fields are dirty
+        $changedFields = $request->getBodyParam('changed_fields', 0);
+        if($changedFields){
+            //Delete all fields.
+            $form->unlinkFields();
 
-        //Rebuild fields
-        $fields = $request->getBodyParam('fields', []);
-        if(! empty($fields)){
-            foreach($fields as $field){
-               $formField = new FormField($field);
-               if($formField->validate())
-               {
-                    $form->link('fields', $formField);
-               }
+            //Rebuild fields
+            $fields = $request->getBodyParam('fields', []);
+            if(! empty($fields)){
+                foreach($fields as $field){
+                   $formField = new FormField($field);
+                   if($formField->validate())
+                   {
+                        $form->link('fields', $formField);
+                   }
 
+                }
             }
         }
 

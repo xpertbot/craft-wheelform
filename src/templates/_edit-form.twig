@@ -17,6 +17,7 @@
 
     <input type="hidden" name="action" value="wheelform/form/save">
     {{ redirectInput('wheelform') }}
+    <input type="hidden" name="changed_fields" id="changed_fields" value="0">
     {% if form.id is defined %}<input type="hidden" name="form_id" value="{{ form.id }}">{% endif %}
 
     {{ formEl.textField({

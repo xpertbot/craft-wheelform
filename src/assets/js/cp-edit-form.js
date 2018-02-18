@@ -3,10 +3,15 @@ jQuery(document).ready(function($){
 
     if($form.length > 0){
         var index;
+        var dirtyFields = $('#changed_fields');
         setIndex();
 
         $form.find('.form-field-add').click(function(ev){
             ev.preventDefault();
+
+            if(dirtyFields.val() == '0'){
+                dirtyFields.val('1');
+            }
 
             $parent = $(this).parents('tr');
             setIndex();
@@ -15,6 +20,10 @@ jQuery(document).ready(function($){
 
         $form.find('.form-field-rm').click(function(ev){
             ev.preventDefault();
+
+            if(dirtyFields.val() == '0'){
+                dirtyFields.val('1');
+            }
             $(this).parents('tr').remove();
         });
 
