@@ -68,6 +68,16 @@ class FormController extends Controller
         $form->active = $request->getBodyParam('active', 0);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
+        $result = $form->save();
+
+        Craft::$app->getUrlManager()->setRouteParams([
+            'form' => $form
+        ]);
+        if(! $result){
+            Craft::$app->getSession()->setError(Craft::t('wheelform', 'Couldn’t save form.'));
+            return null;
+        }
+
         //Check if fields are dirty
         $changedFields = $request->getBodyParam('changed_fields', 0);
         if($changedFields){
@@ -83,25 +93,11 @@ class FormController extends Controller
                    {
                         $form->link('fields', $formField);
                    }
-
                 }
             }
         }
 
-        $result = $form->save();
-
-
-        Craft::$app->getUrlManager()->setRouteParams([
-            'form' => $form
-        ]);
-
-        if($result)
-        {
-            Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
-            return $this->redirectToPostedUrl();
-        }
-
-        Craft::$app->getSession()->setError(Craft::t('wheelform', 'Couldn’t save form.'));
-        return null;
+        Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
+        return $this->redirectToPostedUrl();
     }
 }
