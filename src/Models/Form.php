@@ -23,6 +23,8 @@ class Form extends ActiveRecord
             [['to_email'], 'email'],
             ['active', 'integer', 'integerOnly' => true, 'min' => 0],
             ['active', 'default', 'value' => 0],
+            ['send_email', 'integer', 'integerOnly' => true, 'min' => 0],
+            ['send_email', 'default', 'value' => 0],
         ];
     }
 

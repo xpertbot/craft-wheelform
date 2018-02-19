@@ -89,11 +89,11 @@ class MessageController extends Controller
         //     return null;
         // }
 
-        if ($request->getAcceptsJson()) {
-            return $this->asJson(['success' => true]);
-        }
+        // if ($request->getAcceptsJson()) {
+        //     return $this->asJson(['success' => true]);
+        // }
 
-        Craft::$app->getSession()->setNotice($settings->successFlashMessage);
+        // Craft::$app->getSession()->setNotice($settings->successFlashMessage);
         return $this->redirectToPostedUrl($message);
     }
 }

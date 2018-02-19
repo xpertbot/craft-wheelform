@@ -45,6 +45,7 @@ class Install extends Migration
                     'name' => $this->string()->notNull(),
                     'to_email' => $this->string()->notNull(),
                     'active' => $this->boolean()->notNull(),
+                    'send_email' => $this->boolean()->notNull(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime(),
                     'uid' => $this->uid(),
@@ -163,6 +164,7 @@ class Install extends Migration
                 'name' => 'Contact Form',
                 "to_email" => "user@example.com",
                 'active' => 1,
+                'send_email' => 1,
             ]
         );
         $this->insert(

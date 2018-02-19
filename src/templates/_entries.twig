@@ -9,12 +9,6 @@
                     <th scope="col" data-attribute="form_id">
                         Entry Id
                     </th>
-                    <th scope="col" data-attribute="Email">
-                        Name
-                    </th>
-                    <th scope="col" data-attribute="Form">
-                        Email
-                    </th>
                     <th scope="col" data-attribute="dateSubmitted">
                         Date Submitted
                     </th>
@@ -25,10 +19,8 @@
             </thead>
             <tbody>
                 {% for entry in entries %}
-                    <tr data-id="{{ entry.id }}" data-name="{{ entry.name|t }}">
+                    <tr data-id="{{ entry.id }}">
                         <td class="thin">{{ entry.id }}</td>
-                        <td>{{ entry.name }}</td>
-                        <td>{{ entry.email }}</td>
                         <td>{{ entry.dateCreated }}</td>
                         <td><a href="{{ url('wheelform/entry/' ~ entry.id)}}">View</a></td>
                     </tr>
