@@ -6,7 +6,6 @@ use Wheelform\events\SendEvent;
 use Wheelform\models\Submission;
 use craft\elements\User;
 use craft\helpers\ArrayHelper;
-use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
 use craft\mail\Message;
 use yii\base\Component;

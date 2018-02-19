@@ -15,10 +15,19 @@ class Message extends Activerecord
     public function rules(): Array
     {
         return [
-            [['form_id', 'values'], 'required'],
+            ['form_id', 'required'],
             ['form_id', 'integer'],
             ['form_id', 'filter', 'filter' => 'intval'],
-            ['values', 'safe'],
         ];
+    }
+
+    public function getForm()
+    {
+        return $this->hasOne(Form::classname(), ['id' => 'form_id']);
+    }
+
+    public function getValue()
+    {
+        return $this->hasMany(MessageValue::className(), ['message_id' => 'id']);
     }
 }

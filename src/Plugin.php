@@ -36,7 +36,7 @@ class Plugin extends BasePlugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules[$this->id . '/mesage'] = $this->id.'/message/send';
+                $event->rules[$this->id . '/message/send'] = $this->id.'/message/send';
             }
         );
     }

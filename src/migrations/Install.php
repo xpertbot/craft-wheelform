@@ -37,7 +37,6 @@ class Install extends Migration
 
         $tableSchema = Craft::$app->db->schema->getTableSchema('{{%wheelform_forms}}');
         if ($tableSchema === null) {
-            $tablesCreated = true;
             $this->createTable(
                 '{{%wheelform_forms}}',
                 [
@@ -71,12 +70,26 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'form_id' => $this->integer()->notNull(),
-                    'values' => $this->text()->notNull(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime(),
                     'uid' => $this->uid(),
                 ]
             );
+
+            $this->createTable(
+                '{{%wheelform_message_values}}',
+                [
+                    'id' => $this->primaryKey(),
+                    'message_id' => $this->integer()->notNull(),
+                    'field_id' => $this->integer()->notNull(),
+                    'value' => $this->text(),
+                    'dateCreated' => $this->dateTime()->notNull(),
+                    'dateUpdated' => $this->dateTime(),
+                    'uid' => $this->uid(),
+                ]
+            );
+
+            $tablesCreated = true;
         }
 
         return $tablesCreated;
@@ -118,6 +131,27 @@ class Install extends Migration
             'CASCADE',
             'CASCADE'
         );
+
+        $this->addForeignKey(
+            $this->db->getForeignKeyName('{{%wheelform_message_values}}', 'message_id'),
+            '{{%wheelform_message_values}}',
+            'message_id',
+            '{{%wheelform_messages}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
+        $this->addForeignKey(
+            $this->db->getForeignKeyName('{{%wheelform_message_values}}', 'field_id'),
+            '{{%wheelform_message_values}}',
+            'field_id',
+            '{{%wheelform_form_fields}}',
+            'id',
+            'CASCADE',
+            'CASCADE'
+        );
+
     }
 
     protected function insertDefaultData()
@@ -136,7 +170,7 @@ class Install extends Migration
             [
             "form_id" => 1,
             "type" => 'email',
-            "name" => "user_email",
+            "name" => "email",
             "required" => 1,
             ]
         );
@@ -145,23 +179,24 @@ class Install extends Migration
             [
             "form_id" => 1,
             "type" => 'text',
-            "name" => "user_name",
-            "required" => 1,
-            ]
-        );
-        $this->insert(
-            '{{%wheelform_form_fields}}',
-            [
-            "form_id" => 1,
-            "type" => 'text',
-            "name" => "user_message",
+            "name" => "name",
             "required" => 0,
+            ]
+        );
+        $this->insert(
+            '{{%wheelform_form_fields}}',
+            [
+            "form_id" => 1,
+            "type" => 'text',
+            "name" => "message",
+            "required" => 1,
             ]
         );
     }
 
     protected function removeTables()
     {
+        $this->dropTableIfExists('{{%wheelform_message_values}}');
         $this->dropTableIfExists('{{%wheelform_messages}}');
         $this->dropTableIfExists('{{%wheelform_form_fields}}');
         $this->dropTableIfExists('{{%wheelform_forms}}');
