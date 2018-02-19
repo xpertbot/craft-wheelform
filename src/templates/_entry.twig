@@ -1,15 +1,17 @@
 {% extends '_layouts/cp' %}
 {% set title = "Single Entry"|t %}
+
+{% set crumbs = [
+    { label: 'Wheel Form', url: url('wheelform') },
+    { label: 'Entries', url: url('wheelform/form/'~ entry.id ~'/entries') }
+] %}
+
 {% set content %}
-    <div class="tableview">
+<div class="tableview">
     {% if entry is not empty %}
-        <p><strong>Name</strong>: {{entry.name}}</p>
-        <p><strong>Email</strong>: {{entry.email}}</p>
-        {% if entry.attachment is defined %}
-            <p><strong>Attachments</strong>: {{entry.attachment}}</p>
-        {% endif %}
-        <p><strong>Message</strong></p>
-        <p>{{entry.message | nl2br}}</p>
+        {% for value in entry.value %}
+            <p><strong>{{ value.field.getLabel() }}</strong>:<br />{{value.value}}</p>
+        {% endfor %}
     {% endif %}
 </div>
 {% endset %}

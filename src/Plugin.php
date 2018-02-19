@@ -32,6 +32,7 @@ class Plugin extends BasePlugin
 
                 //Entries
                 $event->rules[$this->id . '/form/<id:\d+>/entries'] = $this->id.'/entries/index';
+                $event->rules[$this->id . '/entry/<id:\d+>'] = $this->id.'/entries/view';
             }
         );
 

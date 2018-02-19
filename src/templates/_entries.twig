@@ -1,5 +1,10 @@
 {% extends '_layouts/cp' %}
 {% set title = "Entries"|t %}
+
+{% set crumbs = [
+    { label: 'Wheel Form', url: url('wheelform') },
+] %}
+
 {% set content %}
     <div class="tableview">
     {% if entries is not empty %}
