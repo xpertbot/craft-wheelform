@@ -42,4 +42,11 @@ class FormField extends ActiveRecord
         $this->name = trim(preg_replace('/[^a-z0-9_]/', "_", $this->name));
         return parent::beforeSave($insert);
     }
+
+    public function getLabel()
+    {
+        $label = trim(str_replace('_', " ", $this->name));
+        $label = ucfirst($label);
+        return $label;
+    }
 }
