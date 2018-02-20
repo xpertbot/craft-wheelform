@@ -9,6 +9,8 @@ class Settings extends Model
 
     public $cp_label;
 
+    public $success_message;
+
     public function init()
     {
         parent::init();
@@ -18,9 +20,9 @@ class Settings extends Model
     public function rules()
     {
         return [
-            [['from_email'], 'required'],
-            [['from_email'], 'email'],
-            [['cp_label'], 'safe'],
+            [['from_email', 'success_message'], 'required'],
+            ['from_email', 'email'],
+            [['success_message', 'cp_label'], 'string'],
         ];
     }
 }

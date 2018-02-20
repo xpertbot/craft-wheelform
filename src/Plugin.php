@@ -47,7 +47,7 @@ class Plugin extends BasePlugin
 
     public function getMailer(): Mailer
     {
-        return $this->get('Mailer');
+        return new Mailer();
     }
 
     public function getCpNavItem(): Array

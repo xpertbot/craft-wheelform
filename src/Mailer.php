@@ -2,23 +2,21 @@
 namespace Wheelform;
 
 use Craft;
-use Wheelform\events\SendEvent;
-use Wheelform\models\Submission;
-use craft\elements\User;
-use craft\helpers\ArrayHelper;
 use craft\helpers\StringHelper;
 use craft\mail\Message;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
 
+use Wheelform\Models\Message as MessageModel;
+
 class Mailer extends Component
 {
-    const EVENT_BEFORE_SEND = 'beforeSend';
+    // const EVENT_BEFORE_SEND = 'beforeSend';
 
-    const EVENT_AFTER_SEND = 'afterSend';
+    // const EVENT_AFTER_SEND = 'afterSend';
 
-    public function send(Submission $submission, bool $runValidation = true): bool
+    public function send(String $to_email, String $form_name, MessageModel $messageModel): bool
     {
         // Get the plugin settings and make sure they validate before doing anything
         $settings = Plugin::getInstance()->getSettings();
@@ -26,132 +24,66 @@ class Mailer extends Component
             throw new InvalidConfigException('Form settings don’t validate.');
         }
 
-        if ($runValidation && !$submission->validate()) {
-            Craft::info('Form submission not saved due to validation error.', __METHOD__);
-            return false;
-        }
-
         $mailer = Craft::$app->getMailer();
 
         // Prep the message
-        $fromEmail = $this->getFromEmail($mailer->from);
-        $fromName = $this->compileFromName($submission->fromName);
-        $subject = $this->compileSubject($submission->subject);
-        $textBody = $this->compileTextBody($submission);
-        $htmlBody = $this->compileHtmlBody($textBody);
+        $from_email = $settings->from_email;
+        $subject = $form_name . " Submission";
+        $text_body = $this->compileTextBody($messageModel);
+        $html_body = $this->compileHtmlBody($text_body);
 
         $message = (new Message())
-            ->setFrom([$fromEmail => $fromName])
-            ->setReplyTo([$submission->fromEmail => $submission->fromName])
+            ->setFrom($from_email)
             ->setSubject($subject)
-            ->setTextBody($textBody)
-            ->setHtmlBody($htmlBody);
+            ->setTextBody($text_body)
+            ->setHtmlBody($html_body);
 
-        if ($submission->attachment !== null) {
-            foreach ($submission->attachment as $attachment) {
-                $message->attach($attachment->tempName, [
-                    'fileName' => $attachment->name,
-                    'contentType' => FileHelper::getMimeType($attachment->tempName),
-                ]);
-            }
-        }
+        // if ($submission->attachment !== null) {
+        //     foreach ($submission->attachment as $attachment) {
+        //         $message->attach($attachment->tempName, [
+        //             'fileName' => $attachment->name,
+        //             'contentType' => FileHelper::getMimeType($attachment->tempName),
+        //         ]);
+        //     }
+        // }
 
         // Grab any "to" emails set in the plugin settings.
-        $toEmails = is_string($settings->toEmail) ? StringHelper::split($settings->toEmail) : $settings->toEmail;
+        $to_emails = StringHelper::split($to_email);
 
         // Fire a 'beforeSend' event
-        $event = new SendEvent([
-            'submission' => $submission,
-            'message' => $message,
-            'toEmails' => $toEmails,
-        ]);
-        $this->trigger(self::EVENT_BEFORE_SEND, $event);
+        // $event = new SendEvent([
+        //     'submission' => $submission,
+        //     'message' => $message,
+        //     'toEmails' => $toEmails,
+        // ]);
+        // $this->trigger(self::EVENT_BEFORE_SEND, $event);
 
-        if ($event->isSpam) {
-            Craft::info('Form submission suspected to be spam.', __METHOD__);
-            return true;
-        }
+        // if ($event->isSpam) {
+        //     Craft::info('Form submission suspected to be spam.', __METHOD__);
+        //     return true;
+        // }
 
-        foreach ($toEmails as $toEmail) {
-            $message->setTo($toEmail);
+        foreach ($to_emails as $to_email) {
+            $message->setTo($to_email);
             $mailer->send($message);
-        }
-
-        // Fire an 'afterSend' event
-        if ($this->hasEventHandlers(self::EVENT_AFTER_SEND)) {
-            $this->trigger(self::EVENT_AFTER_SEND, new SendEvent([
-                'submission' => $submission,
-                'message' => $message,
-                'toEmails' => $toEmails,
-            ]));
         }
 
         return true;
     }
 
-    public function getFromEmail($from): string
+    public function compileTextBody(MessageModel $message): string
     {
-        if (is_string($from)) {
-            return $from;
-        }
-        if ($from instanceof User) {
-            return $from->email;
-        }
-        if (is_array($from)) {
-            $first = reset($from);
-            $key = key($from);
-            if (is_numeric($key)) {
-                return $this->getFromEmail($first);
-            }
-            return $key;
-        }
-        throw new InvalidConfigException('Can\'t determine "From" email from email config settings.');
-    }
-
-    public function compileFromName(string $fromName = null): string
-    {
-        $settings = Plugin::getInstance()->getSettings();
-        return $settings->prependSender.($settings->prependSender && $fromName ? ' ' : '').$fromName;
-    }
-
-    public function compileSubject(string $subject = null): string
-    {
-        $settings = Plugin::getInstance()->getSettings();
-        return $settings->prependSubject.($settings->prependSubject && $subject ? ' - ' : '').$subject;
-    }
-
-    public function compileTextBody(Submission $submission): string
-    {
-        $fields = [
-            Craft::t('wheelform', 'Name') => $submission->fromName,
-            Craft::t('wheelform', 'Email') => $submission->fromEmail,
-        ];
-
-        if (is_array($submission->message)) {
-            $body = $submission->message['body'] ?? '';
-            $fields = array_merge($fields, $submission->message);
-            unset($fields['body']);
-        } else {
-            $body = (string) $submission->message;
-        }
 
         $text = '';
 
-        foreach ($fields as $key => $value) {
-            $text .= ($text ? "\n" : '')."- **{$key}:** ";
-            if (is_array($value)) {
-                $text .= implode(', ', $value);
-            } else {
-                $text .= $value;
-            }
-        }
-
-        if ($body !== '') {
-            $text .= "\n\n".$body;
+        foreach ($message->value as $messageValue) {
+            $text .= ($text ? "\n" : '')."- **{$messageValue->field->getLabel()}:** ";
+            $text .= $messageValue->value;
         }
 
         return $text;
     }
+
 
     public function compileHtmlBody(string $textBody): string
     {

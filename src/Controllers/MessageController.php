@@ -6,6 +6,7 @@ use craft\web\Controller;
 use craft\web\UploadedFile;
 use yii\web\Response;
 
+use Wheelform\Plugin;
 use Wheelform\Models\Form;
 use Wheelform\Models\FormField;
 use Wheelform\Models\Message;
@@ -20,6 +21,9 @@ class MessageController extends Controller
     {
         $this->requirePostRequest();
         $request = Craft::$app->getRequest();
+        $plugin = Plugin::getInstance();
+        $settings = $plugin->getSettings();
+
         $form_id = intval($request->getBodyParam('form_id', "0"));
         if($form_id <= 0){
             throw new HttpException(404);
@@ -75,25 +79,28 @@ class MessageController extends Controller
             $message->link('value', $value);
         }
 
-        // if (!$plugin->getMailer()->send($message)) {
-        //     if ($request->getAcceptsJson()) {
-        //         return $this->asJson(['errors' => $errors]);
-        //     }
+        if($formModel->send_email)
+        {
+            if (!$plugin->getMailer()->send($formModel->to_email, $formModel->name, $message)) {
+                if ($request->getAcceptsJson()) {
+                    return $this->asJson(['errors' => $errors]);
+                }
 
-        //     Craft::$app->getSession()->setError(Craft::t('wheelform',
-        //         'There was a problem with your submission, please check the form and try again!'));
-        //     Craft::$app->getUrlManager()->setRouteParams([
-        //         'variables' => ['message' => $message]
-        //     ]);
+                Craft::$app->getSession()->setError(Craft::t('wheelform',
+                    'There was a problem with your submission, please check the form and try again!'));
+                Craft::$app->getUrlManager()->setRouteParams([
+                    'variables' => ['message' => $message]
+                ]);
 
-        //     return null;
-        // }
+                return null;
+            }
+        }
 
-        // if ($request->getAcceptsJson()) {
-        //     return $this->asJson(['success' => true]);
-        // }
+        if ($request->getAcceptsJson()) {
+            return $this->asJson(['success' => true]);
+        }
 
-        // Craft::$app->getSession()->setNotice($settings->successFlashMessage);
+        Craft::$app->getSession()->setNotice($settings->success_message);
         return $this->redirectToPostedUrl($message);
     }
 }
