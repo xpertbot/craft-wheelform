@@ -3,17 +3,38 @@
 
 {% set crumbs = [
     { label: 'Wheel Form', url: url('wheelform') },
-    { label: 'Entries', url: url('wheelform/form/'~ entry.id ~'/entries') }
+    { label: 'Entries', url: url('wheelform/form/'~ form_id ~'/entries') }
 ] %}
 
 {% set content %}
 <div class="tableview">
-    {% if entry is not empty %}
-        {% for value in entry.value %}
-            <p><strong>{{ value.field.getLabel() }}</strong>:<br />{{value.value}}</p>
+    {% if values is not empty %}
+    <table class="data">
+        <thead>
+            <th>Label</th>
+            <th>Value</th>
+        </thead>
+        {% for row in values %}
+        <tr>
+            <td>
+                <strong>{{ row.field.getLabel() }}</strong>
+            </td>
+            <td>
+                {% set type = row.field.type %}
+
+                {% if type == 'file' %}
+                    {{ row.getFileName() }}
+                {% else %}
+                    {{row.value}}
+                {% endif %}
+            </td>
+        </tr>
         {% else %}
             No values were saved!
         {% endfor %}
+    </table>
+    {% else %}
+        No values were saved!
     {% endif %}
 </div>
 {% endset %}
