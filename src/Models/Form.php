@@ -30,7 +30,7 @@ class Form extends ActiveRecord
 
     public function getEntries()
     {
-        return $this->hasMany(Message::className(), ['form_id' => 'id']);
+        return $this->hasMany(Message::className(), ['form_id' => 'id'])->orderBy(['id' => SORT_DESC]);
     }
 
     public function getFields()
