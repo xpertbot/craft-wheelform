@@ -11,6 +11,7 @@ class FormField extends ActiveRecord
         'email',
         'number',
         'checkbox',
+        'file',
     ];
 
     public static function tableName(): String

@@ -20,6 +20,7 @@ class MessageController extends Controller
     public function actionSend()
     {
         $this->requirePostRequest();
+
         $request = Craft::$app->getRequest();
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
@@ -29,6 +30,7 @@ class MessageController extends Controller
             throw new HttpException(404);
             return null;
         }
+
         $formModel = Form::findOne($form_id);
         $message = new Message();
         $message->form_id = $form_id;
@@ -40,7 +42,13 @@ class MessageController extends Controller
             $messageValue = new MessageValue;
             $messageValue->setScenario($field->type);
             $messageValue->field_id = $field->id;
-            $messageValue->value = $request->getBodyParam($field->name, null);
+
+            if($field->type == "file"){
+                $messageValue->value = UploadedFile::getInstanceByName($field->name);
+            } else {
+                $messageValue->value = $request->getBodyParam($field->name, null);
+            }
+
 
             if(! $messageValue->validate())
             {
@@ -74,6 +82,7 @@ class MessageController extends Controller
             return null;
         }
 
+        //Link Values to Message
         foreach($values as $value)
         {
             $message->link('value', $value);

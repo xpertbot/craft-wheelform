@@ -10,10 +10,7 @@ class MessageValue extends Activerecord
     const NUMBER_SCENARIO = "number";
     const EMAIL_SCENARIO = "email";
     const CHECKBOX_SCENARIO = "checkbox";
-
-    public function init(){
-
-    }
+    const FILE_SCENARIO = "file";
 
     public static function tableName(): String
     {
@@ -32,6 +29,7 @@ class MessageValue extends Activerecord
             ['value', 'string', 'on' => self::TEXT_SCENARIO],
             ['value', 'email', 'on' => self::EMAIL_SCENARIO],
             ['value', 'number', 'on' => self::NUMBER_SCENARIO],
+            ['value', 'file', 'on' => self::FILE_SCENARIO],
             ['value', 'each', 'rule' => ['string'], 'on' => self::CHECKBOX_SCENARIO],
         ];
     }
