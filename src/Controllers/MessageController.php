@@ -32,11 +32,24 @@ class MessageController extends Controller
         }
 
         $formModel = Form::findOne($form_id);
+
+        if(empty($formModel))
+        {
+            throw new HttpException(404);
+            return null;
+        }
+
         $message = new Message();
         $message->form_id = $form_id;
 
         $errors = [];
         $values = [];
+
+        if($formModel->active == 0)
+        {
+            $errors['form'] = ['Form is no longer active.'];
+        }
+
         foreach ($formModel->fields as $field)
         {
             $messageValue = new MessageValue;
@@ -60,6 +73,12 @@ class MessageController extends Controller
             }
         }
 
+        //This should never error out based on current values
+        if(! $message->save())
+        {
+            $errors['message'] = $message->getErrors();
+        }
+
         if (! empty($errors))
         {
             Craft::$app->getUrlManager()->setRouteParams([
@@ -71,16 +90,6 @@ class MessageController extends Controller
             return null;
         }
 
-        //This should never error out based on current values
-        if(! $message->save()){
-            Craft::$app->getUrlManager()->setRouteParams([
-                'variables' => [
-                    'message' => $message,
-                    'errors' => $errors,
-                ],
-            ]);
-            return null;
-        }
 
         //Link Values to Message
         foreach($values as $value)
@@ -97,8 +106,11 @@ class MessageController extends Controller
 
                 Craft::$app->getSession()->setError(Craft::t('wheelform',
                     'There was a problem with your submission, please check the form and try again!'));
+
                 Craft::$app->getUrlManager()->setRouteParams([
-                    'variables' => ['message' => $message]
+                    'variables' => [
+                        'values' => $request->getBodyParams(),
+                    ]
                 ]);
 
                 return null;
