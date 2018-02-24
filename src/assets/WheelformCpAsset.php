@@ -18,6 +18,10 @@ class WheelformCpAsset extends AssetBundle
             'js/cp-edit-form.js',
         ];
 
+        $this->css = [
+            'css/cp-wheelform.css',
+        ];
+
         parent::init();
     }
 }

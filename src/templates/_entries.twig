@@ -1,13 +1,18 @@
 {% extends '_layouts/cp' %}
 {% set title = "Entries"|t %}
 
+{% do view.registerAssetBundle("Wheelform\\assets\\WheelFormCpAsset") %}
+
 {% set crumbs = [
     { label: 'Wheel Form', url: url('wheelform') },
 ] %}
 
 {% set content %}
-    <div class="tableview">
+<div class="tableview">
     {% if entries is not empty %}
+    <div class="clearfix">
+        {{ pager | raw }}
+    </div>
         <table class="data fullwidth">
             <thead>
                 <tr>

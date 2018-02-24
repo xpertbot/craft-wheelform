@@ -1,0 +1,33 @@
+.clearfix:after{
+    display: block;
+    content: "";
+    clear: both;
+}
+.pagination{
+    margin: .5rem 0rem;
+    display: flex;
+    padding-left: 0px;
+    list-style: none;
+    border-radius: .25rem;
+}
+
+.pagination li a, .pagination li span{
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: 1px;
+    line-height: 1.25;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.pagination li:first-child span, .pagination li:first-child a{
+    margin-left: 0px;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.pagination li:last-child span, .pagination li:last-child a{
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
