@@ -11,6 +11,8 @@
     {% if entry is not empty %}
         {% for value in entry.value %}
             <p><strong>{{ value.field.getLabel() }}</strong>:<br />{{value.value}}</p>
+        {% else %}
+            No values were saved!
         {% endfor %}
     {% endif %}
 </div>
