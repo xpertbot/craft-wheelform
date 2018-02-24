@@ -50,10 +50,6 @@ class Mailer extends Component
                         $text .= $attachment->name;
                     }
                 }
-                elseif ($valueModel->field->type == 'checkbox')
-                {
-
-                }
                 else
                 {
                     //text, email, number

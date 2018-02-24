@@ -11,9 +11,6 @@
         <table class="data fullwidth">
             <thead>
                 <tr>
-                    <th scope="col" data-attribute="form_id">
-                        Entry Id
-                    </th>
                     <th scope="col" data-attribute="dateSubmitted">
                         Date Submitted
                     </th>
@@ -25,8 +22,7 @@
             <tbody>
                 {% for entry in entries %}
                     <tr data-id="{{ entry.id }}">
-                        <td class="thin">{{ entry.id }}</td>
-                        <td>{{ entry.dateCreated }}</td>
+                        <td>{{ entry.dateCreated | date('d-m-Y h:i a') }}</td>
                         <td><a href="{{ url('wheelform/entry/' ~ entry.id)}}">View</a></td>
                     </tr>
                 {% endfor %}

@@ -46,14 +46,14 @@
         label: "Active"|t,
         id: 'active',
         name: 'active',
-        on: form.active,
+        on: (form.active is null ? true : form.active),
     }) }}
 
     {{ formEl.lightswitchField({
         label: "Send Email"|t,
         id: 'send_email',
         name: 'send_email',
-        on: form.send_email,
+        on: (form.send_email is null ? true : form.send_email),
     }) }}
 
     <table class="data fullwidth">

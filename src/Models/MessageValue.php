@@ -44,15 +44,26 @@ class MessageValue extends Activerecord
         return $this->hasOne(FormField::classname(), ['id' => 'field_id']);
     }
 
-    public function getFileName()
+    public function getValue()
     {
-
         if($this->field->type == self::FILE_SCENARIO)
         {
             $file = json_decode($this->value);
             return isset($file->name) ? $file->name : '';
         }
+        else
+        {
+            return empty($this->value) ? '' : $this->value;
+        }
+    }
 
-        return null;
+    public function beforeSave($insert)
+    {
+        if($this->field->type == self::CHECKBOX_SCENARIO)
+        {
+            $this->value = implode(', ', $this->value);
+        }
+
+        return parent::beforesave($insert);
     }
 }
