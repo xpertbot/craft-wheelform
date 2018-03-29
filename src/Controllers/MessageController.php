@@ -50,33 +50,45 @@ class MessageController extends Controller
             $errors['form'] = ['Form is no longer active.'];
         }
 
-        foreach ($formModel->fields as $field)
+        if($formModel->recaptcha == 1)
         {
-            $messageValue = new MessageValue;
-            $messageValue->setScenario($field->type);
-            $messageValue->field_id = $field->id;
-
-            if($field->type == "file"){
-                $messageValue->value = UploadedFile::getInstanceByName($field->name);
-            } else {
-                $messageValue->value = $request->getBodyParam($field->name, null);
-            }
-
-
-            if(! $messageValue->validate())
+            $userRes = $request->getBodyParam('g-recaptcha-response', '');
+            if($this->validateRecaptcha($userRes, $settings->recaptcha_secret) == false)
             {
-                $errors[$field->name] = $messageValue->getErrors('value');
-            }
-            else
-            {
-                $values[] = $messageValue;
+                $errors['recaptcha'] = ['The reCAPTCHA wasn\'t entered correctly. Try again.'];
             }
         }
 
-        //This should never error out based on current values
-        if(! $message->save())
+        if(empty($errors))
         {
-            $errors['message'] = $message->getErrors();
+            foreach ($formModel->fields as $field)
+            {
+                $messageValue = new MessageValue;
+                $messageValue->setScenario($field->type);
+                $messageValue->field_id = $field->id;
+
+                if($field->type == "file"){
+                    $messageValue->value = UploadedFile::getInstanceByName($field->name);
+                } else {
+                    $messageValue->value = $request->getBodyParam($field->name, null);
+                }
+
+
+                if(! $messageValue->validate())
+                {
+                    $errors[$field->name] = $messageValue->getErrors('value');
+                }
+                else
+                {
+                    $values[] = $messageValue;
+                }
+            }
+
+            //This should never error out based on current values
+            if(! $message->save())
+            {
+                $errors['message'] = $message->getErrors();
+            }
         }
 
         if (! empty($errors))
@@ -123,5 +135,19 @@ class MessageController extends Controller
 
         Craft::$app->getSession()->setNotice($settings->success_message);
         return $this->redirectToPostedUrl($message);
+    }
+
+    protected function validateRecaptcha(string $userRes, string $secret)
+    {
+        $url = "https://www.google.com/recaptcha/api/siteverify";
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
+            $ipAddress = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+        }
+        $jsonRes = file_get_contents($url."?secret=".$secret."&response=".$userRes."&remoteip=".$ipAddress);
+
+        $resp = json_decode($jsonRes);
+
+        return $resp->success;
     }
 }

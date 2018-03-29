@@ -11,6 +11,10 @@ class Settings extends Model
 
     public $success_message;
 
+    public $recaptcha_public;
+
+    public $recaptcha_secret;
+
     public function init()
     {
         parent::init();
@@ -22,7 +26,7 @@ class Settings extends Model
         return [
             [['from_email', 'success_message'], 'required'],
             ['from_email', 'email'],
-            [['success_message', 'cp_label'], 'string'],
+            [['success_message', 'cp_label', 'recaptcha_public', 'recaptcha_secret'], 'string'],
         ];
     }
 }

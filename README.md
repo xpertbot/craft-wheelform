@@ -82,6 +82,13 @@ Your form template can look something like this:
 
     <input type="file" name="user_file" id="user_filer">
 
+    {# if using recaptcha settings #}
+    <div class="recaptcha-container">
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        <div class="g-recaptcha" data-sitekey="{{ site_key }}">
+        </div>
+    </div>
+
     <input type="submit" value="Send">
 </form>
 ```

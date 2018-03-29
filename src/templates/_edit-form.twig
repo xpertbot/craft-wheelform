@@ -56,6 +56,13 @@
         on: (form.send_email is null ? true : form.send_email),
     }) }}
 
+    {{ formEl.lightswitchField({
+        label: "Recaptcha"|t,
+        id: 'recaptcha',
+        name: 'recaptcha',
+        on: (form.recaptcha is null ? true : form.recaptcha),
+    }) }}
+
     <table class="data fullwidth">
         <thead>
             <tr>

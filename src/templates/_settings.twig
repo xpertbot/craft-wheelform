@@ -27,7 +27,25 @@
     id: "success_message",
     name: "success_message",
     instructions: "The flash message displayed after successfully sending a message."|t('wheelform'),
-    value: settings.success_message ?? "Thank You! we will review your submission shrotly.",
+    value: settings.success_message ?? "Thank You! we will review your submission shortly.",
     errors: settings.getErrors('success_message'),
     required: true,
+}) }}
+
+{{ forms.textField({
+    label: "Recaptcha Public Key"|t('wheelform'),
+    id: "recaptcha_public",
+    name: "recaptcha_public",
+    value: settings.recaptcha_public | default(''),
+    errors: settings.getErrors('recaptcha_public'),
+    required: false,
+}) }}
+
+{{ forms.textField({
+    label: "Recaptcha Private Key"|t('wheelform'),
+    id: "recaptcha_secret",
+    name: "recaptcha_secret",
+    value: settings.recaptcha_public | default(''),
+    errors: settings.getErrors('recaptcha_public'),
+    required: false,
 }) }}

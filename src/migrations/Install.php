@@ -46,6 +46,7 @@ class Install extends Migration
                     'to_email' => $this->string()->notNull(),
                     'active' => $this->boolean()->notNull(),
                     'send_email' => $this->boolean()->notNull(),
+                    'recaptcha' => $this->boolean()->notNull(),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime(),
                     'uid' => $this->uid(),
@@ -165,6 +166,7 @@ class Install extends Migration
                 "to_email" => "user@example.com",
                 'active' => 1,
                 'send_email' => 1,
+                'recaptcha' => 0,
             ]
         );
         $this->insert(
