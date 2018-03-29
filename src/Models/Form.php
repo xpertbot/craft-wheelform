@@ -21,10 +21,8 @@ class Form extends ActiveRecord
             [['name', 'to_email'], 'required'],
             ['name', 'string'],
             [['to_email'], 'email'],
-            ['active', 'boolean'],
-            ['active', 'default', 'value' => 0],
-            ['send_email', 'boolean'],
-            ['send_email', 'default', 'value' => 0],
+            [['active', 'send_email', 'recaptcha'], 'boolean'],
+            [['active', 'send_email', 'recaptcha'], 'default', 'value' => 0],
         ];
     }
 
