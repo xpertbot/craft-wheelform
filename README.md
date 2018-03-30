@@ -22,10 +22,18 @@ To install the plugin, follow these instructions.
 
 3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Wheel Form.
 
+## Features
+- reCaptcha Validation
+- Email Validation based on field type selected
+- Required Fields
+- Checkbox options
+- Ajax and Redirect friendly
+- Send Form submissions to multiple emails
+
 ## Usage
 After successful installation go to Plugin Settings and add the email you would like the forms to send `FROM`. As well as set other useful settings.
 
-Forms are administered at the forms panel main settings. Set where this form should be submitting `TO` as well sa name of the form.
+Forms are administered at the forms panel main settings. Set where this form should be submitting `TO` as well as name of the form.
 
 Current Field types supported are:
 * Text
