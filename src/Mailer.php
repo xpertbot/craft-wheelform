@@ -76,6 +76,7 @@ class Mailer extends Component
         $to_emails = StringHelper::split($to_email);
 
         foreach ($to_emails as $to_email) {
+            $to_email = trim($to_email);
             $message->setTo($to_email);
             $mailer->send($message);
         }
