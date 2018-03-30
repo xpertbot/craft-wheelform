@@ -38,22 +38,29 @@ class Mailer extends Component
         if ($model->value !== null) {
             foreach ($model->value as $valueModel) {
                 $text .= ($text ? "\n" : '')."- **{$valueModel->field->getLabel()}:** ";
-                if($valueModel->field->type == "file")
-                {
-                    if(! empty($valueModel->value)){
-                        $attachment = json_decode($valueModel->value);
 
-                        $message->attach($attachment->tempName, [
-                            'fileName' => $attachment->name,
-                            'contentType' => FileHelper::getMimeType($attachment->tempName),
-                        ]);
-                        $text .= $attachment->name;
-                    }
-                }
-                else
+                switch ($valueModel->field->type)
                 {
-                    //text, email, number
-                    $text .= $valueModel->value;
+                    case 'file':
+                        if(! empty($valueModel->value)){
+                            $attachment = json_decode($valueModel->value);
+
+                            $message->attach($attachment->tempName, [
+                                'fileName' => $attachment->name,
+                                'contentType' => FileHelper::getMimeType($attachment->tempName),
+                            ]);
+                            $text .= $attachment->name;
+                        }
+                        break;
+
+                    case 'checkbox':
+                        $text .= (is_array($valueModel->value) ? implode(', ', $valueModel->value) : $valueModel->value);
+                        break;
+
+                    default:
+                        //Text, Email, Number
+                        $text .= $valueModel->value;
+                        break;
                 }
             }
         }

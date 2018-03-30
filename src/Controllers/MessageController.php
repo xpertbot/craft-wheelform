@@ -73,7 +73,6 @@ class MessageController extends Controller
                     $messageValue->value = $request->getBodyParam($field->name, null);
                 }
 
-
                 if(! $messageValue->validate())
                 {
                     $errors[$field->name] = $messageValue->getErrors('value');
@@ -101,7 +100,9 @@ class MessageController extends Controller
 
             if ($request->isAjax) {
                 return $this->asJson($response);
-            } else{
+            }
+            else
+            {
                 Craft::$app->getUrlManager()->setRouteParams([
                     'variables' => $response,
                 ]);
