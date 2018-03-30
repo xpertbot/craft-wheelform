@@ -39,7 +39,7 @@
         value: form.to_email,
         errors: form.getErrors('to_email'),
         required: true,
-        instructions: 'Email notifications will be sent to.'|t,
+        instructions: 'The email address(es) that the contact form will send to. Separate multiple email addresses with commas.'|t,
     }) }}
 
     {{ formEl.lightswitchField({
