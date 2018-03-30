@@ -22,7 +22,7 @@ class EntriesController extends Controller
             throw new HttpException(404);
         }
 
-        $query = Message::find()->where(['form_id' => $form_id]);
+        $query = Message::find()->where(['form_id' => $form_id])->orderBy(['dateCreated' => SORT_DESC]);
         $count = $query->count();
         $pages = new Pagination(['totalCount' => $count]);
         $pages->setPageSize(50);

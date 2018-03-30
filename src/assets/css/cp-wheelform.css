@@ -11,6 +11,11 @@
     border-radius: .25rem;
 }
 
+.pagination li.active a{
+    background-color: #0d78f2;
+    color: #fff;
+}
+
 .pagination li a, .pagination li span{
     position: relative;
     display: block;
@@ -30,4 +35,16 @@
 .pagination li:last-child span, .pagination li:last-child a{
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
+}
+
+table.data th, table.data td{
+    padding: 5px 10px;
+}
+
+table.data tbody tr:nth-of-type(even){
+    background-color: rgba(0,0,0,.05);
+}
+
+th.text-right, td.text-right{
+    text-align: right !important;
 }
