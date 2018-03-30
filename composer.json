@@ -2,7 +2,7 @@
     "name": "xpertbot/craft-wheelform",
     "description": "Craft CMS 3 Form administrator with Database integration",
     "type": "craft-plugin",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "keywords": [
         "craft",
         "cms",
@@ -32,7 +32,7 @@
     "extra": {
         "name": "Wheel Form",
         "handle": "wheelform",
-        "schemaVersion": "0.1",
+        "schemaVersion": "1.0.2",
         "hasCpSettings": true,
         "hasCpSection": true,
         "changelogUrl": "https://github.com/xpertbot/craft-wheelform/CHANGELOG.md",

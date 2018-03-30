@@ -74,7 +74,7 @@ Your form template can look something like this:
     <label><input type="checkbox" name="favorite_topping[]" value="Chocolate">Chocolate</label>
     <label><input type="checkbox" name="favorite_topping[]" value="Vanilla">Vanilla</label>
     <label><input type="checkbox" name="favorite_topping[]" value="Strawberry">Strawberry</label>
-    {{ errors['checkbox'] is defined ? errorList(errors['checkbox']) }}
+    {{ errors['favorite_topping'] is defined ? errorList(errors['favorite_topping']) }}
 
     <h3><label for="message">Message</label></h3>
     <textarea rows="10" cols="40" id="message" name="message">{{ values['message'] ?? '' }}</textarea>
@@ -128,27 +128,24 @@ $('#my-form').submit(function(ev) {
     // Prevent the form from actually submitting
     ev.preventDefault();
 
+    var data = $(this).serialize();
+
     // Send it to the server
-    $.post('/', {
-        dataType: 'json',
-        data: $(this).serialize(),
-        success: function(response) {
+    $.post('/wheelform/message/send',
+        data,
+        function(response) {
             if (response.success) {
+                //reponse.message is the message saved in the Form Settings
                 $('#thanks').fadeIn();
             } else {
-                // response.error will be an object containing any validation errors that occurred, indexed by field name
-                // e.g. response.error.fromName => ['From Name is required']
+                // response.values will contain user submitted values
+                // response.errors will be an array containing any validation errors that occurred, indexed by field name
+                // e.g. response.error['email'] => ['Email is required', 'Email is invalid']
                 alert('An error occurred. Please try again.');
             }
         }
-    });
+    );
 });
 ```
 
-If using getCrsfInput() make sure you add these after the closing form tag.
-```js
-<script>
-window.csrfTokenName = "{{ craft.config.csrfTokenName|e('js') }}";
-window.csrfTokenValue = "{{ craft.request.csrfToken|e('js') }}";
-</script>
-```
+If using getCrsfInput() make sure you are submitting it with the rest of your form.

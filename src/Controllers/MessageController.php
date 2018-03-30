@@ -93,13 +93,20 @@ class MessageController extends Controller
 
         if (! empty($errors))
         {
-            Craft::$app->getUrlManager()->setRouteParams([
-                'variables' => [
-                    'values' => $request->getBodyParams(),
-                    'errors' => $errors,
-                ],
-            ]);
-            return null;
+            $response = [
+                'values' => $request->getBodyParams(),
+                'errors' => $errors,
+                'success' => false,
+            ];
+
+            if ($request->isAjax) {
+                return $this->asJson($response);
+            } else{
+                Craft::$app->getUrlManager()->setRouteParams([
+                    'variables' => $response,
+                ]);
+                return null;
+            }
         }
 
 
@@ -112,7 +119,7 @@ class MessageController extends Controller
         if($formModel->send_email)
         {
             if (!$plugin->getMailer()->send($formModel->to_email, $formModel->name, $message)) {
-                if ($request->getAcceptsJson()) {
+                if ($request->isAjax) {
                     return $this->asJson(['errors' => $errors]);
                 }
 
@@ -129,8 +136,8 @@ class MessageController extends Controller
             }
         }
 
-        if ($request->getAcceptsJson()) {
-            return $this->asJson(['success' => true]);
+        if ($request->isAjax) {
+            return $this->asJson(['success' => true, 'message' => $settings->success_message]);
         }
 
         Craft::$app->getSession()->setNotice($settings->success_message);
