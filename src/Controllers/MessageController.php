@@ -5,6 +5,7 @@ use Craft;
 use craft\web\Controller;
 use craft\web\UploadedFile;
 use yii\web\Response;
+use yii\web\HttpException;
 
 use Wheelform\Plugin;
 use Wheelform\Models\Form;
