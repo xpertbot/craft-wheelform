@@ -25,18 +25,19 @@ class MessageController extends Controller
         $request = Craft::$app->getRequest();
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
-
+        
         $form_id = intval($request->getBodyParam('form_id', "0"));
+               
         if($form_id <= 0){
-            throw new HttpException(404);
+            throw new HttpException(404, 'No form_id has been applied to this post.' );
             return null;
         }
-
+        
         $formModel = Form::findOne($form_id);
 
         if(empty($formModel))
         {
-            throw new HttpException(404);
+            throw new HttpException(404, 'Form with id '.$form_id.' was not found');
             return null;
         }
 
