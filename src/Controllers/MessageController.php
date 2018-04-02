@@ -5,6 +5,7 @@ use Craft;
 use craft\web\Controller;
 use craft\web\UploadedFile;
 use yii\web\Response;
+use yii\web\HttpException;
 
 use Wheelform\Plugin;
 use Wheelform\Models\Form;
@@ -83,10 +84,14 @@ class MessageController extends Controller
                 }
             }
 
-            //This should never error out based on current values
-            if(! $message->save())
+            // Prevent mesage form being saved if error are present
+            if (empty($errors))
             {
-                $errors['message'] = $message->getErrors();
+                // This should never error out based on current values
+                if(! $message->save())
+                {
+                    $errors['message'] = $message->getErrors();
+                }
             }
         }
 
