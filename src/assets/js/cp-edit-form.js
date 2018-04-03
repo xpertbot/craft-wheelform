@@ -77,11 +77,12 @@ jQuery(document).ready(function($){
                                 'type': 'checkbox',
                                 'class': 'checkbox',
                                 'name': 'fields['+ index +'][required]',
-                                'id':'checkbox'+index
+                                'value': '1',
+                                'id':'requiredcheckbox'+index
                             })
                             .val('1'))
                         .add($('<label/>', {
-                                'for': 'required'+index
+                                'for': 'requiredcheckbox'+index
                             }).text('Required'))
                 })
             });
