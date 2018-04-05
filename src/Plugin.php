@@ -81,11 +81,4 @@ class Plugin extends BasePlugin
             'settings' => $settings,
         ]);
     }
-
-    protected function cpNavIconPath()
-    {
-        $path = $this->getBasePath().DIRECTORY_SEPARATOR.'icon.svg';
-
-        return is_file($path) ? $path : null;
-    }
 }
