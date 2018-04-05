@@ -9,12 +9,19 @@ use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
 
+use Wheelform\Plugin;
+
 class FormController extends Controller
 {
 
     function actionIndex()
     {
         $forms = Form::find()->all();
+
+        $settings = Plugin::getInstance()->getSettings();
+        if (!$settings->validate()) {
+            Craft::$app->getSession()->setError(Craft::t('wheelform', 'Plugin settings need to be configured.'));
+        }
 
         return $this->renderTemplate('wheelform/_index.twig', [
             'wheelforms' => $forms,

@@ -1,3 +1,13 @@
+.form-field-add, .form-field-rm{
+    color: rgba(0, 0, 0, 0.2);
+}
+.form-field-add:hover{
+    color: #00b007 !important;
+}
+
+.form-field-rm:hover{
+    color: #da5a47 !important
+}
 .clearfix:after{
     display: block;
     content: "";
