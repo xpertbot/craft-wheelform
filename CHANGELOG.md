@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Added new active column to fields so we don't delete data related to those fields.
+- Added Delete warning on Form Field.
 
 ## 1.4.1 - 2018-04-07
 ### Fixed

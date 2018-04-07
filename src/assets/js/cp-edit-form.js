@@ -7,9 +7,7 @@ jQuery(document).ready(function($){
         setIndex();
 
         $form.find('input').focus(function(){
-            if(dirtyFields.val() == '0'){
-                dirtyFields.val('1');
-            }
+            setDirtyFields();
         });
 
         $form.find('.form-field-add').click(function(ev){
@@ -18,20 +16,26 @@ jQuery(document).ready(function($){
             $parent = $(this).parents('tr');
             setIndex();
             addRow($parent);
+            setDirtyFields();
         });
 
         $form.find('.form-field-rm').click(function(ev){
             ev.preventDefault();
 
-            if(dirtyFields.val() == '0'){
-                dirtyFields.val('1');
+            if(confirm('Are you sure you want to delete the field?'))
+            {
+                $(this).parents('tr').remove();
+                setDirtyFields();
             }
-
-            $(this).parents('tr').remove();
         });
 
         function setIndex(){
             index = ($form.find('tbody tr').length + 1);
+        }
+
+        function setDirtyFields()
+        {
+            dirtyFields.val('1');
         }
 
         function addRow(target){
@@ -124,7 +128,12 @@ jQuery(document).ready(function($){
                     'data-icon': 'remove'
                 }).on('click', function(ev){
                     ev.preventDefault();
-                    $(this).parents('tr').remove();
+                    if(confirm('Are you sure you want to delete the field?'))
+                    {
+                        $(this).parents('tr').remove();
+                        setDirtyFields();
+                    }
+
                 })
                 .add($('<a/>', {
                         'class': 'form-field-add',
@@ -136,6 +145,7 @@ jQuery(document).ready(function($){
                         $parent = $(this).parents('tr');
                         setIndex();
                         addRow($parent);
+                        setDirtyFields();
                     })
                 )
             });
@@ -144,6 +154,7 @@ jQuery(document).ready(function($){
                 'name': 'fields['+ index +'][id]',
                 'value': '0',
             });
+
             $newRowHtml.append($fieldId);
             $newRowHtml.append($textContainer);
             $newRowHtml.append($selectContainer);
