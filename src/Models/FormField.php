@@ -11,6 +11,9 @@ class FormField extends ActiveRecord
         'email',
         'number',
         'checkbox',
+        'radio',
+        'hidden',
+        'select',
         'file',
     ];
 

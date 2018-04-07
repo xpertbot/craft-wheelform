@@ -59,7 +59,12 @@ jQuery(document).ready(function($){
                                 'name': 'fields['+ index +'][type]',
                                 'html': $('<option/>').val('text').text('Text')
                                     .add($('<option/>').val('email').text('Email'))
-                                    .add($('<option/>').val('dropdown').text('Dropdown'))
+                                    .add($('<option/>').val('number').text('Number'))
+                                    .add($('<option/>').val('checkbox').text('Checkbox'))
+                                    .add($('<option/>').val('radio').text('Radio'))
+                                    .add($('<option/>').val('hidden').text('Hidden'))
+                                    .add($('<option/>').val('select').text('Select'))
+                                    .add($('<option/>').val('file').text('File'))
                             })
                         })
                     })
@@ -89,7 +94,7 @@ jQuery(document).ready(function($){
 
             var $settingsTd = $('<td/>', {
                 'html': $('<a/>', {
-                    'class': 'form-field-rm error right',
+                    'class': 'form-field-rm right',
                     'href': '#',
                     'data-icon': 'remove'
                 }).on('click', function(ev){
@@ -97,7 +102,7 @@ jQuery(document).ready(function($){
                     $(this).parents('tr').remove();
                 })
                 .add($('<a/>', {
-                        'class': 'form-field-add success',
+                        'class': 'form-field-add',
                         'href': '#',
                         'data-icon': 'plus'
                     }).on('click', function(ev){

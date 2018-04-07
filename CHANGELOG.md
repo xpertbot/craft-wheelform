@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.0 - 2018-04-06
+### Added
+- Added more field types, they all validate to strings
+
 ## 1.2.4 - 2018-04-04
 ### Improvements
 - Improved icon hover instead of solid color for form fields

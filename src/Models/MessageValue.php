@@ -10,6 +10,9 @@ class MessageValue extends Activerecord
     const NUMBER_SCENARIO = "number";
     const EMAIL_SCENARIO = "email";
     const CHECKBOX_SCENARIO = "checkbox";
+    const RADIO_SCENARIO = "radio";
+    const HIDDEN_SCENARIO = "hidden";
+    const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
 
     public static function tableName(): String
@@ -27,6 +30,9 @@ class MessageValue extends Activerecord
                 return (bool)$model->field->required;
             }, 'message' => $this->field->getLabel().' cannot be blank.'],
             ['value', 'string', 'on' => self::TEXT_SCENARIO],
+            ['value', 'string', 'on' => self::HIDDEN_SCENARIO],
+            ['value', 'string', 'on' => self::SELECT_SCENARIO],
+            ['value', 'string', 'on' => self::RADIO_SCENARIO],
             ['value', 'email', 'on' => self::EMAIL_SCENARIO],
             ['value', 'number', 'on' => self::NUMBER_SCENARIO],
             ['value', 'file', 'on' => self::FILE_SCENARIO],
