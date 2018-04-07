@@ -26,6 +26,7 @@ class FormField extends ActiveRecord
     {
         return [
             ['name', 'required'],
+            ['name', 'string'],
             ['form_id', 'integer'],
             [['required', 'index_view'], 'integer', 'integerOnly' => true, 'min' => 0],
             [['required', 'index_view'], 'default', 'value' => 0],

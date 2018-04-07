@@ -9,7 +9,7 @@
 <tr>
     <td>
         {{ form.textField({
-            name: 'fields['~ index ~'][name]',
+            name: 'fields['~ index ~']['~ field.id | default(0) ~'][name]',
             class: 'form-name',
             required: true,
             value: field.name | default(''),
@@ -17,7 +17,7 @@
     </td>
     <td>
         {{ form.selectField({
-            name: 'fields['~ index ~'][type]',
+            name: 'fields['~ index ~']['~ field.id | default(0) ~'][type]',
             class: 'form-type',
             required: true,
             options: fieldOptions,
@@ -28,7 +28,7 @@
         <div class="clearfix">
             {{ form.checkboxField({
                 label: 'Required',
-                name: 'fields['~ index ~'][required]',
+                name: 'fields['~ index ~']['~ field.id | default(0) ~'][required]',
                 class: 'form-required',
                 value: 1,
                 checked: field.required | default(0),
@@ -37,7 +37,7 @@
         <div class="clearfix">
             {{ form.checkboxField({
                 label: 'Entries View',
-                name: 'fields['~ index ~'][index_view]',
+                name: 'fields['~ index ~']['~ field.id | default(0) ~'][index_view]',
                 class: 'index-view',
                 value: 1,
                 checked: field.index_view | default(0),

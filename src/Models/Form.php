@@ -53,11 +53,6 @@ class Form extends ActiveRecord
         return $this->_entryCount;
     }
 
-    public function unlinkFields()
-    {
-        $this->unlinkAll('fields', true);
-    }
-
     public function validateToEmails($attribute, $params, $validator)
     {
 

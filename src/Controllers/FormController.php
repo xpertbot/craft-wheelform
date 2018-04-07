@@ -90,19 +90,42 @@ class FormController extends Controller
         //Check if fields are dirty
         $changedFields = $request->getBodyParam('changed_fields', 0);
         if($changedFields){
-            //Delete all fields.
-            // $oldFields = $form->fields;
-            $form->unlinkFields();
-
             //Rebuild fields
-            $fields = $request->getBodyParam('fields', []);
-            if(! empty($fields)){
-                foreach($fields as $field){
-                   $formField = new FormField($field);
-                   if($formField->validate())
-                   {
-                        $form->link('fields', $formField);
-                   }
+            $fieldList = $request->getBodyParam('fields', []);
+            if(! empty($fieldList)){
+                foreach($fieldList as $position => $fields){
+                    if(is_array($fields))
+                    {
+                        foreach($fields as $id => $field)
+                        {
+                            if(intval($id) > 0)
+                            {
+                                //update Field Values
+                                $formField = FormField::find()->where(['id' => $id])->one();
+                                if(! empty($formField))
+                                {
+                                    $formField->setAttributes($field);
+
+                                    if($formField->validate()){
+                                        $formField->save();
+                                    }
+                                    else
+                                    {
+                                        //do nothing for now
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // new field
+                                $formField = new FormField($field);
+                                if($formField->validate())
+                                {
+                                    $form->link('fields', $formField);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

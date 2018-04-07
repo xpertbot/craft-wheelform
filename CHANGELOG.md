@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.1 - 2018-04-07
+### Fixed
+- Fixed critical bug that delete fields entries when updating form fields
+
 ## 1.4.0 - 2018-04-07
 ### Added
 - Added ability to check fields on entries views

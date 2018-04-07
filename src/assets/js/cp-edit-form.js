@@ -44,7 +44,7 @@ jQuery(document).ready(function($){
                         'html': $('<input/>', {
                             'type': 'text',
                             'class': 'text fullwidth',
-                            'name': 'fields['+ index +'][name]'
+                            'name': 'fields['+ index +'][0][name]'
                         })
                     })
                 }));
@@ -56,7 +56,7 @@ jQuery(document).ready(function($){
                         'html': $('<div />', {
                             'class': 'select',
                             'html': $('<select/>', {
-                                'name': 'fields['+ index +'][type]',
+                                'name': 'fields['+ index +'][0][type]',
                                 'html': $('<option/>').val('text').text('Text')
                                     .add($('<option/>').val('email').text('Email'))
                                     .add($('<option/>').val('number').text('Number'))
@@ -79,12 +79,12 @@ jQuery(document).ready(function($){
                             'class': 'field checkboxfield',
                             'html':  $('<input/>', {
                                 'type': 'hidden',
-                                'name': 'fields['+ index +'][required]'
+                                'name': 'fields['+ index +'][0][required]'
                             })
                             .add($('<input/>', {
                                     'type': 'checkbox',
                                     'class': 'checkbox',
-                                    'name': 'fields['+ index +'][required]',
+                                    'name': 'fields['+ index +'][0][required]',
                                     'value': '1',
                                     'id':'requiredcheckbox'+index
                                 })
@@ -100,12 +100,12 @@ jQuery(document).ready(function($){
                             'class': 'field checkboxfield',
                             'html':  $('<input/>', {
                                 'type': 'hidden',
-                                'name': 'fields['+ index +'][index_view]'
+                                'name': 'fields['+ index +'][0][index_view]'
                             })
                             .add($('<input/>', {
                                     'type': 'checkbox',
                                     'class': 'checkbox',
-                                    'name': 'fields['+ index +'][index_view]',
+                                    'name': 'fields['+ index +'][0][index_view]',
                                     'value': '1',
                                     'id':'index_viewcheckbox'+index
                                 })
