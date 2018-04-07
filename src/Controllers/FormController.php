@@ -92,8 +92,10 @@ class FormController extends Controller
         if($changedFields){
             //Rebuild fields
             $fieldList = $request->getBodyParam('fields', []);
-            if(! empty($fieldList)){
-                foreach($fieldList as $position => $fields){
+            if(! empty($fieldList))
+            {
+                foreach($fieldList as $position => $fields)
+                {
                     if(is_array($fields))
                     {
                         foreach($fields as $id => $field)
