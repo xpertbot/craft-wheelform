@@ -19,6 +19,11 @@
                     <th scope="col" data-attribute="View">
                         View Message
                     </th>
+                    {% if headerFields is not empty %}
+                        {% for h in headerFields %}
+                            <th>{{h.getLabel()}}</th>
+                        {% endfor %}
+                    {% endif %}
                     <th scope="col" data-attribute="dateSubmitted" class="text-right">
                         Date Submitted
                     </th>
@@ -28,6 +33,17 @@
                 {% for entry in entries %}
                     <tr data-id="{{ entry.id }}">
                         <td><a href="{{ url('wheelform/entry/' ~ entry.id)}}">View</a></td>
+                        {% if headerFields is not empty %}
+                            {% for field in headerFields %}
+                                {% for value in entry.value %}
+                                    {% if value.field_id == field.id %}
+                                        <td>{{value.value}}</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>No Value found</td>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                         <td class="text-right">{{ entry.dateCreated | date('d-m-Y h:i a') }}</td>
                     </tr>
                 {% endfor %}

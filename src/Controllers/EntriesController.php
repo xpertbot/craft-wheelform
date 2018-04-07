@@ -4,6 +4,7 @@ namespace Wheelform\Controllers;
 use Craft;
 use craft\web\Controller;
 use Wheelform\Models\Form;
+use Wheelform\Models\FormField;
 use Wheelform\Models\Message;
 use Wheelform\Models\MessageValue;
 use yii\web\HttpException;
@@ -29,12 +30,18 @@ class EntriesController extends Controller
         $entries = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
+        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1])
+            ->orderBy(['dateCreated' => SORT_DESC])->all();
 
         $pager = LinkPager::widget([
             'pagination' => $pages,
         ]);
 
-        return $this->renderTemplate('wheelform/_entries.twig', ['entries' => $entries, 'pager' => $pager]);
+        return $this->renderTemplate('wheelform/_entries.twig', [
+            'entries' => $entries,
+            'pager' => $pager,
+            'headerFields' => $headerFields,
+        ]);
     }
 
     public function actionView()

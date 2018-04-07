@@ -73,23 +73,48 @@ jQuery(document).ready(function($){
 
             var $checkboxContainer = $('<td/>', {
                 'html': $('<div/>', {
-                    'class': "field checkboxfield",
-                    'html': $('<input/>', {
-                            'type': 'hidden',
-                            'name': 'fields['+ index +'][required]'
-                        })
-                        .add($('<input/>', {
-                                'type': 'checkbox',
-                                'class': 'checkbox',
-                                'name': 'fields['+ index +'][required]',
-                                'value': '1',
-                                'id':'requiredcheckbox'+index
+                    'class': "clearfix",
+                    'html':
+                        $('<div/>', {
+                            'class': 'field checkboxfield',
+                            'html':  $('<input/>', {
+                                'type': 'hidden',
+                                'name': 'fields['+ index +'][required]'
                             })
-                            .val('1'))
-                        .add($('<label/>', {
-                                'for': 'requiredcheckbox'+index
-                            }).text('Required'))
-                })
+                            .add($('<input/>', {
+                                    'type': 'checkbox',
+                                    'class': 'checkbox',
+                                    'name': 'fields['+ index +'][required]',
+                                    'value': '1',
+                                    'id':'requiredcheckbox'+index
+                                })
+                                .val('1'))
+                            .add($('<label/>', {
+                                    'for': 'requiredcheckbox'+index
+                                }).text('Required'))
+                        })
+                }).add($('<div/>', {
+                    'class': "clearfix",
+                    'html':
+                        $('<div/>', {
+                            'class': 'field checkboxfield',
+                            'html':  $('<input/>', {
+                                'type': 'hidden',
+                                'name': 'fields['+ index +'][index_view]'
+                            })
+                            .add($('<input/>', {
+                                    'type': 'checkbox',
+                                    'class': 'checkbox',
+                                    'name': 'fields['+ index +'][index_view]',
+                                    'value': '1',
+                                    'id':'index_viewcheckbox'+index
+                                })
+                                .val('1'))
+                            .add($('<label/>', {
+                                    'for': 'index_viewcheckbox'+index
+                                }).text('Entries View'))
+                        })
+                }))
             });
 
             var $settingsTd = $('<td/>', {

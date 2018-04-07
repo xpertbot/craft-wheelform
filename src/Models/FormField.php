@@ -27,8 +27,8 @@ class FormField extends ActiveRecord
         return [
             ['name', 'required'],
             ['form_id', 'integer'],
-            ['required', 'integer', 'integerOnly' => true, 'min' => 0],
-            ['required', 'default', 'value' => 0],
+            [['required', 'index_view'], 'integer', 'integerOnly' => true, 'min' => 0],
+            [['required', 'index_view'], 'default', 'value' => 0],
             ['type', 'in', 'range' => self::FIELD_TYPES],
         ];
     }
@@ -50,5 +50,10 @@ class FormField extends ActiveRecord
         $label = trim(str_replace('_', " ", $this->name));
         $label = ucfirst($label);
         return $label;
+    }
+
+    public function getValues()
+    {
+        return $this->hasMany(MessageValue::className(), ['field_id' => 'id']);
     }
 }

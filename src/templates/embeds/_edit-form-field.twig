@@ -25,13 +25,25 @@
         }) }}
     </td>
     <td>
-        {{ form.checkboxField({
-            label: 'Required',
-            name: 'fields['~ index ~'][required]',
-            class: 'form-required',
-            value: 1,
-            checked: field.required | default(0),
-        }) }}
+        <div class="clearfix">
+            {{ form.checkboxField({
+                label: 'Required',
+                name: 'fields['~ index ~'][required]',
+                class: 'form-required',
+                value: 1,
+                checked: field.required | default(0),
+            }) }}
+        </div>
+        <div class="clearfix">
+            {{ form.checkboxField({
+                label: 'Entries View',
+                name: 'fields['~ index ~'][index_view]',
+                class: 'index-view',
+                value: 1,
+                checked: field.index_view | default(0),
+            }) }}
+        </div>
+
     </td>
     <td>
         <a href="#" class="form-field-add" data-icon="plus"></a>

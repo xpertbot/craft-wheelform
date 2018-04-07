@@ -32,7 +32,6 @@
     "extra": {
         "name": "Wheel Form",
         "handle": "wheelform",
-        "schemaVersion": "1.0.2",
         "hasCpSettings": true,
         "hasCpSection": true,
         "changelogUrl": "https://github.com/xpertbot/craft-wheelform/CHANGELOG.md",
