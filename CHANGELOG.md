@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.3 - 2018-04-07
+### Fixed
+- Fixed Added migration changes to Install.php for future installs
+
 ## 1.4.2 - 2018-04-07
 ### Improved
 - Improved handling of ids in fields introcued on previous patch

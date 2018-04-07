@@ -61,6 +61,8 @@ class Install extends Migration
                     'name' => $this->string()->notNull(),
                     'type' => $this->string()->notNull(),
                     'required' => $this->boolean()->notNull(),
+                    'index_view', $this->boolean()->notNull()->defaultValue(0),
+                    'active', $this->boolean()->notNull()->defaultValue(1),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime(),
                     'uid' => $this->uid(),
@@ -99,6 +101,7 @@ class Install extends Migration
 
     protected function createIndexes()
     {
+        $this->createIndex(null, '{{%wheelform_form_fields}}', ['active']);
         return true;
     }
 
@@ -111,7 +114,7 @@ class Install extends Migration
             '{{%sites}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            NULL
         );
 
         $this->addForeignKey(
@@ -121,7 +124,7 @@ class Install extends Migration
             '{{%wheelform_forms}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            NULL
         );
 
         $this->addForeignKey(
@@ -131,7 +134,7 @@ class Install extends Migration
             '{{%wheelform_forms}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            NULL
         );
 
         $this->addForeignKey(
@@ -141,7 +144,7 @@ class Install extends Migration
             '{{%wheelform_messages}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            NULL
         );
 
         $this->addForeignKey(
@@ -151,7 +154,7 @@ class Install extends Migration
             '{{%wheelform_form_fields}}',
             'id',
             'CASCADE',
-            'CASCADE'
+            NULL
         );
 
     }
