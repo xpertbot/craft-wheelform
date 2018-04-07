@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.4.4 - 2018-04-07
+### Fixed
+- Fixed install error introduced last patch
+
 ## 1.4.3 - 2018-04-07
 ### Fixed
-- Fixed Added migration changes to Install.php for future installs
+- Fixed migration changes to Install.php for future installs
 
 ## 1.4.2 - 2018-04-07
 ### Improved
