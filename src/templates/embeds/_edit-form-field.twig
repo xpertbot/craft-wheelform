@@ -7,9 +7,10 @@
     {% set fieldOptions = fieldOptions | merge([option]) %}
 {% endfor %}
 <tr>
+    <input type="hidden" name="fields[{{index}}][id]" value="{{field.id | default(0)}}">
     <td>
         {{ form.textField({
-            name: 'fields['~ index ~']['~ field.id | default(0) ~'][name]',
+            name: 'fields['~ index ~'][name]',
             class: 'form-name',
             required: true,
             value: field.name | default(''),
@@ -17,7 +18,7 @@
     </td>
     <td>
         {{ form.selectField({
-            name: 'fields['~ index ~']['~ field.id | default(0) ~'][type]',
+            name: 'fields['~ index ~'][type]',
             class: 'form-type',
             required: true,
             options: fieldOptions,
@@ -28,7 +29,7 @@
         <div class="clearfix">
             {{ form.checkboxField({
                 label: 'Required',
-                name: 'fields['~ index ~']['~ field.id | default(0) ~'][required]',
+                name: 'fields['~ index ~'][required]',
                 class: 'form-required',
                 value: 1,
                 checked: field.required | default(0),
@@ -37,7 +38,7 @@
         <div class="clearfix">
             {{ form.checkboxField({
                 label: 'Entries View',
-                name: 'fields['~ index ~']['~ field.id | default(0) ~'][index_view]',
+                name: 'fields['~ index ~'][index_view]',
                 class: 'index-view',
                 value: 1,
                 checked: field.index_view | default(0),

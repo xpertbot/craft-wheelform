@@ -91,41 +91,35 @@ class FormController extends Controller
         $changedFields = $request->getBodyParam('changed_fields', 0);
         if($changedFields){
             //Rebuild fields
-            $fieldList = $request->getBodyParam('fields', []);
-            if(! empty($fieldList))
+            $newFields = $request->getBodyParam('fields', []);
+            if(! empty($newFields))
             {
-                foreach($fieldList as $position => $fields)
+                foreach($newFields as $position => $field)
                 {
-                    if(is_array($fields))
+                    if(intval($field['id']) > 0)
                     {
-                        foreach($fields as $id => $field)
+                        //update Field Values
+                        $formField = FormField::find()->where(['id' => $field['id']])->one();
+                        if(! empty($formField))
                         {
-                            if(intval($id) > 0)
-                            {
-                                //update Field Values
-                                $formField = FormField::find()->where(['id' => $id])->one();
-                                if(! empty($formField))
-                                {
-                                    $formField->setAttributes($field);
+                            $formField->setAttributes($field);
 
-                                    if($formField->validate()){
-                                        $formField->save();
-                                    }
-                                    else
-                                    {
-                                        //do nothing for now
-                                    }
-                                }
+                            if($formField->validate()){
+                                $formField->save();
                             }
                             else
                             {
-                                // new field
-                                $formField = new FormField($field);
-                                if($formField->validate())
-                                {
-                                    $form->link('fields', $formField);
-                                }
+                                //do nothing for now
                             }
+                        }
+                    }
+                    else
+                    {
+                        // new field
+                        $formField = new FormField($field);
+                        if($formField->validate())
+                        {
+                            $form->link('fields', $formField);
                         }
                     }
                 }
@@ -134,5 +128,31 @@ class FormController extends Controller
 
         Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
         return $this->redirectToPostedUrl();
+    }
+
+    protected function getToDeleteIds(array $oldFields, array $newFields): array
+    {
+        $toDelete = [];
+
+        if(! empty($oldFields))
+        {
+            foreach($oldFields as $field)
+            {
+                var_dump(array_keys($newFields));
+
+                // var_dump(array_key_exists($formField->id, $newFields));
+                // if(array_key_exists($formField->id, $newFields)){
+
+                // }
+            }
+        }
+        // var_dump($oldFields);
+        // echo '<hr>';
+        // var_dump($newfields);
+        die;
+        // if(is_array($oldFields) && is_array($newfields))
+        // {
+
+        // }
     }
 }
