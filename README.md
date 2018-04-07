@@ -40,6 +40,9 @@ Current Field types supported are:
 * Email
 * Number
 * Checkboxes
+* Radio
+* Select
+* Hidden
 * File
 
 Field Settings can be set as Required or not, for validation purposes.
