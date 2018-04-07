@@ -3,12 +3,12 @@ namespace Wheelform\Controllers;
 
 use Craft;
 use craft\web\Controller;
-use Wheelform\Models\Form;
-use Wheelform\Models\FormField;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
 
+use Wheelform\Models\FormField;
+use Wheelform\Models\Form;
 use Wheelform\Plugin;
 
 class FormController extends Controller
@@ -49,7 +49,10 @@ class FormController extends Controller
         }
 
         // Render the template
-        return $this->renderTemplate('wheelform/_edit-form.twig', ['form' => $form, 'fieldTypes' => FormField::FIELD_TYPES]);
+        return $this->renderTemplate('wheelform/_edit-form.twig', [
+            'form' => $form,
+            'fieldTypes' => FormField::FIELD_TYPES
+        ]);
     }
 
     function actionSave()
@@ -89,9 +92,14 @@ class FormController extends Controller
 
         //Check if fields are dirty
         $changedFields = $request->getBodyParam('changed_fields', 0);
-        if($changedFields){
+        if($changedFields)
+        {
             //Rebuild fields
+            $oldFields = FormField::find()->select('id')->where(['form_id' => $form->id])->all();
             $newFields = $request->getBodyParam('fields', []);
+            //Get ID of fields that are missing on the oldFields compared to newfields
+            $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
+
             if(! empty($newFields))
             {
                 foreach($newFields as $position => $field)
@@ -124,6 +132,16 @@ class FormController extends Controller
                     }
                 }
             }
+
+            if(! empty($toDeleteIds))
+            {
+                $db = Craft::$app->getDb();
+                $db->createCommand()->update(
+                    FormField::tableName(),
+                    ['active' => 0],
+                    "id IN (".implode(', ', $toDeleteIds).")"
+                )->execute();
+            }
         }
 
         Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
@@ -138,21 +156,16 @@ class FormController extends Controller
         {
             foreach($oldFields as $field)
             {
-                var_dump(array_keys($newFields));
+                $index = array_search($field->id, array_column($newFields, 'id'));
 
-                // var_dump(array_key_exists($formField->id, $newFields));
-                // if(array_key_exists($formField->id, $newFields)){
-
-                // }
+                // $index is missing add field->id to toDelete array
+                if($index === false)
+                {
+                    $toDelete[] = strval($field->id);
+                }
             }
         }
-        // var_dump($oldFields);
-        // echo '<hr>';
-        // var_dump($newfields);
-        die;
-        // if(is_array($oldFields) && is_array($newfields))
-        // {
 
-        // }
+        return $toDelete;
     }
 }

@@ -35,7 +35,7 @@ class Form extends ActiveRecord
 
     public function getFields()
     {
-        return $this->hasMany(FormField::className(), ['form_id' => 'id']);
+        return $this->hasMany(FormField::className(), ['form_id' => 'id'])->andOnCondition(['active' => 1]);
     }
 
     public function getEntryCount(): int

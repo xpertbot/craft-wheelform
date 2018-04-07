@@ -30,7 +30,7 @@ class EntriesController extends Controller
         $entries = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
-        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1])
+        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])
             ->orderBy(['dateCreated' => SORT_DESC])->all();
 
         $pager = LinkPager::widget([

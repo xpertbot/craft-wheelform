@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Improved
 - Improved handling of ids in fields introcued on previous patch
 
+### Added
+- Added new active column to fields so we don't delete data related to those fields.
+
 ## 1.4.1 - 2018-04-07
 ### Fixed
 - Fixed critical bug that delete fields entries when updating form fields
