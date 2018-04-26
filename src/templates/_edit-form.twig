@@ -29,7 +29,7 @@
         first: true,
         autofocus: true,
         required: true,
-        instructions: 'Name of this Form in the CP.'|t,
+        instructions: 'Name of this Form in the CP.'|t('wheelform'),
     }) }}
 
     {{ formEl.textField({
@@ -39,25 +39,25 @@
         value: form.to_email,
         errors: form.getErrors('to_email'),
         required: true,
-        instructions: 'The email address(es) that the contact form will send to. Separate multiple email addresses with commas.'|t,
+        instructions: 'The email address(es) that the contact form will send to. Separate multiple email addresses with commas.'|t('wheelform'),
     }) }}
 
     {{ formEl.lightswitchField({
-        label: "Active"|t,
+        label: "Active"|t('wheelform'),
         id: 'active',
         name: 'active',
         on: (form.active is null ? true : form.active),
     }) }}
 
     {{ formEl.lightswitchField({
-        label: "Send Email"|t,
+        label: "Send Email"|t('wheelform'),
         id: 'send_email',
         name: 'send_email',
         on: (form.send_email is null ? true : form.send_email),
     }) }}
 
     {{ formEl.lightswitchField({
-        label: "Recaptcha"|t,
+        label: "Recaptcha"|t('wheelform'),
         id: 'recaptcha',
         name: 'recaptcha',
         on: (form.recaptcha is null ? false : form.recaptcha),

@@ -160,3 +160,6 @@ $('#my-form').submit(function(ev) {
 ```
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
+
+### Translations
+New translations can be submitted using the format inside the translations folder.

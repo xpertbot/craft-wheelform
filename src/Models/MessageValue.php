@@ -1,6 +1,7 @@
 <?php
 namespace Wheelform\Models;
 
+use Craft;
 use craft\db\ActiveRecord;
 
 //Using Active Record because it extends Models.
@@ -23,18 +24,24 @@ class MessageValue extends Activerecord
     public function rules(): Array
     {
         return [
-            [['field_id'], 'required'],
-            [['message_id', 'field_id'], 'integer'],
+            [['field_id'], 'required', 'message' => Craft::t('wheelform', 'Field ID cannot be blank.')],
+            [['message_id', 'field_id'], 'integer', 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['message_id', 'field_id'], 'filter', 'filter' => 'intval'],
             ['value', 'required', 'when' => function($model){
                 return (bool)$model->field->required;
-            }, 'message' => $this->field->getLabel().' cannot be blank.'],
-            ['value', 'string', 'on' => self::TEXT_SCENARIO],
-            ['value', 'string', 'on' => self::HIDDEN_SCENARIO],
-            ['value', 'string', 'on' => self::SELECT_SCENARIO],
-            ['value', 'string', 'on' => self::RADIO_SCENARIO],
-            ['value', 'email', 'on' => self::EMAIL_SCENARIO],
-            ['value', 'number', 'on' => self::NUMBER_SCENARIO],
+            }, 'message' => $this->field->getLabel().Craft::t('wheelform', ' cannot be blank.')],
+            ['value', 'string', 'on' => self::TEXT_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')],
+            ['value', 'string', 'on' => self::HIDDEN_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')],
+            ['value', 'string', 'on' => self::SELECT_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')],
+            ['value', 'string', 'on' => self::RADIO_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')],
+            ['value', 'email', 'on' => self::EMAIL_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' is not a valid email address.')],
+            ['value', 'number', 'on' => self::NUMBER_SCENARIO,
+                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be a number.')],
             ['value', 'file', 'on' => self::FILE_SCENARIO],
             ['value', 'each', 'rule' => ['string'], 'on' => self::CHECKBOX_SCENARIO],
         ];

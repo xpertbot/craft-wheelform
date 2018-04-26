@@ -27,7 +27,7 @@
     id: "success_message",
     name: "success_message",
     instructions: "The flash message displayed after successfully sending a message."|t('wheelform'),
-    value: settings.success_message ?? "Thank You! we will review your submission shortly.",
+    value: settings.success_message ?? "Thank You! we will review your submission shortly." |t ('wheelform'),
     errors: settings.getErrors('success_message'),
     required: true,
 }) }}

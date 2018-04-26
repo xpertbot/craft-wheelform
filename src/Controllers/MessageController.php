@@ -48,7 +48,7 @@ class MessageController extends Controller
 
         if($formModel->active == 0)
         {
-            $errors['form'] = ['Form is no longer active.'];
+            $errors['form'] = [Craft::t('wheelform', 'Form is no longer active.')];
         }
 
         if($formModel->recaptcha == 1)
@@ -56,7 +56,7 @@ class MessageController extends Controller
             $userRes = $request->getBodyParam('g-recaptcha-response', '');
             if($this->validateRecaptcha($userRes, $settings->recaptcha_secret) == false)
             {
-                $errors['recaptcha'] = ['The reCAPTCHA wasn\'t entered correctly. Try again.'];
+                $errors['recaptcha'] = [Craft::t('wheelform', "The reCAPTCHA wasn't entered correctly. Try again.")];
             }
         }
 

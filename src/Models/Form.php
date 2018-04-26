@@ -1,6 +1,7 @@
 <?php
 namespace Wheelform\Models;
 
+use Craft;
 use craft\db\ActiveRecord;
 use yii\validators\EmailValidator;
 use craft\helpers\StringHelper;
@@ -20,7 +21,7 @@ class Form extends ActiveRecord
     public function rules(): Array
     {
         return [
-            [['name', 'to_email'], 'required'],
+            [['name', 'to_email'], 'required', 'message' => Craft::t('wheelform', '{attribute} cannot be blank.')],
             ['name', 'string'],
             [['to_email'], 'validateToEmails'],
             [['active', 'send_email', 'recaptcha'], 'boolean'],
@@ -57,7 +58,7 @@ class Form extends ActiveRecord
     {
 
         if(empty($this->{$attribute})){
-            $this->addError($attribute, 'To Email field is Required.');
+            $this->addError($attribute, Craft::t('wheelform', 'To Email field is Required.'));
         }
 
         $emailList = StringHelper::split($this->{$attribute}, ',');
@@ -70,7 +71,7 @@ class Form extends ActiveRecord
             if($emailValidator->validate($to_email) === false)
             {
                 //exit on first error
-                $this->addError($attribute, 'One or many of the values are not valid emails.');
+                $this->addError($attribute, Craft::t('wheelform', 'One or many of the values are not valid emails.'));
                 break;
             }
         }

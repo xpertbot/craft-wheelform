@@ -1,6 +1,7 @@
 <?php
 namespace Wheelform\Models;
 
+use Craft;
 use craft\db\ActiveRecord;
 
 //Using Active Record because it extends Models.
@@ -15,8 +16,8 @@ class Message extends Activerecord
     public function rules(): Array
     {
         return [
-            ['form_id', 'required'],
-            ['form_id', 'integer'],
+            ['form_id', 'required', 'message' => Craft::t('wheelform', 'Form Id cannot be blank.')],
+            ['form_id', 'integer', 'message' => Craft::t('wheelform', 'Form Id must be a number.')],
             ['form_id', 'filter', 'filter' => 'intval'],
         ];
     }

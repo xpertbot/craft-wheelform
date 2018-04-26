@@ -1,6 +1,6 @@
 {% extends "_layouts/cp" %}
 
-{% set title = "Wheel Forms"|t('wheelform') %}
+{% set title = "Wheel Forms" %}
 
 {% block actionButton %}
     <div class="buttons">
@@ -16,20 +16,20 @@
                 <thead>
                     <tr>
                         <th scope="col" class="thin">
-                            Form ID
+                            {{ 'Form ID' | t('wheelform') }}
                         </th>
                         <th class="thin">
-                            Active
+                            {{ 'Active' | t('wheelform') }}
                         </th>
                         <th scope="col">
-                            Form Name
+                            {{ 'Form Name' | t('wheelform') }}
                         </th>
                         <th scope="col">
-                            Entries
+                            {{ 'Entries' | t('wheelform') }}
                         </th>
                         {% if currentUser.admin %}
                             <th scope="col" class="thin">
-                                Settings
+                                {{ 'Settings' | t('wheelform') }}
                             </th>
                         {% endif %}
                     </tr>
@@ -47,7 +47,7 @@
                             </td>
                             {% if currentUser.admin %}
                                 <td>
-                                    <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t }}"></a>
+                                    <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t('wheelform') }}"></a>
                                 </td>
                             {% endif %}
                         </tr>
@@ -55,7 +55,7 @@
                 </tbody>
             </table>
         {% else %}
-            <p>No forms</p>
+            <p>{{ 'No forms' | t('wheelform') }}</p>
         {% endif %}
     </div>
 {% endblock %}

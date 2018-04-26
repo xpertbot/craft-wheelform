@@ -1,9 +1,9 @@
 {% extends '_layouts/cp' %}
-{% set title = "Single Entry"|t %}
+{% set title = "Single Entry"|t('app') %}
 
 {% set crumbs = [
     { label: 'Wheel Form', url: url('wheelform') },
-    { label: 'Entries', url: url('wheelform/form/'~ form_id ~'/entries') }
+    { label: 'Entries' | t('wheelform'), url: url('wheelform/form/'~ form_id ~'/entries') }
 ] %}
 
 {% set content %}
@@ -11,8 +11,8 @@
     {% if values is not empty %}
     <table class="data fullwidth">
         <thead>
-            <th>Label</th>
-            <th>Value</th>
+            <th>{{ 'Label' | t('wheelform') }}</th>
+            <th>{{ 'Value' |t('wheelform') }}</th>
         </thead>
         {% for row in values %}
         <tr>
@@ -24,11 +24,11 @@
             </td>
         </tr>
         {% else %}
-            No values were saved!
+            {{ 'No values were saved!' | t('wheelform') }}
         {% endfor %}
     </table>
     {% else %}
-        No values were saved!
+        {{ 'No values were saved!' | t('wheelform') }}
     {% endif %}
 </div>
 {% endset %}

@@ -1,5 +1,5 @@
 {% extends '_layouts/cp' %}
-{% set title = "Entries"|t %}
+{% set title = "Entries"|t('app') %}
 
 {% do view.registerAssetBundle("Wheelform\\assets\\WheelformCpAsset") %}
 
@@ -17,7 +17,7 @@
             <thead>
                 <tr>
                     <th scope="col" data-attribute="View">
-                        View Message
+                        {{ 'View Message' | t('wheelform') }}
                     </th>
                     {% if headerFields is not empty %}
                         {% for h in headerFields %}
@@ -25,7 +25,7 @@
                         {% endfor %}
                     {% endif %}
                     <th scope="col" data-attribute="dateSubmitted" class="text-right">
-                        Date Submitted
+                        {{ 'Date Submitted' | t('wheelform') }}
                     </th>
                 </tr>
             </thead>
@@ -40,7 +40,7 @@
                                         <td>{{value.value}}</td>
                                     {% endif %}
                                 {% else %}
-                                    <td>No Value found</td>
+                                    <td>{{ 'No value found' |t ('wheelform') }}</td>
                                 {% endfor %}
                             {% endfor %}
                         {% endif %}
@@ -50,7 +50,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>No Entries</p>
+        <p> {{ 'No Entries' | t('wheelform')}}</p>
     {% endif %}
 </div>
 {% endset %}

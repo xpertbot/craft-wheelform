@@ -28,7 +28,7 @@
     <td>
         <div class="clearfix">
             {{ form.checkboxField({
-                label: 'Required',
+                label: 'Required' | t('wheelform'),
                 name: 'fields['~ index ~'][required]',
                 class: 'form-required',
                 value: 1,
@@ -37,7 +37,7 @@
         </div>
         <div class="clearfix">
             {{ form.checkboxField({
-                label: 'Entries View',
+                label: 'Entries View' | t('wheelform'),
                 name: 'fields['~ index ~'][index_view]',
                 class: 'index-view',
                 value: 1,
