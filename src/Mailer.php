@@ -22,7 +22,7 @@ class Mailer extends Component
         // Get the plugin settings and make sure they validate before doing anything
         $settings = Plugin::getInstance()->getSettings();
         if (!$settings->validate()) {
-            throw new InvalidConfigException('Form settings don’t validate.');
+            throw new InvalidConfigException(Craft::t('wheelform', "Plugin settings need to be configured."));
         }
 
         $mailer = Craft::$app->getMailer();
