@@ -6,7 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.6.0 - 2018-04-30
 ### Added
-- Added ability to mark messages are read.
+- Added ability to mark messages are unread.
+- Added new badge count of unread messages.
+
+### Fixed
+- Fixed some Date issues for entries view
+- Fixed class names inside Models
 
 ## 1.5.1 - 2018-04-30
 ### Fixed

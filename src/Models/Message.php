@@ -32,4 +32,9 @@ class Message extends ActiveRecord
     {
         return $this->hasMany(MessageValue::className(), ['message_id' => 'id']);
     }
+
+    public static function getUnreadCount()
+    {
+        return self::find()->where(['read' => 0, ])->count();
+    }
 }

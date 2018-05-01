@@ -4,6 +4,7 @@ namespace Wheelform;
 use Craft;
 use craft\base\Plugin as BasePlugin;
 use Wheelform\Models\Settings;
+use Wheelform\Models\Message;
 
 use yii\base\Event;
 use craft\web\UrlManager;
@@ -57,6 +58,7 @@ class Plugin extends BasePlugin
         $ret = [
             'label' => $this->getSettings()->cp_label ? $this->getSettings()->cp_label : $this->name,
             'url' => $this->id,
+            'badgeCount' => Message::getUnreadCount(),
         ];
 
         if (($iconPath = $this->cpNavIconPath()) !== null) {
