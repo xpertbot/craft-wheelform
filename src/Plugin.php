@@ -16,7 +16,7 @@ class Plugin extends BasePlugin
 
     public $controllerNamespace = "Wheelform\\Controllers";
 
-    public $schemaVersion = '1.1.0';
+    public $schemaVersion = '1.2.0';
 
     public function init()
     {

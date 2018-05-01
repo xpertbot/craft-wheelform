@@ -18,7 +18,8 @@ class Message extends Activerecord
         return [
             ['form_id', 'required', 'message' => Craft::t('wheelform', 'Form Id cannot be blank.')],
             ['form_id', 'integer', 'message' => Craft::t('wheelform', 'Form Id must be a number.')],
-            ['form_id', 'filter', 'filter' => 'intval'],
+            ['read', 'integer', 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
+            [['form_id', 'read'], 'filter', 'filter' => 'intval'],
         ];
     }
 

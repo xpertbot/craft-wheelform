@@ -74,6 +74,7 @@ class Install extends Migration
                 [
                     'id' => $this->primaryKey(),
                     'form_id' => $this->integer()->notNull(),
+                    'read' => $this->boolean()->notNull()->defaultValue(0),
                     'dateCreated' => $this->dateTime()->notNull(),
                     'dateUpdated' => $this->dateTime(),
                     'uid' => $this->uid(),

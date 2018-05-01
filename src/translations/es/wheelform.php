@@ -27,6 +27,7 @@ return [
     "Label displayed on Admin sidebar navigation." => "Etiqueta que se muestra en la barra lateral en Panel de control.",
     "Name cannot be blank." => "Nombre no puede estar vacío.",
     "Name of this Form in the CP." => "El nombre de esta Forma en el Panel de Control.",
+    "New" => "Nuevo",
     "New Form" => "Nueva Forma",
     "No Entries" => "No Entradas",
     "No form exists with the ID “{id}”" => "No existe forma con el Identificador “{id}”",
@@ -48,5 +49,6 @@ return [
     "The reCAPTCHA wasn't entered correctly. Try again." => "Recaptcha incorrecto. Intente de nuevo.",
     "To Email field is Required." => "E-mail remitente es requerido.",
     "Value" => "Valor",
+    "View" => "Ver",
     "View Message" => "Ver Mensaje",
 ];

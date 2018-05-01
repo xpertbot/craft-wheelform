@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.6.0 - 2018-04-30
+### Added
+- Added ability to mark messages are read.
+
 ## 1.5.1 - 2018-04-30
 ### Fixed
 - Fixed Mailer message error

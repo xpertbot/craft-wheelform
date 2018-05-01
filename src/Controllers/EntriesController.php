@@ -54,6 +54,9 @@ class EntriesController extends Controller
             throw new HttpException(404);
         }
 
+        $message->read = 1;
+        $message->save();
+
         $values = MessageValue::find()->where(['message_id' => $entry_id])->with('field')->all();
 
         return $this->renderTemplate('wheelform/_entry.twig', ['values' => $values, 'form_id' => $message->form->id]);

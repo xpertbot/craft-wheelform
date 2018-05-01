@@ -13,6 +13,19 @@
     content: "";
     clear: both;
 }
+td.view-message > a, td.view-message > span{
+    display: inline-block;
+    vertical-align: middle;
+}
+span.new-badge{
+    font-weight: 600;
+    color: #cf5744;
+    margin-left: 5px;
+}
+#entries-table thead th:last-child{
+    width: 140px;
+}
+
 .pagination{
     margin: .5rem 0rem;
     display: flex;
@@ -57,4 +70,8 @@ table.data tbody tr:nth-of-type(even){
 
 th.text-right, td.text-right{
     text-align: right !important;
+}
+
+th.text-center, td.text-center{
+    text-align: center !important;
 }

@@ -13,7 +13,7 @@
     <div class="clearfix">
         {{ pager | raw }}
     </div>
-        <table class="data fullwidth">
+        <table class="data fullwidth" id="entries-table">
             <thead>
                 <tr>
                     <th scope="col" data-attribute="View">
@@ -24,6 +24,7 @@
                             <th>{{h.getLabel()}}</th>
                         {% endfor %}
                     {% endif %}
+                    <th class="thin text-center">{{ "Status" | t('wheelform') }}</th>
                     <th scope="col" data-attribute="dateSubmitted" class="text-right">
                         {{ 'Date Submitted' | t('wheelform') }}
                     </th>
@@ -32,7 +33,11 @@
             <tbody>
                 {% for entry in entries %}
                     <tr data-id="{{ entry.id }}">
-                        <td><a href="{{ url('wheelform/entry/' ~ entry.id)}}">View</a></td>
+                        <td class="view-message">
+                            <a href="{{ url('wheelform/entry/' ~ entry.id)}}">
+                                {{ "View" | t('wheelform') }}
+                            </a>
+                        </td>
                         {% if headerFields is not empty %}
                             {% for field in headerFields %}
                                 {% for value in entry.value %}
@@ -44,6 +49,13 @@
                                 {% endfor %}
                             {% endfor %}
                         {% endif %}
+                        <td class="text-center">
+                            {% if entry.read == 0 %}
+                                <span class="new-badge">!</span>
+                            {% else %}
+                                <span>-</span>
+                            {% endif %}
+                        </td>
                         <td class="text-right">{{ entry.dateCreated | date('d-m-Y h:i a') }}</td>
                     </tr>
                 {% endfor %}
