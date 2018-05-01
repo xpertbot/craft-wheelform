@@ -56,7 +56,7 @@
                                 <span>-</span>
                             {% endif %}
                         </td>
-                        <td class="text-right">{{ entry.dateCreated | date('d-m-Y h:i a') }}</td>
+                        <td class="text-right">{{ entry.dateCreated | datetime('short') }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

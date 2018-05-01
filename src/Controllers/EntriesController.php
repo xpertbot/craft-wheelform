@@ -23,15 +23,16 @@ class EntriesController extends Controller
             throw new HttpException(404);
         }
 
-        $query = Message::find()->where(['form_id' => $form_id])->orderBy(['dateCreated' => SORT_DESC]);
+        $query = Message::find()->where(['form_id' => $form_id]);
         $count = $query->count();
         $pages = new Pagination(['totalCount' => $count]);
         $pages->setPageSize(50);
-        $entries = $query->offset($pages->offset)
+        $entries = $query
+            ->orderBy(['dateCreated' => SORT_DESC])
+            ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
-        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])
-            ->orderBy(['dateCreated' => SORT_DESC])->all();
+        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])->all();
 
         $pager = LinkPager::widget([
             'pagination' => $pages,

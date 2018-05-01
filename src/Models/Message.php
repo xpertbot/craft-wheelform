@@ -5,7 +5,7 @@ use Craft;
 use craft\db\ActiveRecord;
 
 //Using Active Record because it extends Models.
-class Message extends Activerecord
+class Message extends ActiveRecord
 {
 
     public static function tableName(): String

@@ -5,7 +5,7 @@ use Craft;
 use craft\db\ActiveRecord;
 
 //Using Active Record because it extends Models.
-class MessageValue extends Activerecord
+class MessageValue extends ActiveRecord
 {
     const TEXT_SCENARIO = "text";
     const NUMBER_SCENARIO = "number";
