@@ -35,67 +35,65 @@ class Install extends Migration
     {
         $tablesCreated = false;
 
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%wheelform_forms}}');
-        if ($tableSchema === null) {
-            $this->createTable(
-                '{{%wheelform_forms}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'site_id' => $this->integer()->notNull(),
-                    'name' => $this->string()->notNull(),
-                    'to_email' => $this->string()->notNull(),
-                    'active' => $this->tinyInteger()->notNull()->defaultValue(1),
-                    'send_email' => $this->tinyInteger()->notNull()->defaultValue(0),
-                    'recaptcha' => $this->tinyInteger()->notNull()->defaultValue(0),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime(),
-                    'uid' => $this->uid(),
-                ]
-            );
 
-            $this->createTable(
-                '{{%wheelform_form_fields}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'form_id' => $this->integer(),
-                    'name' => $this->string()->notNull(),
-                    'type' => $this->string()->notNull(),
-                    'required' => $this->tinyInteger()->notNull()->defaultValue(0),
-                    'index_view' => $this->tinyInteger()->notNull()->defaultValue(0),
-                    'active' => $this->tinyInteger()->notNull()->defaultValue(1),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime(),
-                    'uid' => $this->uid(),
-                ]
-            );
+        $this->createTable(
+            '{{%wheelform_forms}}',
+            [
+                'id' => $this->primaryKey(),
+                'site_id' => $this->integer()->notNull(),
+                'name' => $this->string()->notNull(),
+                'to_email' => $this->string()->notNull(),
+                'active' => $this->tinyInteger()->notNull()->defaultValue(1),
+                'send_email' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'recaptcha' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime(),
+                'uid' => $this->uid(),
+            ]
+        );
 
-            $this->createTable(
-                '{{%wheelform_messages}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'form_id' => $this->integer()->notNull(),
-                    'read' => $this->tinyInteger()->notNull()->defaultValue(0),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime(),
-                    'uid' => $this->uid(),
-                ]
-            );
+        $this->createTable(
+            '{{%wheelform_form_fields}}',
+            [
+                'id' => $this->primaryKey(),
+                'form_id' => $this->integer(),
+                'name' => $this->string()->notNull(),
+                'type' => $this->string()->notNull(),
+                'required' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'index_view' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'active' => $this->tinyInteger()->notNull()->defaultValue(1),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime(),
+                'uid' => $this->uid(),
+            ]
+        );
 
-            $this->createTable(
-                '{{%wheelform_message_values}}',
-                [
-                    'id' => $this->primaryKey(),
-                    'message_id' => $this->integer()->notNull(),
-                    'field_id' => $this->integer()->notNull(),
-                    'value' => $this->text(),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime(),
-                    'uid' => $this->uid(),
-                ]
-            );
+        $this->createTable(
+            '{{%wheelform_messages}}',
+            [
+                'id' => $this->primaryKey(),
+                'form_id' => $this->integer()->notNull(),
+                'read' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime(),
+                'uid' => $this->uid(),
+            ]
+        );
 
-            $tablesCreated = true;
-        }
+        $this->createTable(
+            '{{%wheelform_message_values}}',
+            [
+                'id' => $this->primaryKey(),
+                'message_id' => $this->integer()->notNull(),
+                'field_id' => $this->integer()->notNull(),
+                'value' => $this->text(),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime(),
+                'uid' => $this->uid(),
+            ]
+        );
+
+        $tablesCreated = true;
 
         return $tablesCreated;
     }

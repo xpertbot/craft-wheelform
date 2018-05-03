@@ -3,12 +3,7 @@ jQuery(document).ready(function($){
 
     if($form.length > 0){
         var index;
-        var dirtyFields = $('#changed_fields');
         setIndex();
-
-        $form.find('input').focus(function(){
-            setDirtyFields();
-        });
 
         $form.find('.form-field-add').click(function(ev){
             ev.preventDefault();
@@ -16,7 +11,6 @@ jQuery(document).ready(function($){
             $parent = $(this).parents('tr');
             setIndex();
             addRow($parent);
-            setDirtyFields();
         });
 
         $form.find('.form-field-rm').click(function(ev){
@@ -25,17 +19,11 @@ jQuery(document).ready(function($){
             if(confirm('Are you sure you want to delete the field?'))
             {
                 $(this).parents('tr').remove();
-                setDirtyFields();
             }
         });
 
         function setIndex(){
             index = ($form.find('tbody tr').length + 1);
-        }
-
-        function setDirtyFields()
-        {
-            dirtyFields.val('1');
         }
 
         function addRow(target){
@@ -131,7 +119,6 @@ jQuery(document).ready(function($){
                     if(confirm('Are you sure you want to delete the field?'))
                     {
                         $(this).parents('tr').remove();
-                        setDirtyFields();
                     }
 
                 })
@@ -145,7 +132,6 @@ jQuery(document).ready(function($){
                         $parent = $(this).parents('tr');
                         setIndex();
                         addRow($parent);
-                        setDirtyFields();
                     })
                 )
             });

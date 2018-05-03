@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.6.2 - 2018-05-03
+### Fixed
+- Fixed PostgreSQL form Field id on new forms error
+- Fixed bug on admin not allowing checkbox to update correctly.
+
+## 1.6.1 - 2018-05-02
+### Fixed
+- Fixed PostgreSQL installation column type errors
+
 ## 1.6.0 - 2018-04-30
 ### Added
 - Added ability to mark messages are unread.

@@ -16,7 +16,7 @@ class FormController extends Controller
 
     function actionIndex()
     {
-        $forms = Form::find()->all();
+        $forms = Form::find()->orderBy(['dateCreated' => SORT_ASC])->all();
 
         $settings = Plugin::getInstance()->getSettings();
         if (!$settings->validate()) {
@@ -90,58 +90,59 @@ class FormController extends Controller
             return null;
         }
 
-        //Check if fields are dirty
-        $changedFields = $request->getBodyParam('changed_fields', 0);
-        if($changedFields)
+        //Rebuild fields
+        $oldFields = FormField::find()->select('id')->where(['form_id' => $form->id])->all();
+        $newFields = $request->getBodyParam('fields', []);
+        //Get ID of fields that are missing on the oldFields compared to newfields
+        $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
+
+        if(! empty($newFields))
         {
-            //Rebuild fields
-            $oldFields = FormField::find()->select('id')->where(['form_id' => $form->id])->all();
-            $newFields = $request->getBodyParam('fields', []);
-            //Get ID of fields that are missing on the oldFields compared to newfields
-            $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
-
-            if(! empty($newFields))
+            foreach($newFields as $position => $field)
             {
-                foreach($newFields as $position => $field)
-                {
-                    if(intval($field['id']) > 0)
-                    {
-                        //update Field Values
-                        $formField = FormField::find()->where(['id' => $field['id']])->one();
-                        if(! empty($formField))
-                        {
-                            $formField->setAttributes($field);
+                if(empty($field['name'])) continue;
 
-                            if($formField->validate()){
-                                $formField->save();
-                            }
-                            else
-                            {
-                                //do nothing for now
-                            }
-                        }
-                    }
-                    else
+                if(intval($field['id']) > 0)
+                {
+                    //update Field Values
+                    $formField = FormField::find()->where(['id' => $field['id']])->one();
+                    if(! empty($formField))
                     {
-                        // new field
-                        $formField = new FormField($field);
-                        if($formField->validate())
+                        $formField->setAttributes($field);
+
+                        if($formField->validate()){
+                            $formField->save();
+                        }
+                        else
                         {
-                            $form->link('fields', $formField);
+                            //do nothing for now
                         }
                     }
                 }
-            }
+                else
+                {
+                    //unassign id to not autopopulate it on model; PostgreSQL doesn't like set ids
+                    unset($field['id']);
 
-            if(! empty($toDeleteIds))
-            {
-                $db = Craft::$app->getDb();
-                $db->createCommand()->update(
-                    FormField::tableName(),
-                    ['active' => 0],
-                    "id IN (".implode(', ', $toDeleteIds).")"
-                )->execute();
+                    // new field
+                    $formField = new FormField($field);
+
+                    if($formField->save())
+                    {
+                        $form->link('fields', $formField);
+                    }
+                }
             }
+        }
+
+        if(! empty($toDeleteIds))
+        {
+            $db = Craft::$app->getDb();
+            $db->createCommand()->update(
+                FormField::tableName(),
+                ['active' => 0],
+                "id IN (".implode(', ', $toDeleteIds).")"
+            )->execute();
         }
 
         Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));

@@ -26,6 +26,7 @@ class FormField extends ActiveRecord
     public function rules()
     {
         return [
+            ['id', 'unique', 'message' => Craft::t('wheelform', '{attribute}:{value} already exists!')],
             ['name', 'required', 'message' => Craft::t('wheelform', 'Name cannot be blank.')],
             ['name', 'string'],
             ['form_id', 'integer', 'message' => Craft::t('wheelform', 'Form Id must be a number.')],

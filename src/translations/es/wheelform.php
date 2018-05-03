@@ -8,6 +8,7 @@ return [
     '{attribute} must be a number.' => '{attribute} debe ser un número.',
     '{attribute} is not a valid email address.' => '{attribute} no es una dirección de correo válida.',
     '{attribute} must be valid characters.' => '{attribute} debe ser una cadena de caracteres validos.',
+    "{attribute}:{value} already exists!"=> '{attribute}:{value} ya existe',
     "Active" => "Activo",
     "CP Nav Label" => "Etiqueta de navegación en Panel de Control",
     "Couldn’t save form." => "La forma no fue guardada.",
