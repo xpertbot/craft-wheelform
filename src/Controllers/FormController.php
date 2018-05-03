@@ -125,6 +125,8 @@ class FormController extends Controller
                     {
                         // new field
                         $formField = new FormField($field);
+                        // Unset default ID value set in template (= 0) #15
+                        unset($formField->id);
                         if($formField->validate())
                         {
                             $form->link('fields', $formField);
