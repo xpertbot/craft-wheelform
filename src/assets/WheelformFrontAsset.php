@@ -1,5 +1,5 @@
 <?php
-namespace Wheelform\assets;
+namespace wheelform\assets;
 
 use craft\web\AssetBundle;
 use yii\web\JqueryAsset;
@@ -8,7 +8,7 @@ class WheelformFrontAsset extends AssetBundle
 {
     public function init()
     {
-        $this->sourcePath = "@Wheelform/assets";
+        $this->sourcePath = "@wheelform/assets";
 
         $this->depends = [
             JqueryAsset::class,

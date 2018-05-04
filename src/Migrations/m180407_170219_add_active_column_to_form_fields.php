@@ -1,6 +1,6 @@
 <?php
 
-namespace Wheelform\migrations;
+namespace wheelform\migrations;
 
 use Craft;
 use craft\db\Migration;

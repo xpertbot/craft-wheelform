@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-          "Wheelform\\": "src/"
+          "wheelform\\": "src/"
         }
     },
     "extra": {

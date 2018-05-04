@@ -1,5 +1,5 @@
 <?php
-namespace Wheelform;
+namespace wheelform;
 
 use Craft;
 use craft\helpers\StringHelper;
@@ -9,7 +9,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
 use craft\helpers\FileHelper;
 
-use Wheelform\Models\Message as MessageModel;
+use wheelform\models\Message as MessageModel;
 
 class Mailer extends Component
 {

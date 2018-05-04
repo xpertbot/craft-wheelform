@@ -1,5 +1,5 @@
 <?php
-namespace Wheelform\Controllers;
+namespace wheelform\controllers;
 
 use Craft;
 use craft\web\Controller;
@@ -7,9 +7,9 @@ use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
 
-use Wheelform\Models\FormField;
-use Wheelform\Models\Form;
-use Wheelform\Plugin;
+use wheelform\models\FormField;
+use wheelform\models\Form;
+use wheelform\Plugin;
 
 class FormController extends Controller
 {

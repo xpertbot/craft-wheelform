@@ -1,5 +1,5 @@
 <?php
-namespace Wheelform\Models;
+namespace wheelform\models;
 
 use Craft;
 use craft\base\Model;

@@ -1,5 +1,5 @@
 <?php
-namespace Wheelform\Controllers;
+namespace wheelform\controllers;
 
 use Craft;
 use craft\web\Controller;
@@ -7,11 +7,11 @@ use craft\web\UploadedFile;
 use yii\web\Response;
 use yii\web\HttpException;
 
-use Wheelform\Plugin;
-use Wheelform\Models\Form;
-use Wheelform\Models\FormField;
-use Wheelform\Models\Message;
-use Wheelform\Models\MessageValue;
+use wheelform\Plugin;
+use wheelform\models\Form;
+use wheelform\models\FormField;
+use wheelform\models\Message;
+use wheelform\models\MessageValue;
 
 class MessageController extends Controller
 {

@@ -1,12 +1,12 @@
 <?php
-namespace Wheelform\Controllers;
+namespace wheelform\controllers;
 
 use Craft;
 use craft\web\Controller;
-use Wheelform\Models\Form;
-use Wheelform\Models\FormField;
-use Wheelform\Models\Message;
-use Wheelform\Models\MessageValue;
+use wheelform\models\Form;
+use wheelform\models\FormField;
+use wheelform\models\Message;
+use wheelform\models\MessageValue;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\data\Pagination;

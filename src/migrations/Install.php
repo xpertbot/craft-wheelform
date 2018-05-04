@@ -1,5 +1,5 @@
 <?php
- namespace Wheelform\Migrations;
+ namespace wheelform\migrations;
 
 use Craft;
 use craft\db\Migration;

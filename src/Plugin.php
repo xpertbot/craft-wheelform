@@ -1,10 +1,10 @@
 <?php
-namespace Wheelform;
+namespace wheelform;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
-use Wheelform\Models\Settings;
-use Wheelform\Models\Message;
+use wheelform\models\Settings;
+use wheelform\models\Message;
 
 use yii\base\Event;
 use craft\web\UrlManager;
@@ -15,7 +15,7 @@ class Plugin extends BasePlugin
 
     public $hasCpSettings = true;
 
-    public $controllerNamespace = "Wheelform\\Controllers";
+    public $controllerNamespace = "wheelform\\controllers";
 
     public $schemaVersion = '1.2.0';
 
