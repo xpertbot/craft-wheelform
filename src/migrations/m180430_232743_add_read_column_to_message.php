@@ -15,7 +15,7 @@ class m180430_232743_add_read_column_to_message extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%wheelform_messages}}', 'read', $this->boolean()->notNull()->defaultValue(0));
+        $this->addColumn('{{%wheelform_messages}}', 'read', $this->tinyInteger()->notNull()->defaultValue(0));
     }
 
     /**

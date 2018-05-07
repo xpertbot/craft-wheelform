@@ -15,7 +15,7 @@ class m180407_040301_add_index_view_column_to_form_fields_table extends Migratio
      */
     public function safeUp()
     {
-        $this->addColumn('{{%wheelform_form_fields}}', 'index_view', $this->boolean()->notNull()->defaultValue(0));
+        $this->addColumn('{{%wheelform_form_fields}}', 'index_view', $this->tinyInteger()->notNull()->defaultValue(0));
     }
 
     /**

@@ -16,7 +16,7 @@ class m180407_170219_add_active_column_to_form_fields extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%wheelform_form_fields}}', 'active', $this->boolean()->notNull()->defaultValue(1));
+        $this->addColumn('{{%wheelform_form_fields}}', 'active', $this->tinyInteger()->notNull()->defaultValue(1));
         $this->createIndex(null, '{{%wheelform_form_fields}}', ['active']);
     }
 
