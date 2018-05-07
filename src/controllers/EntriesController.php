@@ -49,7 +49,7 @@ class EntriesController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $entry_id = intval($params['id']);
-        $message = Message::find($entry_id)->with('form', 'value')->one();
+        $message = Message::find()->where(['id' => $entry_id])->with('form', 'value')->one();
 
         if (! $message) {
             throw new HttpException(404);

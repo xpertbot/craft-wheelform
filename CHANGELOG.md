@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.6.5 - 2018-05-06
+### Fixed
+- Fixed bug not finding correct Message Entry
+
 ## 1.6.4 - 2018-05-06
 ### Fixed
 - Fixed migration column type
-
 
 ## 1.6.3 - 2018-05-06
 ### Added
