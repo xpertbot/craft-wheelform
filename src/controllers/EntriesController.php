@@ -49,7 +49,7 @@ class EntriesController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $entry_id = intval($params['id']);
-        $message = Message::findOne($entry_id);
+        $message = Message::find($entry_id)->with('form', 'value')->one();
 
         if (! $message) {
             throw new HttpException(404);
@@ -58,8 +58,37 @@ class EntriesController extends Controller
         $message->read = 1;
         $message->save();
 
-        $values = MessageValue::find()->where(['message_id' => $entry_id])->with('field')->all();
+        return $this->renderTemplate('wheelform/_entry.twig', ['entry' => $message, 'form_id' => $message->form->id]);
+    }
 
-        return $this->renderTemplate('wheelform/_entry.twig', ['values' => $values, 'form_id' => $message->form->id]);
+    public function actionDeleteEntry()
+    {
+        $this->requirePostRequest();
+
+        $entryId = Craft::$app->getRequest()->getRequiredBodyParam('entry_id');
+        $entry = Message::findOne($entryId);
+
+        if (! $entry->delete($entry)) {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
+                return $this->asJson(['success' => false]);
+            }
+
+            Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t delete entry.'));
+
+            // Send the entry back to the template
+            Craft::$app->getUrlManager()->setRouteParams([
+                'entry' => $entry
+            ]);
+
+            return null;
+        }
+
+        if (Craft::$app->getRequest()->getAcceptsJson()) {
+            return $this->asJson(['success' => true]);
+        }
+
+        Craft::$app->getSession()->setNotice(Craft::t('app', 'Entry deleted.'));
+
+        return $this->redirectToPostedUrl($entry);
     }
 }
