@@ -61,6 +61,41 @@ class EntriesController extends Controller
         return $this->renderTemplate('wheelform/_entry.twig', ['entry' => $message, 'form_id' => $message->form->id]);
     }
 
+    public function actionUpdateEntry()
+    {
+        $this->requirePostRequest();
+
+        $entryId = Craft::$app->getRequest()->getRequiredBodyParam('entry_id');
+        $readStatus = Craft::$app->getRequest()->getRequiredBodyParam('read_status');
+        $entry = Message::findOne($entryId);
+
+        $entry->read = intval($readStatus);
+
+        if (! $entry->update()) {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
+                return $this->asJson(['success' => false]);
+            }
+
+            Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t udpate entry.'));
+
+            // Send the entry back to the template
+            Craft::$app->getUrlManager()->setRouteParams([
+                'entry' => $entry
+            ]);
+
+            return null;
+        }
+
+        if (Craft::$app->getRequest()->getAcceptsJson()) {
+            return $this->asJson(['success' => true]);
+        }
+
+        Craft::$app->getSession()->setNotice(Craft::t('app', 'Entry updated.'));
+
+        return $this->redirectToPostedUrl($entry);
+
+    }
+
     public function actionDeleteEntry()
     {
         $this->requirePostRequest();
@@ -68,7 +103,7 @@ class EntriesController extends Controller
         $entryId = Craft::$app->getRequest()->getRequiredBodyParam('entry_id');
         $entry = Message::findOne($entryId);
 
-        if (! $entry->delete($entry)) {
+        if (! $entry->delete()) {
             if (Craft::$app->getRequest()->getAcceptsJson()) {
                 return $this->asJson(['success' => false]);
             }

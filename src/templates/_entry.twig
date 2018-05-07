@@ -17,14 +17,14 @@
 <div class="btngroup">
     <div class="btn menubtn" data-icon="settings" tabindex="0" role="combobox"></div>
     <div class="menu">
-        {# <ul>
+        <ul>
             <li>
                     <a class="formsubmit" data-redirect="{{ url('wheelform/form/' ~ form_id ~ '/entries')|hash }}">
                     {{ "Mark Unread"|t('wheelform') }}
                 </a>
             </li>
         </ul>
-        <hr> #}
+        <hr>
         <ul>
             <li>
                 <a class="formsubmit error"
@@ -41,7 +41,7 @@
 
 {% block content %}
 
-<input type="hidden" name="action" value="wheelform/entry/change-status">
+<input type="hidden" name="action" value="wheelform/entries/update-entry">
 <input type="hidden" name="read_status" value="0">
 <input type="hidden" name="entry_id" value="{{ entry.id }}">
 
