@@ -3,6 +3,7 @@ namespace wheelform\controllers;
 
 use Craft;
 use craft\web\Controller;
+use wheelform\events\FormEvent;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
@@ -80,6 +81,11 @@ class FormController extends Controller
         $form->recaptcha = $request->getBodyParam('recaptcha', 0);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
+        // send event before the form is saved
+        $this->trigger(FormEvent::EVENT_BEFORE_FORM_SAVE, new FormEvent([
+            'form' => $form
+        ]));
+
         $result = $form->save();
 
         Craft::$app->getUrlManager()->setRouteParams([
@@ -147,6 +153,12 @@ class FormController extends Controller
         }
 
         Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
+
+        // send event after the form is saved
+        $this->trigger(FormEvent::EVENT_AFTER_FORM_SAVE, new FormEvent([
+            'form' => $form
+        ]));
+
         return $this->redirectToPostedUrl();
     }
 

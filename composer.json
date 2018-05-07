@@ -1,5 +1,5 @@
 {
-    "name": "xpertbot/craft-wheelform",
+    "name": "takuma/craft-wheelform",
     "description": "Craft CMS 3 Form administrator with Database integration",
     "type": "craft-plugin",
     "version": "1.6.2",
