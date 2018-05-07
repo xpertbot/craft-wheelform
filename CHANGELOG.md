@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.6.3 - 2018-05-06
+### Added
+- Added Ability to mark messages as unread
+- Added ability to delete message entries
+
+### Fixed
+- Fixed namespace to be all lowercase to better use Yii module routes.
+
 ## 1.6.2 - 2018-05-03
 ### Fixed
 - Fixed PostgreSQL form Field id on new forms error
