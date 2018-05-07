@@ -4,6 +4,7 @@ namespace wheelform;
 use Craft;
 use craft\helpers\StringHelper;
 use craft\mail\Message;
+use wheelform\events\FormEvent;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
@@ -24,6 +25,11 @@ class Mailer extends Component
         if (!$settings->validate()) {
             throw new InvalidConfigException(Craft::t('wheelform', "Plugin settings need to be configured."));
         }
+
+        // send event before the form is sent
+        $this->trigger(FormEvent::EVENT_BEFORE_FORM_SENT, new FormEvent([
+            'form' => $model->getForm()
+        ]));
 
         $mailer = Craft::$app->getMailer();
 
@@ -80,6 +86,11 @@ class Mailer extends Component
             $message->setTo($to_email);
             $mailer->send($message);
         }
+
+        // send event before the form is sent
+        $this->trigger(FormEvent::EVENT_AFTER_FORM_SENT, new FormEvent([
+            'form' => $model->getForm()
+        ]));
 
         return true;
     }
