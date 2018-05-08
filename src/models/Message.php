@@ -25,16 +25,21 @@ class Message extends ActiveRecord
 
     public function getForm()
     {
-        return $this->hasOne(Form::classname(), ['id' => 'form_id']);
+        return $this->hasOne(Form::class, ['id' => 'form_id']);
     }
 
     public function getValue()
     {
-        return $this->hasMany(MessageValue::className(), ['message_id' => 'id']);
+        return $this->hasMany(MessageValue::class, ['message_id' => 'id']);
     }
 
     public static function getUnreadCount()
     {
         return self::find()->where(['read' => 0, ])->count();
+    }
+
+    public function getValueById(int $valueId)
+    {
+        return $this->getValue()->where(['field_id' => $valueId])->one();
     }
 }

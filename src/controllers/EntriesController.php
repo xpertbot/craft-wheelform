@@ -27,16 +27,21 @@ class EntriesController extends Controller
         $count = $query->count();
         $pages = new Pagination(['totalCount' => $count]);
         $pages->setPageSize(50);
+
         $entries = $query
             ->orderBy(['dateCreated' => SORT_DESC])
+            ->with('value')
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
-        $headerFields = FormField::find()->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])->all();
 
         $pager = LinkPager::widget([
             'pagination' => $pages,
         ]);
+
+        $headerFields = FormField::find()
+            ->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])
+            ->all();
 
         return $this->renderTemplate('wheelform/_entries.twig', [
             'entries' => $entries,
@@ -58,7 +63,10 @@ class EntriesController extends Controller
         $message->read = 1;
         $message->save();
 
-        return $this->renderTemplate('wheelform/_entry.twig', ['entry' => $message, 'form_id' => $message->form->id]);
+        return $this->renderTemplate('wheelform/_entry.twig', [
+            'entry' => $message,
+            'form_id' => $message->form->id
+        ]);
     }
 
     public function actionUpdateEntry()

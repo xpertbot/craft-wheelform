@@ -40,13 +40,10 @@
                         </td>
                         {% if headerFields is not empty %}
                             {% for field in headerFields %}
-                                {% for value in entry.value %}
-                                    {% if value.field_id == field.id %}
-                                        <td>{{value.value}}</td>
-                                    {% endif %}
-                                {% else %}
-                                    <td>{{ 'No value found' |t ('wheelform') }}</td>
-                                {% endfor %}
+                                <td>
+                                {% set messageValue = entry.getValueById(field.id) %}
+                                {{ messageValue is not empty ? messageValue.value : '' }}
+                                </td>
                             {% endfor %}
                         {% endif %}
                         <td class="text-center">
