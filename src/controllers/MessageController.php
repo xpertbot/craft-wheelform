@@ -4,6 +4,7 @@ namespace wheelform\controllers;
 use Craft;
 use craft\web\Controller;
 use craft\web\UploadedFile;
+use wheelform\events\FormEvent;
 use yii\web\Response;
 use yii\web\HttpException;
 
@@ -15,6 +16,8 @@ use wheelform\models\MessageValue;
 
 class MessageController extends Controller
 {
+    const EVENT_BEFORE_FORM_SENT = 'beforeWheelFormSent';
+    const EVENT_AFTER_FORM_SENT = 'afterWheelFormSent';
 
     public $allowAnonymous = true;
 
@@ -32,7 +35,14 @@ class MessageController extends Controller
             return null;
         }
 
+        $formEvent = new FormEvent();
+        $formEvent->isNew = true;
+
         $formModel = Form::findOne($form_id);
+        $formEvent->form = $formModel;
+
+        // send event before the form is saved
+        $this->trigger(self::EVENT_BEFORE_FORM_SENT, $formEvent);
 
         if(empty($formModel))
         {
@@ -145,6 +155,10 @@ class MessageController extends Controller
         if ($request->isAjax) {
             return $this->asJson(['success' => true, 'message' => $settings->success_message]);
         }
+
+        // trigger after form sent event
+        $formEvent->form = $formModel;
+        $this->trigger(self::EVENT_AFTER_FORM_SENT, $formEvent);
 
         Craft::$app->getSession()->setNotice($settings->success_message);
         return $this->redirectToPostedUrl($message);

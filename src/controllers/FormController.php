@@ -1,9 +1,11 @@
 <?php
+
 namespace wheelform\controllers;
 
 use Craft;
 use craft\web\Controller;
 use wheelform\events\FormEvent;
+use yii\base\Event;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\behaviors\SessionBehavior;
@@ -14,6 +16,8 @@ use wheelform\Plugin;
 
 class FormController extends Controller
 {
+    const EVENT_BEFORE_FORM_CP_SAVE = 'beforeWheelFormCPSave';
+    const EVENT_AFTER_FORM_CP_SAVE = 'afterWheelFormCPSave';
 
     function actionIndex()
     {
@@ -33,19 +37,14 @@ class FormController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
 
-        if (! empty($params['id']))
-        {
+        if (!empty($params['id'])) {
             $form = Form::findOne(intval($params['id']));
-            if (! $form) {
+            if (!$form) {
                 throw new HttpException(404);
             }
-        }
-        elseif(! empty($params['form']))
-        {
+        } elseif (!empty($params['form'])) {
             $form = $params['form'];
-        }
-        else
-        {
+        } else {
             $form = new Form();
         }
 
@@ -62,15 +61,12 @@ class FormController extends Controller
         $request = Craft::$app->getRequest();
 
         $form_id = $request->getBodyParam('form_id');
-        if ($form_id)
-        {
+        if ($form_id) {
             $form = Form::findOne(intval($form_id));
-            if (! $form) {
-                throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form_id)));
+            if (!$form) {
+                throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', ['id' => $form_id]));
             }
-        }
-        else
-        {
+        } else {
             $form = new Form();
         }
 
@@ -81,17 +77,19 @@ class FormController extends Controller
         $form->recaptcha = $request->getBodyParam('recaptcha', 0);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
+        $formEvent = new FormEvent();
+        $formEvent->form = $form;
+        $formEvent->isNew = true;
+
         // send event before the form is saved
-        $this->trigger(FormEvent::EVENT_BEFORE_FORM_SAVE, new FormEvent([
-            'form' => $form
-        ]));
+        $this->trigger(self::EVENT_BEFORE_FORM_CP_SAVE, $formEvent);
 
         $result = $form->save();
 
         Craft::$app->getUrlManager()->setRouteParams([
             'form' => $form
         ]);
-        if(! $result){
+        if (!$result) {
             Craft::$app->getSession()->setError(Craft::t('wheelform', 'Couldn’t save form.'));
             return null;
         }
@@ -102,48 +100,40 @@ class FormController extends Controller
         //Get ID of fields that are missing on the oldFields compared to newfields
         $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
 
-        if(! empty($newFields))
-        {
-            foreach($newFields as $position => $field)
-            {
+        if (!empty($newFields)) {
+            foreach ($newFields as $position => $field) {
                 //If field name is empty skip it, but don't delete it, only delete it if delete icon is clicked.
-                if(empty($field['name'])) continue;
+                if (empty($field['name'])) {
+                    continue;
+                }
 
-                if(intval($field['id']) > 0)
-                {
+                if (intval($field['id']) > 0) {
                     //update Field Values
                     $formField = FormField::find()->where(['id' => $field['id']])->one();
-                    if(! empty($formField))
-                    {
+                    if (!empty($formField)) {
                         $formField->setAttributes($field);
 
-                        if($formField->validate()){
+                        if ($formField->validate()) {
                             $formField->save();
-                        }
-                        else
-                        {
+                        } else {
                             //do nothing for now
                         }
                     }
-                }
-                else
-                {
+                } else {
                     //unassign id to not autopopulate it on model; PostgreSQL doesn't like set ids
                     unset($field['id']);
 
                     // new field
                     $formField = new FormField($field);
 
-                    if($formField->save())
-                    {
+                    if ($formField->save()) {
                         $form->link('fields', $formField);
                     }
                 }
             }
         }
 
-        if(! empty($toDeleteIds))
-        {
+        if (!empty($toDeleteIds)) {
             $db = Craft::$app->getDb();
             $db->createCommand()->update(
                 FormField::tableName(),
@@ -155,9 +145,8 @@ class FormController extends Controller
         Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
 
         // send event after the form is saved
-        $this->trigger(FormEvent::EVENT_AFTER_FORM_SAVE, new FormEvent([
-            'form' => $form
-        ]));
+        $formEvent->form = $form;
+        $this->trigger(self::EVENT_AFTER_FORM_CP_SAVE, $formEvent);
 
         return $this->redirectToPostedUrl();
     }
@@ -166,15 +155,12 @@ class FormController extends Controller
     {
         $toDelete = [];
 
-        if(! empty($oldFields))
-        {
-            foreach($oldFields as $field)
-            {
+        if (!empty($oldFields)) {
+            foreach ($oldFields as $field) {
                 $index = array_search($field->id, array_column($newFields, 'id'));
 
                 // $index is missing add field->id to toDelete array
-                if($index === false)
-                {
+                if ($index === false) {
                     $toDelete[] = strval($field->id);
                 }
             }

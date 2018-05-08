@@ -6,6 +6,7 @@ use craft\helpers\StringHelper;
 use craft\mail\Message;
 use wheelform\events\FormEvent;
 use yii\base\Component;
+use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
 use craft\helpers\FileHelper;
@@ -14,9 +15,8 @@ use wheelform\models\Message as MessageModel;
 
 class Mailer extends Component
 {
-    // const EVENT_BEFORE_SEND = 'beforeSend';
-
-    // const EVENT_AFTER_SEND = 'afterSend';
+    const EVENT_BEFORE_FORM_SENT = 'beforeWheelFormSent';
+    const EVENT_AFTER_FORM_SENT = 'afterWheelFormSent';
 
     public function send(String $to_email, String $form_name, MessageModel $model): bool
     {
@@ -26,10 +26,12 @@ class Mailer extends Component
             throw new InvalidConfigException(Craft::t('wheelform', "Plugin settings need to be configured."));
         }
 
+        $formEvent = new FormEvent();
+        $formEvent->form = $model->getForm();
+        $formEvent->isNew = true;
+
         // send event before the form is sent
-        $this->trigger(FormEvent::EVENT_BEFORE_FORM_SENT, new FormEvent([
-            'form' => $model->getForm()
-        ]));
+        Event::trigger(self::class, self::EVENT_BEFORE_FORM_SENT, $formEvent);
 
         $mailer = Craft::$app->getMailer();
 
@@ -88,9 +90,7 @@ class Mailer extends Component
         }
 
         // send event before the form is sent
-        $this->trigger(FormEvent::EVENT_AFTER_FORM_SENT, new FormEvent([
-            'form' => $model->getForm()
-        ]));
+        Event::trigger(self::class, self::EVENT_BEFORE_FORM_SENT, $formEvent);
 
         return true;
     }

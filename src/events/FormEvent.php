@@ -3,6 +3,7 @@
 namespace wheelform\events;
 
 use wheelform\models\Form;
+use craft\events\CancelableEvent;
 
 /**
  * Form event class.
@@ -13,10 +14,6 @@ class FormEvent extends CancelableEvent
 {
     // Properties
     // =========================================================================
-    const EVENT_BEFORE_FORM_SAVE = 'beforeWheelFormSave';
-    const EVENT_AFTER_FORM_SAVE = 'afterWheelFormSave';
-    const EVENT_BEFORE_FORM_SENT = 'beforeWheelFormSent';
-    const EVENT_AFTER_FORM_SENT = 'afterWheelFormSent';
 
     /**
      * @var Form|null The form model associated with the event.
