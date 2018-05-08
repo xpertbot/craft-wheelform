@@ -29,7 +29,7 @@ class MessageController extends Controller
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
 
-        $form_id = intval($request->getBodyParam('form_id', "0"));
+        $form_id = (int) $request->getBodyParam('form_id', "0");
         if($form_id <= 0){
             throw new HttpException(404);
             return null;
