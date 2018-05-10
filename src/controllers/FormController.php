@@ -25,6 +25,7 @@ class FormController extends Controller
 
         return $this->renderTemplate('wheelform/_index.twig', [
             'wheelforms' => $forms,
+            'title' => $settings->cp_label,
         ]);
     }
 

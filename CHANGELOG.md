@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.6.7 - 2018-05-10
+### Fixed
+- Fixed optional checkboxes not displaying correctly.
+- Fixed Control Panel as the title of the Forms Index Page.
+
 ## 1.6.6 - 2018-05-06
 ### Fixed
 - Fixed message list view columns when a value is empty.

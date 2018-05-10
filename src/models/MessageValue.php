@@ -72,7 +72,7 @@ class MessageValue extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        if($this->field->type == self::CHECKBOX_SCENARIO)
+        if($this->field->type == self::CHECKBOX_SCENARIO && ! empty($this->value))
         {
             $this->value = implode(', ', $this->value);
         }
