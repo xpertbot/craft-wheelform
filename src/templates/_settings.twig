@@ -45,7 +45,7 @@
     label: "Recaptcha Private Key"|t('wheelform'),
     id: "recaptcha_secret",
     name: "recaptcha_secret",
-    value: settings.recaptcha_public | default(''),
+    value: settings.recaptcha_secret | default(''),
     errors: settings.getErrors('recaptcha_secret'),
     required: false,
 }) }}
