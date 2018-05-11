@@ -46,6 +46,6 @@
     id: "recaptcha_secret",
     name: "recaptcha_secret",
     value: settings.recaptcha_public | default(''),
-    errors: settings.getErrors('recaptcha_public'),
+    errors: settings.getErrors('recaptcha_secret'),
     required: false,
 }) }}
