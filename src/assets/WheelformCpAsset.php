@@ -16,6 +16,7 @@ class WheelformCpAsset extends AssetBundle
 
         $this->js = [
             'js/cp-edit-form.js',
+            'js/wheelform-bundle.js',
         ];
 
         $this->css = [
