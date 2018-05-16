@@ -93,3 +93,8 @@
     <div id="formapp"></div>
 
 {% endblock %}
+{% js at head %}
+    window.Wheelform = {
+        form_id: {{ form.id }}
+    }
+{% endjs %}

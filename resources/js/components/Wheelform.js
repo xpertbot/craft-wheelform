@@ -1,36 +1,15 @@
 import React from 'react';
 import Fields from './Fields';
 
-class Wheelform extends React.Component{
+const Wheelform = (props) => {
 
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            fields: [
-                {
-                    options: {
-                        'type': 'text',
-                    }
-                },
-                {
-                    options: {
-                        'type': 'text',
-                    }
-                }
-            ]
-        }
-    }
-
-    render(){
-        return (
-        <div>
-            <Fields
-                fields={this.state.fields}
-            />
-        </div>
-        );
-    }
+  return (
+    <div>
+      <Fields
+      />
+    </div>
+  );
 }
+
 
 export default Wheelform;

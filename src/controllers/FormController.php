@@ -151,6 +151,27 @@ class FormController extends Controller
         return $this->redirectToPostedUrl();
     }
 
+    // currently this field only accepts json fields
+    public function actionGetFields()
+    {
+        $req =  Craft::$app->getRequest();
+
+        if(! $req->getAcceptsJson())
+        {
+            throw new HttpException(404);
+        }
+
+        $formId = $req->getParam('form_id');
+        if(! is_numeric($formId) || empty($formId))
+        {
+            throw new HttpException(404);
+        }
+
+        $fields = FormField::find()->where(['form_id' => $formId])->all();
+
+        return $this->asJson($fields);
+    }
+
     protected function getToDeleteIds(array $oldFields, array $newFields): array
     {
         $toDelete = [];
