@@ -1,0 +1,116 @@
+.form-field-add, .form-field-rm {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.form-field-add:hover {
+  color: #00b007 !important;
+}
+
+.form-field-rm:hover {
+  color: #da5a47 !important;
+}
+
+.clearfix:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+td.view-message > {
+  a, span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+span.new-badge {
+  font-weight: 600;
+  color: #cf5744;
+  margin-left: 5px;
+}
+
+#entries-table thead th:last-child {
+  width: 145px;
+}
+
+.pagination {
+  margin: .5rem 0rem;
+  display: flex;
+  padding-left: 0px;
+  list-style: none;
+  border-radius: .25rem;
+  li {
+    &.active a {
+      background-color: #0d78f2;
+      color: #fff;
+    }
+    a, span {
+      position: relative;
+      display: block;
+      padding: .5rem .75rem;
+      margin-left: 1px;
+      line-height: 1.25;
+      background-color: #fff;
+      border: 1px solid #dee2e6;
+    }
+    &:first-child {
+      span, a {
+        margin-left: 0px;
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+      }
+    }
+    &:last-child {
+      span, a {
+        border-top-right-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+      }
+    }
+  }
+}
+
+table.data {
+  th, td {
+    padding: 5px 10px;
+  }
+  tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+th.text-right, td.text-right {
+  text-align: right !important;
+}
+
+th.text-center, td.text-center {
+  text-align: center !important;
+}
+
+#formapp {
+    #field-container{
+        width: 20rem;
+        @media screen and (min-width: 480px){
+            width: 28rem;
+        }
+        @media screen and (min-width: 767px){
+            width: 40rem;
+        }
+        @media screen and (min-width: 959px){
+            width: 50rem;
+        }
+    }
+    .wheelform-field {
+        border: 1px dashed gray;
+        padding: 0.5rem 1rem;
+        margin-bottom: 0.5rem;
+        background-color: #fff;
+        cursor: move;
+        color: #333;
+        &:last-child{
+            border-bottom: none;
+        }
+        h4{
+            color: #333;
+        }
+    }
+}

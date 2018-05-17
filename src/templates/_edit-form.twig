@@ -63,7 +63,7 @@
         on: (form.recaptcha is null ? false : form.recaptcha),
     }) }}
 
-    <table class="data fullwidth">
+    {# <table class="data fullwidth">
         <thead>
             <tr>
                 <th class="required">Field Name</th>
@@ -88,13 +88,18 @@
                 {% endembed %}
             {% endfor %}
         </tbody>
-    </table>
+    </table> #}
 
-    <div id="formapp"></div>
+    {% if form.id is not defined %}
+        <p>Save form to add Fields to it</p>
+    {% else %}
+        {% js at head %}
+            window.Wheelform = {
+                form_id: {{ form.id }}
+            }
+        {% endjs %}
+        <div id="formapp"></div>
+    {% endif %}
+
 
 {% endblock %}
-{% js at head %}
-    window.Wheelform = {
-        form_id: {{ form.id }}
-    }
-{% endjs %}
