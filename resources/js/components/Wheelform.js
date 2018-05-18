@@ -1,18 +1,51 @@
-import React from 'react';
-import Field from './Field';
+import React, {Component} from 'react';
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle,
+  arrayMove,
+} from 'react-sortable-hoc';
 import axios from 'axios';
 
-class Wheelform extends React.Component
-{
+const DragHandle = SortableHandle(() => <span>::</span>);
 
-  constructor()
-  {
+const SortableItem = SortableElement((field) => {
+  return (
+    <li>
+      <DragHandle />
+      {field.name}
+    </li>
+  );
+});
+
+const SortableList = SortableContainer((fields) => {
+  return (
+    <ul>\
+      {console.log(fields)}
+      {fields.map((value, index) => {
+        <SortableItem key={'item-'+index} index={index} value={value} />
+      })}
+    </ul>
+  );
+});
+
+class Wheelform extends Component
+{
+  constructor() {
     super();
 
     this.state = {
       fields: []
     };
-  }
+
+    this.onSortEnd = (oldIndex, newIndex) => {
+      const fields = this.state.fields;
+
+      this.setState({
+        fields: arrayMove(fields, oldIndex, newIndex),
+      });
+    };
+  };
 
   componentDidMount() {
     const cpUrl = window.Craft.baseCpUrl;
@@ -29,19 +62,10 @@ class Wheelform extends React.Component
       })
   }
 
-  render() {
+  render(){
     return (
-      <div id="field-container">
-        {this.state.fields.map((field, index) => {
-            return (
-            <Field
-              key={field.name}
-              field={field}
-            />
-            )
-          })}
-      </div>
-    );
+      <SortableList fields={this.state.fields} onSortEnd={this.onSortEnd} useDragHandle={true} />
+    )
   }
 }
 
