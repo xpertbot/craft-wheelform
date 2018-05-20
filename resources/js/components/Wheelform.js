@@ -1,51 +1,40 @@
-import React, {Component} from 'react';
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-  arrayMove,
-} from 'react-sortable-hoc';
+import React from 'react';
+import update from 'immutability-helper';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import axios from 'axios';
+import Field from "./Field";
 
-const DragHandle = SortableHandle(() => <span>::</span>);
+const style = {
+  width: 450,
+}
 
-const SortableItem = SortableElement((field) => {
-  return (
-    <li>
-      <DragHandle />
-      {field.name}
-    </li>
-  );
-});
+class Wheelform extends React.Component{
 
-const SortableList = SortableContainer((fields) => {
-  return (
-    <ul>\
-      {console.log(fields)}
-      {fields.map((value, index) => {
-        <SortableItem key={'item-'+index} index={index} value={value} />
-      })}
-    </ul>
-  );
-});
+  constructor(props)
+  {
+    super(props);
 
-class Wheelform extends Component
-{
-  constructor() {
-    super();
+    this.moveField = this.moveField.bind(this);
 
     this.state = {
-      fields: []
-    };
+      fields: [],
+    }
+  }
 
-    this.onSortEnd = (oldIndex, newIndex) => {
-      const fields = this.state.fields;
+  moveField(dragIndex, hoverIndex)
+  {
+    const {fields} = this.state;
+    const dragField = fields[dragIndex];
 
-      this.setState({
-        fields: arrayMove(fields, oldIndex, newIndex),
-      });
-    };
-  };
+    this.setState(
+      update(this.state, {
+          fields: {
+            $splice: [[dragIndex, 1], [hoverIndex, 0, dragField]],
+          }
+      })
+    );
+  }
 
   componentDidMount() {
     const cpUrl = window.Craft.baseCpUrl;
@@ -58,15 +47,36 @@ class Wheelform extends Component
       }
     })
       .then((res) => {
-        this.setState({ 'fields': res.data });
-      })
+        this.setState((prevState, props) => {
+          return { 'fields': res.data }
+        });
+      });
   }
 
-  render(){
+  render()
+  {
+    const fields = this.state.fields;
+
     return (
-      <SortableList fields={this.state.fields} onSortEnd={this.onSortEnd} useDragHandle={true} />
-    )
+      <div style={style}>
+        {fields.map((field, i) => {
+          return (
+            <Field
+              key={field.name}
+              index={i}
+              name={field.name}
+              id={field.id}
+              type={field.type}
+              indexView={field.indexView}
+              active={field.active}
+              required={field.required}
+              moveField={this.moveField}
+            />
+          )
+        })}
+      </div>
+    );
   }
 }
 
-export default Wheelform;
+export default DragDropContext(HTML5Backend)(Wheelform);
