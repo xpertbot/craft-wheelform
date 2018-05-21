@@ -88,15 +88,12 @@ th.text-center, td.text-center {
 
 #formapp {
     #field-container{
-        width: 20rem;
+        width: 100%;
         @media screen and (min-width: 480px){
             width: 28rem;
         }
         @media screen and (min-width: 767px){
             width: 40rem;
-        }
-        @media screen and (min-width: 959px){
-            width: 50rem;
         }
     }
     .wheelform-field {
@@ -106,9 +103,6 @@ th.text-center, td.text-center {
         background-color: #fff;
         cursor: move;
         color: #333;
-        &:last-child{
-            border-bottom: none;
-        }
         h4{
             color: #333;
         }

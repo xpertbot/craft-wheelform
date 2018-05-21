@@ -5,21 +5,19 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import axios from 'axios';
 import Field from "./Field";
 
-const style = {
-  width: 450,
-}
-
 class Wheelform extends React.Component{
 
   constructor(props)
   {
     super(props);
 
-    this.moveField = this.moveField.bind(this);
-
     this.state = {
       fields: [],
     }
+
+    //Map Event functions
+    this.moveField = this.moveField.bind(this);
+    this.addField = this.addField.bind(this);
   }
 
   moveField(dragIndex, hoverIndex)
@@ -34,6 +32,23 @@ class Wheelform extends React.Component{
           }
       })
     );
+  }
+
+  addField(e)
+  {
+    e.preventDefault();
+
+    this.setState((prevState, props) => {
+      let fieldIndex = (prevState.fields.length + 1);
+
+      return prevState.fields.push({
+        name: "field_"+fieldIndex,
+        type: "text",
+        indexView: false,
+        active: false,
+        required: false,
+      })
+    });
   }
 
   componentDidMount() {
@@ -58,22 +73,25 @@ class Wheelform extends React.Component{
     const fields = this.state.fields;
 
     return (
-      <div style={style}>
-        {fields.map((field, i) => {
-          return (
-            <Field
-              key={field.name}
-              index={i}
-              name={field.name}
-              id={field.id}
-              type={field.type}
-              indexView={field.indexView}
-              active={field.active}
-              required={field.required}
-              moveField={this.moveField}
-            />
-          )
-        })}
+      <div>
+        <button onClick={this.addField} style={{"marginBottom": 15}} className="btn submit">Add  Field</button>
+        <div id="field-container">
+          {fields.map((field, i) => {
+            return (
+              <Field
+                key={field.name}
+                index={i}
+                name={field.name}
+                id={field.id}
+                type={field.type}
+                indexView={field.indexView}
+                active={field.active}
+                required={field.required}
+                moveField={this.moveField}
+              />
+            )
+          })}
+        </div>
       </div>
     );
   }

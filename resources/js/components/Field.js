@@ -1,5 +1,4 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import { flow } from 'lodash';
@@ -74,27 +73,15 @@ class Field extends React.Component {
 
   constructor(props) {
     super(props);
-
-  //   this._propTypes = {
-  //     connectDragSource: PropTypes.func.isRequired,
-  //     connectDropTarget: PropTypes.func.isRequired,
-  //     index: PropTypes.number.isRequired,
-  //     isDragging: PropTypes.bool.isRequired,
-  //     id: PropTypes.any.isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     moveField: PropTypes.func.isRequired,
-  //   }
   }
-
-  // static get propTypes() {
-  //   return this._propTypes;
-  // }
 
   render() {
 
+    const opacity = this.props.isDragging ? 0 : 1;
+
     return this.props.connectDragSource(
       this.props.connectDropTarget(
-        <div className="wheelform-field">
+        <div className="wheelform-field" style={{'opacity': opacity}}>
           <h4>{this.props.name}</h4>
           <div className="meta subheading"><span>{this.props.type}</span></div>
           <div className="meta">Required: <span>{this.props.require ? 'true' : 'false'}</span></div>
