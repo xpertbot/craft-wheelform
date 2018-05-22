@@ -63,43 +63,11 @@
         on: (form.recaptcha is null ? false : form.recaptcha),
     }) }}
 
-    {# <table class="data fullwidth">
-        <thead>
-            <tr>
-                <th class="required">Field Name</th>
-                <th>Type</th>
-                <th>Settings</th>
-                <th class="thin">Actions</th>
-            </tr>
-        </thead>
-        <tbody id="form-fields">
-            {% for field in form.fields %}
-                {% embed 'wheelform/embeds/_edit-form-field.twig'
-                    with {'field': field, 'index': loop.index, 'fieldTypes': fieldTypes} only %}
-                {% endembed %}
-                {% if loop.last %}
-                    {% embed 'wheelform/embeds/_edit-form-field.twig'
-                        with {'index': loop.index + 1, 'lastRow': true, 'fieldTypes': fieldTypes} only %}
-                    {% endembed %}
-                {% endif %}
-            {% else %}
-                {% embed 'wheelform/embeds/_edit-form-field.twig'
-                    with {'index': loop.index, 'lastRow': true, 'fieldTypes': fieldTypes} only %}
-                {% endembed %}
-            {% endfor %}
-        </tbody>
-    </table> #}
-
-    {% if form.id is not defined %}
-        <p>Save form to add Fields to it</p>
-    {% else %}
-        {% js at head %}
-            window.Wheelform = {
-                form_id: {{ form.id }}
-            }
-        {% endjs %}
-        <div id="formapp"></div>
-    {% endif %}
-
+    {% js at head %}
+        window.Wheelform = {
+            form_id: {{ form.id ? form.id : 0 }}
+        }
+    {% endjs %}
+    <div id="formapp"></div>
 
 {% endblock %}

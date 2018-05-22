@@ -44,7 +44,7 @@ class Wheelform extends React.Component{
       return prevState.fields.push({
         name: "field_"+fieldIndex,
         type: "text",
-        indexView: false,
+        index_view: false,
         active: false,
         required: false,
       })
@@ -55,17 +55,20 @@ class Wheelform extends React.Component{
     const cpUrl = window.Craft.baseCpUrl;
     const form_id = window.Wheelform.form_id;
 
-    axios.get(cpUrl, {
-      params: {
-        action: 'wheelform/form/get-fields',
-        form_id: form_id
-      }
-    })
-      .then((res) => {
-        this.setState((prevState, props) => {
-          return { 'fields': res.data }
+    if(form_id)
+    {
+      axios.get(cpUrl, {
+        params: {
+          action: 'wheelform/form/get-fields',
+          form_id: form_id
+        }
+      })
+        .then((res) => {
+          this.setState((prevState, props) => {
+            return { 'fields': res.data }
+          });
         });
-      });
+    }
   }
 
   render()
@@ -84,7 +87,7 @@ class Wheelform extends React.Component{
                 name={field.name}
                 id={field.id}
                 type={field.type}
-                indexView={field.indexView}
+                index_view={field.index_view}
                 active={field.active}
                 required={field.required}
                 moveField={this.moveField}

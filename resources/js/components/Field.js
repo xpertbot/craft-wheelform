@@ -73,6 +73,51 @@ class Field extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isEditMode: false,
+    }
+
+    this.onEdit = this.onEdit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  onEdit(e)
+  {
+    e.preventDefault();
+
+    this.setState((prevState, props) => {
+      return {
+        isEditMode: !prevState.isEditMode,
+      }
+    });
+  }
+
+  handleChange(name, status)
+  {
+    this.stateState((prevState, props) => {
+      return {
+        [name]: ! status
+      }
+    })
+  }
+
+  createLightswitch(name, label, status)
+  {
+    return (
+      <div>
+        <div className="heading">{label}</div>
+        <div className="input ltr">
+          <div className={status ? 'on' : 'off' + " lightswitch"} tabIndex="0" onClick={() => { this.handleChange(name, status) }}>
+            <div className="lightswitch-container" style={{ marginLeft: status ? "-11px" : "0px"}}>
+              <div className="label on"></div>
+              <div className="handle"></div>
+              <div className="label off"></div>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name={name} value="1" />
+      </div>
+    );
   }
 
   render() {
@@ -82,11 +127,12 @@ class Field extends React.Component {
     return this.props.connectDragSource(
       this.props.connectDropTarget(
         <div className="wheelform-field" style={{'opacity': opacity}}>
-          <h4>{this.props.name}</h4>
+          <h4>{this.props.name}<a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a></h4>
           <div className="meta subheading"><span>{this.props.type}</span></div>
-          <div className="meta">Required: <span>{this.props.require ? 'true' : 'false'}</span></div>
-          <div className="meta">Active: <span>{this.props.active ? 'true' : 'false'}</span></div>
-          <div className="meta">Index View: <span>{this.props.index_view ? 'true' : 'false'}</span></div>
+          <div style={{display: this.state.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
+            {this.createLightswitch('required', 'Required', this.props.required)}
+            {this.createLightswitch('index_view', 'Index View', this.props.index_view)}
+          </div>
         </div>
       )
     )

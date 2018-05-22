@@ -101,10 +101,21 @@ th.text-center, td.text-center {
         padding: 0.5rem 1rem;
         margin-bottom: 0.5rem;
         background-color: #fff;
-        cursor: move;
         color: #333;
+        cursor: move;
+        z-index: 0;
         h4{
             color: #333;
+            padding-right: 20px;
+            position: relative;
+            > a{
+              position: absolute;
+              top: 0;
+              right: 0;
+              bottom: auto;
+              z-index: 25;
+              padding: 5px;
+            }
         }
     }
 }
