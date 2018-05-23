@@ -8,10 +8,19 @@ const style = {
   padding: '0.5rem 1rem',
   marginBottom: '.5rem',
   backgroundColor: 'white',
-  cursor: 'move',
 }
 
-const fieldSource = {
+const handleStyle = {
+  color: "#994032",
+  marginRight: "10px",
+  cursor: 'move',
+  position: 'absolute',
+  left: '5px',
+  top: '5px',
+  zIndex: 10,
+}
+
+const ellipsisSource = {
   beginDrag(props)
   {
     return {
@@ -92,9 +101,13 @@ class Field extends React.Component {
     });
   }
 
-  handleChange(name, status)
+  handleChange(e, name, status)
   {
-    this.stateState((prevState, props) => {
+    e.preventDefault();
+
+    console.log(name);
+    console.log(status);
+    this.setState((prevState, props) => {
       return {
         [name]: ! status
       }
@@ -106,15 +119,9 @@ class Field extends React.Component {
     return (
       <div>
         <div className="heading">{label}</div>
-        <div className="input ltr">
-          <div className={status ? 'on' : 'off' + " lightswitch"} tabIndex="0" onClick={() => { this.handleChange(name, status) }}>
-            <div className="lightswitch-container" style={{ marginLeft: status ? "-11px" : "0px"}}>
-              <div className="label on"></div>
-              <div className="handle"></div>
-              <div className="label off"></div>
-            </div>
-          </div>
-        </div>
+        <a href="" onClick={(e) => this.handleChange(e, name, !status)}>
+          <i style={{color: "#00b007"}} className={"fa fa-toggle-" + (status ? 'on' : 'off')}></i>
+        </a>
         <input type="hidden" name={name} value="1" />
       </div>
     );
@@ -124,10 +131,14 @@ class Field extends React.Component {
 
     const opacity = this.props.isDragging ? 0 : 1;
 
-    return this.props.connectDragSource(
+    return (
       this.props.connectDropTarget(
-        <div className="wheelform-field" style={{'opacity': opacity}}>
-          <h4>{this.props.name}<a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a></h4>
+        <div className="wheelform-field" style={{'opacity': opacity, position: 'relative'}}>
+          {this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)}
+          <h4>
+            {this.props.name}
+            <a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a>
+          </h4>
           <div className="meta subheading"><span>{this.props.type}</span></div>
           <div style={{display: this.state.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
             {this.createLightswitch('required', 'Required', this.props.required)}
@@ -143,7 +154,7 @@ export default flow(
   DropTarget('field', fieldTarget, (connect) => ({
     connectDropTarget: connect.dropTarget(),
   })),
-  DragSource('field', fieldSource, (connect, monitor) => ({
+  DragSource('ellipsis', ellipsisSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging()
   }))
