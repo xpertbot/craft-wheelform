@@ -134,7 +134,9 @@ class Field extends React.Component {
     return (
       this.props.connectDropTarget(
         <div className="wheelform-field" style={{'opacity': opacity, position: 'relative'}}>
-          {this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)}
+          {! this.state.isEditMode &&
+            this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)
+          }
           <h4>
             {this.props.name}
             <a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a>
