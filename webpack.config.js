@@ -3,10 +3,10 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: './resources/js/entry.js',
+    entry: ['./resources/js/entry.js', './resources/sass/cp-wheelform.scss'],
     output: {
-        path: path.resolve(__dirname, './src/assets/js'),
-        filename: 'wheelform-bundle.js'
+        path: path.resolve(__dirname, './src/assets'),
+        filename: 'js/wheelform-bundle.js'
     },
     module: {
         rules: [
@@ -19,14 +19,14 @@ module.exports = {
                 test:/\.(s*)css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['style-loader','css-loader', 'sass-loader']
+                    use: ['css-loader', 'sass-loader']
                 })
             }
         ]
     },
     plugins: [
         new ExtractTextPlugin({
-            filename: './src/assets/css/cp-wheelform.css',
+            filename: './css/cp-wheelform.css',
             allChunks: true
         })
     ]

@@ -11,12 +11,14 @@ class Container extends React.Component {
     super(props);
 
     this.state = {
+      isEditMode: false,
       fields: [],
     }
 
     //Map Event functions
     this.moveField = this.moveField.bind(this);
     this.addField = this.addField.bind(this);
+    this.handleEditMode = this.handleEditMode.bind(this);
   }
 
   moveField(dragIndex, hoverIndex) {
@@ -48,6 +50,16 @@ class Container extends React.Component {
     });
   }
 
+  handleEditMode(e) {
+    e.preventDefault();
+
+    this.setState((prevState, props) => {
+      return {
+        isEditMode: !prevState.isEditMode,
+      }
+    });
+  }
+
   componentDidMount() {
     const cpUrl = window.Craft.baseCpUrl;
     const form_id = window.Wheelform.form_id;
@@ -72,20 +84,19 @@ class Container extends React.Component {
 
     return (
       <div>
-        <button onClick={this.addField} style={{ "marginBottom": 15 }} className="btn submit">Add  Field</button>
+        <div className="btn-container">
+          <button onClick={this.addField} style={{ "marginBottom": 15 }} className="btn submit">Add  Field</button>
+          <button onClick={this.handleEditMode} className="btn primary pull-right">{this.state.isEditMode ? "Drag" : "Edit"} Fields</button>
+        </div>
         <div id="field-container">
           {fields.map((field, i) => {
             return (
               <Field
                 key={field.name + "_" + i}
                 index={i}
-                name={field.name}
-                id={field.id}
-                type={field.type}
-                index_view={field.index_view}
-                active={field.active}
-                required={field.required}
+                field={field}
                 moveField={this.moveField}
+                isEditMode={this.state.isEditMode}
               />
             )
           })}

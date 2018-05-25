@@ -9,17 +9,7 @@ const style = {
   backgroundColor: 'white',
 }
 
-const handleStyle = {
-  color: "#994032",
-  marginRight: "10px",
-  cursor: 'move',
-  position: 'absolute',
-  left: '5px',
-  top: '5px',
-  zIndex: 10,
-}
-
-const ellipsisSource = {
+const fieldSource = {
   beginDrag(props, monitor, component) {
     return {
       id: props.key,
@@ -92,34 +82,33 @@ class Field extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      isEditMode: false,
-    }
 
-    this.onEdit = this.onEdit.bind(this);
+    this.fieldTypes = [
+      'text',
+      'email',
+      'number',
+      'checkbox',
+      'radio',
+      'hidden',
+      'select',
+      'file',
+    ];
+
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  onEdit(e) {
-    e.preventDefault();
-
-    this.setState((prevState, props) => {
-      return {
-        isEditMode: !prevState.isEditMode,
-      }
-    });
   }
 
   handleChange(e, name, status) {
     e.preventDefault();
 
-    console.log(name);
-    console.log(status);
     this.setState((prevState, props) => {
       return {
         [name]: !status
       }
     })
+  }
+
+  ucfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   createLightswitch(name, label, status) {
@@ -134,29 +123,51 @@ class Field extends React.Component {
     );
   }
 
-  render() {
-
+  renderDraggableField()
+  {
     const opacity = this.props.isDragging ? 0 : 1;
 
     return (
-      this.props.connectDragPreview(
+      this.props.connectDragSource(
         this.props.connectDropTarget(
-          <div className="wheelform-field" style={{ 'opacity': opacity, position: 'relative' }}>
-            {!this.state.isEditMode &&
-              this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)
-            }
+          <div className="wheelform-field" style={{ 'opacity': opacity, position: 'relative', cursor: "move" }}>
             <h4>
-              {this.props.name}
-              <a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a>
+              {this.props.field.name}
             </h4>
-            <div className="meta subheading"><span>{this.props.type}</span></div>
-            <div style={{ display: this.state.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
-              {this.createLightswitch('required', 'Required', this.props.required)}
-              {this.createLightswitch('index_view', 'Index View', this.props.index_view)}
-            </div>
+            <div className="meta subheading"><span>{this.ucfirst(this.props.field.type)}</span></div>
           </div>
         )
       )
+    );
+  }
+
+  renderEditableField()
+  {
+    return (
+      <div className="wheelform-field">
+        <h4>
+          <input type="text" defaultValue={this.props.name} name={"fields[" + this.props.index + "][name]"}/>
+        </h4>
+        <div className="meta subheading">
+          <select value={this.props.field.type} name={"fields[" + this.props.index + "][type]"}>
+            {this.fieldTypes.map((field, index) => {
+              return (
+                <option key={index}>{this.ucfirst(field)}</option>
+              );
+            })}
+          </select>
+        </div>
+        <div style={{ display: this.props.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
+          {this.createLightswitch('required', 'Required', this.props.required)}
+          {this.createLightswitch('index_view', 'Index View', this.props.index_view)}
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      (this.props.isEditMode ? this.renderEditableField() : this.renderDraggableField())
     )
   }
 }
@@ -164,11 +175,10 @@ class Field extends React.Component {
 export default DropTarget('field', fieldTarget, (connect) => ({
   connectDropTarget: connect.dropTarget(),
 }))
-  (
-  DragSource('field', ellipsisSource, (connect, monitor) => ({
+(
+  DragSource('field', fieldSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
-    connectDragPreview: connect.dragPreview(),
   }))
-    (Field)
-  );
+  (Field)
+);

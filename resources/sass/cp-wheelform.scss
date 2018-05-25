@@ -87,14 +87,16 @@ th.text-center, td.text-center {
 }
 
 #formapp {
+      width: 100%;
+      @media screen and (min-width: 480px){
+          width: 28rem;
+      }
+      @media screen and (min-width: 767px){
+          width: 40rem;
+      }
     #field-container{
+        position: relative;
         width: 100%;
-        @media screen and (min-width: 480px){
-            width: 28rem;
-        }
-        @media screen and (min-width: 767px){
-            width: 40rem;
-        }
     }
     .wheelform-field {
         border: 1px dashed gray;
@@ -116,5 +118,9 @@ th.text-center, td.text-center {
               padding: 5px;
             }
         }
+    }
+    .pull-right{
+      clear: right;
+      float: right;
     }
 }
