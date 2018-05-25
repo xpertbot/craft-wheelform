@@ -1,14 +1,13 @@
-import React from 'react';
-import update from 'immutability-helper';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import axios from 'axios';
-import Field from "./Field";
+import React from 'react'
+import update from 'immutability-helper'
+import { DropTarget, DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import axios from 'axios'
+import Field from "./Field"
 
-class Wheelform extends React.Component{
+class Container extends React.Component {
 
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -20,29 +19,27 @@ class Wheelform extends React.Component{
     this.addField = this.addField.bind(this);
   }
 
-  moveField(dragIndex, hoverIndex)
-  {
-    const {fields} = this.state;
+  moveField(dragIndex, hoverIndex) {
+    const { fields } = this.state;
     const dragField = fields[dragIndex];
 
     this.setState(
       update(this.state, {
-          fields: {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, dragField]],
-          }
+        fields: {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragField]],
+        }
       })
     );
   }
 
-  addField(e)
-  {
+  addField(e) {
     e.preventDefault();
 
     this.setState((prevState, props) => {
       let fieldIndex = (prevState.fields.length + 1);
 
       return prevState.fields.push({
-        name: "field_"+fieldIndex,
+        name: "field_" + fieldIndex,
         type: "text",
         index_view: false,
         active: false,
@@ -55,8 +52,7 @@ class Wheelform extends React.Component{
     const cpUrl = window.Craft.baseCpUrl;
     const form_id = window.Wheelform.form_id;
 
-    if(form_id)
-    {
+    if (form_id) {
       axios.get(cpUrl, {
         params: {
           action: 'wheelform/form/get-fields',
@@ -71,18 +67,17 @@ class Wheelform extends React.Component{
     }
   }
 
-  render()
-  {
+  render() {
     const fields = this.state.fields;
 
     return (
       <div>
-        <button onClick={this.addField} style={{"marginBottom": 15}} className="btn submit">Add  Field</button>
+        <button onClick={this.addField} style={{ "marginBottom": 15 }} className="btn submit">Add  Field</button>
         <div id="field-container">
           {fields.map((field, i) => {
             return (
               <Field
-                key={field.name}
+                key={field.name + "_" + i}
                 index={i}
                 name={field.name}
                 id={field.id}
@@ -100,4 +95,4 @@ class Wheelform extends React.Component{
   }
 }
 
-export default DragDropContext(HTML5Backend)(Wheelform);
+export default DragDropContext(HTML5Backend)(Container);

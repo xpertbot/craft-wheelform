@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Wheelform from './components/wheelform';
+import Container from './components/Container';
 
-ReactDOM.render(<Wheelform />, document.getElementById('formapp'));
+ReactDOM.render(<Container />, document.getElementById('formapp'));

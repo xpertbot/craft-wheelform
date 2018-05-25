@@ -1,7 +1,6 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
-import { flow } from 'lodash';
 
 const style = {
   border: '1px dashed blue',
@@ -21,23 +20,34 @@ const handleStyle = {
 }
 
 const ellipsisSource = {
-  beginDrag(props)
-  {
+  beginDrag(props, monitor, component) {
     return {
-      id: props.id,
+      id: props.key,
       index: props.index,
     }
+  },
+
+  endDrag(props, monitor, component) {
+    const { id: droppedId, originalIndex } = monitor.getItem();
+    const didDrop = monitor.didDrop();
+
+    if (!didDrop) {
+      props.moveField(droppedId, originalIndex);
+    }
+  },
+
+  canDrag(props, monitor) {
+    return true;
   }
 }
 
 const fieldTarget = {
-  hover(props, monitor, component)
-  {
+  hover(props, monitor, component) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
 
     //Don't replace items with themselves
-    if(dragIndex == hoverIndex) {
+    if (dragIndex == hoverIndex) {
       return;
     }
 
@@ -54,16 +64,16 @@ const fieldTarget = {
     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
     // Only perform the move when the mouse has crossed half of the items height
-		// When dragging downwards, only move when the cursor is below 50%
+    // When dragging downwards, only move when the cursor is below 50%
     // When dragging upwards, only mo ve when the cursor is above 50%
 
     //Draggin Downwards
-    if(dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
       return;
     }
 
     //Draggin Upwards
-    if(dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
       return;
     }
 
@@ -90,8 +100,7 @@ class Field extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  onEdit(e)
-  {
+  onEdit(e) {
     e.preventDefault();
 
     this.setState((prevState, props) => {
@@ -101,26 +110,24 @@ class Field extends React.Component {
     });
   }
 
-  handleChange(e, name, status)
-  {
+  handleChange(e, name, status) {
     e.preventDefault();
 
     console.log(name);
     console.log(status);
     this.setState((prevState, props) => {
       return {
-        [name]: ! status
+        [name]: !status
       }
     })
   }
 
-  createLightswitch(name, label, status)
-  {
+  createLightswitch(name, label, status) {
     return (
       <div>
         <div className="heading">{label}</div>
         <a href="" onClick={(e) => this.handleChange(e, name, !status)}>
-          <i style={{color: "#00b007"}} className={"fa fa-toggle-" + (status ? 'on' : 'off')}></i>
+          <i style={{ color: (status ? "#00b007" : "grey") }} className={"fa fa-toggle-" + (status ? 'on' : 'off')}></i>
         </a>
         <input type="hidden" name={name} value="1" />
       </div>
@@ -132,32 +139,36 @@ class Field extends React.Component {
     const opacity = this.props.isDragging ? 0 : 1;
 
     return (
-      this.props.connectDropTarget(
-        <div className="wheelform-field" style={{'opacity': opacity, position: 'relative'}}>
-          {! this.state.isEditMode &&
-            this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)
-          }
-          <h4>
-            {this.props.name}
-            <a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a>
-          </h4>
-          <div className="meta subheading"><span>{this.props.type}</span></div>
-          <div style={{display: this.state.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
-            {this.createLightswitch('required', 'Required', this.props.required)}
-            {this.createLightswitch('index_view', 'Index View', this.props.index_view)}
+      this.props.connectDragPreview(
+        this.props.connectDropTarget(
+          <div className="wheelform-field" style={{ 'opacity': opacity, position: 'relative' }}>
+            {!this.state.isEditMode &&
+              this.props.connectDragSource(<i className="fa fa-ellipsis-v" style={handleStyle}></i>)
+            }
+            <h4>
+              {this.props.name}
+              <a href="" onClick={this.onEdit}><i className="fa fa-edit"></i></a>
+            </h4>
+            <div className="meta subheading"><span>{this.props.type}</span></div>
+            <div style={{ display: this.state.isEditMode ? 'block' : 'none', paddingTop: '20px' }}>
+              {this.createLightswitch('required', 'Required', this.props.required)}
+              {this.createLightswitch('index_view', 'Index View', this.props.index_view)}
+            </div>
           </div>
-        </div>
+        )
       )
     )
   }
 }
 
-export default flow(
-  DropTarget('field', fieldTarget, (connect) => ({
-    connectDropTarget: connect.dropTarget(),
-  })),
-  DragSource('ellipsis', ellipsisSource, (connect, monitor) => ({
+export default DropTarget('field', fieldTarget, (connect) => ({
+  connectDropTarget: connect.dropTarget(),
+}))
+  (
+  DragSource('field', ellipsisSource, (connect, monitor) => ({
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
+    connectDragPreview: connect.dragPreview(),
   }))
-)(Field);
+    (Field)
+  );
