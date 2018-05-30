@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     entry: ['./resources/js/entry.js', './resources/sass/cp-wheelform.scss'],
@@ -11,9 +12,17 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                    }
+                }
+            },
+            {
                 test: /\.js$/,
+                loader: 'babel-loader',
                 exclude: /node_modules/,
-                loader: 'babel-loader'
             },
             {
                 test:/\.(s*)css$/,
@@ -24,10 +33,17 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js',
+        },
+        extensions: ['*', '.js', '.vue', '.json']
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: './css/cp-wheelform.css',
             allChunks: true
-        })
+        }),
+        new VueLoaderPlugin()
     ]
 }
