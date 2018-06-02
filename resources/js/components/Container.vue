@@ -9,7 +9,7 @@
                 v-for="(field, index) in fields"
                :key="index"
                :index="index"
-               v-bind="field"
+               :default-field="field"
                :is-edit-mode="isEditMode"
               />
         </div>

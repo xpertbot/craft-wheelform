@@ -1,15 +1,15 @@
 <template>
     <div class="wheelform-field" style="getFieldStyle">
         <h4 v-show="!isEditMode">
-            {{ name }}
+            {{ field.name }}
         </h4>
-        <input type="text" :value="name" v-show="isEditMode" />
+        <input type="text" v-model="field.name" v-show="isEditMode" />
         <div class="meta subheading" v-show="!isEditMode">
-            <span>{{ type | capitalize }}</span>
+            <span>{{ field.type | capitalize }}</span>
         </div>
         <div v-show="isEditMode">
             <div className="meta subheading">
-            <select v-model="type" name="getFieldName">
+            <select v-model="field.type" name="getFieldName">
                 <option
                     v-for="(fieldType, index) in fieldTypes"
                     :key="index"
@@ -23,13 +23,13 @@
                 <Lightswitch
                     :name="'required'"
                     :label="'Required'"
-                    :status="required"
+                    :status="field.required"
                     />
 
                 <Lightswitch
                     :name="'index_view'"
                     :label="'Index View'"
-                    :status="index_view"
+                    :status="field.index_view"
                     />
             </div>
         </div>
@@ -42,10 +42,7 @@ import Lightswitch from './Lightswitch.vue';
 export default {
     props: [
         "index",
-        "defaultName",
-        "type",
-        "required",
-        "index_view",
+        "defaultField",
         "isEditMode",
     ],
     data(){
@@ -60,7 +57,7 @@ export default {
                 'select',
                 'file',
             ],
-            name: this.defaultName
+            field: this.defaultField
         }
     },
     components: {
