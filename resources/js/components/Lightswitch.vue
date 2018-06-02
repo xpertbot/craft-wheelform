@@ -1,10 +1,9 @@
 <template>
     <div>
         <div class="heading">{{ label }}</div>
-        <a href="">
+        <a href="" @click.prevent="handleStatusChange(name, ! status)">
             <i :style="getStatusColor" :class="getStatusClass"></i>
         </a>
-        <input type="hidden" name="name" value="1" />
     </div>
 </template>
 
@@ -12,7 +11,7 @@
 export default {
     props:[
         'label',
-        'handleEvent',
+        'handleStatusChange',
         'status',
         'name'
     ],

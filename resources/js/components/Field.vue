@@ -24,12 +24,14 @@
                     :name="'required'"
                     :label="'Required'"
                     :status="field.required"
+                    :handle-status-change="handleStatusChange"
                     />
 
                 <Lightswitch
                     :name="'index_view'"
                     :label="'Index View'"
                     :status="field.index_view"
+                    :handle-status-change="handleStatusChange"
                     />
             </div>
         </div>
@@ -83,6 +85,12 @@ export default {
             if (!value) return '';
              value = value.toString();
             return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    },
+    methods: {
+        handleStatusChange(key, value)
+        {
+            this.field[key] = value;
         }
     }
 }
