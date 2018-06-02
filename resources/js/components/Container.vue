@@ -7,9 +7,10 @@
         <div id="field-container">
               <Field
                 v-for="(field, index) in fields"
-                v-bind:key="index"
-                v-bind:index="index"
-                v-bind:field="field"
+               :key="index"
+               :index="index"
+               v-bind="field"
+               :is-edit-mode="isEditMode"
               />
         </div>
     </div>
@@ -31,22 +32,20 @@ export default {
     },
     mounted()
     {
-        console.log(this.fields);
         const cpUrl = window.Craft.baseCpUrl;
         const form_id = window.Wheelform.form_id;
 
         if (form_id) {
             axios.get(cpUrl, {
                 params: {
-                action: 'wheelform/form/get-fields',
-                form_id: form_id
+                    action: 'wheelform/form/get-fields',
+                    form_id: form_id
                 }
             })
             .then((res) => {
                 this.fields = res.data;
             });
         }
-        console.log(this.fields);
     },
     methods: {
         addField() {
