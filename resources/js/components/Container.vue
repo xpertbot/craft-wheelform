@@ -8,7 +8,7 @@
               <Field
                 v-for="(field, index) in fields"
                :key="index"
-               :index="index"
+               :default-order="index"
                :default-field="field"
                :is-edit-mode="isEditMode"
               />

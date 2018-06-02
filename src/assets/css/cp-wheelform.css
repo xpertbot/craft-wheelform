@@ -19,6 +19,12 @@
 .text-right {
   text-align: right;
 }
+#formapp label {
+  display: block;
+}
+#formapp .field-label {
+  font-size: 18px;
+}
 .form-field-add, .form-field-rm {
   color: rgba(0, 0, 0, 0.2); }
 

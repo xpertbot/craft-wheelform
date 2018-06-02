@@ -3,9 +3,9 @@
         <div v-show="!isEditMode">
             <div class="row">
                 <div class="col">
-                    <h4>
-                        {{ field.name }}
-                    </h4>
+                    <span class="field-label">
+                        {{ field.label ? field.label : getFieldLabel }}
+                    </span>
                 </div>
                 <div class="col text-right">
                     <span :style="'color:'+getStatusColor(field.required)">Required</span>
@@ -13,21 +13,26 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <span>{{ field.type | capitalize }}</span>
+                    <strong>Name:</strong> {{ field.name }}
                 </div>
                 <div class="col text-right">
                     <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <strong>Type:</strong> {{ field.type | capitalize }}
                 </div>
             </div>
         </div>
         <div v-show="isEditMode" class="input-container">
             <div class="row">
                 <div class="col">
-                    <input type="text" v-model="field.name" />
+                    <label>Label:</label>
+                    <input type="text" v-model="field.label" :name="getFieldName('label')" />
                 </div>
-            </div>
-            <div class="row">
                 <div class="col">
+                    <label>Type:</label>
                     <select v-model="field.type" :name="getFieldName('type')">
                         <option
                             v-for="(fieldType, index) in fieldTypes"
@@ -41,6 +46,10 @@
             </div>
             <div class="row">
                 <div class="col">
+                    <label class="required">Name:</label>
+                    <input type="text" v-model="field.name" :name="getFieldName('name')" />
+                </div>
+                <div class="col">
                     <Lightswitch
                         :name="'required'"
                         :label="'Required'"
@@ -51,6 +60,7 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col">&nbsp;</div>
                 <div class="col">
                     <Lightswitch
                         :name="'index_view'"
@@ -61,6 +71,11 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" :name="getFieldName('id')" :value="field.id ? field.id : ''">
+        <input type="hidden" :name="getFieldName('order')" :value="order+1">
+        <input type="hidden" :name="getFieldName('required')" v-model="field.required">
+        <input type="hidden" :name="getFieldName('index_view')" v-model="field.index_view">
+        <input type="hidden" :name="getFieldName('active')" v-model="field.active">
     </div>
 </template>
 
@@ -69,7 +84,7 @@ import Lightswitch from './Lightswitch.vue';
 
 export default {
     props: [
-        "index",
+        "defaultOrder",
         "defaultField",
         "isEditMode",
     ],
@@ -85,7 +100,8 @@ export default {
                 'select',
                 'file',
             ],
-            field: this.defaultField
+            field: this.defaultField,
+            order: this.defaultOrder
         }
     },
     components: {
@@ -95,8 +111,19 @@ export default {
         capitalize(value)
         {
             if (!value) return '';
-             value = value.toString();
+            value = value.toString();
+
             return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+    },
+    computed:{
+        getFieldLabel()
+        {
+            let label = this.field.name.toString();
+            label = label.replace(/_/g, ' ');
+            label = label.replace(/-/g, ' ');
+            label = label.charAt(0).toUpperCase() + label.slice(1);
+            return label;
         }
     },
     methods: {
@@ -106,7 +133,7 @@ export default {
         },
         getFieldName(key)
         {
-            return "fields[" + this.index + "]["+ key +"]"
+            return "fields[" + this.order + "]["+ key +"]"
         },
         getFieldStyle()
         {
@@ -136,5 +163,11 @@ export default {
     }
     .text-right{
         text-align: right;
+    }
+    #formapp label{
+        display: block;
+    }
+    #formapp .field-label{
+        font-size: 18px;
     }
 </style>

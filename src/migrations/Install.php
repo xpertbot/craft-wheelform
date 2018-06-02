@@ -58,6 +58,7 @@ class Install extends Migration
                 'id' => $this->primaryKey(),
                 'form_id' => $this->integer(),
                 'name' => $this->string()->notNull(),
+                'label' => $this->string(),
                 'type' => $this->string()->notNull(),
                 'required' => $this->tinyInteger()->notNull()->defaultValue(0),
                 'index_view' => $this->tinyInteger()->notNull()->defaultValue(0),
@@ -178,6 +179,7 @@ class Install extends Migration
             "form_id" => 1,
             "type" => 'email',
             "name" => "email",
+            "label" => "Email",
             "order" => 1,
             "required" => 1,
             ]
@@ -188,6 +190,7 @@ class Install extends Migration
             "form_id" => 1,
             "type" => 'text',
             "name" => "name",
+            "Label" => "Name",
             "order" => 2,
             "required" => 0,
             ]
@@ -198,6 +201,7 @@ class Install extends Migration
             "form_id" => 1,
             "type" => 'text',
             "name" => "message",
+            "label" => "Message",
             "order" => 3,
             "required" => 1,
             ]
