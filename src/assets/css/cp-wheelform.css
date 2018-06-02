@@ -1,3 +1,24 @@
+
+.fa {
+  font-size: 20px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+.input-container .col {
+  margin: 0px 0px 10px;
+}
+.text-right {
+  text-align: right;
+}
 .form-field-add, .form-field-rm {
   color: rgba(0, 0, 0, 0.2); }
 

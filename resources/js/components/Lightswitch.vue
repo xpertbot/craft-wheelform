@@ -27,3 +27,9 @@ export default {
     }
 }
 </script>
+
+<style>
+    .fa{
+        font-size: 20px;
+    }
+</style>
