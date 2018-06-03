@@ -1,7 +1,7 @@
 <template>
     <div class="wheelform-field" :style="getFieldStyle">
         <div v-show="!isEditMode" class="field-details">
-            <div class="handle"><i class="fa fa-bars"></i></div>
+            <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
             <div class="row">
                 <div class="col">
                     <span class="field-label">
@@ -172,7 +172,7 @@ export default {
     position: relative;
     padding-left: 25px;
 }
-.handle{
+.wheelform-field-handle{
     position: absolute;
     top: 50%;
     left: 0;

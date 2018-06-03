@@ -4,7 +4,7 @@
             <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
             <button v-show="fields.length > 0" v-on:click.prevent="handleEditMode" class="btn primary pull-right">{{isEditMode ? "Drag" : "Edit"}} Fields</button>
         </div>
-        <draggable v-model="fields" :options="{handle: '.handle'}" id="field-container">
+        <draggable v-model="fields" :options="{handle: '.wheelform-field-handle'}" id="field-container">
               <Field
                v-for="(field, index) in fields"
                :key="field.uniqueId"
