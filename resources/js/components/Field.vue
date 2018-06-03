@@ -1,6 +1,7 @@
 <template>
     <div class="wheelform-field" :style="getFieldStyle">
-        <div v-show="!isEditMode">
+        <div v-show="!isEditMode" class="field-details">
+            <div class="handle"><i class="fa fa-bars"></i></div>
             <div class="row">
                 <div class="col">
                     <span class="field-label">
@@ -167,26 +168,40 @@ export default {
 </script>
 
 <style>
-    .row{
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-    }
-    .col{
-        flex-basis: 0;
-        flex-grow: 1;
-        max-width: 100%;
-    }
-    .input-container .col{
-        margin:0px 0px 10px;
-    }
-    .text-right{
-        text-align: right;
-    }
-    #formapp label{
-        display: block;
-    }
-    #formapp .field-label{
-        font-size: 18px;
-    }
+.field-details{
+    position: relative;
+    padding-left: 25px;
+}
+.handle{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 10;
+    cursor: move;
+    max-width: 18px;
+    max-height: 20px;
+    margin-top: -10px; /* half of height; */
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.col{
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+}
+.input-container .col{
+    margin:0px 0px 10px;
+}
+.text-right{
+    text-align: right;
+}
+#formapp label{
+    display: block;
+}
+#formapp .field-label{
+    font-size: 18px;
+}
 </style>

@@ -51,8 +51,7 @@ class FormController extends Controller
 
         // Render the template
         return $this->renderTemplate('wheelform/_edit-form.twig', [
-            'form' => $form,
-            'fieldTypes' => FormField::FIELD_TYPES
+            'form' => $form
         ]);
     }
 
@@ -167,7 +166,7 @@ class FormController extends Controller
             throw new HttpException(404);
         }
 
-        $fields = FormField::find()->where(['form_id' => $formId])->all();
+        $fields = FormField::find()->where(['form_id' => $formId])->orderBy('order', 'ASC')->all();
 
         return $this->asJson($fields);
     }

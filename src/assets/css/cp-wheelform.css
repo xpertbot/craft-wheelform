@@ -3,6 +3,21 @@
   font-size: 20px;
 }
 
+.field-details {
+  position: relative;
+  padding-left: 25px;
+}
+.handle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 10;
+  cursor: move;
+  max-width: 18px;
+  max-height: 20px;
+  margin-top: -10px;
+  /* half of height; */
+}
 .row {
   display: flex;
   flex-direction: row;
@@ -101,7 +116,7 @@ th.text-center, td.text-center {
     width: 100%; }
   #formapp .wheelform-field {
     border: 1px dashed gray;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     margin-bottom: 0.5rem;
     background-color: #fff;
     color: #333;
