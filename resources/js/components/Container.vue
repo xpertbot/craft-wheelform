@@ -6,11 +6,13 @@
         </div>
         <div id="field-container">
               <Field
-                v-for="(field, index) in fields"
-               :key="index"
-               :default-order="index"
+               v-for="(field, index) in fields"
+               :key="field.uniqueId"
+               :index="index"
+               :order="index + 1"
                :default-field="field"
                :is-edit-mode="isEditMode"
+               @delete-field="fields.splice(index, 1)"
               />
         </div>
     </div>
@@ -19,6 +21,7 @@
 <script>
 import axios from 'axios';
 import Field from './Field.vue';
+import { find } from 'lodash';
 
 export default {
     components:{
@@ -27,7 +30,8 @@ export default {
     data() {
         return {
             isEditMode: false,
-            fields: []
+            fields: [],
+            nextFieldIndex: 0,
         }
     },
     mounted()
@@ -43,24 +47,39 @@ export default {
                 }
             })
             .then((res) => {
-                this.fields = res.data;
+                if(res.data.length > 0)
+                {
+                    for (let index = 0; index < res.data.length; index++) {
+                        let field = res.data[index];
+                        field.uniqueId = this.generateKeyId();
+                        this.fields.push(field);
+                    }
+                    this.nextFieldIndex = this.fields.length;
+                }
             });
         }
     },
     methods: {
-        addField() {
-            let fieldIndex = (this.fields.length + 1);
+        addField()
+        {
+            this.nextFieldIndex++
 
             this.fields.push({
-                name: "field_" + fieldIndex,
+                name: "field_" + this.nextFieldIndex,
                 type: "text",
                 index_view: false,
                 active: false,
                 required: false,
+                uniqueId: this.generateKeyId()
             });
         },
-        handleEditMode() {
+        handleEditMode()
+        {
             this.isEditMode = !this.isEditMode;
+        },
+        generateKeyId()
+        {
+            return '_' + Math.random().toString(36).substr(2, 9);
         }
     }
 }

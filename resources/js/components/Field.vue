@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col">
                     <span class="field-label">
-                        {{ field.label ? field.label : getFieldLabel }}
+                        {{ field.name }}
                     </span>
                 </div>
                 <div class="col text-right">
@@ -13,7 +13,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <strong>Name:</strong> {{ field.name }}
+                    <strong>Label:</strong> {{ getFieldLabel }}
                 </div>
                 <div class="col text-right">
                     <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
@@ -28,8 +28,8 @@
         <div v-show="isEditMode" class="input-container">
             <div class="row">
                 <div class="col">
-                    <label>Label:</label>
-                    <input type="text" v-model="field.label" :name="getFieldName('label')" />
+                    <label class="required">Name:</label>
+                    <input type="text" v-model="field.name" :name="getFieldName('name')" />
                 </div>
                 <div class="col">
                     <label>Type:</label>
@@ -46,8 +46,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <label class="required">Name:</label>
-                    <input type="text" v-model="field.name" :name="getFieldName('name')" />
+                    &nbsp;
                 </div>
                 <div class="col">
                     <Lightswitch
@@ -70,9 +69,14 @@
                         />
                 </div>
             </div>
+            <div class="row">
+                <div class="col text-right">
+                    <a href="" @click.prevent="validateDeleteField" class="form-field-rm">Delete</a>
+                </div>
+            </div>
         </div>
-        <input type="hidden" :name="getFieldName('id')" :value="field.id ? field.id : ''">
-        <input type="hidden" :name="getFieldName('order')" :value="order+1">
+        <input type="hidden" :name="getFieldName('id')" :value="field.id ? field.id : '0'">
+        <input type="hidden" :name="getFieldName('order')" :value="order">
         <input type="hidden" :name="getFieldName('required')" v-model="field.required">
         <input type="hidden" :name="getFieldName('index_view')" v-model="field.index_view">
         <input type="hidden" :name="getFieldName('active')" v-model="field.active">
@@ -81,10 +85,12 @@
 
 <script>
 import Lightswitch from './Lightswitch.vue';
+import { debounce } from 'lodash';
 
 export default {
     props: [
-        "defaultOrder",
+        "order",
+        "index",
         "defaultField",
         "isEditMode",
     ],
@@ -101,7 +107,6 @@ export default {
                 'file',
             ],
             field: this.defaultField,
-            order: this.defaultOrder
         }
     },
     components: {
@@ -133,7 +138,7 @@ export default {
         },
         getFieldName(key)
         {
-            return "fields[" + this.order + "]["+ key +"]"
+            return "fields[" + this.index + "]["+ key +"]"
         },
         getFieldStyle()
         {
@@ -142,6 +147,14 @@ export default {
         getStatusColor(status)
         {
             return (status ? "#00b007" : "grey");
+        },
+        validateDeleteField()
+        {
+            const result = window.confirm("Are you sure you want to delete Field: "+this.field.name);
+            if(result)
+            {
+                this.$emit('delete-field');
+            }
         }
     }
 }
