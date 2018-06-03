@@ -29,7 +29,8 @@
             <div class="row">
                 <div class="col">
                     <label class="required">Name:</label>
-                    <input type="text" v-model="field.name" :name="getFieldName('name')" />
+                    <input type="text" v-model="field.name" @change="validateName" :name="getFieldName('name')" />
+                    <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
                 </div>
                 <div class="col">
                     <label>Type:</label>
@@ -93,6 +94,7 @@ export default {
         "index",
         "defaultField",
         "isEditMode",
+        "validateNameCallback"
     ],
     data(){
         return {
@@ -106,7 +108,7 @@ export default {
                 'select',
                 'file',
             ],
-            field: this.defaultField,
+            field: Object.assign({}, this.defaultField),
         }
     },
     components: {
@@ -155,6 +157,10 @@ export default {
             {
                 this.$emit('delete-field');
             }
+        },
+        validateName()
+        {
+            this.field.isValidName = this.validateNameCallback(this.field.name);
         }
     }
 }

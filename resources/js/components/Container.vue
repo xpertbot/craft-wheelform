@@ -2,7 +2,7 @@
     <div id="formapp">
         <div class="btn-container">
             <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
-            <button v-on:click.prevent="handleEditMode" class="btn primary pull-right">{{isEditMode ? "Drag" : "Edit"}} Fields</button>
+            <button v-show="fields.length > 0" v-on:click.prevent="handleEditMode" class="btn primary pull-right">{{isEditMode ? "Drag" : "Edit"}} Fields</button>
         </div>
         <div id="field-container">
               <Field
@@ -13,6 +13,7 @@
                :default-field="field"
                :is-edit-mode="isEditMode"
                @delete-field="fields.splice(index, 1)"
+               :validate-name-callback="validateFieldName"
               />
         </div>
     </div>
@@ -21,7 +22,6 @@
 <script>
 import axios from 'axios';
 import Field from './Field.vue';
-import { find } from 'lodash';
 
 export default {
     components:{
@@ -52,6 +52,10 @@ export default {
                     for (let index = 0; index < res.data.length; index++) {
                         let field = res.data[index];
                         field.uniqueId = this.generateKeyId();
+                        field.isValidName= {
+                            status: true,
+                            msg: ''
+                        };
                         this.fields.push(field);
                     }
                     this.nextFieldIndex = this.fields.length;
@@ -70,7 +74,11 @@ export default {
                 index_view: false,
                 active: false,
                 required: false,
-                uniqueId: this.generateKeyId()
+                uniqueId: this.generateKeyId(),
+                isValidName: {
+                    status: true,
+                    msg: ''
+                }
             });
         },
         handleEditMode()
@@ -80,7 +88,33 @@ export default {
         generateKeyId()
         {
             return '_' + Math.random().toString(36).substr(2, 9);
-        }
+        },
+        validateFieldName(userInput)
+        {
+            let result = this.fields.filter((field) => {
+                return field.name === userInput;
+            });
+
+            if(result.length > 0)
+            {
+                return {
+                    status: false,
+                    msg: 'Name is not unique'
+                }
+            }
+
+            if(userInput.indexOf(' ') >= 0){
+                return {
+                    status: false,
+                    msg: 'Name contains whitespaces'
+                }
+            }
+
+            return {
+                status: true,
+                msg: ''
+            }
+        },
     }
 }
 </script>
