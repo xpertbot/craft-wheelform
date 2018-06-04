@@ -73,9 +73,9 @@ export default {
             this.fields.push({
                 name: "field_" + this.nextFieldIndex,
                 type: "text",
-                index_view: false,
-                active: false,
-                required: false,
+                index_view: 0,
+                active: 1,
+                required: 0,
                 uniqueId: this.generateKeyId(),
                 isValidName: {
                     status: true,

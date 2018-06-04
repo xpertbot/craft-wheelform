@@ -137,7 +137,7 @@ export default {
     methods: {
         handleStatusChange(key, value)
         {
-            this.field[key] = value;
+            this.field[key] = (value ? 1 : 0);
         },
         getFieldName(key)
         {

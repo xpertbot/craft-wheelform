@@ -98,7 +98,7 @@ class FormController extends Controller
 
         if(! empty($newFields))
         {
-            foreach($newFields as $position => $field)
+            foreach($newFields as $field)
             {
                 //If field name is empty skip it, but don't delete it, only delete it if delete icon is clicked.
                 if(empty($field['name'])) continue;
