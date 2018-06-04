@@ -1,58 +1,13 @@
-
-.fa {
-  font-size: 20px;
-}
-
-.field-details {
-  position: relative;
-  padding-left: 25px;
-}
-.wheelform-field-handle {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  z-index: 10;
-  cursor: move;
-  max-width: 18px;
-  max-height: 20px;
-  margin-top: -10px;
-  /* half of height; */
-}
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-.col {
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 100%;
-}
-.input-container .col {
-  margin: 0px 0px 10px;
-}
-.text-right {
-  text-align: right;
-}
-#formapp label {
-  display: block;
-}
-#formapp .field-label {
-  font-size: 18px;
-}
-.form-field-add, .form-field-rm {
-  color: rgba(0, 0, 0, 0.2); }
-
-.form-field-add:hover {
-  color: #00b007 !important; }
-
-.form-field-rm:hover {
-  color: #da5a47 !important; }
+.mt-10 {
+  margin-top: 10px; }
 
 .clearfix:after {
   display: block;
   content: "";
   clear: both; }
+
+.text-right {
+  text-align: right; }
 
 td.view-message > a, td.view-message > span {
   display: inline-block;
@@ -67,29 +22,29 @@ span.new-badge {
   width: 145px; }
 
 .pagination {
-  margin: .5rem 0rem;
+  margin: 0.5rem 0rem;
   display: flex;
   padding-left: 0px;
   list-style: none;
-  border-radius: .25rem; }
+  border-radius: 0.25rem; }
   .pagination li.active a {
     background-color: #0d78f2;
     color: #fff; }
   .pagination li a, .pagination li span {
     position: relative;
     display: block;
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
     margin-left: 1px;
     line-height: 1.25;
     background-color: #fff;
     border: 1px solid #dee2e6; }
   .pagination li:first-child span, .pagination li:first-child a {
     margin-left: 0px;
-    border-top-left-radius: .25rem;
-    border-bottom-left-radius: .25rem; }
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem; }
   .pagination li:last-child span, .pagination li:last-child a {
-    border-top-right-radius: .25rem;
-    border-bottom-right-radius: .25rem; }
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem; }
 
 table.data th, table.data td {
   padding: 5px 10px; }
@@ -105,15 +60,39 @@ th.text-center, td.text-center {
 
 #formapp {
   width: 100%; }
-  @media screen and (min-width: 480px) {
-    #formapp {
-      width: 28rem; } }
-  @media screen and (min-width: 767px) {
-    #formapp {
-      width: 40rem; } }
+  #formapp label {
+    display: block; }
+  #formapp .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; }
+    #formapp .row > .col {
+      position: relative;
+      width: 100%;
+      min-height: 1px; }
+      @media (min-width: 576px) {
+        #formapp .row > .col {
+          flex: 0 0 50%;
+          max-width: 50%; } }
+      #formapp .row > .col > div {
+        margin: 0px 0px 5px; }
+  #formapp .field-details {
+    position: relative;
+    padding-left: 25px; }
+    @media (max-width: 576px) {
+      #formapp .field-details .text-right {
+        text-align: left !important; } }
+  #formapp .field-label {
+    font-size: 18px; }
   #formapp #field-container {
     position: relative;
     width: 100%; }
+  #formapp .form-field-add, #formapp .form-field-rm {
+    color: rgba(0, 0, 0, 0.2); }
+  #formapp .form-field-add:hover {
+    color: #00b007 !important; }
+  #formapp .form-field-rm:hover {
+    color: #da5a47 !important; }
   #formapp .wheelform-field {
     border: 1px dashed gray;
     padding: 0.5rem 0.5rem;
@@ -132,6 +111,26 @@ th.text-center, td.text-center {
         bottom: auto;
         z-index: 25;
         padding: 5px; }
+  #formapp .wheelform-field-handle {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 10;
+    cursor: move;
+    max-width: 18px;
+    max-height: 20px;
+    margin-top: -10px;
+    /* half of height; */ }
+  #formapp .fa {
+    font-size: 20px; }
   #formapp .pull-right {
     clear: right;
     float: right; }
+
+@media screen and (min-width: 480px) {
+  #formapp {
+    width: 28rem; } }
+
+@media screen and (min-width: 767px) {
+  #formapp {
+    width: 40rem; } }

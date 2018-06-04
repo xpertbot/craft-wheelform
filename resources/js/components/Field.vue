@@ -4,76 +4,70 @@
             <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
             <div class="row">
                 <div class="col">
-                    <span class="field-label">
-                        {{ field.name }}
-                    </span>
+                    <div>
+                        <span class="field-label">
+                            {{ field.name }}
+                        </span>
+                    </div>
+                    <div>
+                        <strong>Label:</strong> {{ getFieldLabel }}
+                    </div>
+                    <div>
+                        <strong>Type:</strong> {{ field.type | capitalize }}
+                    </div>
                 </div>
-                <div class="col text-right">
-                    <span :style="'color:'+getStatusColor(field.required)">Required</span>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col">
-                    <strong>Label:</strong> {{ getFieldLabel }}
-                </div>
-                <div class="col text-right">
-                    <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <strong>Type:</strong> {{ field.type | capitalize }}
+                    <div class="text-right">
+                        <span :style="'color:'+getStatusColor(field.required)">Required</span>
+                    </div>
+                    <div class="text-right">
+                        <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div v-show="isEditMode" class="input-container">
+        <div v-show="isEditMode">
             <div class="row">
                 <div class="col">
-                    <label class="required">Name:</label>
-                    <input type="text" v-model="field.name" @change="validateName" :name="getFieldName('name')" />
-                    <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
+                    <div>
+                        <label class="required">Name:</label>
+                        <input type="text" v-model="field.name" @change="validateName" :name="getFieldName('name')" />
+                        <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
+                    </div>
+                    <div>
+                         <label>Type:</label>
+                        <select v-model="field.type" :name="getFieldName('type')">
+                            <option
+                                v-for="(fieldType, index) in fieldTypes"
+                                :key="index"
+                                :value="fieldType"
+                                >
+                                {{ fieldType | capitalize }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
                 <div class="col">
-                    <label>Type:</label>
-                    <select v-model="field.type" :name="getFieldName('type')">
-                        <option
-                            v-for="(fieldType, index) in fieldTypes"
-                            :key="index"
-                            :value="fieldType"
-                            >
-                            {{ fieldType | capitalize }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    &nbsp;
-                </div>
-                <div class="col">
-                    <Lightswitch
-                        :name="'required'"
-                        :label="'Required'"
-                        :status="field.required"
-                        :handle-status-change="handleStatusChange"
-                        />
+                    <div>
+                        <Lightswitch
+                            :name="'required'"
+                            :label="'Required'"
+                            :status="field.required"
+                            :handle-status-change="handleStatusChange"
+                            />
+                    </div>
+                    <div>
+                        <Lightswitch
+                            :name="'index_view'"
+                            :label="'Index View'"
+                            :status="field.index_view"
+                            :handle-status-change="handleStatusChange"
+                            />
+                    </div>
+                    <div class="text-right mt-10">
+                        <a href="" @click.prevent="validateDeleteField" class="form-field-rm">Delete</a>
+                    </div>
 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">&nbsp;</div>
-                <div class="col">
-                    <Lightswitch
-                        :name="'index_view'"
-                        :label="'Index View'"
-                        :status="field.index_view"
-                        :handle-status-change="handleStatusChange"
-                        />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-right">
-                    <a href="" @click.prevent="validateDeleteField" class="form-field-rm">Delete</a>
                 </div>
             </div>
         </div>
@@ -168,40 +162,5 @@ export default {
 </script>
 
 <style>
-.field-details{
-    position: relative;
-    padding-left: 25px;
-}
-.wheelform-field-handle{
-    position: absolute;
-    top: 50%;
-    left: 0;
-    z-index: 10;
-    cursor: move;
-    max-width: 18px;
-    max-height: 20px;
-    margin-top: -10px; /* half of height; */
-}
-.row{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
-.col{
-    flex-basis: 0;
-    flex-grow: 1;
-    max-width: 100%;
-}
-.input-container .col{
-    margin:0px 0px 10px;
-}
-.text-right{
-    text-align: right;
-}
-#formapp label{
-    display: block;
-}
-#formapp .field-label{
-    font-size: 18px;
-}
+
 </style>
