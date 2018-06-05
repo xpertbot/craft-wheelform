@@ -166,7 +166,7 @@ class FormController extends Controller
             throw new HttpException(404);
         }
 
-        $fields = FormField::find()->where(['form_id' => $formId])->orderBy('order', 'ASC')->all();
+        $fields = FormField::find()->where(['form_id' => $formId])->orderBy('order', SORT_ASC)->all();
 
         return $this->asJson($fields);
     }

@@ -32,7 +32,7 @@ class MessageController extends Controller
             return null;
         }
 
-        $formModel = Form::findOne($form_id);
+        $formModel = Form::find()->with('fields')->one();
 
         if(empty($formModel))
         {

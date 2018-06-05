@@ -46,13 +46,13 @@
 <input type="hidden" name="entry_id" value="{{ entry.id }}">
 
 <div class="tableview">
-    {% if entry.value is not empty %}
+    {% if messageValues is not empty %}
         <table class="data fullwidth">
             <thead>
                 <th>{{ 'Label' | t('wheelform') }}</th>
                 <th>{{ 'Value' | t('wheelform') }}</th>
             </thead>
-            {% for row in entry.value %}
+            {% for row in messageValues %}
                 <tr>
                     <td>
                         <strong>{{ row.field.getLabel() }}</strong>

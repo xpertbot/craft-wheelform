@@ -41,6 +41,7 @@ class EntriesController extends Controller
 
         $headerFields = FormField::find()
             ->where(['form_id' => $form_id, 'index_view' => 1, 'active' => 1])
+            ->orderBy(['order' => SORT_ASC])
             ->all();
 
         return $this->renderTemplate('wheelform/_entries.twig', [
@@ -54,7 +55,7 @@ class EntriesController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $entry_id = intval($params['id']);
-        $message = Message::find()->where(['id' => $entry_id])->with('form', 'value')->one();
+        $message = Message::find()->where(['id' => $entry_id])->with('form')->one();
 
         if (! $message) {
             throw new HttpException(404);
@@ -63,7 +64,14 @@ class EntriesController extends Controller
         $message->read = 1;
         $message->save();
 
+        $messageValues = MessageValue::find()
+            ->where(['message_id' => $message->id])
+            ->joinWith('field')
+            ->orderBy(FormField::tableName().'.order', SORT_ASC)
+            ->all();
+
         return $this->renderTemplate('wheelform/_entry.twig', [
+            'messageValues' => $messageValues,
             'entry' => $message,
             'form_id' => $message->form->id
         ]);
