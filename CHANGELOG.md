@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.7.1 - 2018-06-04
+### Added
+- Added minified version of application.
+
 ## 1.7.0 - 2018-06-02
 ### Added
-- Added order of field in database
+- Added order of field in database. Forms have to be resaved in order to save field ordering to take effect.
 - Added better view of fields
 
 ## 1.6.9 - 2018-05-10
