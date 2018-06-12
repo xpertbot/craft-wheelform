@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.7.3 - 2018-06-09
+### Fixed
+- Fixed wrong fields being emailed on form submittion introduced on previous patch.
+
 ## 1.7.2 - 2018-06-05
 ### Notes
 - Forms need to be re-saved in order for new ordering to take effect.
