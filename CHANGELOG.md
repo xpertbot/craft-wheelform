@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.7.2 - 2018-06-05
+### Notes
+- Forms need to be re-saved in order for new ordering to take effect.
+
+### Fixed
+- Fixed bug of inactive fields being displayed on form builder.
+
 ## 1.7.1 - 2018-06-04
 ### Added
 - Added minified version of application.

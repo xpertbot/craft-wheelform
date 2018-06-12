@@ -141,7 +141,11 @@ class FormController extends Controller
             $db = Craft::$app->getDb();
             $db->createCommand()->update(
                 FormField::tableName(),
-                ['active' => 0],
+                [
+                    'active' => 0,
+                    'required' => 0,
+                    'index_view' => 0,
+                ],
                 "id IN (".implode(', ', $toDeleteIds).")"
             )->execute();
         }
@@ -166,7 +170,7 @@ class FormController extends Controller
             throw new HttpException(404);
         }
 
-        $fields = FormField::find()->where(['form_id' => $formId])->orderBy('order', SORT_ASC)->all();
+        $fields = FormField::find()->where(['form_id' => $formId, 'active' => 1])->orderBy('order', SORT_ASC)->all();
 
         return $this->asJson($fields);
     }
