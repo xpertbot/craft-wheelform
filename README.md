@@ -29,6 +29,8 @@ To install the plugin, follow these instructions.
 - Checkbox options
 - Ajax and Redirect friendly
 - Send Form submissions to multiple emails
+- Reordering of fields
+- Multiple Translations
 
 ## Usage
 After successful installation go to Plugin Settings and add the email you would like the forms to send `FROM`. As well as set other useful settings.

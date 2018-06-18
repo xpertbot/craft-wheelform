@@ -155,7 +155,8 @@ class MessageController extends Controller
         $url = "https://www.google.com/recaptcha/api/siteverify";
         $ipAddress = $_SERVER['REMOTE_ADDR'];
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-            $ipAddress = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+            $ipParts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            $ipAddress = array_pop($ipParts);
         }
         $jsonRes = file_get_contents($url."?secret=".$secret."&response=".$userRes."&remoteip=".$ipAddress);
 

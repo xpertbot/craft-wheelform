@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.7.4 - 2018-06-18
+### Added
+- Added German translations.
+
+### Fixed
+- Fixed reCaptcha submission error on PHP 7.2.
+
 ## 1.7.3 - 2018-06-09
 ### Fixed
 - Fixed wrong fields being emailed on form submittion introduced on previous patch.
