@@ -142,4 +142,47 @@ class EntriesController extends Controller
 
         return $this->redirectToPostedUrl($entry);
     }
+
+    public function actionExport()
+    {
+        $params = Craft::$app->getRequest()->getRequiredBodyParam('params');
+
+        try {
+            $backupPath = Craft::$app->getDb()->backup();
+        } catch (\Throwable $e) {
+            throw new Exception('Could not create backup: '.$e->getMessage());
+        }
+
+        if (!is_file($backupPath)) {
+            throw new Exception("Could not create backup: the backup file doesn't exist.");
+        }
+
+        if (empty($params['downloadBackup'])) {
+            return $this->asJson(['success' => true]);
+        }
+
+        $zipPath = Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.pathinfo($backupPath, PATHINFO_FILENAME).'.zip';
+
+        if (is_file($zipPath)) {
+            try {
+                FileHelper::unlink($zipPath);
+            } catch (ErrorException $e) {
+                Craft::warning("Unable to delete the file \"{$zipPath}\": ".$e->getMessage(), __METHOD__);
+            }
+        }
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
+            throw new Exception('Cannot create zip at '.$zipPath);
+        }
+
+        $filename = pathinfo($backupPath, PATHINFO_BASENAME);
+        $zip->addFile($backupPath, $filename);
+        $zip->close();
+
+        return $this->asJson([
+            'backupFile' => pathinfo($filename, PATHINFO_FILENAME)
+        ]);
+    }
 }

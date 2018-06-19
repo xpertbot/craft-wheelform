@@ -5,10 +5,13 @@ use Craft;
 use craft\base\Plugin as BasePlugin;
 use wheelform\models\Settings;
 use wheelform\models\Message;
+use wheelform\utilities\Export;
 
 use yii\base\Event;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterComponentTypesEvent;
+use craft\services\Utilities;
 
 class Plugin extends BasePlugin
 {
@@ -46,6 +49,14 @@ class Plugin extends BasePlugin
                 $event->rules[$this->id . '/message/send'] = $this->id.'/message/send';
             }
         );
+
+        Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITY_TYPES, function($event){
+            if(is_array($event->types))
+            {
+                $event->types[] = Export::class;
+            }
+            return $event;
+        });
     }
 
     public function getMailer(): Mailer
