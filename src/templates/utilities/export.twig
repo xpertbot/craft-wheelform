@@ -4,17 +4,26 @@
     <input type="hidden" name="action" value="wheelform/entries/export">
     {{ csrfInput() }}
 
-    {{ forms.textField({
+    {{
+        forms.selectField({
+            label: 'Select Form'|t('wheelform'),
+            id: 'form-options',
+            name: 'form-options',
+            options: formOptions,
+        })
+    }}
+
+    {{ forms.dateField({
         name: 'start_date',
+        id: 'start_date',
         label: 'Start Date'|t('wheelform'),
         first: true,
-        class: 'datepicker',
     }) }}
 
-    {{ forms.textField({
+    {{ forms.dateField({
         name: 'end_date',
+        id: 'end_date',
         label: 'End Date'|t('wheelform'),
-        class: 'datepicker',
     }) }}
 
     <div class="buttons">

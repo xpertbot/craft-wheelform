@@ -50,7 +50,8 @@ class Plugin extends BasePlugin
             }
         );
 
-        Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITY_TYPES, function($event){
+        Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITY_TYPES, function($event)
+        {
             if(is_array($event->types))
             {
                 $event->types[] = Export::class;
