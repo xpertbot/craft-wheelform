@@ -47,15 +47,18 @@
 
                                         this.updateProgressBar();
 
-                                        if (response && response.backupFile) {
-                                            var $iframe = $('<iframe/>', { 'src': Craft.getActionUrl('utilities/download-backup-file', { 'filename': response.backupFile }) }).hide();
+                                        if (response && response.csvFile) {
+                                            var $iframe = $('<iframe/>', {
+                                                'src': Craft.getActionUrl('wheelform/entries/download-file',
+                                                { 'filename': response.csvFile })
+                                            }).hide();
                                             this.$form.append($iframe);
                                         }
 
                                         setTimeout($.proxy(this, 'onComplete'), 300);
                                     }
                                     else {
-                                        Craft.cp.displayError(Craft.t('app', 'There was a problem backing up your database. Please check the Craft logs.'));
+                                        Craft.cp.displayError(Craft.t('wheelform', 'There was a problem exporting your form entries.'));
 
                                         this.onComplete(false);
                                     }

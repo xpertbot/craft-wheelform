@@ -33,6 +33,12 @@ class Message extends ActiveRecord
         return $this->hasMany(MessageValue::class, ['message_id' => 'id']);
     }
 
+    public function getField()
+    {
+        return $this->hasMany(FormField::class, ['id' => 'field_id'])
+            ->via('value');
+    }
+
     public static function getUnreadCount()
     {
         return self::find()->where(['read' => 0, ])->count();

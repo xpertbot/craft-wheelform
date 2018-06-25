@@ -2,13 +2,14 @@
 
 <form id="export-form" class="utility" method="post" accept-charset="UTF-8">
     <input type="hidden" name="action" value="wheelform/entries/export">
+    <input type="hidden" name="redirect" value="{{ cpUrl('utilities/wheelform-export')}}">
     {{ csrfInput() }}
 
     {{
         forms.selectField({
             label: 'Select Form'|t('wheelform'),
             id: 'form-options',
-            name: 'form-options',
+            name: 'form_id',
             options: formOptions,
         })
     }}

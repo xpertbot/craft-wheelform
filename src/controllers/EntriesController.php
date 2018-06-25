@@ -7,10 +7,13 @@ use wheelform\models\Form;
 use wheelform\models\FormField;
 use wheelform\models\Message;
 use wheelform\models\MessageValue;
+use wheelform\helpers\ExportHelper;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
+use craft\helpers\Path;
+use craft\helpers\DateTimeHelper;
 
 class EntriesController extends Controller
 {
@@ -146,43 +149,57 @@ class EntriesController extends Controller
     public function actionExport()
     {
         $params = Craft::$app->getRequest()->getRequiredBodyParam('params');
+        $form_id = $params['form_id'];
+        $where = [];
+
+        if(empty($form_id))
+        {
+            throw new Exception(Craft::t('Form ID is required.', 'wheelform'));
+        }
 
         try {
-            $backupPath = Craft::$app->getDb()->backup();
-        } catch (\Throwable $e) {
-            throw new Exception('Could not create backup: '.$e->getMessage());
-        }
+            $exportHelper = new ExportHelper();
+            $where['form_id'] = $form_id;
 
-        if (!is_file($backupPath)) {
-            throw new Exception("Could not create backup: the backup file doesn't exist.");
-        }
-
-        if (empty($params['downloadBackup'])) {
-            return $this->asJson(['success' => true]);
-        }
-
-        $zipPath = Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.pathinfo($backupPath, PATHINFO_FILENAME).'.zip';
-
-        if (is_file($zipPath)) {
-            try {
-                FileHelper::unlink($zipPath);
-            } catch (ErrorException $e) {
-                Craft::warning("Unable to delete the file \"{$zipPath}\": ".$e->getMessage(), __METHOD__);
+            if(! empty($params['start_date']))
+            {
+                $date = DateTimeHelper::toIso8601($params['start_date']);
+                $where['start_date'] = $date;
             }
+            if(! empty($params['end_date']))
+            {
+                $date = DateTimeHelper::toIso8601($params['end_date']);
+                $where['end_date'] = $date;
+            }
+
+            $csvPath = $exportHelper->getCsv($where);
+        } catch (\Throwable $e) {
+            throw new Exception('Could not create csv: '.$e->getMessage());
         }
 
-        $zip = new ZipArchive();
-
-        if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
-            throw new Exception('Cannot create zip at '.$zipPath);
+        if (!is_file($csvPath)) {
+            throw new Exception("Could not create csv: the csv file doesn't exist.");
         }
 
-        $filename = pathinfo($backupPath, PATHINFO_BASENAME);
-        $zip->addFile($backupPath, $filename);
-        $zip->close();
+        $filename = pathinfo($csvPath, PATHINFO_BASENAME);
 
         return $this->asJson([
-            'backupFile' => pathinfo($filename, PATHINFO_FILENAME)
+            'csvFile' => pathinfo($filename, PATHINFO_FILENAME)
         ]);
+    }
+
+
+    public function actionDownloadFile()
+    {
+        $filename = Craft::$app->getRequest()->getRequiredQueryParam('filename');
+        $filePath = Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.$filename.'.csv';
+
+        if (!is_file($filePath) || !Path::ensurePathIsContained($filePath)) {
+            throw new NotFoundHttpException(Craft::t('wheelform', 'Invalid csv name: {filename}', [
+                'filename' => $filename
+            ]));
+        }
+
+        return Craft::$app->getResponse()->sendFile($filePath);
     }
 }
