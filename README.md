@@ -24,6 +24,7 @@ To install the plugin, follow these instructions.
 
 ## Features
 - reCaptcha Validation
+- Export CSV File
 - Email Validation based on field type selected
 - Required Fields
 - Checkbox options
@@ -162,6 +163,9 @@ $('#my-form').submit(function(ev) {
 ```
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
+
+### CSV Export
+CSV Exporter can be based on entry date, under Admin > Utilities > Form Export.
 
 ### Translations
 New translations can be submitted using the format inside the translations folder.
