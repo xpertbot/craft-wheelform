@@ -3,21 +3,19 @@ namespace wheelform;
 
 use Craft;
 use craft\helpers\StringHelper;
-use craft\mail\Message;
+use craft\mail\Message as MailMessage;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
 use craft\helpers\FileHelper;
-
-use wheelform\models\Message as MessageModel;
+use wheelform\events\SendEvent;
+use wheelform\models\Form;
 
 class Mailer extends Component
 {
-    // const EVENT_BEFORE_SEND = 'beforeSend';
+    const EVENT_BEFORE_SEND = 'beforeSend';
 
-    // const EVENT_AFTER_SEND = 'afterSend';
-
-    public function send(String $to_email, String $form_name, MessageModel $model): bool
+    public function send(Form $form, array $message): bool
     {
         // Get the plugin settings and make sure they validate before doing anything
         $settings = Plugin::getInstance()->getSettings();
@@ -25,27 +23,35 @@ class Mailer extends Component
             throw new InvalidConfigException(Craft::t('wheelform', "Plugin settings need to be configured."));
         }
 
-        $mailer = Craft::$app->getMailer();
-
-        // Prep the message
+        // Prep the message Variables
+        $defaultSubject = $form->name . " - " . Craft::t("wheelform", 'Submission');
         $from_email = $settings->from_email;
-        $subject = $form_name . " Submission";
+        $mailMessage = new MailMessage();
+        $mailer = Craft::$app->getMailer();
+        $text = '';
 
-        $text = "";
+        $event = new SendEvent([
+            'form_id' => $form->id,
+            'subject' => $defaultSubject,
+            'message' => $message,
+        ]);
 
-        $message = new Message();
-        //gather values
-        if ($model->value !== null) {
-            foreach ($model->value as $valueModel) {
-                $text .= ($text ? "\n" : '')."- **{$valueModel->field->getLabel()}:** ";
+        $this->trigger(self::EVENT_BEFORE_SEND, $event);
 
-                switch ($valueModel->field->type)
+        //gather message
+        if(! empty($event->message))
+        {
+            foreach($event->message as $m)
+            {
+                $text .= ($text ? "\n" : '')."- **{$m['label']}:** ";
+
+                switch ($m['type'])
                 {
                     case 'file':
-                        if(! empty($valueModel->value)){
-                            $attachment = json_decode($valueModel->value);
+                        if(! empty($m['value'])){
+                            $attachment = json_decode($m['value']);
 
-                            $message->attach($attachment->tempName, [
+                            $mailMessage->attach($attachment->tempName, [
                                 'fileName' => $attachment->name,
                                 'contentType' => FileHelper::getMimeType($attachment->tempName),
                             ]);
@@ -54,12 +60,12 @@ class Mailer extends Component
                         break;
 
                     case 'checkbox':
-                        $text .= (is_array($valueModel->value) ? implode(', ', $valueModel->value) : $valueModel->value);
+                        $text .= (is_array($m['value']) ? implode(', ', $m['value']) : $m['value']);
                         break;
 
                     default:
                         //Text, Email, Number
-                        $text .= $valueModel->value;
+                        $text .= $m['value'];
                         break;
                 }
             }
@@ -67,18 +73,18 @@ class Mailer extends Component
 
         $html_body = $this->compileHtmlBody($text);
 
-        $message->setFrom($from_email);
-        $message->setSubject($subject);
-        $message->setTextBody($text);
-        $message->setHtmlBody($html_body);
+        $mailMessage->setFrom($from_email);
+        $mailMessage->setSubject($event->subject);
+        $mailMessage->setTextBody($text);
+        $mailMessage->setHtmlBody($html_body);
 
-        // Grab any "to" emails set in the plugin settings.
-        $to_emails = StringHelper::split($to_email);
+        // Grab any "to" emails set in the form settings.
+        $to_emails = StringHelper::split($form->to_email);
 
         foreach ($to_emails as $to_email) {
             $to_email = trim($to_email);
-            $message->setTo($to_email);
-            $mailer->send($message);
+            $mailMessage->setTo($to_email);
+            $mailer->send($mailMessage);
         }
 
         return true;

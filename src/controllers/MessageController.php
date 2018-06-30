@@ -44,7 +44,10 @@ class MessageController extends Controller
         $message->form_id = $form_id;
 
         $errors = [];
-        $values = [];
+        //Array of MessageValues to Link to Message;
+        $entryValues = [];
+        //Array of values to pass for event;
+        $senderValues = [];
 
         if($formModel->active == 0)
         {
@@ -68,10 +71,17 @@ class MessageController extends Controller
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;
 
+                $senderValues[$field->name] = [
+                    'label' => $field->getLabel(),
+                    'type' => $field->type,
+                ];
+
                 if($field->type == "file"){
                     $messageValue->value = UploadedFile::getInstanceByName($field->name);
+                    $senderValues[$field->name]['value'] = json_encode($messageValue->value);
                 } else {
                     $messageValue->value = $request->getBodyParam($field->name, null);
+                    $senderValues[$field->name]['value'] = $messageValue->value;
                 }
 
                 if(! $messageValue->validate())
@@ -80,7 +90,7 @@ class MessageController extends Controller
                 }
                 else
                 {
-                    $values[] = $messageValue;
+                    $entryValues[] = $messageValue;
                 }
             }
 
@@ -115,16 +125,15 @@ class MessageController extends Controller
             }
         }
 
-
         //Link Values to Message
-        foreach($values as $value)
+        foreach($entryValues as $value)
         {
             $message->link('value', $value);
         }
 
         if($formModel->send_email)
         {
-            if (!$plugin->getMailer()->send($formModel->to_email, $formModel->name, $message)) {
+            if (!$plugin->getMailer()->send($formModel, $senderValues)) {
                 if ($request->isAjax) {
                     return $this->asJson(['errors' => $errors]);
                 }
