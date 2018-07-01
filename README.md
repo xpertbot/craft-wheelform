@@ -174,6 +174,11 @@ CSV Exporter can be based on entry date, under Admin > Utilities > Form Export.
 
 You can also trigger other custom functionality such as gathering custom field values to add to a Third party service such as a Mailing list.
 
+`Event` class properties:
+* `form_id` - Current ID of form being submitted, This allows developers some way to check what fields are being sent.
+* `subject` - Subject of the currnet form. This can be modified to make it customizable.
+* `message` - Associative Array of different fields with the values submitted.
+
 Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
 
 ### Translations
