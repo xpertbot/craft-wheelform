@@ -167,5 +167,14 @@ If using getCrsfInput() make sure you are submitting it with the rest of your fo
 ### CSV Export
 CSV Exporter can be based on entry date, under Admin > Utilities > Form Export.
 
+### Events
+(Note: this is mostly for developers that know basic PHP and Composer Packages)
+
+`beforeSend` Event, this allows developers to modify the fields being sent in an email, this event does not modify the values entered in the database. Only the fields being sent to the client.
+
+You can also trigger other custom functionality such as gathering custom field values to add to a Third party service such as a Mailing list.
+
+Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
+
 ### Translations
 New translations can be submitted using the format inside the translations folder.
