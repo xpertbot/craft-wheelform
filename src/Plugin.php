@@ -24,6 +24,7 @@ class Plugin extends BasePlugin
 
     public function init()
     {
+        parent::init();
 
         Event::on(
             UrlManager::class,
