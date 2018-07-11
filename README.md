@@ -25,6 +25,7 @@ To install the plugin, follow these instructions.
 ## Features
 - reCaptcha Validation
 - Export CSV File
+- Custom Email HTML Template
 - Email Validation based on field type selected
 - Required Fields
 - Checkbox options
@@ -166,6 +167,51 @@ If using getCrsfInput() make sure you are submitting it with the rest of your fo
 
 ### CSV Export
 CSV Exporter can be based on entry date, under Admin > Utilities > Form Export.
+
+### Custom Email Template
+Custom Twig templates can be used using these steps:
+
+1. Create `wheelform.php` file inside Craft's config folder.
+2. `wheelform.php` expends an array of configuration settings to be returned. Only `template` variable is required, this is a path to the custom TWIG Template. Example:
+
+```php
+return [
+    'template' => '_emails/custom';
+];
+```
+3. Inside `custom.html` (or the name you chose for your file on above config) you will have access to a `fields` array. Example
+
+```html
+<html>
+<body>
+    <h1>Custom Template</h1>
+
+    <ul>
+    {% for field in fields %}
+        <li>
+        <strong>{{ field.label }}:</strong>
+        {% switch field.type %}
+
+        {% case "file" %}
+            {# This is an object with file attributes #}
+            {{ field.value.name }}
+
+            {% case "checkbox" %}
+                {# Array of all choices selected #}
+                {{ field.value | join(',')}}
+
+            {% default %}
+
+                {# Text based items #}
+                {{ field. value }}
+
+        {% endswitch %}
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+```
 
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)

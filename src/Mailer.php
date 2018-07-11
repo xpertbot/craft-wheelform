@@ -15,6 +15,10 @@ class Mailer extends Component
 {
     const EVENT_BEFORE_SEND = 'beforeSend';
 
+    protected $defaultConfig = [
+        'template' => 'wheelform/_emails/general.twig',
+    ];
+
     public function send(Form $form, array $message): bool
     {
         // Get the plugin settings and make sure they validate before doing anything
@@ -41,7 +45,7 @@ class Mailer extends Component
         //gather message
         if(! empty($event->message))
         {
-            foreach($event->message as $m)
+            foreach($event->message as $k => $m)
             {
                 $text .= ($text ? "\n" : '')."- **{$m['label']}:** ";
 
@@ -56,6 +60,9 @@ class Mailer extends Component
                                 'contentType' => FileHelper::getMimeType($attachment->tempName),
                             ]);
                             $text .= $attachment->name;
+
+                            // Prepare for Twig
+                            $event->message[$k]['value'] = $attachment;
                         }
                         break;
 
@@ -71,7 +78,7 @@ class Mailer extends Component
             }
         }
 
-        $html_body = $this->compileHtmlBody($text);
+        $html_body = $this->compileHtmlBody($event->message);
 
         $mailMessage->setFrom($from_email);
         $mailMessage->setSubject($event->subject);
@@ -90,13 +97,30 @@ class Mailer extends Component
         return true;
     }
 
-    public function compileHtmlBody(string $textBody): string
+    public function compileHtmlBody(array $variables)
     {
-        $html = Markdown::process($textBody);
+        $config = Craft::$app->getConfig();
+        $customConfig =$config->getConfigFromFile('wheelform');
+        $view = Craft::$app->getView();
+        $templateMode = $view->getTemplateMode();
 
-        // Prevent Twig tags from getting parsed
-        // TODO: probably safe to remove?
-        $html = str_replace(['{%', '{{', '}}', '%}'], ['&lbrace;%', '&lbrace;&lbrace;', '&rbrace;&rbrace;', '%&rbrace;'], $html);
+        if(empty($customConfig))
+        {
+            $view->setTemplateMode($view::TEMPLATE_MODE_CP);
+            $template = $this->defaultConfig['template'];
+        }
+        else
+        {
+            $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
+            $template = $customConfig['template'];
+        }
+
+        $html = $view->renderTemplate($template, [
+            'fields' => $variables
+        ]);
+
+        // Reset
+        $view->setTemplateMode($templateMode);
 
         return $html;
     }
