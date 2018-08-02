@@ -78,6 +78,7 @@ class FormController extends Controller
         $form->active = $request->getBodyParam('active', 0);
         $form->send_email = $request->getBodyParam('send_email', 0);
         $form->recaptcha = $request->getBodyParam('recaptcha', 0);
+        $form->save_entry = intval($request->post('save_entry', 0));
         $form->site_id = Craft::$app->sites->currentSite->id;
 
         $result = $form->save();
@@ -164,7 +165,7 @@ class FormController extends Controller
             throw new HttpException(404);
         }
 
-        $formId = $req->getParam('form_id');
+        $formId = $req->get('form_id');
         if(! is_numeric($formId) || empty($formId))
         {
             throw new HttpException(404);
