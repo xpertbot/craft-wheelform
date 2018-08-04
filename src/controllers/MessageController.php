@@ -95,7 +95,7 @@ class MessageController extends Controller
             }
 
             // Prevent mesage form being saved if error are present
-            if (empty($errors))
+            if (empty($errors) && boolval($formModel->save_entry))
             {
                 // This should never error out based on current values
                 if(! $message->save())
@@ -126,9 +126,12 @@ class MessageController extends Controller
         }
 
         //Link Values to Message
-        foreach($entryValues as $value)
+        if(boolval($formModel->save_entry))
         {
-            $message->link('value', $value);
+            foreach($entryValues as $value)
+            {
+                $message->link('value', $value);
+            }
         }
 
         if($formModel->send_email)

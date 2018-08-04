@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.10.0 - 2018-08-01
+### Added
+- Added Cability to turn off database saving.
+
 ## 1.9.0 - 2018-07-10
 ### Added
 - Added Custom HTML Email template.

@@ -24,8 +24,9 @@ class Form extends ActiveRecord
             [['name', 'to_email'], 'required', 'message' => Craft::t('wheelform', '{attribute} cannot be blank.')],
             ['name', 'string'],
             [['to_email'], 'validateToEmails'],
-            [['active', 'send_email', 'recaptcha'], 'boolean'],
+            [['active', 'send_email', 'recaptcha', 'save_entry'], 'boolean'],
             [['active', 'send_email', 'recaptcha'], 'default', 'value' => 0],
+            [['save_entry'], 'default', 'value' => 1],
         ];
     }
 

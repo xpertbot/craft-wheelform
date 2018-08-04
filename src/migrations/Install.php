@@ -46,6 +46,7 @@ class Install extends Migration
                 'active' => $this->tinyInteger()->notNull()->defaultValue(1),
                 'send_email' => $this->tinyInteger()->notNull()->defaultValue(0),
                 'recaptcha' => $this->tinyInteger()->notNull()->defaultValue(0),
+                'save_entry' => $this->tinyInteger()->notNull()->defaultValue(1),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime(),
                 'uid' => $this->uid(),

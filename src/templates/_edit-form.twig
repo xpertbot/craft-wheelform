@@ -50,6 +50,14 @@
     }) }}
 
     {{ formEl.lightswitchField({
+        label: "Save Entries"|t('wheelform'),
+        instructions: "Save Entries to database",
+        id: 'save_entry',
+        name: 'save_entry',
+        on: (form.save_entry is null ? true : form.save_entry),
+    }) }}
+
+    {{ formEl.lightswitchField({
         label: "Send Email"|t('wheelform'),
         id: 'send_email',
         name: 'send_email',
