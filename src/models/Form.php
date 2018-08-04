@@ -84,9 +84,9 @@ class Form extends ActiveRecord
 
     public function hasNew()
     {
-        $entries =$this->getEntries()->where(['read' => 0])->count();
+        $entries = $this->getEntries()->where(['read' => 0])->one();
 
-        return boolval($entries);
+        return (! empty($entries));
     }
 
 }
