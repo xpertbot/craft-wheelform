@@ -11,27 +11,11 @@ use wheelform\models\Message;
 //__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
 class Form extends ActiveRecord
 {
-
-    public $hasNew;
-
     protected $_entryCount;
 
     public static function tableName(): String
     {
         return '{{%wheelform_forms}}';
-    }
-
-    public function init()
-    {
-        parent::init();
-
-        $newEntries = (new \yii\db\Query())
-            ->select('id')
-            ->from(Message::tableName())
-            ->where(['read' => 0])
-            ->one();
-
-        $this->hasNew = boolval($newEntries);
     }
 
     public function rules(): Array
@@ -96,6 +80,13 @@ class Form extends ActiveRecord
         }
 
         return true;
+    }
+
+    public function hasNew()
+    {
+        $entries =$this->getEntries()->where(['read' => 0])->count();
+
+        return boolval($entries);
     }
 
 }

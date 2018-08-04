@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.10.2 - 2018-08-04
+### Fixed
+- Fixed new column count on multiple forms giving wrong value.
+
 ## 1.10.1 - 2018-08-04
 ### Added
 - Added new column to form index to display which form has new messages.
@@ -33,7 +37,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Added German translations.
 
 ### Fixed
-- Fixed reCaptcha submission error on PHP 7.2.
+- Fixed reCaptcha submission value on PHP 7.2.
 
 ## 1.7.3 - 2018-06-09
 ### Fixed

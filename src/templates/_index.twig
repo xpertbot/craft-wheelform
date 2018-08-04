@@ -51,7 +51,7 @@
                             {% if form.entryCount > 0 %}</a>{% endif %}
                             </td>
                             <td>
-                            {% if form.hasNew %}
+                            {% if form.hasNew() %}
                                 <span class="new-badge">!</span>
                             {% else %}
                                 --
