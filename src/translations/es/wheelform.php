@@ -13,7 +13,6 @@ return [
     "CP Nav Label" => "Etiqueta de navegación en Panel de Control",
     "Couldn’t save form." => "La forma no fue guardada.",
     "Date Submitted" => "Fecha Enviado",
-    "Delete" => "Borrar",
     "Entries" => "Entradas",
     "Entries View" => "La vista de entradas",
     "Form ID" => "ID de la Forma",
