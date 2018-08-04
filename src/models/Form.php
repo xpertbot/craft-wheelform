@@ -5,17 +5,33 @@ use Craft;
 use craft\db\ActiveRecord;
 use yii\validators\EmailValidator;
 use craft\helpers\StringHelper;
+use wheelform\models\Message;
 
 //Using Active Record because it extends Models.
 //__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
 class Form extends ActiveRecord
 {
 
+    public $hasNew;
+
     protected $_entryCount;
 
     public static function tableName(): String
     {
         return '{{%wheelform_forms}}';
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        $newEntries = (new \yii\db\Query())
+            ->select('id')
+            ->from(Message::tableName())
+            ->where(['read' => 0])
+            ->one();
+
+        $this->hasNew = boolval($newEntries);
     }
 
     public function rules(): Array

@@ -1,5 +1,7 @@
 {% extends "_layouts/cp" %}
 
+{% do view.registerAssetBundle("wheelform\\assets\\WheelformCpAsset") %}
+
 {% set title = title ? title : "Wheel Forms" %}
 
 {% block actionButton %}
@@ -27,6 +29,9 @@
                         <th scope="col">
                             {{ 'Entries' | t('wheelform') }}
                         </th>
+                        <th scope="col" class="thin">
+                            {{ 'New' | t('wheelform') }}
+                        </th>
                         {% if currentUser.admin %}
                             <th scope="col" class="thin">
                                 {{ 'Settings' | t('wheelform') }}
@@ -44,6 +49,13 @@
                             {% if form.entryCount > 0 %}<a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">{% endif %}
                             {{ form.entryCount }}
                             {% if form.entryCount > 0 %}</a>{% endif %}
+                            </td>
+                            <td>
+                            {% if form.hasNew %}
+                                <span class="new-badge">!</span>
+                            {% else %}
+                                --
+                            {% endif %}
                             </td>
                             {% if currentUser.admin %}
                                 <td>
