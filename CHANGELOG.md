@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.10.0 - 2018-08-01
 ### Added
 - Added Cability to turn off database saving.
+- Added Dutch Translation (@timbertens)
 
 ## 1.9.0 - 2018-07-10
 ### Added
