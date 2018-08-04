@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.10.1 - 2018-08-04
+### Added
+- Added new column to form index to display which form has new messages.
+
+### Fixed
+- Fixed translations needed for new items.
+
 ## 1.10.0 - 2018-08-01
 ### Added
 - Added Capability to turn off database saving.
