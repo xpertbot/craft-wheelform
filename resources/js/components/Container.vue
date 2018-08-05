@@ -58,6 +58,13 @@ export default {
                             status: true,
                             msg: ''
                         };
+                        if(field.options.length == 0)
+                        {
+                            field.options = {
+                                validate: false,
+                                items: [],
+                            }
+                        }
                         this.fields.push(field);
                     }
                     this.nextFieldIndex = this.fields.length;
@@ -80,6 +87,10 @@ export default {
                 isValidName: {
                     status: true,
                     msg: ''
+                },
+                options: {
+                    items: [],
+                    validate: false,
                 }
             });
         },
