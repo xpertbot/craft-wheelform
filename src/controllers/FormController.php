@@ -127,7 +127,8 @@ class FormController extends Controller
                     unset($field['id']);
 
                     // new field
-                    $formField = new FormField($field);
+                    $formField = new FormField();
+                    $formField->setAttributes($field, false);
 
                     if($formField->save())
                     {

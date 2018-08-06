@@ -232,7 +232,7 @@ export default {
         },
         handleOptionValidate(name, value)
         {
-            this.field.options.validate = value;
+            this.field.options.validate = (value ? 1 : 0);
         },
     }
 }
