@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.11.0 - 2018-08-04
+### Added
+- Added ability to add options to checkboxes, radios and selects, for validation purposes
+
+### Improved
+- Improved has_new function for form column.
+
 ## 1.10.2 - 2018-08-04
 ### Fixed
 - Fixed new column count on multiple forms giving wrong value.
