@@ -58,7 +58,7 @@
                         <strong>{{ row.field.getLabel() }}</strong>
                     </td>
                     <td>
-                        {{ row.getValue() }}
+                        {{ row.getValue()|nl2br }}
                     </td>
                 </tr>
             {% else %}
