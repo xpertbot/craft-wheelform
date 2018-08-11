@@ -4,6 +4,7 @@ return [
     ' must be a number.' => ' debe ser un número.',
     ' must be valid characters.' => ' debe ser una cadena de caracteres validos.',
     ' is not a valid email address.' => ' no es una dirección de correo válida.',
+    " has invalid options." => " tiene opciones inválidas.",
     '{attribute} cannot be blank.' => '{attribute} no puede estar vacío.',
     '{attribute} must be a number.' => '{attribute} debe ser un número.',
     '{attribute} is not a valid email address.' => '{attribute} no es una dirección de correo válida.',

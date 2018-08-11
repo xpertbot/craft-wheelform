@@ -58,6 +58,17 @@ export default {
                             status: true,
                             msg: ''
                         };
+                        if(field.options.length == 0)
+                        {
+                            field.options = {
+                                validate: 0,
+                                items: [],
+                            }
+                        }
+                        else if(typeof field.options.validate == 'string')
+                        {
+                            field.options.validate = parseInt(field.options.validate);
+                        }
                         this.fields.push(field);
                     }
                     this.nextFieldIndex = this.fields.length;
@@ -80,6 +91,10 @@ export default {
                 isValidName: {
                     status: true,
                     msg: ''
+                },
+                options: {
+                    validate: 0,
+                    items: [],
                 }
             });
         },

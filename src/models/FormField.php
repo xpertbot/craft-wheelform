@@ -3,6 +3,8 @@ namespace wheelform\models;
 
 use Craft;
 use craft\db\ActiveRecord;
+use wheelform\behaviors\JsonFieldBehavior;
+use wheelform\validators\JsonValidator;
 
 class FormField extends ActiveRecord
 {
@@ -34,6 +36,7 @@ class FormField extends ActiveRecord
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
             ['type', 'in', 'range' => self::FIELD_TYPES],
+            ['options', JsonValidator::class],
         ];
     }
 
@@ -59,5 +62,15 @@ class FormField extends ActiveRecord
     public function getValues()
     {
         return $this->hasMany(MessageValue::className(), ['field_id' => 'id']);
+    }
+
+    public function behaviors()
+    {
+        return [
+            'json_field_behavior' => [
+                'class' => JsonFieldBehavior::class,
+                'attributes' => ['options'],
+            ]
+        ];
     }
 }

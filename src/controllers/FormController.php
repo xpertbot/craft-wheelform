@@ -110,7 +110,7 @@ class FormController extends Controller
                     $formField = FormField::find()->where(['id' => $field['id']])->one();
                     if(! empty($formField))
                     {
-                        $formField->setAttributes($field);
+                        $formField->setAttributes($field, false);
 
                         if($formField->validate()){
                             $formField->save();
@@ -127,7 +127,8 @@ class FormController extends Controller
                     unset($field['id']);
 
                     // new field
-                    $formField = new FormField($field);
+                    $formField = new FormField();
+                    $formField->setAttributes($field, false);
 
                     if($formField->save())
                     {

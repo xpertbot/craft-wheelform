@@ -64,6 +64,7 @@ class Install extends Migration
                 'index_view' => $this->tinyInteger()->notNull()->defaultValue(0),
                 'order' => $this->integer(),
                 'active' => $this->tinyInteger()->notNull()->defaultValue(1),
+                'options' => $this->text(),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime(),
                 'uid' => $this->uid(),
