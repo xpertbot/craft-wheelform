@@ -3,7 +3,7 @@
     <ul>
     {% for name, field in fields %}
         <li>
-            <strong>{{ field.label }}:</strong>
+            <strong>{{ field.label }}:</strong><br>
             {% switch field.type %}
 
                 {% case "file" %}
@@ -14,9 +14,10 @@
 
                 {% default %}
                 {# Text based items #}
-                {{ field. value }}
+                {{ field.value|nl2br }}
 
             {% endswitch %}
+            <br>&nbsp;
         </li>
     {% endfor %}
     </ul>

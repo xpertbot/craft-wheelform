@@ -42,7 +42,7 @@
                             {% for field in headerFields %}
                                 <td>
                                 {% set messageValue = entry.getValueById(field.id) %}
-                                {{ messageValue is not empty ? messageValue.value : '' }}
+                                {{ messageValue is not empty ? messageValue.value|nl2br : '' }}
                                 </td>
                             {% endfor %}
                         {% endif %}
