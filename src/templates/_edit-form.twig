@@ -42,6 +42,15 @@
         instructions: 'The email address(es) that the contact form will send to. Separate multiple email addresses with commas.'|t('wheelform'),
     }) }}
 
+    {{ formEl.textField({
+        label: "Honeypot"|t,
+        id: 'options[honeypot]',
+        name: 'options[honeypot]',
+        value: (form.options['honeypot'] is defined ? form.options['honeypot'] : ''),
+        errors: form.getErrors('options[honeypot]'),
+        instructions: 'Name of hidden field that helps prevent bot spam. Leave empty to disable.'|t('wheelform'),
+    }) }}
+
     {{ formEl.lightswitchField({
         label: "Active"|t('wheelform'),
         id: 'active',

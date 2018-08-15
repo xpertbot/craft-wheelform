@@ -29,6 +29,7 @@ To install the plugin, follow these instructions.
 - Email Validation based on field type selected
 - Required Fields
 - Checkbox options
+- Honeypot Field
 - Ajax and Redirect friendly
 - Send Form submissions to multiple emails
 - Reordering of fields
@@ -212,6 +213,9 @@ return [
 </body>
 </html>
 ```
+
+### Honeypot Field
+Honeypot field is a field that is meant to be left blank by humans. Usually hidden by CSS. [More information](https://stackoverflow.com/questions/36227376/better-honeypot-implementation-form-anti-spam) about Honeypot fields.
 
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)

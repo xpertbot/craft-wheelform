@@ -6,6 +6,8 @@ use craft\db\ActiveRecord;
 use yii\validators\EmailValidator;
 use craft\helpers\StringHelper;
 use wheelform\models\Message;
+use wheelform\behaviors\JsonFieldBehavior;
+use wheelform\validators\JsonValidator;
 
 //Using Active Record because it extends Models.
 //__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
@@ -27,6 +29,7 @@ class Form extends ActiveRecord
             [['active', 'send_email', 'recaptcha', 'save_entry'], 'boolean'],
             [['active', 'send_email', 'recaptcha'], 'default', 'value' => 0],
             [['save_entry'], 'default', 'value' => 1],
+            ['options', JsonValidator::class, 'merge' => true],
         ];
     }
 
@@ -87,6 +90,16 @@ class Form extends ActiveRecord
         $entries = $this->getEntries()->where(['read' => 0])->one();
 
         return (! empty($entries));
+    }
+
+    public function behaviors()
+    {
+        return [
+            'json_field_behavior' => [
+                'class' => JsonFieldBehavior::class,
+                'attributes' => ['options'],
+            ]
+        ];
     }
 
 }
