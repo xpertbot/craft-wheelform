@@ -54,6 +54,10 @@ class FormField extends ActiveRecord
 
     public function getLabel()
     {
+        if(! empty($this->options['label']))
+        {
+            return $this->options['label'];
+        }
         $label = trim(str_replace(['_', '-'], " ", $this->name));
         $label = ucfirst($label);
         return $label;

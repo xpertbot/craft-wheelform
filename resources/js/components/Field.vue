@@ -49,6 +49,10 @@
                         <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
                     </div>
                     <div>
+                        <label>Label:</label>
+                        <input type="text" v-model="field.options.label" :name="'fields['+index+'][options][label]'" />
+                    </div>
+                    <div>
                         <label>Type:</label>
                         <select v-model="field.type" :name="getFieldName('type')">
                             <option
@@ -171,6 +175,10 @@ export default {
     computed:{
         getFieldLabel()
         {
+            if(this.field.options.label)
+            {
+                return this.field.options.label;
+            }
             let label = this.field.name.toString();
             label = label.replace(/_/g, ' ');
             label = label.replace(/-/g, ' ');
