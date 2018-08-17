@@ -79,6 +79,7 @@ class FormController extends Controller
         $form->send_email = $request->getBodyParam('send_email', 0);
         $form->recaptcha = $request->getBodyParam('recaptcha', 0);
         $form->save_entry = intval($request->post('save_entry', 0));
+        $form->options = $request->post('options', []);
         $form->site_id = Craft::$app->sites->currentSite->id;
 
         $result = $form->save();

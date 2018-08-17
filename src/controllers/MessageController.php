@@ -63,6 +63,15 @@ class MessageController extends Controller
             }
         }
 
+        if(! empty($formModel->options['honeypot']))
+        {
+            $userHoneypot = $request->getBodyParam($formModel->options['honeypot'], '');
+            if(! empty($userHoneypot))
+            {
+                $errors['honeypot'] = [Craft::t('wheelform', "Leave honeypot field empty.")];
+            }
+        }
+
         if(empty($errors))
         {
             foreach ($formModel->fields as $field)

@@ -62,6 +62,7 @@ export default {
                         {
                             field.options = {
                                 validate: 0,
+                                label: '',
                                 items: [],
                             }
                         }
