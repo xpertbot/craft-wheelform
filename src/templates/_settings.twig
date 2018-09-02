@@ -31,6 +31,24 @@
     errors: settings.getErrors('success_message'),
     required: true,
 }) }}
+<div class="field">
+    <div class="heading">
+        <label for="volume_id">{{ "Volume"|t('app')}}</label>
+        <div class="instructions">
+            {{ "Select an volume folder to save uploaded form files."|t('wheelform') }}
+        </div>
+    </div>
+    <div class="input ltr">
+        {{ forms.select({
+            id: "volume_id",
+            name: "volume_id",
+            options: volumes,
+            value: settings.volume_id ?? settings.volume_id,
+            errors: settings.getErrors('volume_id'),
+            required: false,
+        }) }}
+    </div>
+</div>
 
 {{ forms.textField({
     label: "Recaptcha Public Key"|t('wheelform'),

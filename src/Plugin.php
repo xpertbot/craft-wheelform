@@ -91,9 +91,22 @@ class Plugin extends BasePlugin
         // Get and pre-validate the settings
         $settings = $this->getSettings();
         $settings->validate();
+        $volumeList = Craft::$app->getVolumes()->getAllVolumes();
+        $emptyLabel =  Craft::t("wheelform", '-- Select Volume --');
+        $volumes = [
+            '' => $emptyLabel,
+        ];
+        if(! empty($volumeList))
+        {
+            foreach($volumeList as $v)
+            {
+                $volumes[$v->id] = $v->name;
+            }
+        }
 
         return Craft::$app->view->renderTemplate('wheelform/_settings', [
             'settings' => $settings,
+            'volumes' => $volumes,
         ]);
     }
 }
