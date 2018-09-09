@@ -54,12 +54,15 @@ class Mailer extends Component
                     case 'file':
                         if(! empty($m['value'])){
                             $attachment = json_decode($m['value']);
-
-                            $mailMessage->attach($attachment->tempName, [
-                                'fileName' => $attachment->name,
-                                'contentType' => FileHelper::getMimeType($attachment->tempName),
+                            if(is_file($attachment->uploaded->tempName))
+                            {
+                                $filePath = $attachment->uploaded->tempName;
+                            }
+                            $mailMessage->attach($filePath, [
+                                'fileName' => $attachment->uploaded->name,
+                                'contentType' => FileHelper::getMimeType($filePath),
                             ]);
-                            $text .= $attachment->name;
+                            $text .= $attachment->uploaded->name;
 
                             // Prepare for Twig
                             $event->message[$k]['value'] = $attachment;

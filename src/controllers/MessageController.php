@@ -2,15 +2,16 @@
 namespace wheelform\controllers;
 
 use Craft;
-use craft\web\Controller;
-use craft\web\UploadedFile;
-use yii\web\Response;
-use yii\web\HttpException;
-
 use wheelform\Plugin;
+use yii\web\Response;
+use craft\web\Controller;
 use wheelform\models\Form;
-use wheelform\models\FormField;
+
+use yii\web\HttpException;
+use craft\web\UploadedFile;
 use wheelform\models\Message;
+use wheelform\models\FormField;
+use wheelform\models\fields\File;
 use wheelform\models\MessageValue;
 
 class MessageController extends Controller
@@ -85,8 +86,31 @@ class MessageController extends Controller
                     'type' => $field->type,
                 ];
 
-                if($field->type == "file"){
-                    $messageValue->value = UploadedFile::getInstanceByName($field->name);
+                if($field->type == "file")
+                {
+                    $volume_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
+                    $uploadedFile = UploadedFile::getInstanceByName($field->name);
+                    $fileModel = new File();
+                    $fileModel->uploaded = $uploadedFile;
+
+                    if(! is_numeric($volume_id))
+                    {
+                        $fileModel->name = $uploadedFile->name;
+                    }
+                    else
+                    {
+                        $volume = Craft::$app->getVolumes()->getVolumeById($volume_id);
+                        if(! empty($volume->path))
+                        {
+                            $fileModel->name = $formModel->name . '_' . $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
+                            if(! $fileModel->upload($volume->getRootPath()))
+                            {
+                                Craft::warning('File not uploaded', 'wheelform');
+                            }
+                        }
+                    }
+
+                    $messageValue->value = $fileModel;
                     $senderValues[$field->name]['value'] = json_encode($messageValue->value);
                 } else {
                     $messageValue->value = $request->getBodyParam($field->name, null);
