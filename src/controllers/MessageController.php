@@ -102,7 +102,7 @@ class MessageController extends Controller
                             $fileModel->name = $uploadedFile->name;
                             $fileModel->filePath = $tempPath;
                         } else {
-                            $folder = Craft::$app->getVolumes()->getVolumeById($folder_id);
+                            $folder = $assets->findFolder(['id' => $folder_id]);
                             if (!$folder) {
                                 throw new BadRequestHttpException('The target folder provided for uploading is not valid');
                             }
@@ -113,15 +113,16 @@ class MessageController extends Controller
                             $asset->tempFilePath = $tempPath;
                             $asset->filename = $filename;
                             $asset->newFolderId = $folder->id;
-                            $asset->volumeId = $folder->id;
+                            $asset->volumeId = $folder->volumeId;
                             $asset->avoidFilenameConflicts = true;
                             $asset->setScenario(Asset::SCENARIO_CREATE);
 
                             $result = Craft::$app->getElements()->saveElement($asset);
 
                             if($result) {
+                                $volume = $asset->getVolume();
                                 $fileModel->name = $asset->filename;
-                                $fileModel->filePath = $folder->getRootPath() . '/' . $asset->filename;
+                                $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
                                 $fileModel->assetId = $asset->id;
                                 if($fileModel->validate()) {
                                     Craft::warning('File not uploaded', 'wheelform');
