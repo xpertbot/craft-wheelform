@@ -2,7 +2,9 @@
 namespace wheelform\models;
 
 use Craft;
+use craft\helpers\Html;
 use craft\db\ActiveRecord;
+use craft\helpers\Template;
 
 //Using Active Record because it extends Models.
 class MessageValue extends ActiveRecord
@@ -74,6 +76,13 @@ class MessageValue extends ActiveRecord
         if($this->field->type == self::FILE_SCENARIO)
         {
             $file = json_decode($this->value);
+            if(! empty($file->assetId))
+            {
+                $asset = Craft::$app->getAssets()->getAssetById($file->assetId);
+                $anchor = '<a href="'.$asset->getUrl().'" target="_blank">'.Html::encode($asset->title).'</a>';
+                return Template::raw($anchor);
+            }
+
             return isset($file->name) ? $file->name : '';
         }
         else

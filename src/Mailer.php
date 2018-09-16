@@ -2,14 +2,15 @@
 namespace wheelform;
 
 use Craft;
-use craft\helpers\StringHelper;
-use craft\mail\Message as MailMessage;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 use yii\helpers\Markdown;
-use craft\helpers\FileHelper;
-use wheelform\events\SendEvent;
+use craft\services\Assets;
 use wheelform\models\Form;
+use craft\helpers\FileHelper;
+use craft\helpers\StringHelper;
+use wheelform\events\SendEvent;
+use yii\base\InvalidConfigException;
+use craft\mail\Message as MailMessage;
 
 class Mailer extends Component
 {
@@ -54,15 +55,11 @@ class Mailer extends Component
                     case 'file':
                         if(! empty($m['value'])){
                             $attachment = json_decode($m['value']);
-                            if(is_file($attachment->uploaded->tempName))
-                            {
-                                $filePath = $attachment->uploaded->tempName;
-                            }
-                            $mailMessage->attach($filePath, [
-                                'fileName' => $attachment->uploaded->name,
-                                'contentType' => FileHelper::getMimeType($filePath),
+                            $mailMessage->attach($attachment->filePath, [
+                                'fileName' => $attachment->name,
+                                'contentType' => FileHelper::getMimeType($attachment->filePath),
                             ]);
-                            $text .= $attachment->uploaded->name;
+                            $text .= $attachment->name;
 
                             // Prepare for Twig
                             $event->message[$k]['value'] = $attachment;

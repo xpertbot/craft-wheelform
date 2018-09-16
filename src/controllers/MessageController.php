@@ -4,15 +4,18 @@ namespace wheelform\controllers;
 use Craft;
 use wheelform\Plugin;
 use yii\web\Response;
+use craft\elements\Asset;
+use craft\helpers\Assets;
+
 use craft\web\Controller;
 use wheelform\models\Form;
-
 use yii\web\HttpException;
 use craft\web\UploadedFile;
 use wheelform\models\Message;
 use wheelform\models\FormField;
 use wheelform\models\fields\File;
 use wheelform\models\MessageValue;
+use craft\errors\UploadFailedException;
 
 class MessageController extends Controller
 {
@@ -88,26 +91,45 @@ class MessageController extends Controller
 
                 if($field->type == "file")
                 {
-                    $volume_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
+                    $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
                     $uploadedFile = UploadedFile::getInstanceByName($field->name);
                     $fileModel = new File();
-                    $fileModel->uploaded = $uploadedFile;
+                    try {
+                        $assets = Craft::$app->getAssets();
+                        $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
+                        //No folder to upload files has been selected
+                        if(! is_numeric($folder_id)) {
+                            $fileModel->name = $uploadedFile->name;
+                            $fileModel->filePath = $tempPath;
+                        } else {
+                            $folder = Craft::$app->getVolumes()->getVolumeById($folder_id);
+                            if (!$folder) {
+                                throw new BadRequestHttpException('The target folder provided for uploading is not valid');
+                            }
+                            $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
+                            $filename = Assets::prepareAssetName($tempName);
 
-                    if(! is_numeric($volume_id))
-                    {
-                        $fileModel->name = $uploadedFile->name;
-                    }
-                    else
-                    {
-                        $volume = Craft::$app->getVolumes()->getVolumeById($volume_id);
-                        if(! empty($volume->path))
-                        {
-                            $fileModel->name = $formModel->name . '_' . $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
-                            if(! $fileModel->upload($volume->getRootPath()))
-                            {
-                                Craft::warning('File not uploaded', 'wheelform');
+                            $asset = new Asset();
+                            $asset->tempFilePath = $tempPath;
+                            $asset->filename = $filename;
+                            $asset->newFolderId = $folder->id;
+                            $asset->volumeId = $folder->id;
+                            $asset->avoidFilenameConflicts = true;
+                            $asset->setScenario(Asset::SCENARIO_CREATE);
+
+                            $result = Craft::$app->getElements()->saveElement($asset);
+
+                            if($result) {
+                                $fileModel->name = $asset->filename;
+                                $fileModel->filePath = $folder->getRootPath() . '/' . $asset->filename;
+                                $fileModel->assetId = $asset->id;
+                                if($fileModel->validate()) {
+                                    Craft::warning('File not uploaded', 'wheelform');
+                                }
                             }
                         }
+                    } catch (\Throwable $exception) {
+                        return $exception->getMessage();
                     }
 
                     $messageValue->value = $fileModel;
@@ -208,5 +230,25 @@ class MessageController extends Controller
         $resp = json_decode($jsonRes);
 
         return $resp->success;
+    }
+
+    private function _getUploadedFileTempPath(UploadedFile $uploadedFile)
+    {
+        if ($uploadedFile->getHasError()) {
+            throw new UploadFailedException($uploadedFile->error);
+        }
+
+        // Move the uploaded file to the temp folder
+        try {
+            $tempPath = $uploadedFile->saveAsTempFile();
+        } catch (ErrorException $e) {
+            throw new UploadFailedException(0);
+        }
+
+        if ($tempPath === false) {
+            throw new UploadFailedException(UPLOAD_ERR_CANT_WRITE);
+        }
+
+        return $tempPath;
     }
 }
