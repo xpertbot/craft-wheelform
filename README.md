@@ -33,6 +33,7 @@ To install the plugin, follow these instructions.
 - Ajax and Redirect friendly
 - Send Form submissions to multiple emails
 - Reordering of fields
+- Save Uploaded files to Asset Manager
 - Multiple Translations
 
 ## Usage
@@ -133,6 +134,9 @@ If you would like your form to accept file attachments, follow these steps:
 
 1. Make sure your opening HTML `<form>` tag contains `enctype="multipart/form-data"`.
 2. Add a `<input type="file" name="{field_name}">` to your form.
+
+### File saving to asset Folder
+On Plugin Settings select the Folder you would like to save files. Make sure `Allow public URLs` option is turned on.
 
 
 ### Ajax form submissions
