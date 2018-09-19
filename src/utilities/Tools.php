@@ -5,18 +5,18 @@ use Craft;
 use craft\base\Utility;
 use wheelform\models\Form;
 
-use wheelform\assets\ExportAsset;
+use wheelform\assets\ToolsAsset;
 
-class Export extends Utility
+class Tools extends Utility
 {
     public static function displayName(): string
     {
-        return Craft::t('wheelform', 'Form Export');
+        return Craft::t('wheelform', 'Form Tools');
     }
 
     public static function id(): string
     {
-        return 'wheelform-export';
+        return 'wheelform-tools';
     }
 
     public static function iconPath()
@@ -28,7 +28,7 @@ class Export extends Utility
     {
         $view = Craft::$app->getView();
 
-        $view->registerAssetBundle(ExportAsset::class);
+        $view->registerAssetBundle(ToolsAsset::class);
         $view->registerJs('new Craft.WheelformExport(\'export-form\');');
 
         $formRecords = Form::find()->orderBy(['name' => 'ASC'])->all();
@@ -41,6 +41,6 @@ class Export extends Utility
             ];
         }
 
-        return $view->renderTemplate('wheelform/utilities/export', ['formOptions' => $formOptions]);
+        return $view->renderTemplate('wheelform/utilities/tools', ['formOptions' => $formOptions]);
     }
 }

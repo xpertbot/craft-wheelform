@@ -1,5 +1,6 @@
 {% import "_includes/forms" as forms %}
 
+<h2>{{ "Entries Export"|t('wheelform') }}</h2>
 <form id="export-form" class="utility" method="post" accept-charset="UTF-8">
     <input type="hidden" name="action" value="wheelform/entries/export">
     <input type="hidden" name="redirect" value="{{ cpUrl('utilities/wheelform-export')}}">
@@ -32,3 +33,5 @@
         <div class="utility-status"></div>
     </div>
 </form>
+
+<hr>

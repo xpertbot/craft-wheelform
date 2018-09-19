@@ -171,7 +171,7 @@ $('#my-form').submit(function(ev) {
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
 
 ### CSV Export
-CSV Exporter can be based on entry date, under Admin > Utilities > Form Export.
+CSV Exporter can be based on entry date, under Admin > Utilities > Form Tools.
 
 ### Custom Email Template
 Custom Twig templates can be used using these steps:

@@ -7,7 +7,7 @@ use craft\web\assets\cp\CpAsset;
 /**
  * Asset bundle for the DB Backup utility
  */
-class ExportAsset extends AssetBundle
+class ToolsAsset extends AssetBundle
 {
     /**
      * @inheritdoc
@@ -21,7 +21,7 @@ class ExportAsset extends AssetBundle
         ];
 
         $this->js = [
-            'js/export.js',
+            'js/tools.js',
         ];
 
         $this->css = [

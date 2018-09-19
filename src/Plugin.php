@@ -5,7 +5,7 @@ use Craft;
 use craft\base\Plugin as BasePlugin;
 use wheelform\models\Settings;
 use wheelform\models\Message;
-use wheelform\utilities\Export;
+use wheelform\utilities\Tools;
 
 use yii\base\Event;
 use craft\web\UrlManager;
@@ -55,7 +55,7 @@ class Plugin extends BasePlugin
         {
             if(is_array($event->types))
             {
-                $event->types[] = Export::class;
+                $event->types[] = Tools::class;
             }
             return $event;
         });
