@@ -2,9 +2,10 @@
 namespace wheelform\helpers;
 
 use Craft;
-use craft\helpers\StringHelper;
-
+use yii\helpers\Json;
 use wheelform\models\Message;
+use craft\helpers\StringHelper;
+use wheelform\models\FormField;
 
 /**
 * CsvExport
@@ -98,6 +99,20 @@ class ExportHelper
             }
             fputcsv($fp, $row);
         }
+        fclose($fp);
+
+        return $file;
+    }
+
+    public function getFields($where)
+    {
+        $filename = 'wheelform_fields_'.gmdate('ymd_His').'_'.strtolower(StringHelper::randomString(10)).'.json';
+        $file = Craft::$app->getPath()->getTempPath().'/'.StringHelper::toLowerCase($filename);
+        $fieldModel = FormField::find()->select(['name', 'type', 'required', 'index_view','order', 'active', 'options'])->where($where)->all();
+        $data = Json::encode($fieldModel);
+
+        $fp = fopen($file, 'w+');
+        fwrite($fp, $data);
         fclose($fp);
 
         return $file;

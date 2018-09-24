@@ -29,9 +29,30 @@
     }) }}
 
     <div class="buttons">
-        <input type="submit" class="btn submit" value="{{ "Export"|t('wheelform') }}"="Backup"|t('app') }}""/>
+        <input type="submit" class="btn submit" value="{{ "Export"|t('wheelform') }}" />
         <div class="utility-status"></div>
     </div>
 </form>
 
 <hr>
+
+<h2>{{ "Field Export"|t('wheelform') }}</h2>
+<form id="export-fields" class="utility" method="get" accept-charset="UTF-8">
+    <input type="hidden" name="action" value="wheelform/form/export-fields">
+    <input type="hidden" name="redirect" value="{{ cpUrl('utilities/wheelform-export')}}">
+    {{ csrfInput() }}
+
+    {{
+        forms.selectField({
+            label: 'Select Form'|t('wheelform'),
+            id: 'form-options',
+            name: 'form_id',
+            options: formOptions,
+        })
+    }}
+
+    <div class="buttons">
+        <input type="submit" class="btn submit" value="{{ " Export"|t('wheelform') }}" />
+        <div class="utility-status"></div>
+    </div>
+</form>

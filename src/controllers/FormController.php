@@ -2,14 +2,16 @@
 namespace wheelform\controllers;
 
 use Craft;
-use craft\web\Controller;
-use yii\web\HttpException;
-use yii\base\Exception;
-use yii\behaviors\SessionBehavior;
-
-use wheelform\models\FormField;
-use wheelform\models\Form;
 use wheelform\Plugin;
+use craft\helpers\Path;
+use yii\base\Exception;
+use craft\web\Controller;
+
+use wheelform\models\Form;
+use yii\web\HttpException;
+use wheelform\models\FormField;
+use yii\behaviors\SessionBehavior;
+use wheelform\helpers\ExportHelper;
 
 class FormController extends Controller
 {
@@ -176,6 +178,57 @@ class FormController extends Controller
         $fields = FormField::find()->where(['form_id' => $formId, 'active' => 1])->orderBy('order', SORT_ASC)->all();
 
         return $this->asJson($fields);
+    }
+
+    public function actionExportFields()
+    {
+        $req = Craft::$app->getRequest();
+
+        if(! $req->getAcceptsJson())
+        {
+            throw new HttpException(404);
+        }
+        $params = $req->getRequiredBodyParam('params');
+        $form_id = $params['form_id'];
+        $where = [];
+
+        if(empty($form_id))
+        {
+            throw new Exception(Craft::t('Form ID is required.', 'wheelform'));
+        }
+
+        try {
+            $exportHelper = new ExportHelper();
+            $where['form_id'] = $form_id;
+
+            $jsonPath = $exportHelper->getFields($where);
+        } catch (\Throwable $e) {
+            throw new Exception('Could not create JSON: '.$e->getMessage());
+        }
+
+        if (!is_file($jsonPath)) {
+            throw new Exception("Could not create JSON: the JSON file doesn't exist.");
+        }
+
+        $filename = pathinfo($jsonPath, PATHINFO_BASENAME);
+
+        return $this->asJson([
+            'jsonFile' => pathinfo($filename, PATHINFO_FILENAME)
+        ]);
+    }
+
+    public function actionDownloadFile()
+    {
+        $filename = Craft::$app->getRequest()->getRequiredQueryParam('filename');
+        $filePath = Craft::$app->getPath()->getTempPath().DIRECTORY_SEPARATOR.$filename.'.json';
+
+        if (!is_file($filePath) || !Path::ensurePathIsContained($filePath)) {
+            throw new NotFoundHttpException(Craft::t('wheelform', 'Invalid json name: {filename}', [
+                'filename' => $filename
+            ]));
+        }
+
+        return Craft::$app->getResponse()->sendFile($filePath);
     }
 
     protected function getToDeleteIds(array $oldFields, array $newFields): array
