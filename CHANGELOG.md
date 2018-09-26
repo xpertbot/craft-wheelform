@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.14.0 - 2018-09-26
+### Added
+- Added the ability to get form and plugin settings from within templates, which enables custom field templating (@aaronwaldon)
+- Added a form select field (@aaronwaldon)
+
 ## 1.13.0 - 2018-09-16
 ### Added
 - Added new ability to save Uploaded files to specific Asset folder.

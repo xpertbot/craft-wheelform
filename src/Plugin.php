@@ -3,15 +3,19 @@ namespace wheelform;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
+use wheelform\fields\FormPickerField;
 use wheelform\models\Settings;
 use wheelform\models\Message;
 use wheelform\utilities\Tools;
+use wheelform\variables\WheelformVariable;
 
 use yii\base\Event;
 use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\services\Fields;
 use craft\services\Utilities;
+use craft\web\twig\variables\CraftVariable;
 
 class Plugin extends BasePlugin
 {
@@ -58,6 +62,16 @@ class Plugin extends BasePlugin
                 $event->types[] = Tools::class;
             }
             return $event;
+        });
+
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            /** @var CraftVariable $variable */
+            $variable = $event->sender;
+            $variable->set('wheelform', WheelformVariable::class);
+        });
+
+        Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
+            $event->types[] = FormPickerField::class;
         });
     }
 
