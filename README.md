@@ -35,6 +35,8 @@ To install the plugin, follow these instructions.
 - Reordering of fields
 - Save Uploaded files to Asset Manager
 - Multiple Translations
+- Ability to set up custom templates for automatic form building
+- Form select fieldtype
 
 ## Usage
 After successful installation go to Plugin Settings and add the email you would like the forms to send `FROM`. As well as set other useful settings.
@@ -234,6 +236,104 @@ You can also trigger other custom functionality such as gathering custom field v
 * `message` - Associative Array of different fields with the values submitted.
 
 Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
+
+
+### Custom Form Template
+To make templating easier and more consistent, you can also loop through the form fields. Here's an example:
+
+```twig
+
+{# the form id #}
+{# note: you could pass in the form id from the field type #}
+{% set formId = 1 %}
+
+{# form error macro #}
+{% macro errorList(errors) %}
+	{% if errors %}
+		<ul class="form-errors">
+			{% for error in errors %}
+				<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endmacro %}
+{% from _self import errorList %}
+
+{# show errors if they exist #}
+{{ errors['form'] is defined ? errorList(errors['form']) }}
+
+{# get the form settings #}
+{% set form = craft.wheelform.getFormSettings(formId) %}
+
+{# get the plugin settings #}
+{% set wheelFormSettings = craft.wheelform.getPluginSettings() %}
+
+{% if form %}
+	<form class="form" method="post" accept-charset="UTF-8">
+		{{ csrfInput() }}
+		<input type="hidden" name="action" value="wheelform/message/send">
+		<input type="hidden" name="form_id" value="{{ form.id }}">
+		<input type="hidden" name="redirect" value="{{ 'contact/thanks'|hash }}">
+
+		{# ---- honeypot ---- #}
+        {% set honeypot = form.options.honeypot ?? null %}
+        {% if honeypot is not empty %}
+            <div style="display: none !important;">
+                <label for="form-{{ honeypot }}">Leave This Empty</label>
+                <textarea rows="4" cols="40" id="form-{{ honeypot }}" name="{{ honeypot }}" tabindex="-1" autocomplete="off"></textarea>
+            </div>
+        {% endif %}
+
+		{# ---- form fields ---- #}
+		{% for field in form.fields %}
+			{% set currentValue = values[field.name] ?? '' %}
+			<div class="field">
+				{% if field.type == 'text' %}
+					{# ---- text field ---- #}
+					<label for="form-{{ field.name }}">{{ field.label }}</label>
+					{% if field.name == 'message' %}
+						<textarea rows="4" cols="40" id="form-{{ field.name }}" name="{{ field.name }}"{% if field.required %} required{% endif %}>{{ currentValue }}</textarea>
+					{% else %}
+						<input id="form-{{ field.name }}" type="text" name="{{ field.name }}" value="{{ currentValue }}"{% if field.required %} required{% endif %}>
+					{% endif %}
+				{% elseif field.type == 'email' %}
+					{# ---- email field ---- #}
+					<label for="form-{{ field.name }}">{{ field.label }}</label>
+					<input id="form-{{ field.name }}" type="email" name="{{ field.name }}" value="{{ currentValue }}"{% if field.required %} required{% endif %}>
+				{% elseif field.type == 'select' %}
+					{# ---- select field ---- #}
+					<label for="form-{{ field.name }}">{{ field.label }}</label>
+					{% set options = field.options.items ?? null %}
+					{% if options is not empty %}
+						<select id="form-{{ field.name }}" name="{{ field.name }}"{% if field.required %} required{% endif %}>
+							{% for option in options %}
+								<option value="{{ option }}"{% if currentValue == option %} selected{% endif %}>{{ option }}</option>
+							{% endfor %}
+						</select>
+					{% endif %}
+				{% endif %}
+
+				{# show this feild's errors, if any #}
+				{{ errors[field.name] is defined ? errorList(errors[field.name]) }}
+			</div>
+		{% endfor %}
+		
+		{# ---- recaptcha ---- #}
+		{% set formRecaptchaIsEnabled = form.recaptcha == '1' %}
+		{% set recaptchaPublicKey = wheelFormSettings.recaptcha_public ?? null %}
+		{% if formRecaptchaIsEnabled and recaptchaPublicKey is not empty %}
+		    <div class="g-recaptcha" data-sitekey="{{ recaptchaPublic }}"></div>
+	
+			{# queue the recaptcha script #}
+			{# output using Craft's endBody() hook in the master template #}
+		    {% do view.registerJsFile('https://www.google.com/recaptcha/api.js') %}
+		{% endif %}
+
+		<button type="submit">Send</button>
+	</form>
+{% endif %}
+```
+
 
 ### Translations
 New translations can be submitted using the format inside the translations folder.
