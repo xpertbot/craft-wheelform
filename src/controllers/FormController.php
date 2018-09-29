@@ -5,13 +5,15 @@ use Craft;
 use wheelform\Plugin;
 use craft\helpers\Path;
 use yii\base\Exception;
-use craft\web\Controller;
 
+use craft\web\Controller;
+use craft\web\UploadedFile;
 use wheelform\models\Form;
 use yii\web\HttpException;
 use wheelform\models\FormField;
 use yii\behaviors\SessionBehavior;
 use wheelform\helpers\ExportHelper;
+use wheelform\models\tools\ImportFile;
 
 class FormController extends Controller
 {
@@ -214,6 +216,58 @@ class FormController extends Controller
 
         return $this->asJson([
             'jsonFile' => pathinfo($filename, PATHINFO_FILENAME)
+        ]);
+    }
+
+    public function actionImportFields()
+    {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $req =  Craft::$app->getRequest();
+        $form_id = $req->post('form_id', NULL);
+        if(empty($form_id)) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => [Craft::t('wheelform', 'Form ID is required')],
+            ]);
+        }
+        $fileModel = new ImportFile();
+        $fileModel->jsonFile = UploadedFile::getInstanceByName('fields_file');
+
+        if(! $fileModel->validate()) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => $fileModel->getErrors('jsonFile'),
+            ]);
+        }
+        $temp = $fileModel->getTempPath();
+        $jsonFields = file_get_contents($temp);
+        $fields = json_decode($jsonFields, true);
+        if(empty($jsonFields) || (json_last_error() !== JSON_ERROR_NONE)) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => [Craft::t('wheelform', 'Empty or invalid Json')],
+            ]);
+        }
+
+        $errors = [];
+        if(is_array($fields)) {
+            foreach($fields as $f) {
+                $fieldModel = new FormField();
+                $f['form_id'] = $form_id;
+                $fieldModel->setAttributes($f, false);
+                if($fieldModel->validate()) {
+                    $fieldModel->save();
+                } else {
+                    $errors = $fieldModel->getErrors();
+                }
+            }
+        }
+
+        return $this->asJson([
+            'success' => Craft::t('wheelform', 'Fields Imported'),
+            'errors' => $errors,
         ]);
     }
 

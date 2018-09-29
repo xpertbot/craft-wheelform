@@ -31,6 +31,7 @@ class Tools extends Utility
         $view->registerAssetBundle(ToolsAsset::class);
         $view->registerJs('new Craft.WheelformExport(\'export-form\');');
         $view->registerJs('new Craft.WheelformExportFields(\'export-fields\');');
+        $view->registerJs('new Craft.WheelformImportFields(\'import-fields\');');
 
         $formRecords = Form::find()->orderBy(['name' => 'ASC'])->all();
         $formOptions = [];

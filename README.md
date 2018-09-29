@@ -35,6 +35,7 @@ To install the plugin, follow these instructions.
 - Reordering of fields
 - Save Uploaded files to Asset Manager
 - Multiple Translations
+- Export / Import Fields between different websites
 
 ## Usage
 After successful installation go to Plugin Settings and add the email you would like the forms to send `FROM`. As well as set other useful settings.
@@ -170,8 +171,10 @@ $('#my-form').submit(function(ev) {
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
 
-### CSV Export
-CSV Exporter can be based on entry date, under Admin > Utilities > Form Tools.
+### Form Tools
+- CSV Exporter can be based on entry date, under Admin > Utilities > Form Tools.
+- Form Fields can be exported as a JSON file.
+- Form Fields can be imported from a valid JSON file.
 
 ### Custom Email Template
 Custom Twig templates can be used using these steps:

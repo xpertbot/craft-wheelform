@@ -1,3 +1,4 @@
+{% do view.registerAssetBundle("wheelform\\assets\\WheelformCpAsset") %}
 {% import "_includes/forms" as forms %}
 
 <h2>{{ "Entries Export"|t('wheelform') }}</h2>
@@ -45,7 +46,7 @@
     {{
         forms.selectField({
             label: 'Select Form'|t('wheelform'),
-            id: 'form-options',
+            id: 'field-export-form-id',
             name: 'form_id',
             options: formOptions,
         })
@@ -56,3 +57,35 @@
         <div class="utility-status"></div>
     </div>
 </form>
+
+<hr>
+
+<h2>{{ "Field Import"|t('wheelform') }}</h2>
+<form id="import-fields" class="utility" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="wheelform/form/import-fields">
+    <input type="hidden" name="redirect" value="{{ cpUrl('utilities/wheelform-export')}}">
+    {{ csrfInput() }}
+
+    {{
+        forms.selectField({
+            label: 'Select Form'|t('wheelform'),
+            id: 'field-import-form-id',
+            name: 'form_id',
+            options: formOptions,
+        })
+    }}
+
+    {{
+        forms.fileField({
+            id: 'fields_file',
+            name: 'fields_file',
+            class: 'cs-support-attachment',
+        })
+    }}
+
+    <div class="buttons">
+        <input type="submit" class="btn submit" value="{{ "Import"|t('wheelform') }}" />
+        <div class="utility-status"></div>
+    </div>
+</form>
+

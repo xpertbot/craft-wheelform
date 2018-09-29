@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.13.0 - 2018-09-16
 ### Added
 - Added new ability to save Uploaded files to specific Asset folder.
+- Added new ability to Import / Export Files from one form to another.
 
 ## 1.12.0 - 2018-08-14
 ### Added
