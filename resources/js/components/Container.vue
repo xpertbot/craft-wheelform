@@ -64,6 +64,7 @@ export default {
                                 validate: 0,
                                 label: '',
                                 items: [],
+                                fieldClass: '',
                             }
                         }
                         else if(typeof field.options.validate == 'string')
@@ -96,6 +97,7 @@ export default {
                 options: {
                     validate: 0,
                     items: [],
+                    fieldClass: '',
                 }
             });
         },

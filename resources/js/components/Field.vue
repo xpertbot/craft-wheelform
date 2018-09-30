@@ -37,6 +37,9 @@
                     <div class="text-right">
                         <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
                     </div>
+                    <div class="text-right" v-if="field.options.fieldClass">
+                        <span>{{ field.options.fieldClass }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +114,10 @@
                             :status="field.index_view"
                             :handle-status-change="handleStatusChange"
                             />
+                    </div>
+                    <div>
+                        <label :for="'field-class-' + field.id">Field Style Class</label>
+                        <input type="text" :id="'field-class-' + field.id" v-model="field.options.fieldClass" :name="'fields['+index+'][options][fieldClass]'">
                     </div>
                 </div>
             </div>
