@@ -94,43 +94,46 @@ class MessageController extends Controller
                     $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
                     $uploadedFile = UploadedFile::getInstanceByName($field->name);
                     $fileModel = new File();
-                    try {
-                        $assets = Craft::$app->getAssets();
-                        $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
-                        //No folder to upload files has been selected
-                        if(! is_numeric($folder_id)) {
-                            $fileModel->name = $uploadedFile->name;
-                            $fileModel->filePath = $tempPath;
-                        } else {
-                            $folder = $assets->findFolder(['id' => $folder_id]);
-                            if (!$folder) {
-                                throw new BadRequestHttpException('The target folder provided for uploading is not valid');
-                            }
-                            $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
-                            $filename = Assets::prepareAssetName($tempName);
+                    $fileModel->name = $fileModel->name;
+                    if($uploadedFile) {
+                        try {
+                            $assets = Craft::$app->getAssets();
+                            $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
+                            //No folder to upload files has been selected
+                            if(! is_numeric($folder_id)) {
+                                $fileModel->name = $uploadedFile->name;
+                                $fileModel->filePath = $tempPath;
+                            } else {
+                                $folder = $assets->findFolder(['id' => $folder_id]);
+                                if (!$folder) {
+                                    throw new BadRequestHttpException('The target folder provided for uploading is not valid');
+                                }
+                                $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
+                                $filename = Assets::prepareAssetName($tempName);
 
-                            $asset = new Asset();
-                            $asset->tempFilePath = $tempPath;
-                            $asset->filename = $filename;
-                            $asset->newFolderId = $folder->id;
-                            $asset->volumeId = $folder->volumeId;
-                            $asset->avoidFilenameConflicts = true;
-                            $asset->setScenario(Asset::SCENARIO_CREATE);
+                                $asset = new Asset();
+                                $asset->tempFilePath = $tempPath;
+                                $asset->filename = $filename;
+                                $asset->newFolderId = $folder->id;
+                                $asset->volumeId = $folder->volumeId;
+                                $asset->avoidFilenameConflicts = true;
+                                $asset->setScenario(Asset::SCENARIO_CREATE);
 
-                            $result = Craft::$app->getElements()->saveElement($asset);
+                                $result = Craft::$app->getElements()->saveElement($asset);
 
-                            if($result) {
-                                $volume = $asset->getVolume();
-                                $fileModel->name = $asset->filename;
-                                $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
-                                $fileModel->assetId = $asset->id;
-                                if($fileModel->validate()) {
-                                    Craft::warning('File not uploaded', 'wheelform');
+                                if($result) {
+                                    $volume = $asset->getVolume();
+                                    $fileModel->name = $asset->filename;
+                                    $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
+                                    $fileModel->assetId = $asset->id;
+                                    if($fileModel->validate()) {
+                                        Craft::warning('File not uploaded', 'wheelform');
+                                    }
                                 }
                             }
+                        } catch (\Throwable $exception) {
+                            return $exception->getMessage();
                         }
-                    } catch (\Throwable $exception) {
-                        return $exception->getMessage();
                     }
 
                     $messageValue->value = $fileModel;

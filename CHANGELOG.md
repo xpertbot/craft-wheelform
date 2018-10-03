@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.13.1 - 2018-09-16
+### Fixed
+- Fixed File field being empty and not saving correctly
+
 ## 1.13.0 - 2018-09-16
 ### Added
 - Added new ability to save Uploaded files to specific Asset folder.
