@@ -11,6 +11,7 @@ class FormField extends ActiveRecord
 
     const FIELD_TYPES = [
         'text',
+        'textarea',
         'email',
         'number',
         'checkbox',

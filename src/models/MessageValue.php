@@ -10,6 +10,7 @@ use craft\helpers\Template;
 class MessageValue extends ActiveRecord
 {
     const TEXT_SCENARIO = "text";
+    const TEXTAREA_SCENARIO = "textarea";
     const NUMBER_SCENARIO = "number";
     const EMAIL_SCENARIO = "email";
     const CHECKBOX_SCENARIO = "checkbox";
@@ -35,6 +36,7 @@ class MessageValue extends ActiveRecord
             ],
             ['value', 'string', 'on' => [
                     self::TEXT_SCENARIO,
+                    self::TEXTAREA_SCENARIO,
                     self::HIDDEN_SCENARIO,
                     self::SELECT_SCENARIO,
                     self::RADIO_SCENARIO,

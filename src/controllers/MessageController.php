@@ -93,9 +93,9 @@ class MessageController extends Controller
                 {
                     $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
                     $uploadedFile = UploadedFile::getInstanceByName($field->name);
-                    $fileModel = new File();
-                    $fileModel->name = $fileModel->name;
+                    $fileModel = $uploadedFile;
                     if($uploadedFile) {
+                        $fileModel = new File();
                         try {
                             $assets = Craft::$app->getAssets();
                             $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
@@ -136,8 +136,8 @@ class MessageController extends Controller
                         }
                     }
 
-                    $messageValue->value = $fileModel;
-                    $senderValues[$field->name]['value'] = json_encode($messageValue->value);
+                    $messageValue->value = (empty($fileModel) ? NULL : $fileModel );
+                    $senderValues[$field->name]['value'] = (empty($messageValue->value) ? NULL : json_encode($messageValue->value) );
                 } else {
                     $messageValue->value = $request->getBodyParam($field->name, null);
                     $senderValues[$field->name]['value'] = $messageValue->value;

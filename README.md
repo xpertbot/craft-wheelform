@@ -26,6 +26,7 @@ To install the plugin, follow these instructions.
 - reCaptcha Validation
 - Export CSV File
 - Custom Email HTML Template
+- Template variables for easy development
 - Email Validation based on field type selected
 - Required Fields
 - Checkbox options
@@ -42,8 +43,11 @@ After successful installation go to Plugin Settings and add the email you would 
 
 Forms are administered at the forms panel main settings. Set where this form should be submitting `TO` as well as name of the form.
 
+Field Settings can be set as Required or not, for validation purposes.
+
 Current Field types supported are:
 * Text
+* Textarea
 * Email
 * Number
 * Checkboxes
@@ -52,10 +56,146 @@ Current Field types supported are:
 * Hidden
 * File
 
-Field Settings can be set as Required or not, for validation purposes.
+## Template Variables
+- errors
+...Array of errors based on field name, form, recaptcha, honeypot.
+
+- values
+...User values based on keys
+
+- wheelform
+...form
+...settings
+
+- form
+...fields
+...recaptcha
+...open()
+...close()
+
+- field
+...type
+...name
+...label
+...items
+...fieldClass
+...containerClass
+...required
+...order
+...value
+
+## Template Structure
 
 Your form template can look something like this:
 
+```twig
+{% macro errorList(errors) %}
+    {% if errors %}
+        <ul class="errors">
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+{% from _self import errorList %}
+
+{% set form = wheelform.form({
+    id: 1,
+    redirect: 'contact/thanks',
+    attributes: [
+        'novalidate="novalidate"'
+    ],
+    buttonLabel: "Submit",
+}) %}
+
+{{ form.open() }}
+    {{ errors['form'] is defined ? errorList(errors['form']) }}
+    {{ errors['recaptcha'] is defined ? errorList(errors['recaptcha']) }}
+    {{ errors['honeypot'] is defined ? errorList(errors['honeypot']) }}
+
+    {% for field in form.fields %}
+        {{ field.render() }}
+        {{ errors[field.name] is defined ? errorList(errors[field.name]) }}
+    {% endfor %}
+{{ form.close() }}
+```
+Advanced templating:
+
+```twig
+{% macro errorList(errors) %}
+    {% if errors %}
+        <ul class="errors">
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+{% from _self import errorList %}
+
+{% set form = wheelform.form({
+    id: 1,
+    redirect: 'contact/thanks',
+    styleClass: "form",
+    attributes: [
+        'novalidate="novalidate"'
+    ],
+}) %}
+
+{{ form.open() }}
+    {{ errors['form'] is defined ? errorList(errors['form']) }}
+    {{ errors['recaptcha'] is defined ? errorList(errors['recaptcha']) }}
+    {{ errors['honeypot'] is defined ? errorList(errors['honeypot']) }}
+
+    {% for field in form.fields %}
+        {% switch field.type %}
+            {% case "checkbox" %}
+                <div class="form-checkbox">
+                {% for item in field.items %}
+                </label><input class="checkbox" type="checkbox" value="{{ item }}" {{value[field.name] is defined and item in value[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}[]" id=""/>{{item}}</label>
+                {% endfor %}
+                </div>
+            {% case "radio" %}
+                <div class="form-radio">
+                {% for item in field.items %}
+                <input class="radio" type="radio" value="{{ item }}" {{value[field.name] is defined and item == value[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}" id=""/>
+                <label>{{item}}</label>
+                {% endfor %}
+                </div>
+            {% case "file" %}
+                <div class="form-group">
+                <label>{{field.label}}</label>
+                <input type="file" name="{{field.name}}" id=""/>
+
+                </div>
+            {% case "textarea" %}
+                <div class="form-group">
+                    <label>{{field.label}}</label>
+                    <textarea class="form-control" name="{field.name}" id="">{{ values[field.name] ?? '' }}</textarea>
+                </div>
+            {% default %}
+                <div class="form-group">
+                <label>{{field.label}}</label>
+                <input class="form-control" type="{field.type}" value="{{ values[field.name] ?? '' }}" name="{field.name}" id=""/>
+                </div>
+        {% endswitch %}
+        {{ errors[field.name] is defined ? errorList(errors[field.name]) }}
+    {% endfor %}
+    {% if form.recaptcha %}
+        <div>
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+            <!-- Production captcha -->
+            <div class="g-recaptcha" data-sitekey="{{wheelform.getSettings('recaptcha_public')}}"></div>
+        </div>
+    {% endif %}
+
+    <button class="btn btn-success" id="submit">Send</button>
+
+</form>
+```
+
+If you want to stick to HTML and not use the variables:
 ```twig
 {% macro errorList(errors) %}
     {% if errors %}

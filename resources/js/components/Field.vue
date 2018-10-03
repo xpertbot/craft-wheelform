@@ -162,6 +162,7 @@ export default {
         return {
             fieldTypes: [
                 'text',
+                'textarea',
                 'email',
                 'number',
                 'checkbox',

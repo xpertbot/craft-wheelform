@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.14.0 - 2018-10-03
+### Added
+- Added wheelform variable for templates
+- Added ability to add classes to fields and their containers for easy template render
+
 ## 1.13.1 - 2018-09-16
 ### Fixed
 - Fixed File field being empty and not saving correctly
