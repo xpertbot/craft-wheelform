@@ -119,11 +119,15 @@
                             />
                     </div>
                     <div>
+<<<<<<< HEAD
                         <label :for="'field-class-' + field.id">Container class</label>
                         <input type="text" :id="'field-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
                     </div>
                     <div>
                         <label :for="'field-class-' + field.id">Field class</label>
+=======
+                        <label :for="'field-class-' + field.id">Field Style Class</label>
+>>>>>>> master
                         <input type="text" :id="'field-class-' + field.id" v-model="field.options.fieldClass" :name="'fields['+index+'][options][fieldClass]'">
                     </div>
                 </div>
