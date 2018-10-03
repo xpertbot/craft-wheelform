@@ -3,15 +3,15 @@ namespace wheelform;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
-use wheelform\models\Settings;
-use wheelform\models\Message;
-use wheelform\utilities\Tools;
-
-use yii\base\Event;
-use craft\web\UrlManager;
-use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterComponentTypesEvent;
+use craft\events\RegisterUrlRulesEvent;
 use craft\services\Utilities;
+use craft\web\UrlManager;
+use wheelform\extensions\WheelformVariable;
+use wheelform\models\Message;
+use wheelform\models\Settings;
+use wheelform\utilities\Tools;
+use yii\base\Event;
 
 class Plugin extends BasePlugin
 {
@@ -59,6 +59,12 @@ class Plugin extends BasePlugin
             }
             return $event;
         });
+
+        if (Craft::$app->request->getIsSiteRequest()) {
+            // Add in our Twig extension
+            $wheelform = new WheelformVariable();
+            Craft::$app->view->registerTwigExtension($wheelform);
+        }
     }
 
     public function getMailer(): Mailer
