@@ -58,31 +58,31 @@ Current Field types supported are:
 
 ## Template Variables
 - errors
-&nbsp;&nbsp;&nbsp;Array of errors based on field name, form, recaptcha, honeypot.
+    - Array of errors based on field name, form, recaptcha, honeypot.
 
 - values
-&nbsp;&nbsp;&nbsp;User values based on keys
+    - User values based on keys
 
 - wheelform
-&nbsp;&nbsp;&nbsp;form
-&nbsp;&nbsp;&nbsp;settings
+    - form
+    - settings
 
 - form
-&nbsp;&nbsp;&nbsp;fields
-&nbsp;&nbsp;&nbsp;recaptcha
-&nbsp;&nbsp;&nbsp;open()
-&nbsp;&nbsp;&nbsp;close()
+    - fields
+    - recaptcha
+    - open()
+    - close()
 
 - field
-&nbsp;&nbsp;&nbsp;type
-&nbsp;&nbsp;&nbsp;name
-&nbsp;&nbsp;&nbsp;label
-&nbsp;&nbsp;&nbsp;items
-&nbsp;&nbsp;&nbsp;fieldClass
-&nbsp;&nbsp;&nbsp;containerClass
-&nbsp;&nbsp;&nbsp;required
-&nbsp;&nbsp;&nbsp;order
-&nbsp;&nbsp;&nbsp;value
+    - type
+    - name
+    - label
+    - items
+    - fieldClass
+    - containerClass
+    - required
+    - order
+    - value
 
 ## Template Structure
 
