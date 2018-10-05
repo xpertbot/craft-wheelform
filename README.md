@@ -64,25 +64,21 @@ Current Field types supported are:
     - User values based on keys
 
 - wheelform
-    - form
     - settings
-
-- form
-    - fields
-    - recaptcha
-    - open()
-    - close()
-
-- field
-    - type
-    - name
-    - label
-    - items
-    - fieldClass
-    - containerClass
-    - required
-    - order
-    - value
+    - form
+        - recaptcha
+        - open()
+        - close()
+        - fields
+            - type
+            - name
+            - label
+            - items
+            - fieldClass
+            - containerClass
+            - required
+            - order
+            - value    
 
 ## Template Structure
 
