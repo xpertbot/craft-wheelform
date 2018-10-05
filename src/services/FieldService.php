@@ -126,8 +126,7 @@ class FieldService extends BaseService
         switch($this->type)
         {
             case "radio":
-                if(empty($this->items))
-                {
+                if(empty($this->items)) {
                     break;
                 }
 
@@ -158,6 +157,21 @@ class FieldService extends BaseService
                     $html .= "<label for=\"wf-checkbox-" . $this->order . '-' . $key . "\" class=\"wf-label\">{$item}</label>";
                     $html .= '</div>';
                 }
+                break;
+            case "select":
+                if(empty($this->items)) {
+                    break;
+                }
+                $html .= '<div class="wf-select">';
+                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
+                $html .= "<select id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\">";
+                if($this->options->selectEmpty) {
+                    $html .= "<option value=\"\"> -- </option>";
+                }
+                foreach($this->items as $key => $item) {
+                    $html .= "<option value=\"{$item}\"".( ($item == $this->value) ? ' selected="selected"' : '' ). ">{$item}</option>";
+                }
+                $html .= '</select></div>';
                 break;
             case "file":
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";

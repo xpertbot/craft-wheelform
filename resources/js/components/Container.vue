@@ -58,20 +58,7 @@ export default {
                             status: true,
                             msg: ''
                         };
-                        if(field.options.length == 0)
-                        {
-                            field.options = {
-                                validate: 0,
-                                label: '',
-                                items: [],
-                                containerClass: '',
-                                fieldClass: '',
-                            }
-                        }
-                        else if(typeof field.options.validate == 'string')
-                        {
-                            field.options.validate = parseInt(field.options.validate);
-                        }
+                        field.options = this.mergeOptions(field.options);
                         this.fields.push(field);
                     }
                     this.nextFieldIndex = this.fields.length;
@@ -95,12 +82,7 @@ export default {
                     status: true,
                     msg: ''
                 },
-                options: {
-                    validate: 0,
-                    items: [],
-                    containerClass: '',
-                    fieldClass: '',
-                }
+                options: this.mergeOptions({}),
             });
         },
         handleEditMode()
@@ -137,6 +119,35 @@ export default {
                 msg: ''
             }
         },
+        mergeOptions(options)
+        {
+            const booleanProperties = [
+                'validate',
+                'selectEmpty'
+            ];
+
+            const defaultOptions = {
+                validate: 0,
+                label: '',
+                items: [],
+                containerClass: '',
+                fieldClass: '',
+                selectEmpty: 0,
+            };
+
+            for(let property in defaultOptions) {
+                if(! options.hasOwnProperty(property)) {
+                    //Default Option values
+                    options[property] = defaultOptions[property];
+                } else {
+                    //check if booleanProperty
+                    if(options[property] in booleanProperties) {
+                        options[property] = parseInt(options[property]);
+                    }
+                }
+            }
+            return options;
+        }
     }
 }
 </script>

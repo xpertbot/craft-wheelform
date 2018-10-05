@@ -21,6 +21,9 @@
                             <span :style="'color:'+getStatusColor(field.options.validate)">Validate</span>
                         </div>
                         <ul>
+                            <li v-if="field.type == 'select' && field.options.selectEmpty">
+                                --
+                            </li>
                             <li
                                 v-for="(item, index) in field.options.items"
                                 v-bind:key="index"
@@ -71,6 +74,14 @@
                         </select>
                     </div>
                     <div v-if="isMultiOption">
+                        <div v-if="field.type == 'select'">
+                            <Lightswitch
+                                :name="'options_select_empty'"
+                                :label="'Default Empty?'"
+                                :status="field.options.selectEmpty"
+                                :handle-status-change="handleOptionSelectEmpty"
+                            />
+                        </div>
                         <div>
                             <strong>Options</strong>
                             <Lightswitch
@@ -143,6 +154,7 @@
         <input type="hidden" :name="getFieldName('index_view')" v-model="field.index_view">
         <input type="hidden" :name="getFieldName('active')" v-model="field.active">
         <input type="hidden" :name="'fields['+index+'][options][validate]'" v-model="field.options.validate">
+        <input type="hidden" :name="'fields['+index+'][options][selectEmpty]'" v-model="field.options.selectEmpty">
     </div>
 </template>
 
@@ -256,6 +268,10 @@ export default {
         handleOptionValidate(name, value)
         {
             this.field.options.validate = (value ? 1 : 0);
+        },
+        handleOptionSelectEmpty(name, value)
+        {
+            this.field.options.selectEmpty = (value ? 1 : 0);
         },
     }
 }

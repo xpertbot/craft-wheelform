@@ -153,15 +153,23 @@ Advanced templating:
             {% case "checkbox" %}
                 <div class="form-checkbox">
                 {% for item in field.items %}
-                </label><input class="checkbox" type="checkbox" value="{{ item }}" {{value[field.name] is defined and item in value[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}[]" id=""/>{{item}}</label>
+                </label><input class="checkbox" type="checkbox" value="{{ item }}" {{values[field.name] is defined and item in values[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}[]" id=""/>{{item}}</label>
                 {% endfor %}
                 </div>
             {% case "radio" %}
                 <div class="form-radio">
                 {% for item in field.items %}
-                <input class="radio" type="radio" value="{{ item }}" {{value[field.name] is defined and item == value[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}" id=""/>
+                <input class="radio" type="radio" value="{{ item }}" {{values[field.name] is defined and item == values[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}" id=""/>
                 <label>{{item}}</label>
                 {% endfor %}
+                </div>
+            {% case "select" %}
+                <div class="form-select">
+                <select id="wf-select" name="{{field.name}}" class="wf-field {{field.fieldClass}}">
+                {% for item in field.items %}
+                    <option value="{{ field.item}}" {{values[field.name] is defined and item == values[field.name] ? 'selected="selected"' : '' }}>{{item}}</option>
+                {% endfor %}
+                </select>
                 </div>
             {% case "file" %}
                 <div class="form-group">
@@ -172,12 +180,12 @@ Advanced templating:
             {% case "textarea" %}
                 <div class="form-group">
                     <label>{{field.label}}</label>
-                    <textarea class="form-control" name="{field.name}" id="">{{ values[field.name] ?? '' }}</textarea>
+                    <textarea class="form-control" name="{{field.name}}" id="">{{ values[field.name] ?? '' }}</textarea>
                 </div>
             {% default %}
                 <div class="form-group">
                 <label>{{field.label}}</label>
-                <input class="form-control" type="{field.type}" value="{{ values[field.name] ?? '' }}" name="{field.name}" id=""/>
+                <input class="form-control" type="{{field.type}}" value="{{ values[field.name] ?? '' }}" name="{{field.name}}" id=""/>
                 </div>
         {% endswitch %}
         {{ errors[field.name] is defined ? errorList(errors[field.name]) }}
