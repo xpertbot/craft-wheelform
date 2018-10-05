@@ -57,11 +57,9 @@ Current Field types supported are:
 * File
 
 ## Template Variables
-- errors
-    - Array of errors based on field name, form, recaptcha, honeypot.
+- errors (Array of errors based on field name, form, recaptcha, honeypot).
 
-- values
-    - User values based on keys
+- values (Array of User submitted values based on field name).
 
 - wheelform
     - settings
