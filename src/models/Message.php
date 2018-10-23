@@ -3,6 +3,7 @@ namespace wheelform\models;
 
 use Craft;
 use craft\db\ActiveRecord;
+use craft\helpers\DateTimeHelper;
 
 //Using Active Record because it extends Models.
 class Message extends ActiveRecord
@@ -47,5 +48,12 @@ class Message extends ActiveRecord
     public function getValueById(int $valueId)
     {
         return $this->getValue()->where(['field_id' => $valueId])->one();
+    }
+
+    public function afterFind()
+    {
+        $this->dateCreated = DateTimeHelper::toDateTime($this->dateCreated, false);
+
+        parent::afterFind();
     }
 }
