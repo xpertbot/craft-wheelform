@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.14.3 - 2018-10-22
+### Fixed
+- Fixed Timezone on Message View
+
 ## 1.14.2 - 2018-10-16
 ### Fixed
 - Fixed Dutch Translations (@cbovers)
