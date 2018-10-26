@@ -5,6 +5,7 @@ use Craft;
 use craft\helpers\Template;
 use wheelform\models\Form;
 use wheelform\models\FormField;
+use wheelform\models\Message;
 use wheelform\Plugin as Wheelform;
 use yii\base\ErrorException;
 
@@ -15,6 +16,8 @@ class FormService extends BaseService
     private $instance;
 
     private $fields = [];
+
+    private $entries = [];
 
     private $redirect;
 
@@ -113,6 +116,43 @@ class FormService extends BaseService
         }
 
         return $this->fields;
+    }
+
+    public function getEntries()
+    {
+        if(! empty($this->entries))
+        {
+            return $this->entries;
+        }
+
+        $entries = array();
+
+        $query = Message::find()
+            ->with('field')
+            ->where(['form_id' => $this->id])
+            ->orderBy(['dateCreated' => SORT_DESC])
+            ->all();
+
+        // map fields and values to entries array
+        foreach ($query as $entry) {
+            $item = array();
+            $item['id'] = $entry->id;
+            foreach ($entry->field as $field) {
+                $item['fields'][] = array (
+                    'name' => $field->name,
+                    'label' => $field->label,
+                    'value' => $entry->getValueById($field->id)->value,
+                    'type' => $field->type
+                );
+            }
+            $item['date'] = $entry->dateCreated;
+
+            // ignore any empty items
+            if (array_key_exists('fields', $item)) {
+                $entries[] = $item;
+            }
+        }
+        return $entries;
     }
 
     // Getters

@@ -76,7 +76,15 @@ Current Field types supported are:
             - containerClass
             - required
             - order
-            - value    
+            - value
+        - entries
+            - id
+            - fields
+                - name
+                - label
+                - value
+                - type
+            - date
 
 ## Template Structure
 
@@ -252,6 +260,38 @@ If you want to stick to HTML and not use the variables:
     <input type="submit" value="Send">
 </form>
 ```
+
+### Displaying existing form submissions
+You can access existing submitted form entries on a form through the `form.entries` property:
+
+```twig
+{% set form = wheelform.form({ id: 1 }) %}
+{% set entries = form.entries %}
+
+<table>
+    <thead>
+        {% for key, fields in entries|first if key == 'fields'  %}
+            <tr>
+                {% for field in fields  %}
+                    <th>{{ field.label }}</th>
+                {% endfor %}
+                <th>Date</th>
+            </tr>
+        {% endfor %}
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+            <tr data-id="{{ entry.id }}">
+                {% for field in entry.fields %}
+                    <td data-id="{{ field.name }}">{{ field.value }}</td>
+                {% endfor %}
+                    <td data-id="date">{{ entry.date|date("m/d/Y") }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+```
+
 
 ### Redirecting after submit
 
