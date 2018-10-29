@@ -242,7 +242,7 @@ class FormService extends BaseService
             'date' => $formEntry->dateCreated
         );
         foreach ($formEntry->field as $field) {
-            $values['fields'][] = array (
+            $values['fields'][$field->name] = array (
                 'name' => $field->name,
                 'label' => $field->label,
                 'value' => $formEntry->getValueById($field->id)->value,
