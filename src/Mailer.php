@@ -30,13 +30,14 @@ class Mailer extends Component
 
         // Prep the message Variables
         $defaultSubject = $form->name . " - " . Craft::t("wheelform", 'Submission');
-        $from_email = $settings->from_email;
+        $defaultFromEmail = $settings->from_email;
         $mailMessage = new MailMessage();
         $mailer = Craft::$app->getMailer();
         $text = '';
 
         $event = new SendEvent([
             'form_id' => $form->id,
+            'fromEmail' =>$defaultFromEmail,
             'subject' => $defaultSubject,
             'message' => $message,
         ]);
@@ -80,7 +81,7 @@ class Mailer extends Component
 
         $html_body = $this->compileHtmlBody($event->message);
 
-        $mailMessage->setFrom($from_email);
+        $mailMessage->setFrom($event->fromEmail);
         $mailMessage->setSubject($event->subject);
         $mailMessage->setTextBody($text);
         $mailMessage->setHtmlBody($html_body);
