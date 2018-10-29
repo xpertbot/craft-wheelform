@@ -155,6 +155,19 @@ class FormService extends BaseService
         return $entries;
     }
 
+    public function getSubmission() {
+        $message_id = Craft::$app->getSession()->get('messageID');
+        if (!$message_id ) {
+            return NULL;
+        }
+
+        $message = Message::find()->with('field')->where(['id' => $message_id])->one();
+        $submission = $this->getValues($message);
+        // discard after first read
+        Craft::$app->getSession()->remove('messageID');
+        return $submission;
+    }
+
     // Getters
     public function getRecaptcha()
     {
@@ -231,5 +244,22 @@ class FormService extends BaseService
         }
 
         return '';
+    }
+
+    protected function getValues($formEntry) {
+        $values = array(
+            'id' => $formEntry->id,
+            'form_id' => $formEntry->form_id,
+            'date' => $formEntry->dateCreated
+        );
+        foreach ($formEntry->field as $field) {
+            $values['fields'][] = array (
+                'name' => $field->name,
+                'label' => $field->label,
+                'value' => $formEntry->getValueById($field->id)->value,
+                'type' => $field->type
+            );
+        }
+        return $values;
     }
 }
