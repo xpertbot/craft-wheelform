@@ -79,6 +79,7 @@ Current Field types supported are:
             - value
         - entries
             - id
+            - formId
             - fields
                 - name
                 - label
@@ -93,7 +94,6 @@ Current Field types supported are:
                 - label
                 - value
                 - type
-
 
 ## Template Structure
 
@@ -270,38 +270,6 @@ If you want to stick to HTML and not use the variables:
 </form>
 ```
 
-### Displaying existing form submissions
-You can access existing submitted form entries on a form through the `form.entries` property:
-
-```twig
-{% set form = wheelform.form({ id: 1 }) %}
-{% set entries = form.entries %}
-
-<table>
-    <thead>
-        {% for key, fields in entries|first if key == 'fields'  %}
-            <tr>
-                {% for field in fields  %}
-                    <th>{{ field.label }}</th>
-                {% endfor %}
-                <th>Date</th>
-            </tr>
-        {% endfor %}
-    </thead>
-    <tbody>
-        {% for entry in entries %}
-            <tr data-id="{{ entry.id }}">
-                {% for field in entry.fields %}
-                    <td data-id="{{ field.name }}">{{ field.value }}</td>
-                {% endfor %}
-                    <td data-id="date">{{ entry.date|date("m/d/Y") }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
-```
-
-
 ### Redirecting after submit
 
 If you have a ‘redirect’ hidden input, the user will get redirected to it upon successfully sending the email.
@@ -334,6 +302,38 @@ Similar to the flash message, when a contact form is submitted the plugin will s
 {% endif %}
 ```
 You also have available `submission.id`, `submission.formId` and `submission.date`. Note that `form.submission` will be deleted after first read. 
+
+### Displaying existing form submissions
+You can access existing submitted form entries on a form through the `form.entries` property:
+
+```twig
+{% set form = wheelform.form({ id: 1 }) %}
+{% set entries = form.entries %}
+
+<table>
+    <thead>
+        {% for key, fields in entries|first if key == 'fields'  %}
+            <tr>
+                {% for field in fields  %}
+                    <th>{{ field.label }}</th>
+                {% endfor %}
+                <th>Date</th>
+            </tr>
+        {% endfor %}
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+            <tr data-id="{{ entry.id }}">
+                {% for field in entry.fields %}
+                    <td data-id="{{ field.name }}">{{ field.value }}</td>
+                {% endfor %}
+                <td data-id="date">{{ entry.date|date("m/d/Y") }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+```
+
 
 ### File attachments
 

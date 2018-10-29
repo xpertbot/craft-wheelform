@@ -118,6 +118,7 @@ class FormService extends BaseService
         return $this->fields;
     }
 
+    // Getters
     public function getEntries()
     {
         if(! empty($this->entries))
@@ -135,18 +136,7 @@ class FormService extends BaseService
 
         // map fields and values to entries array
         foreach ($query as $entry) {
-            $item = array();
-            $item['id'] = $entry->id;
-            foreach ($entry->field as $field) {
-                $item['fields'][] = array (
-                    'name' => $field->name,
-                    'label' => $field->label,
-                    'value' => $entry->getValueById($field->id)->value,
-                    'type' => $field->type
-                );
-            }
-            $item['date'] = $entry->dateCreated;
-
+            $item = $this->getValues($entry);
             // ignore any empty items
             if (array_key_exists('fields', $item)) {
                 $entries[] = $item;
@@ -168,7 +158,6 @@ class FormService extends BaseService
         return $submission;
     }
 
-    // Getters
     public function getRecaptcha()
     {
         return (bool) $this->instance->recaptcha;
