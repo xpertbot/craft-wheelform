@@ -217,6 +217,7 @@ class MessageController extends Controller
             return $this->asJson(['success' => true, 'message' => $settings->success_message]);
         }
 
+        Craft::$app->getSession()->set('messageID', $message->id);
         Craft::$app->getSession()->setNotice($settings->success_message);
         return $this->redirectToPostedUrl($message);
     }

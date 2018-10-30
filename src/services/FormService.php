@@ -5,6 +5,7 @@ use Craft;
 use craft\helpers\Template;
 use wheelform\models\Form;
 use wheelform\models\FormField;
+use wheelform\models\Message;
 use wheelform\Plugin as Wheelform;
 use yii\base\ErrorException;
 
@@ -15,6 +16,8 @@ class FormService extends BaseService
     private $instance;
 
     private $fields = [];
+
+    private $entries = [];
 
     private $redirect;
 
@@ -116,6 +119,45 @@ class FormService extends BaseService
     }
 
     // Getters
+    public function getEntries()
+    {
+        if(! empty($this->entries))
+        {
+            return $this->entries;
+        }
+
+        $entries = array();
+
+        $query = Message::find()
+            ->with('field')
+            ->where(['form_id' => $this->id])
+            ->orderBy(['dateCreated' => SORT_DESC])
+            ->all();
+
+        // map fields and values to entries array
+        foreach ($query as $entry) {
+            $item = $this->getValues($entry);
+            // ignore any empty items
+            if (array_key_exists('fields', $item)) {
+                $entries[] = $item;
+            }
+        }
+        return $entries;
+    }
+
+    public function getSubmission() {
+        $message_id = Craft::$app->getSession()->get('messageID');
+        if (!$message_id ) {
+            return NULL;
+        }
+
+        $message = Message::find()->with('field')->where(['id' => $message_id])->one();
+        $submission = $this->getValues($message);
+        // discard after first read
+        Craft::$app->getSession()->remove('messageID');
+        return $submission;
+    }
+
     public function getRecaptcha()
     {
         return (bool) $this->instance->recaptcha;
@@ -191,5 +233,22 @@ class FormService extends BaseService
         }
 
         return '';
+    }
+
+    protected function getValues($formEntry) {
+        $values = array(
+            'id' => $formEntry->id,
+            'form_id' => $formEntry->form_id,
+            'date' => $formEntry->dateCreated
+        );
+        foreach ($formEntry->field as $field) {
+            $values['fields'][$field->name] = array (
+                'name' => $field->name,
+                'label' => $field->label,
+                'value' => $formEntry->getValueById($field->id)->value,
+                'type' => $field->type
+            );
+        }
+        return $values;
     }
 }
