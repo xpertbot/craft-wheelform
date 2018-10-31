@@ -17,8 +17,6 @@ class FormService extends BaseService
 
     private $fields = [];
 
-    private $entries = [];
-
     private $redirect;
 
     private $method;
@@ -119,30 +117,38 @@ class FormService extends BaseService
     }
 
     // Getters
-    public function getEntries()
+    public function getEntries($start = 0, $limit = null)
     {
-        if(! empty($this->entries))
-        {
-            return $this->entries;
-        }
-
-        $entries = array();
-
         $query = Message::find()
-            ->with('field')
+            ->with('value.field')
             ->where(['form_id' => $this->id])
-            ->orderBy(['dateCreated' => SORT_DESC])
-            ->all();
+            ->orderBy(['dateCreated' => SORT_DESC]);
 
-        // map fields and values to entries array
-        foreach ($query as $entry) {
-            $item = $this->getValues($entry);
-            // ignore any empty items
-            if (array_key_exists('fields', $item)) {
-                $entries[] = $item;
-            }
+        if(! is_null($limit) && is_numeric($limit)) {
+            $query->offset($start)->limit($limit);
         }
+
+        $entries = null;
+        $models = $query->all();
+
+        // create services that will display on the template
+        foreach ($models as $model) {
+            $message =  $this->loadMessage($model);
+            $entries[] = $message;
+        }
+
         return $entries;
+    }
+
+    public function getEntry($id) {
+        $model = Message::find()
+            ->with('value.field')
+            ->where([
+                'form_id' => $this->id,
+                'id' => intval($id),
+            ])
+            ->one();
+        return $this->loadMessage($model);
     }
 
     public function getRecaptcha()
@@ -222,20 +228,25 @@ class FormService extends BaseService
         return '';
     }
 
-    protected function getValues($formEntry) {
-        $values = array(
-            'id' => $formEntry->id,
-            'form_id' => $formEntry->form_id,
-            'date' => $formEntry->dateCreated
-        );
-        foreach ($formEntry->field as $field) {
-            $values['fields'][$field->name] = array (
-                'name' => $field->name,
-                'label' => $field->label,
-                'value' => $formEntry->getValueById($field->id)->value,
-                'type' => $field->type
-            );
+    protected function loadMessage($model)
+    {
+        if(empty($model)) {
+            return null;
         }
-        return $values;
+
+        $message = new MessageService();
+        $message->id = $model->id;
+        $message->date = $model->dateCreated;
+        foreach ($model->value as $v) {
+            $message->addField(new FieldService([
+                'name' => $v->field->name,
+                'type' => $v->field->type,
+                'options' => $v->field->options,
+                'order' => $v->field->order,
+                'value' => $v->value,
+            ]));
+        }
+
+        return $message;
     }
 }

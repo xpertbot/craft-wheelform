@@ -23,13 +23,13 @@ class MessageService extends BaseService
                 $this->form_id = $model->form_id;
                 $this->date = $model->dateCreated;
                 foreach($model->value as $v) {
-                    $this->fields[] = new FieldService([
+                    $this->fields[$v->field->name] = (new FieldService([
                         'name' => $v->field->name,
                         'type' => $v->field->type,
                         'options' => $v->field->options,
                         'order' => $v->field->order,
                         'value' => $v->value,
-                    ]);
+                    ]));
                 }
             }
         }
@@ -61,4 +61,15 @@ class MessageService extends BaseService
     }
 
     //Setters
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setDate($date) {
+        $this->date = $date;
+    }
+
+    public function addField($field) {
+        $this->fields[$field->name] = $field;
+    }
 }

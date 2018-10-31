@@ -309,32 +309,43 @@ You can access existing submitted form entries on a form through the `form.entri
 
 ```twig
 {% set form = wheelform.form({ id: 1 }) %}
+
+{# form.entries(start, limit) can be used for pagination purposes #}
 {% set entries = form.entries %}
 
+{# form.fields returns active form fields #}
+{% set fields = form.fields %}
+
 <table>
-    <thead>
-        {% for key, fields in entries|first if key == 'fields'  %}
-            <tr>
-                {% for field in fields  %}
-                    <th>{{ field.label }}</th>
-                {% endfor %}
-                <th>Date</th>
-            </tr>
-        {% endfor %}
-    </thead>
-    <tbody>
-        {% for entry in entries %}
-            <tr data-id="{{ entry.id }}">
-                {% for field in entry.fields %}
-                    <td data-id="{{ field.name }}">{{ field.value }}</td>
-                {% endfor %}
-                <td data-id="date">{{ entry.date|date("m/d/Y") }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<thead>
+    {% for field in fields %}
+        <th>{{ field.label }}</th>
+    {% endfor %}
+    <th>Date</th>
+</thead>
+<tbody>
+    {% for entry in entries %}
+        <tr data-id="{{ entry.id }}">
+            {% for field in fields %}
+                {% set current = entry.fields[field.name] %}
+                <td data-id="{{ current.name }}">{{ current.value }}</td>
+            {% endfor %}
+            <td data-id="date">{{ entry.date|date("m/d/Y") }}</td>
+        </tr>
+    {% endfor %}
+</tbody>
 ```
 
+### Displaying specific Form Submission
+You can access specific form entry by loading the form and requesting it by ID:
+
+```twig
+{% set form = wheelform.form({ id: 1 }) %}
+{% set entry = form.entry(id) %}
+{% for field in entry.fields %}
+    <p>{{ field.value }}</p>
+{% endfor %}
+```
 
 ### File attachments
 
