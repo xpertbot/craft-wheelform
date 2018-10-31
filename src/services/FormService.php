@@ -145,19 +145,6 @@ class FormService extends BaseService
         return $entries;
     }
 
-    public function getSubmission() {
-        $message_id = Craft::$app->getSession()->get('messageID');
-        if (!$message_id ) {
-            return NULL;
-        }
-
-        $message = Message::find()->with('field')->where(['id' => $message_id])->one();
-        $submission = $this->getValues($message);
-        // discard after first read
-        Craft::$app->getSession()->remove('messageID');
-        return $submission;
-    }
-
     public function getRecaptcha()
     {
         return (bool) $this->instance->recaptcha;

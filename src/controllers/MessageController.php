@@ -191,6 +191,9 @@ class MessageController extends Controller
             {
                 $message->link('value', $value);
             }
+
+            //$message->id does not exists if user turned off database saving
+            Craft::$app->getSession()->setFlash('wheelformLastSubmissionId', $message->id, true);
         }
 
         if($formModel->send_email)
@@ -217,7 +220,6 @@ class MessageController extends Controller
             return $this->asJson(['success' => true, 'message' => $settings->success_message]);
         }
 
-        Craft::$app->getSession()->set('messageID', $message->id);
         Craft::$app->getSession()->setNotice($settings->success_message);
         return $this->redirectToPostedUrl($message);
     }

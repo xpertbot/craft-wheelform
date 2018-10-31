@@ -3,6 +3,7 @@ namespace wheelform\services;
 
 use Craft;
 use wheelform\Plugin as Wheelform;
+use wheelform\services\MessageService;
 use yii\base\BaseObject;
 use yii\base\ErrorException;
 
@@ -40,5 +41,15 @@ class WheelformService extends BaseObject
 
         return $this->settings;
 
+    }
+
+    public function getLastSubmission()
+    {
+        $id = Craft::$app->getSession()->getFlash('wheelformLastSubmissionId');
+        if (!$id) {
+            return null;
+        }
+
+        return (new MessageService($id));
     }
 }

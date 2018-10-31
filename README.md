@@ -289,9 +289,9 @@ When a contact form is submitted, the plugin will set a `notice` or `success` fl
 ```
 
 ### Displaying the last/current submission
-Similar to the flash message, when a contact form is submitted the plugin will store the values of the submitted form in the session and make it available (once) through the `form.submission` variable. You can use this in the template (typically in you re-direct page) like this:
+Similar to the flash message (will only be available after submission), when a contact form is submitted the plugin will store the values of the submitted form in the session and make it available (once) through the `wheelform.lastSubmission` variable. You can use this in the template (typically in your re-direct page) like this:
 ```twig
-{% set submission = form.submission %}
+{% set submission = wheelform.lastSubmission %}
 {% if submission %}
     <dl>
         {% for field in submission.fields %}
@@ -301,7 +301,8 @@ Similar to the flash message, when a contact form is submitted the plugin will s
     </dl>
 {% endif %}
 ```
-You also have available `submission.id`, `submission.formId` and `submission.date`. Note that `form.submission` will be deleted after first read. 
+You also have available `submission.id`, `submission.formId` and `submission.date`
+(Note: `submission.date` is a DateTime object run it through `date()` filter).
 
 ### Displaying existing form submissions
 You can access existing submitted form entries on a form through the `form.entries` property:
