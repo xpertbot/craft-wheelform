@@ -75,7 +75,7 @@ class ExportHelper
                 }
                 $values[$i][$v->field->name] = (empty($v->value) ? '' : $v->value);
             }
-            $values[$i]['date_created'] = $messages[$i]->dateCreated;
+            $values[$i]['date_created'] = $messages[$i]->dateCreated->format(\DateTime::ATOM);
         }
         asort($headers);
         array_unshift($headers, 'id');

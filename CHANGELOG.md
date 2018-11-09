@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Added New template function to display last submission. (@svale)
 - Added New template function to display all entries of an specific form. (@svale)
+### Fixed
+- Fixed CSV importer not displaying all the fields.
 
 ## 1.14.3 - 2018-10-22
 ### Fixed
