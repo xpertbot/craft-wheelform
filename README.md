@@ -86,14 +86,14 @@ Current Field types supported are:
                 - value
                 - type
             - date
-        - submission
-            - id
-            - formId
-            - fields
-                - name
-                - label
-                - value
-                - type
+    - lastSubmission
+        - id
+        - formId
+        - fields
+            - name
+            - label
+            - value
+            - type
 
 ## Template Structure
 
