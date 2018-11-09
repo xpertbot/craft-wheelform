@@ -20,7 +20,7 @@
                             <strong>Options</strong>
                             <span :style="'color:'+getStatusColor(field.options.validate)">Validate</span>
                         </div>
-                        <ul>
+                        <ul class="list-wrapper">
                             <li v-if="field.type == 'select' && field.options.selectEmpty">
                                 --
                             </li>
@@ -99,7 +99,7 @@
                             <a href="" @click.prevent="addOption" class="form-field-add">Add</a>
                         </div>
                         <div>
-                            <ul>
+                            <ul class="list-wrapper">
                                 <li
                                     v-for="(item, key) in field.options.items"
                                     v-bind:key="key"
@@ -278,7 +278,7 @@ export default {
 </script>
 
 <style>
-    ul{
+    ul.list-wrapper{
         list-style: none;
         padding: 10px 0px 0px 5px;
     }
