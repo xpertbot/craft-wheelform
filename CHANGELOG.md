@@ -4,12 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.15.1 - 2018-11-09
+### Fixed
+- Fixed CSV exporter not displaying all the headers.
+
 ## 1.15.0 - 2018-10-29
 ### Added
 - Added New template function to display last submission. (@svale)
 - Added New template function to display all entries of an specific form. (@svale)
-### Fixed
-- Fixed CSV importer not displaying all the fields.
 
 ## 1.14.3 - 2018-10-22
 ### Fixed

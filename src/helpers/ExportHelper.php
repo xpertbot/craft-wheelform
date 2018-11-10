@@ -6,6 +6,7 @@ use yii\helpers\Json;
 use wheelform\models\Message;
 use craft\helpers\StringHelper;
 use wheelform\models\FormField;
+use yii\helpers\ArrayHelper;
 
 /**
 * CsvExport
@@ -59,45 +60,59 @@ class ExportHelper
         }
 
         $messages = $query->all();
-
-        $headers = [];
-
-        //List of all rows with index as row Number and associative array of header => value;
-        $values = [];
-        for($i = 0; $i < count($messages); $i++)
-        {
-            $values[$i]['id'] = $messages[$i]->id;
-            foreach($messages[$i]->value as $v)
-            {
-                if(! in_array($v->field->name, $headers))
-                {
-                    $headers[] = $v->field->name;
-                }
-                $values[$i][$v->field->name] = (empty($v->value) ? '' : $v->value);
-            }
-            $values[$i]['date_created'] = $messages[$i]->dateCreated->format(\DateTime::ATOM);
-        }
-        asort($headers);
+        $fieldModels = FormField::find()->where(['form_id' => $where['form_id']])->orderBy(['order' => SORT_ASC])->all();
+        $headers = ArrayHelper::getColumn($fieldModels, 'name');
         array_unshift($headers, 'id');
         $headers[] = 'date_created';
 
-        array_unshift($values, $headers);
-
         $fp = fopen($file, 'w+');
-        for($i = 0; $i < count($values); $i++)
-        {
-            //Add Headers
-            if($i == 0)
-            {
-                fputcsv($fp, $values[$i]);
-                continue;
+
+        //Add Headers
+        fputcsv($fp, $headers);
+        if(!empty($messages)) {
+            $rows = [];
+            //create Array for easy Import into CSV
+            for ($i=0; $i < count($messages); $i++) {
+                $rows[$i]['id'] = [
+                    'value' => $messages[$i]->id,
+                    'type' => 'text',
+                ];
+                foreach($messages[$i]->value as $model) {
+                    $rows[$i][$model->field->name] = [
+                        'type' => $model->field->type,
+                        'value' => $model->value,
+                    ];
+                }
+                $rows[$i]['date_created'] = [
+                    'value' => $messages[$i]->dateCreated->format(\DateTime::ATOM),
+                    'type' => 'text',
+                ];
             }
-            //Build row
-            $row = [];
-            foreach($headers as $h){
-                $row[] = (empty($values[$i][$h]) ? '' : $values[$i][$h]);
+
+            foreach($rows as $data) {
+                $row = [];
+                foreach($headers as $header) {
+                    if(empty($data[$header])) {
+                        $row[] = '';
+                    } else {
+                        $m = $data[$header];
+                        switch ($m['type']) {
+                            case 'file':
+                                if (empty($m['value'])) {
+                                    $row[] = '';
+                                } else {
+                                    $attachment = json_decode($m['value']);
+                                    $row[] = $attachment->name;
+                                }
+                                break;
+                            default:
+                                $row[] = $m['value'];
+                                break;
+                        }
+                    }
+                }
+                fputcsv($fp, $row);
             }
-            fputcsv($fp, $row);
         }
         fclose($fp);
 
