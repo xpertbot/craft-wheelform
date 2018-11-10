@@ -31,6 +31,8 @@ class Mailer extends Component
         // Prep the message Variables
         $defaultSubject = $form->name . " - " . Craft::t("wheelform", 'Submission');
         $from_email = $settings->from_email;
+        // Grab any "to" emails set in the form settings.
+        $to_emails = StringHelper::split($form->to_email);
         $mailMessage = new MailMessage();
         $mailer = Craft::$app->getMailer();
         $text = '';
@@ -39,6 +41,9 @@ class Mailer extends Component
             'form_id' => $form->id,
             'subject' => $defaultSubject,
             'message' => $message,
+            'from' => $from_email,
+            'to' => $to_emails,
+            'reply_to' => '',
         ]);
 
         $this->trigger(self::EVENT_BEFORE_SEND, $event);
@@ -80,16 +85,23 @@ class Mailer extends Component
 
         $html_body = $this->compileHtmlBody($event->message);
 
-        $mailMessage->setFrom($from_email);
+        $mailMessage->setFrom($event->from);
         $mailMessage->setSubject($event->subject);
         $mailMessage->setTextBody($text);
         $mailMessage->setHtmlBody($html_body);
 
-        // Grab any "to" emails set in the form settings.
-        $to_emails = StringHelper::split($form->to_email);
+        if(! empty($event->reply_to)) {
+            $mailMessage->setReplyTo($event->reply_to);
+        }
 
-        foreach ($to_emails as $to_email) {
-            $to_email = trim($to_email);
+        if(is_array($event->to)) {
+            foreach ($event->to as $to_email) {
+                $to_email = trim($to_email);
+                $mailMessage->setTo($to_email);
+                $mailer->send($mailMessage);
+            }
+        } else {
+            $to_email = trim($event->to);
             $mailMessage->setTo($to_email);
             $mailer->send($mailMessage);
         }
@@ -104,15 +116,14 @@ class Mailer extends Component
         $view = Craft::$app->getView();
         $templateMode = $view->getTemplateMode();
 
-        if(empty($customConfig))
-        {
-            $view->setTemplateMode($view::TEMPLATE_MODE_CP);
-            $template = $this->defaultConfig['template'];
-        }
-        else
-        {
-            $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
-            $template = $customConfig['template'];
+        $view->setTemplateMode($view::TEMPLATE_MODE_CP);
+        $template = $this->defaultConfig['template'];
+
+        if(is_array($customConfig)) {
+            if(array_key_exists('template', $customConfig)) {
+                $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
+                $template = $customConfig['template'];
+            }
         }
 
         $html = $view->renderTemplate($template, [

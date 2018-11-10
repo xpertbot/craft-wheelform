@@ -7,8 +7,9 @@
             {% switch field.type %}
 
                 {% case "file" %}
-                    {{ field.value.name }}
-
+                    {% if field.value is not empty %}
+                        {{ field.value.name }}
+                    {% endif %}
                 {% case "checkbox" %}
                     {{ field.value | join(',')}}
 
