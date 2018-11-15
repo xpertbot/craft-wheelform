@@ -2,20 +2,21 @@
 namespace wheelform\controllers;
 
 use Craft;
-use wheelform\Plugin;
-use yii\web\Response;
+
 use craft\elements\Asset;
 use craft\helpers\Assets;
-
 use craft\web\Controller;
-use wheelform\models\Form;
-use yii\web\HttpException;
 use craft\web\UploadedFile;
+use craft\errors\UploadFailedException;
+use wheelform\models\Form;
 use wheelform\models\Message;
 use wheelform\models\FormField;
 use wheelform\models\fields\File;
 use wheelform\models\MessageValue;
-use craft\errors\UploadFailedException;
+use wheelform\Plugin;
+use yii\web\Response;
+use yii\web\HttpException;
+use yii\web\BadRequestHttpException;
 
 class MessageController extends Controller
 {
@@ -132,6 +133,8 @@ class MessageController extends Controller
                                 }
                             }
                         } catch (\Throwable $exception) {
+                            Craft::error('An error occurred when saving an asset: ' . $e->getMessage(), __METHOD__);
+                            Craft::$app->getErrorHandler()->logException($e);
                             return $exception->getMessage();
                         }
                     }
