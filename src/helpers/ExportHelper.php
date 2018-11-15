@@ -2,11 +2,12 @@
 namespace wheelform\helpers;
 
 use Craft;
-use yii\helpers\Json;
-use wheelform\models\Message;
+use craft\i18n\Formatter;
 use craft\helpers\StringHelper;
+use wheelform\models\Message;
 use wheelform\models\FormField;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
 * CsvExport
@@ -62,6 +63,7 @@ class ExportHelper
         $messages = $query->all();
         $fieldModels = FormField::find()->where(['form_id' => $where['form_id']])->orderBy(['order' => SORT_ASC])->all();
         $headers = ArrayHelper::getColumn($fieldModels, 'name');
+        $formatter = Craft::$app->getFormatter();
         array_unshift($headers, 'id');
         $headers[] = 'date_created';
 
@@ -84,7 +86,7 @@ class ExportHelper
                     ];
                 }
                 $rows[$i]['date_created'] = [
-                    'value' => $messages[$i]->dateCreated->format(\DateTime::ATOM),
+                    'value' => $formatter->asDateTime($messages[$i]->dateCreated),
                     'type' => 'text',
                 ];
             }

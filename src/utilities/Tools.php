@@ -33,7 +33,7 @@ class Tools extends Utility
         $view->registerJs('new Craft.WheelformExportFields(\'export-fields\');');
         $view->registerJs('new Craft.WheelformImportFields(\'import-fields\');');
 
-        $formRecords = Form::find()->orderBy(['name' => 'ASC'])->all();
+        $formRecords = Form::find()->where(['active' => 1])->orderBy(['name' => 'ASC'])->all();
         $formOptions = [];
         foreach($formRecords as $record)
         {

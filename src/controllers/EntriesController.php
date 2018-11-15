@@ -161,15 +161,18 @@ class EntriesController extends Controller
             $exportHelper = new ExportHelper();
             $where['form_id'] = $form_id;
 
-            if(! empty($params['start_date']))
+            if(! empty($params['start_date']['date']))
             {
-                $date = DateTimeHelper::toIso8601($params['start_date']);
-                $where['start_date'] = $date;
+                $start_date = DateTimeHelper::toDateTime($params['start_date']);
+                $start_date->setTimezone(new \DateTimeZone('UTC'));
+                $where['start_date'] = $start_date->format('Y-m-d H:i:s');
             }
-            if(! empty($params['end_date']))
+            if(! empty($params['end_date']['date']))
             {
-                $date = DateTimeHelper::toIso8601($params['end_date']);
-                $where['end_date'] = $date;
+                $end_date = DateTimeHelper::toDateTime($params['end_date']);
+                $end_date->modify('+1 day');
+                $end_date->setTimezone(new \DateTimeZone('UTC'));
+                $where['end_date'] = $end_date->format('Y-m-d H:i:s');
             }
 
             $csvPath = $exportHelper->getCsv($where);
