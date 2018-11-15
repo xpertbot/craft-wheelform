@@ -133,8 +133,8 @@ class MessageController extends Controller
                                 }
                             }
                         } catch (\Throwable $exception) {
-                            Craft::error('An error occurred when saving an asset: ' . $e->getMessage(), __METHOD__);
-                            Craft::$app->getErrorHandler()->logException($e);
+                            Craft::error('An error occurred when saving an asset: ' . $exception->getMessage(), __METHOD__);
+                            Craft::$app->getErrorHandler()->logException($exception);
                             return $exception->getMessage();
                         }
                     }
