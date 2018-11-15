@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.16.1 - 2018-11-14
+### Fixed
+- Fixed better handling of Asset management and reporting.
+- Fixed better handling of Timezone handling for CSV exporter.
+
 ## 1.16.0 - 2018-11-10
 ### Added
 - Added improved Event listener to modify From Email, To Email, ReplyTo Email, add extra fields to message.
