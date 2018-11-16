@@ -9,7 +9,6 @@ use yii\base\ErrorException;
 
 class WheelformService extends BaseObject
 {
-    private $formService;
 
     private $settings;
 
@@ -20,16 +19,12 @@ class WheelformService extends BaseObject
 
     public function getForm(array $options = [])
     {
-        if(! empty($this->formService)) {
-            throw new ErrorException("Form already loaded.");
-        }
 
         if(empty($options['id'])) {
             throw new ErrorException("Form ID is required.");
         }
 
-        $this->formService = new FormService($options);
-        return $this->formService;
+        return (new FormService($options));
     }
 
     public function getSettings($key = '')
