@@ -105,7 +105,7 @@ class MessageController extends Controller
                                 $fileModel->name = $uploadedFile->name;
                                 $fileModel->filePath = $tempPath;
                             } else {
-                                $folder = $assets->findFolder(['id' => $folder_id]);
+                                $folder = $assets->getRootFolderByVolumeId($folder_id);;
                                 if (!$folder) {
                                     throw new BadRequestHttpException('The target folder provided for uploading is not valid');
                                 }

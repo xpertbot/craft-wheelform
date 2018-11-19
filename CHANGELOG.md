@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.16.4 - 2018-11-18
+### Fixed
+- Fixed better volume retrieval when uploading files.
+
 ## 1.16.3 - 2018-11-16
 ### Fixed
 - Fixed error when trying to create multiple forms on a single template.
