@@ -82,8 +82,9 @@ class MessageValue extends ActiveRecord
             {
                 $asset = Craft::$app->getAssets()->getAssetById($file->assetId);
                 $title = Html::encode($asset->title);
-                if($asset->getUrl()) {
-                    $anchor = '<a href="' . $asset->getUrl() . '" target="_blank">' . Html::encode($asset->title) . '</a>';
+                $url = $asset->getUrl();
+                if($url) {
+                    $anchor = '<a href="' . $url . '" target="_blank">' . $title . '</a>';
                     return Template::raw($anchor);
                 }
                 return $title;
