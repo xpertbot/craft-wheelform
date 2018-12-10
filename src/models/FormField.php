@@ -19,6 +19,7 @@ class FormField extends ActiveRecord
         'hidden',
         'select',
         'file',
+        'list',
     ];
 
     public static function tableName(): String
@@ -33,7 +34,8 @@ class FormField extends ActiveRecord
             ['name', 'required', 'message' => Craft::t('wheelform', 'Name cannot be blank.')],
             ['name', 'string'],
             ['form_id', 'integer', 'message' => Craft::t('wheelform', 'Form Id must be a number.')],
-            [['required', 'index_view', 'active', 'order'], 'integer', 'integerOnly' => true, 'min' => 0, 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
+            [['required', 'index_view', 'active', 'order'], 'integer', 'integerOnly' => true, 'min' => 0,
+                'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
             ['type', 'in', 'range' => self::FIELD_TYPES],
@@ -55,8 +57,7 @@ class FormField extends ActiveRecord
 
     public function getLabel()
     {
-        if(! empty($this->options['label']))
-        {
+        if (! empty($this->options['label'])) {
             return $this->options['label'];
         }
         $label = trim(str_replace(['_', '-'], " ", $this->name));

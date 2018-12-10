@@ -70,11 +70,18 @@ class Mailer extends Component
                             $event->message[$k]['value'] = $attachment;
                         }
                         break;
-
                     case 'checkbox':
                         $text .= (is_array($m['value']) ? implode(', ', $m['value']) : $m['value']);
                         break;
-
+                    case 'list':
+                        if(! is_array($m['value']) || empty($m['value'])) {
+                            $text .= "";
+                        } else {
+                            foreach($m['value'] as $value) {
+                                $text .= "\n*" . $value;
+                            }
+                        }
+                        break;
                     default:
                         //Text, Email, Number
                         $text .= $m['value'];

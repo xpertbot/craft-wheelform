@@ -58,7 +58,18 @@
                         <strong>{{ row.field.getLabel() }}</strong>
                     </td>
                     <td>
-                        {{ row.getValue()|nl2br }}
+                        {% switch row.field.type %}
+                            {% case "list" %}
+                                {% if row.getValue() %}
+                                    <ul>
+                                        {% for item in row.getValue() %}
+                                            <li>{{ item }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% default %}
+                                {{ row.getValue()|nl2br }}
+                        {% endswitch %}
                     </td>
                 </tr>
             {% else %}

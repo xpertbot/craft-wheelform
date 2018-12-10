@@ -10,6 +10,14 @@
                     {% if field.value is not empty %}
                         {{ field.value.name }}
                     {% endif %}
+                {% case "list" %}
+                    {% if field.value %}
+                        <ul>
+                        {% for item in field.value %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
                 {% case "checkbox" %}
                     {{ field.value | join(',')}}
 

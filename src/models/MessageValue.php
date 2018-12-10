@@ -18,6 +18,7 @@ class MessageValue extends ActiveRecord
     const HIDDEN_SCENARIO = "hidden";
     const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
+    const LIST_SCENARIO = "list";
 
     public static function tableName(): String
     {
@@ -48,8 +49,15 @@ class MessageValue extends ActiveRecord
             ['value', 'number', 'on' => self::NUMBER_SCENARIO,
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' must be a number.')],
             ['value', 'file', 'on' => self::FILE_SCENARIO],
+            ['value', function($attribute, $params, $validator){
+                if(! is_array($this->$attribute)) {
+                    $this->addError($this->field->getLabel().Craft::t('wheelform', ' must be an array.'));
+                }
+            }, 'on' => self::LIST_SCENARIO
+        ],
             ['value', 'each', 'rule' => ['string'], 'on' => [
                     self::CHECKBOX_SCENARIO,
+                    self::LIST_SCENARIO,
                 ]
             ],
             ['value', 'in', 'range' => function(){
@@ -75,11 +83,9 @@ class MessageValue extends ActiveRecord
 
     public function getValue()
     {
-        if($this->field->type == self::FILE_SCENARIO)
-        {
+        if($this->field->type == self::FILE_SCENARIO) {
             $file = json_decode($this->value);
-            if(! empty($file->assetId))
-            {
+            if(! empty($file->assetId)) {
                 $asset = Craft::$app->getAssets()->getAssetById($file->assetId);
                 $title = Html::encode($asset->title);
                 $url = $asset->getUrl();
@@ -91,9 +97,9 @@ class MessageValue extends ActiveRecord
             }
 
             return isset($file->name) ? $file->name : '';
-        }
-        else
-        {
+        } elseif($this->field->type == self::LIST_SCENARIO) {
+            return json_decode($this->value);
+        } else {
             return empty($this->value) ? '' : $this->value;
         }
     }
@@ -103,6 +109,11 @@ class MessageValue extends ActiveRecord
         if($this->field->type == self::CHECKBOX_SCENARIO && ! empty($this->value))
         {
             $this->value = implode(', ', $this->value);
+        }
+
+        if($this->field->type == self::LIST_SCENARIO && ! empty($this->value))
+        {
+            $this->value = json_encode($this->value);
         }
 
         return parent::beforesave($insert);

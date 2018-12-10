@@ -182,6 +182,18 @@ class FieldService extends BaseService
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
                 $html .= "<textarea id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\">{$value}</textarea>";
                 break;
+            case "list":
+                $items = $this->getValue();
+                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
+                $html .= "<div class=\"wf-list-container\"><a href=\"#\" class=\"wf-list-add\" data-field-name=\"{$this->name}\">Add {$this->getLabel()}</a><br />";
+                if($items && is_array($items)) {
+                    foreach($items as $item) {
+                        $html .= "<input name=\"{$this->name}[]\" class=\"wf-field wf-list-entry {$this->fieldClass}\" type=\"text\"
+                        value=\"{$item}\" />";
+                    }
+                }
+                $html .= "</div>";
+                break;
             default:
                 // Email, Text, Hidden
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";

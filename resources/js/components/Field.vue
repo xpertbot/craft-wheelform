@@ -182,6 +182,7 @@ export default {
                 'hidden',
                 'select',
                 'file',
+                'list',
             ],
             newOption: '',
             field: Object.assign({}, this.defaultField),

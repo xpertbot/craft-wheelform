@@ -7,6 +7,7 @@ use wheelform\models\Form;
 use wheelform\models\FormField;
 use wheelform\models\Message;
 use wheelform\Plugin as Wheelform;
+use wheelform\assets\ListFieldAsset;
 use yii\base\ErrorException;
 
 class FormService extends BaseService
@@ -89,6 +90,9 @@ class FormService extends BaseService
             $hpValue = empty($this->values[$this->instance->options['honeypot']]) ? '' : $this->values[$this->instance->options['honeypot']];
             $html .= "<input type=\"text\" class=\"wf-{$this->instance->options['honeypot']}-{$this->id}\"
                 name=\"{$this->instance->options['honeypot']}\" value=\"{$hpValue}\" />";
+        }
+        if($this->hasList()) {
+            $html .= $this->registerListAsset();
         }
         $html .= "<input type=\"submit\" value=\"{$this->buttonLabel}\" />";
         $html .= '</form>';
@@ -214,6 +218,18 @@ class FormService extends BaseService
     {
         $field = FormField::find()->where(['form_id' => $this->id, 'active' => 1, 'type' => 'file'])->one();
         return (! empty($field));
+    }
+
+    protected function hasList()
+    {
+        $field = FormField::find()->where(['form_id' =>$this->id, 'active' => 1, 'type' => 'list'])->one();
+        return( ! empty($field));
+    }
+
+    protected function registerListAsset()
+    {
+        $view = Craft::$app->getView();
+        $view->registerAssetBundle(ListFieldAsset::class);
     }
 
     protected function generateCsrf()
