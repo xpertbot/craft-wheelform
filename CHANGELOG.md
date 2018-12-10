@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.17.4 - 2018-12-09
+### Added
+- Added new List field to handle multiple values.
+
 ## 1.16.4 - 2018-11-18
 ### Fixed
 - Fixed better volume retrieval when uploading files.

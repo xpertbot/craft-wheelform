@@ -55,6 +55,7 @@ Current Field types supported are:
 * Select
 * Hidden
 * File
+* List
 
 ## Template Variables
 - errors (Array of errors based on field name, form, recaptcha, honeypot).
@@ -184,14 +185,19 @@ Advanced templating:
                 </div>
             {% case "file" %}
                 <div class="form-group">
-                <label>{{field.label}}</label>
-                <input type="file" name="{{field.name}}" id=""/>
-
+                    <label>{{field.label}}</label>
+                    <input type="file" name="{{field.name}}" id=""/>
                 </div>
             {% case "textarea" %}
                 <div class="form-group">
                     <label>{{field.label}}</label>
                     <textarea class="form-control" name="{{field.name}}" id="">{{ values[field.name] ?? '' }}</textarea>
+                </div>
+            {% case "list" %}
+                <div class="form-group">
+                    <label>{{field.label}}</label>
+                    <input type="text" name="{{field.name}}[]" id=""/>
+                    <script>//Javascript to handle adding fields</script>
                 </div>
             {% default %}
                 <div class="form-group">
@@ -425,6 +431,14 @@ return [
             {% case "checkbox" %}
                 {# Array of all choices selected #}
                 {{ field.value | join(',')}}
+            {% case "list" %}
+                {% if field.value %}
+                    <ul>
+                    {% for item in field.value %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
 
             {% default %}
 
