@@ -128,7 +128,7 @@ Your form template can look something like this:
 
     {% for field in form.fields %}
         {{ field.render() }}
-        {{ errors[field.name] is defined ? errorList(errors[field.name]) }}
+        {{ wheelformErrors[field.name] is defined ? errorList(wheelformErrors[field.name]) }}
     {% endfor %}
 {{ form.close() }}
 ```
@@ -156,9 +156,9 @@ Advanced templating:
 }) %}
 
 {{ form.open() }}
-    {{ errors['form'] is defined ? errorList(errors['form']) }}
-    {{ errors['recaptcha'] is defined ? errorList(errors['recaptcha']) }}
-    {{ errors['honeypot'] is defined ? errorList(errors['honeypot']) }}
+    {{ wheelformErrors['form'] is defined ? errorList(wheelformErrors['form']) }}
+    {{ wheelformErrors['recaptcha'] is defined ? errorList(wheelformErrors['recaptcha']) }}
+    {{ wheelformErrors['honeypot'] is defined ? errorList(wheelformErrors['honeypot']) }}
 
     {% for field in form.fields %}
         {% switch field.type %}
@@ -205,7 +205,7 @@ Advanced templating:
                 <input class="form-control" type="{{field.type}}" value="{{ values[field.name] ?? '' }}" name="{{field.name}}" id=""/>
                 </div>
         {% endswitch %}
-        {{ errors[field.name] is defined ? errorList(errors[field.name]) }}
+        {{ wheelformErrors[field.name] is defined ? errorList(wheelformErrors[field.name]) }}
     {% endfor %}
     {% if form.recaptcha %}
         <div>
@@ -234,7 +234,7 @@ If you want to stick to HTML and not use the variables:
 
 {% from _self import errorList %}
 
-    {{ errors['form'] is defined ? errorList(errors['form']) }}
+    {{ wheelformErrors['form'] is defined ? errorList(wheelformErrors['form']) }}
 
     <form method="post" action="" accept-charset="UTF-8" novalidate="" enctype="multipart/form-data">
     {{ csrfInput() }}
@@ -244,24 +244,24 @@ If you want to stick to HTML and not use the variables:
 
     <h3><label for="from-name">Your Name</label></h3>
     <input id="from-name" type="text" name="name" value="{{ values['name'] ?? '' }}">
-    {{ errors['name'] is defined ? errorList(errors['name']) }}
+    {{ wheelformErrors['name'] is defined ? errorList(wheelformErrors['name']) }}
 
     <h3><label for="from-email">Your Email</label></h3>
     <input id="from-email" type="email" name="email" value="{{ values['email'] ?? '' }}">
-    {{ errors['email'] is defined ? errorList(errors['email']) }}
+    {{ wheelformErrors['email'] is defined ? errorList(wheelformErrors['email']) }}
 
     <h3><label for="phone">Phone</label></h3>
     <input id="phone" type="text" name="phone" value="{{ values['phone'] ?? '' }}">
-    {{ errors['phone'] is defined ? errorList(errors['phone']) }}
+    {{ wheelformErrors['phone'] is defined ? errorList(wheelformErrors['phone']) }}
 
     <label><input type="checkbox" name="favorite_topping[]" value="Chocolate">Chocolate</label>
     <label><input type="checkbox" name="favorite_topping[]" value="Vanilla">Vanilla</label>
     <label><input type="checkbox" name="favorite_topping[]" value="Strawberry">Strawberry</label>
-    {{ errors['favorite_topping'] is defined ? errorList(errors['favorite_topping']) }}
+    {{ wheelformErrors['favorite_topping'] is defined ? errorList(wheelformErrors['favorite_topping']) }}
 
     <h3><label for="message">Message</label></h3>
     <textarea rows="10" cols="40" id="message" name="message">{{ values['message'] ?? '' }}</textarea>
-    {{ errors['message'] is defined ? errorList(errors['message']) }}
+    {{ wheelformErrors['message'] is defined ? errorList(wheelformErrors['message']) }}
 
     <input type="file" name="user_file" id="user_filer">
 
@@ -284,13 +284,13 @@ Note that if you don’t include a `redirect` input, the current page will get r
 
 ### Displaying flash messages
 
-When a contact form is submitted, the plugin will set a `notice` or `success` flash message on the user session. You can display it in your template like this:
+When a contact form is submitted, the plugin will set a `success` flash message on the user session. You can display it in your template like this:
 
 ```twig
-{% if craft.app.session.hasFlash('notice') %}
-    <p class="message notice">{{ craft.app.session.getFlash('notice') }}</p>
-{% elseif craft.app.session.hasFlash('error') %}
-    <p class="message error">{{ craft.app.session.getFlash('error') }}</p>
+{% if craft.app.session.hasFlash('wheelformSuccess') %}
+    <p class="message success">{{ craft.app.session.getFlash('wheelformSuccess') }}</p>
+{% elseif craft.app.session.hasFlash('wheelformError') %}
+    <p class="message error">{{ craft.app.session.getFlash('wheelformError') }}</p>
 {% endif %}
 ```
 

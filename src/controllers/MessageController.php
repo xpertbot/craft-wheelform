@@ -172,6 +172,7 @@ class MessageController extends Controller
             $response = [
                 'values' => $request->getBodyParams(),
                 'errors' => $errors,
+                'wheelformErrors' => $errors,
                 'success' => false,
             ];
 
@@ -208,6 +209,8 @@ class MessageController extends Controller
 
                 Craft::$app->getSession()->setError(Craft::t('wheelform',
                     'There was a problem with your submission, please check the form and try again!'));
+                Craft::$app->getSession()->setFlash('wheelformError', Craft::t('wheelform',
+                    'There was a problem with your submission, please check the form and try again!'));
 
                 Craft::$app->getUrlManager()->setRouteParams([
                     'variables' => [
@@ -224,6 +227,7 @@ class MessageController extends Controller
         }
 
         Craft::$app->getSession()->setNotice($settings->success_message);
+        Craft::$app->getSession()->setFlash('wheelformSuccess',$settings->success_message);
         return $this->redirectToPostedUrl($message);
     }
 
