@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.17.4 - 2018-12-09
+## 1.17.1 - 2018-12-12
+### Fixed
+- Fixed problem with flash messages being generic. Notice: Old flash message are unaffected but will be deprecated eventually.
+
+## 1.17.0 - 2018-12-09
 ### Added
 - Added new List field to handle multiple values.
 
