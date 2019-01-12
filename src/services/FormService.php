@@ -83,7 +83,11 @@ class FormService extends BaseService
         $html = '';
         $settings = Wheelform::getInstance()->getSettings();
         if(intval($this->instance->recaptcha) && ! empty($settings['recaptcha_public'])) {
-            $html .= "<div><script src=\"https://www.google.com/recaptcha/api.js\"></script><!-- Production captcha --><div class=\"g-recaptcha\" data-sitekey=\"{$settings['recaptcha_public']}\"></div></div>";
+            if(! empty($settings['recaptcha_version'] && $settings['recaptcha_version'] == '3')) {
+                $html .= $this->renderRecaptchaV3Event();
+            } else {
+                $html .= "<div><script src=\"https://www.google.com/recaptcha/api.js\"></script><!-- Production captcha --><div class=\"g-recaptcha\" data-sitekey=\"{$settings['recaptcha_public']}\"></div></div>";
+            }
         }
 
         if(! empty($this->instance->options['honeypot']) ) {
@@ -264,5 +268,16 @@ class FormService extends BaseService
         }
 
         return $message;
+    }
+
+    protected function renderRecaptchaV3Event()
+    {
+        $fieldId = "wheelform-g-recaptcha-token-". uniqid();
+        $html = "<input type=\"hidden\" name=\"g-recaptcha-response\" id=\"{$fieldId}\" value=\"\" />";
+        $html .= "<script>WheelformRecaptcha.callbacks.push(function(token){
+            var field = document.getElementById('{$fieldId}');
+            field.setAttribute('value', token);
+        })</script>";
+        return $html;
     }
 }
