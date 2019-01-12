@@ -50,6 +50,24 @@
     </div>
 </div>
 
+<div class="field">
+    <div class="heading">
+        <label for="recaptcha_version">{{ "Recaptcha version"|t('app')}}</label>
+    </div>
+    <div class="input ltr">
+        {{
+            forms.select({
+                id: 'recaptcha_version',
+                name: 'recaptcha_version',
+                options: {"2":"V2", "3":"V3"},
+                value: settings.recaptcha_version ? settings.recaptcha_version : "",
+                errors: settings.getErrors('recaptcha_version'),
+                required: false,
+            })
+        }}
+    </div>
+</div>
+
 {{ forms.textField({
     label: "Recaptcha Public Key"|t('wheelform'),
     id: "recaptcha_public",
