@@ -23,6 +23,8 @@ class FormService extends BaseService
     private $method;
 
     private $buttonLabel;
+    
+    private $buttonClass;
 
     private $attributes;
 
@@ -43,6 +45,10 @@ class FormService extends BaseService
 
         if(empty($this->buttonLabel)) {
             $this->buttonLabel = Craft::t('app', "Send");
+        }
+        
+        if(empty($this->buttonClass)) {
+            $this->buttonClass = "btn";
         }
 
         if(empty($this->method)) {
@@ -94,7 +100,7 @@ class FormService extends BaseService
         if($this->hasList()) {
             $html .= $this->registerListAsset();
         }
-        $html .= "<input type=\"submit\" value=\"{$this->buttonLabel}\" />";
+        $html .= "<input type=\"submit\" class=\"{$this->buttonClass}\" value=\"{$this->buttonLabel}\" />";
         $html .= '</form>';
         return Template::raw($html);
     }
@@ -185,6 +191,11 @@ class FormService extends BaseService
     public function setButtonLabel($value)
     {
         $this->buttonLabel = $value;
+    }
+    
+    public function setButtonClass($value)
+    {
+        $this->buttonClass = $value;
     }
 
     public function setAttributes($value)
