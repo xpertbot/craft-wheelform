@@ -15,6 +15,7 @@ use craft\mail\Message as MailMessage;
 class Mailer extends Component
 {
     const EVENT_BEFORE_SEND = 'beforeSend';
+    const EVENT_AFTER_SEND = 'afterSend';
 
     protected $defaultConfig = [
         'template' => 'wheelform/_emails/general.twig',
@@ -37,7 +38,7 @@ class Mailer extends Component
         $mailer = Craft::$app->getMailer();
         $text = '';
 
-        $event = new SendEvent([
+        $beforeEvent = new SendEvent([
             'form_id' => $form->id,
             'subject' => $defaultSubject,
             'message' => $message,
@@ -46,12 +47,12 @@ class Mailer extends Component
             'reply_to' => '',
         ]);
 
-        $this->trigger(self::EVENT_BEFORE_SEND, $event);
+        $this->trigger(self::EVENT_BEFORE_SEND, $beforeEvent);
 
         //gather message
-        if(! empty($event->message))
+        if(! empty($beforeEvent->message))
         {
-            foreach($event->message as $k => $m)
+            foreach($beforeEvent->message as $k => $m)
             {
                 $text .= ($text ? "\n" : '')."- **{$m['label']}:** ";
 
@@ -67,7 +68,7 @@ class Mailer extends Component
                             $text .= $attachment->name;
 
                             // Prepare for Twig
-                            $event->message[$k]['value'] = $attachment;
+                            $beforeEvent->message[$k]['value'] = $attachment;
                         }
                         break;
                     case 'checkbox':
@@ -90,28 +91,38 @@ class Mailer extends Component
             }
         }
 
-        $html_body = $this->compileHtmlBody($event->message);
+        $html_body = $this->compileHtmlBody($beforeEvent->message);
 
-        $mailMessage->setFrom($event->from);
-        $mailMessage->setSubject($event->subject);
+        $mailMessage->setFrom($beforeEvent->from);
+        $mailMessage->setSubject($beforeEvent->subject);
         $mailMessage->setTextBody($text);
         $mailMessage->setHtmlBody($html_body);
 
-        if(! empty($event->reply_to)) {
-            $mailMessage->setReplyTo($event->reply_to);
+        if(! empty($beforeEvent->reply_to)) {
+            $mailMessage->setReplyTo($beforeEvent->reply_to);
         }
 
-        if(is_array($event->to)) {
-            foreach ($event->to as $to_email) {
+        if(is_array($beforeEvent->to)) {
+            foreach ($beforeEvent->to as $to_email) {
                 $to_email = trim($to_email);
                 $mailMessage->setTo($to_email);
                 $mailer->send($mailMessage);
             }
         } else {
-            $to_email = trim($event->to);
+            $to_email = trim($beforeEvent->to);
             $mailMessage->setTo($to_email);
             $mailer->send($mailMessage);
         }
+
+        $afterEvent = new SendEvent([
+            'form_id' => $beforeEvent->form_id,
+            'subject' => $beforeEvent->subject,
+            'message' => $beforeEvent->message,
+            'from' => $beforeEvent->from,
+            'to' => $beforeEvent->to,
+            'reply_to' => $beforeEvent->reply_to,
+        ]);
+        $this->trigger(self::EVENT_AFTER_SEND, $afterEvent);
 
         return true;
     }

@@ -17,11 +17,14 @@ use wheelform\Plugin;
 use yii\web\Response;
 use yii\web\HttpException;
 use yii\web\BadRequestHttpException;
+use wheelform\events\MessageEvent;
 
 class MessageController extends Controller
 {
 
     public $allowAnonymous = true;
+
+    const EVENT_BEFORE_SAVE = "beforeSave";
 
     public function actionSend()
     {
@@ -51,8 +54,6 @@ class MessageController extends Controller
         $errors = [];
         //Array of MessageValues to Link to Message;
         $entryValues = [];
-        //Array of values to pass for event;
-        $senderValues = [];
 
         if($formModel->active == 0)
         {
@@ -84,11 +85,6 @@ class MessageController extends Controller
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;
-
-                $senderValues[$field->name] = [
-                    'label' => $field->getLabel(),
-                    'type' => $field->type,
-                ];
 
                 if($field->type == "file")
                 {
@@ -140,10 +136,8 @@ class MessageController extends Controller
                     }
 
                     $messageValue->value = (empty($fileModel) ? NULL : $fileModel );
-                    $senderValues[$field->name]['value'] = (empty($messageValue->value) ? NULL : json_encode($messageValue->value) );
                 } else {
                     $messageValue->value = $request->getBodyParam($field->name, null);
-                    $senderValues[$field->name]['value'] = $messageValue->value;
                 }
 
                 if(! $messageValue->validate())
@@ -153,16 +147,6 @@ class MessageController extends Controller
                 else
                 {
                     $entryValues[] = $messageValue;
-                }
-            }
-
-            // Prevent mesage form being saved if error are present
-            if (empty($errors) && boolval($formModel->save_entry))
-            {
-                // This should never error out based on current values
-                if(! $message->save())
-                {
-                    $errors['message'] = $message->getErrors();
                 }
             }
         }
@@ -188,16 +172,39 @@ class MessageController extends Controller
             }
         }
 
-        //Link Values to Message
-        if(boolval($formModel->save_entry))
-        {
-            foreach($entryValues as $value)
-            {
-                $message->link('value', $value);
-            }
+        $event = new MessageEvent([
+            'form_id' => $formModel->id,
+            'message' => $entryValues
+        ]);
+        $this->trigger(self::EVENT_BEFORE_SAVE, $event);
+        // Values for Mailer
+        $senderValues = [];
 
+        if(boolval($formModel->save_entry)) {
+            $message->save();
             //$message->id does not exists if user turned off database saving
             Craft::$app->getSession()->setFlash('wheelformLastSubmissionId', $message->id, true);
+        }
+        if(is_array($event->message)) {
+            foreach($event->message as $eventValue) {
+                $field = $eventValue->field;
+                $senderValues[$field->name] = [
+                    'label' => $field->getLabel(),
+                    'type' => $field->type,
+                ];
+                switch($field->type) {
+                    case "file":
+                        $senderValues[$field->name]['value'] = (empty($eventValue->value) ? NULL : json_encode($eventValue->value) );
+                        break;
+
+                    default:
+                        $senderValues[$field->name]['value'] = $eventValue->value;
+                        break;
+                }
+                if(boolval($formModel->save_entry)) {
+                    $message->link('value', $eventValue);
+                }
+            }
         }
 
         if($formModel->send_email)
