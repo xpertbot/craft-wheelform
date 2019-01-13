@@ -112,13 +112,27 @@ Your form template can look something like this:
 {% endmacro %}
 {% from _self import errorList %}
 
+{# In the submitButton options:
+    "type" can be button, or input
+    "html" attribute takes precedence over the other properties,
+    "attributes" is an easy way to add attributes to the button,
+    All attributes are optional #}
 {% set form = wheelform.form({
     id: 1,
     redirect: 'contact/thanks',
     attributes: [
         'novalidate="novalidate"'
     ],
-    buttonLabel: "Submit",
+    submitButton: {
+        "type": "button",
+        "label": "Send",
+        "attributes": {
+            "class": "btn btn-success",
+            "id": "submit-btn",
+            "data-submit": "Foo",
+        },
+        "html": "<span><button>Custom Button</button></span>",
+    }
 }) %}
 
 {{ form.open() }}
@@ -309,6 +323,13 @@ Similar to the flash message (will only be available after submission), when a c
 ```
 You also have available `submission.id`, `submission.formId` and `submission.date`
 (Note: `submission.date` is a DateTime object run it through `date()` filter).
+
+### Recaptcha V3
+```twig
+{# You need to add the Recaptcha Init before the form.open() #}
+{# action is optional, action defaults to form URL #}
+{{ wheelform.recaptchaV3({'action': 'contact-form'})}}
+```
 
 ### Displaying existing form submissions
 You can access existing submitted form entries on a form through the `form.entries` property:

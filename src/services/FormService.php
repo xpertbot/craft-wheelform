@@ -23,8 +23,8 @@ class FormService extends BaseService
     private $method;
 
     private $buttonLabel;
-    
-    private $buttonClass;
+
+    private $submitButton;
 
     private $attributes;
 
@@ -43,12 +43,19 @@ class FormService extends BaseService
             throw new ErrorException("Wheelform Form ID not found");
         }
 
-        if(empty($this->buttonLabel)) {
-            $this->buttonLabel = Craft::t('app', "Send");
+        if(empty($this->submitButton)) {
+            $this->submitButton = [
+                "label" => Craft::t('app', "Send"),
+                "type" => "input",
+                "attributes" => [
+                    "class" => "",
+                ],
+                "html" => "",
+            ];
         }
-        
-        if(empty($this->buttonClass)) {
-            $this->buttonClass = "btn";
+
+        if(! empty($this->buttonLabel) ) {
+            $this->submitButton['label'] = $this->buttonLabel;
         }
 
         if(empty($this->method)) {
@@ -104,7 +111,7 @@ class FormService extends BaseService
         if($this->hasList()) {
             $html .= $this->registerListAsset();
         }
-        $html .= "<input type=\"submit\" class=\"{$this->buttonClass}\" value=\"{$this->buttonLabel}\" />";
+        $html .= $this->renderSubmitButton();
         $html .= '</form>';
         return Template::raw($html);
     }
@@ -196,10 +203,10 @@ class FormService extends BaseService
     {
         $this->buttonLabel = $value;
     }
-    
-    public function setButtonClass($value)
+
+    public function setSubmitButton($value)
     {
-        $this->buttonClass = $value;
+        $this->submitButton = $value;
     }
 
     public function setAttributes($value)
@@ -289,6 +296,25 @@ class FormService extends BaseService
             var field = document.getElementById('{$fieldId}');
             field.setAttribute('value', token);
         })</script>";
+        return $html;
+    }
+
+    protected function renderSubmitButton()
+    {
+        if(! empty($this->submitButton['html'])) {
+            return $this->submitButton['html'];
+        }
+
+        $attributes = "";
+        foreach($this->submitButton["attributes"] as $att => $value) {
+            $attributes .= " {$att}=\"{$value}\"";
+        }
+        if($this->submitButton['type'] == "button") {
+            $html = "<button {$attributes}>{$this->submitButton['label']}</button>";
+        } else {
+            $html = "<input type=\"submit\" {$attributes} value=\"{$this->submitButton['label']}\" />";
+        }
+
         return $html;
     }
 }
