@@ -47,4 +47,11 @@ class WheelformService extends BaseObject
 
         return (new MessageService($id));
     }
+
+    public function getRecaptchaV3($attributes = [])
+    {
+        $recaptcha = new RecaptchaV3Service();
+
+        return $recaptcha($attributes);
+    }
 }

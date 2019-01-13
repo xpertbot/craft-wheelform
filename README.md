@@ -122,9 +122,9 @@ Your form template can look something like this:
 }) %}
 
 {{ form.open() }}
-    {{ errors['form'] is defined ? errorList(errors['form']) }}
-    {{ errors['recaptcha'] is defined ? errorList(errors['recaptcha']) }}
-    {{ errors['honeypot'] is defined ? errorList(errors['honeypot']) }}
+    {{ wheelformErrors['form'] is defined ? errorList(wheelformErrors['form']) }}
+    {{ wheelformErrors['recaptcha'] is defined ? errorList(wheelformErrors['recaptcha']) }}
+    {{ wheelformErrors['honeypot'] is defined ? errorList(wheelformErrors['honeypot']) }}
 
     {% for field in form.fields %}
         {{ field.render() }}
