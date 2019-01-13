@@ -480,10 +480,13 @@ Honeypot field is a field that is meant to be left blank by humans. Usually hidd
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)
 
+`beforeSave` Event, this allows developers to modify the value Active Records objects before being saved to the database, these changes cascade into the other Events and Mailers.
 `beforeSend` Event, this allows developers to modify the fields being sent in an email, this event does not modify the values entered in the database. Only the fields being sent to the client.
+`afterSend` Event, Final Values sent to the user email, perfect for Third Party integrations and libraries.
 
 You can also trigger other custom functionality such as gathering custom field values to add to a Third party service such as a Mailing list.
 
+`beforeSend` and `afterSend` object is as follows:
 `Event` class properties:
 * `form_id` - Current ID of form being submitted, This allows developers some way to check what fields are being sent.
 * `subject` - Subject of the currnet form. This can be modified to make it customizable.

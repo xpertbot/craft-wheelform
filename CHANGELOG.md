@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.18.0 - 2019-01-13
+### Added
+- Added RecaptchaV3 Integration.
+- Added submitButton Template Variable for more customization options.
+- Added BeforeSave Event and AfterSend Events for more options to manipulate data at various stages
+
 ## 1.17.1 - 2018-12-12
 ### Fixed
 - Fixed problem with flash messages being generic. Notice: Old flash message are unaffected but will be deprecated eventually.
