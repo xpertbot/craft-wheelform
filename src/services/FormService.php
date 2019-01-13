@@ -306,8 +306,10 @@ class FormService extends BaseService
         }
 
         $attributes = "";
-        foreach($this->submitButton["attributes"] as $att => $value) {
-            $attributes .= " {$att}=\"{$value}\"";
+        if(!empty($this->submitButton["attributes"]) && is_array($this->submitButton["attributes"])) {
+            foreach($this->submitButton["attributes"] as $att => $value) {
+                $attributes .= " {$att}=\"{$value}\"";
+            }
         }
         if($this->submitButton['type'] == "button") {
             $html = "<button {$attributes}>{$this->submitButton['label']}</button>";
