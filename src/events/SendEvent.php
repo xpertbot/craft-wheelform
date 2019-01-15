@@ -17,4 +17,8 @@ class SendEvent extends Event
 
     public $reply_to;
 
+    public $template;
+
+    public $template_mode;
+
 }

@@ -2,6 +2,7 @@
 namespace wheelform;
 
 use Craft;
+use craft\web\View;
 use yii\base\Component;
 use yii\helpers\Markdown;
 use craft\services\Assets;
@@ -45,21 +46,20 @@ class Mailer extends Component
             'from' => $from_email,
             'to' => $to_emails,
             'reply_to' => '',
+            'template' => '',
+            'template_mode' => ''
         ]);
 
         $this->trigger(self::EVENT_BEFORE_SEND, $beforeEvent);
 
         //gather message
-        if(! empty($beforeEvent->message))
-        {
-            foreach($beforeEvent->message as $k => $m)
-            {
+        if (! empty($beforeEvent->message)) {
+            foreach ($beforeEvent->message as $k => $m) {
                 $text .= ($text ? "\n" : '')."- **{$m['label']}:** ";
 
-                switch ($m['type'])
-                {
+                switch ($m['type']) {
                     case 'file':
-                        if(! empty($m['value'])){
+                        if (! empty($m['value'])) {
                             $attachment = json_decode($m['value']);
                             $mailMessage->attach($attachment->filePath, [
                                 'fileName' => $attachment->name,
@@ -75,10 +75,10 @@ class Mailer extends Component
                         $text .= (is_array($m['value']) ? implode(', ', $m['value']) : $m['value']);
                         break;
                     case 'list':
-                        if(! is_array($m['value']) || empty($m['value'])) {
+                        if (! is_array($m['value']) || empty($m['value'])) {
                             $text .= "";
                         } else {
-                            foreach($m['value'] as $value) {
+                            foreach ($m['value'] as $value) {
                                 $text .= "\n*" . $value;
                             }
                         }
@@ -91,18 +91,20 @@ class Mailer extends Component
             }
         }
 
-        $html_body = $this->compileHtmlBody($beforeEvent->message);
+
+        $template = $this->getBodyTemplate($beforeEvent);
+        $html_body = $this->compileHtmlBody($beforeEvent->message, $template['file'], $template['mode']);
 
         $mailMessage->setFrom($beforeEvent->from);
         $mailMessage->setSubject($beforeEvent->subject);
         $mailMessage->setTextBody($text);
         $mailMessage->setHtmlBody($html_body);
 
-        if(! empty($beforeEvent->reply_to)) {
+        if (! empty($beforeEvent->reply_to)) {
             $mailMessage->setReplyTo($beforeEvent->reply_to);
         }
 
-        if(is_array($beforeEvent->to)) {
+        if (is_array($beforeEvent->to)) {
             foreach ($beforeEvent->to as $to_email) {
                 $to_email = trim($to_email);
                 $mailMessage->setTo($to_email);
@@ -127,30 +129,64 @@ class Mailer extends Component
         return true;
     }
 
-    public function compileHtmlBody(array $variables)
+    public function compileHtmlBody(array $variables, $templateFile, $templateMode)
     {
-        $config = Craft::$app->getConfig();
-        $customConfig =$config->getConfigFromFile('wheelform');
         $view = Craft::$app->getView();
-        $templateMode = $view->getTemplateMode();
+        $originalTemplateMode = $view->getTemplateMode();
 
-        $view->setTemplateMode($view::TEMPLATE_MODE_CP);
-        $template = $this->defaultConfig['template'];
+        $view->setTemplateMode(constant('craft\web\View::' . $templateMode));
 
-        if(is_array($customConfig)) {
-            if(array_key_exists('template', $customConfig)) {
-                $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
-                $template = $customConfig['template'];
-            }
-        }
-
-        $html = $view->renderTemplate($template, [
+        $html = $view->renderTemplate($templateFile, [
             'fields' => $variables
         ]);
 
         // Reset
-        $view->setTemplateMode($templateMode);
+        $view->setTemplateMode($originalTemplateMode);
 
         return $html;
+    }
+
+    /**
+     * Evaluate what template should be used to render the body of the e-mail.
+     *
+     * Templates can have 3 sources.
+     * - Default
+     * - Overriden in the config file
+     * - Overriden in the EVENT_BEFORE_SEND
+     *
+     * @param SendEvent $event
+     *
+     * @return array
+     */
+    public function getBodyTemplate(SendEvent $event) : array
+    {
+        $config = Craft::$app->getConfig();
+        $customConfig =$config->getConfigFromFile('wheelform');
+
+        // Set default values.
+        $templateMode = 'TEMPLATE_MODE_CP';
+        $template = $this->defaultConfig['template'];
+
+        // If template settings are overriden in config use that one.
+        if (is_array($customConfig)) {
+            if (array_key_exists('template', $customConfig)) {
+                $templateMode = 'TEMPLATE_MODE_SITE';
+                $template = $customConfig['template'];
+            }
+        }
+
+        // Lastly check if the template is overridden in the Before Send Event.
+        // This allows overriding templates for individual mails.
+        if ($event->template) {
+            $template = $event->template;
+        }
+        if ($event->template_mode) {
+            $templateMode = $event->template_mode;
+        }
+
+        return [
+            'file' => $template,
+            'mode' => $templateMode
+        ];
     }
 }
