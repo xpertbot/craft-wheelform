@@ -130,6 +130,7 @@ class Mailer extends Component
             'from' => $beforeEvent->from,
             'to' => $beforeEvent->to,
             'reply_to' => $beforeEvent->reply_to,
+            'email_html' => $beforeEvent->email_html,
         ]);
         $this->trigger(self::EVENT_AFTER_SEND, $afterEvent);
 
