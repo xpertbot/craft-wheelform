@@ -167,11 +167,21 @@ class Mailer extends Component
         $templateMode = 'TEMPLATE_MODE_CP';
         $template = $this->defaultConfig['template'];
 
-        // If template settings are overriden in config use that one.
+        // In the config a global default can be set and/or specific for each form.
         if (is_array($customConfig)) {
+            // If a global default template is set in config use that one.
             if (array_key_exists('template', $customConfig)) {
                 $templateMode = 'TEMPLATE_MODE_SITE';
                 $template = $customConfig['template'];
+            }
+
+            // Check if the current form has it's own template.
+            if (array_key_exists('templates', $customConfig)) {
+                $templates = $customConfig['templates'];
+                // Search in the provided templates if there is one set for the current form id.
+                $templateKey = array_search($event->form_id, array_column($templates, 'form_id'));
+                $templateMode = 'TEMPLATE_MODE_SITE';
+                $template = $templates[$templateKey]['path'];
             }
         }
 
