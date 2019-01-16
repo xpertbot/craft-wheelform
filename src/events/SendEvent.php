@@ -21,4 +21,6 @@ class SendEvent extends Event
 
     public $template_mode;
 
+    public $email_html;
+
 }
