@@ -425,14 +425,24 @@ If using getCrsfInput() make sure you are submitting it with the rest of your fo
 Custom Twig templates can be used using these steps:
 
 1. Create `wheelform.php` file inside Craft's config folder.
-2. `wheelform.php` expends an array of configuration settings to be returned. Only `template` variable is required, this is a path to the custom TWIG Template. Example:
+2. `wheelform.php` expects an array of configuration settings to be returned. The options are:
+    - `template`: default template to use for all emails
+    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify
 
 ```php
 return [
-    'template' => '_emails/custom';
+    'template' => '_emails/custom',
+    'forms' => [
+        1 => [
+            'template' => '_emails/form1_template',
+        ],
+        3 => [
+            'template' => '_emails/form3_template',
+        ],
+    ],
 ];
 ```
-3. Inside `custom.html` (or the name you chose for your file on above config) you will have access to a `fields` array. Example
+3. Inside your templates you will have access to a `fields` array. Example
 
 ```html
 <html>
@@ -445,9 +455,9 @@ return [
         <strong>{{ field.label }}:</strong>
         {% switch field.type %}
 
-        {% case "file" %}
-            {# This is an object with file attributes #}
-            {{ field.value.name }}
+            {% case "file" %}
+                {# This is an object with file attributes #}
+                {{ field.value.name }}
 
             {% case "checkbox" %}
                 {# Array of all choices selected #}
@@ -494,6 +504,7 @@ You can also trigger other custom functionality such as gathering custom field v
 * `from` - Email Address message is being send From.
 * `to` - Email Address message is being send To (This can be an array of multiple emails).
 * `reply_to` - Email Address message can be Reply To.
+* `email_html` - Full HTML String that will be sent in the email. This overwrites other email templates.
 
 Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
 

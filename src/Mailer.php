@@ -21,6 +21,8 @@ class Mailer extends Component
         'template' => 'wheelform/_emails/general.twig',
     ];
 
+    protected $form = null;
+
     public function send(Form $form, array $message): bool
     {
         // Get the plugin settings and make sure they validate before doing anything
@@ -29,22 +31,25 @@ class Mailer extends Component
             throw new InvalidConfigException(Craft::t('wheelform', "Plugin settings need to be configured."));
         }
 
+        $this->form = $form;
+
         // Prep the message Variables
-        $defaultSubject = $form->name . " - " . Craft::t("wheelform", 'Submission');
+        $defaultSubject = $this->form->name . " - " . Craft::t("wheelform", 'Submission');
         $from_email = $settings->from_email;
         // Grab any "to" emails set in the form settings.
-        $to_emails = StringHelper::split($form->to_email);
+        $to_emails = StringHelper::split($this->form->to_email);
         $mailMessage = new MailMessage();
         $mailer = Craft::$app->getMailer();
         $text = '';
 
         $beforeEvent = new SendEvent([
-            'form_id' => $form->id,
+            'form_id' => $this->form->id,
             'subject' => $defaultSubject,
             'message' => $message,
             'from' => $from_email,
             'to' => $to_emails,
             'reply_to' => '',
+            'email_html' => '',
         ]);
 
         $this->trigger(self::EVENT_BEFORE_SEND, $beforeEvent);
@@ -91,7 +96,11 @@ class Mailer extends Component
             }
         }
 
-        $html_body = $this->compileHtmlBody($beforeEvent->message);
+        if(! empty($beforeEvent->email_html)) {
+            $html_body = $beforeEvent->email_html;
+        } else {
+            $html_body = $this->compileHtmlBody($beforeEvent->message);
+        }
 
         $mailMessage->setFrom($beforeEvent->from);
         $mailMessage->setSubject($beforeEvent->subject);
@@ -133,17 +142,26 @@ class Mailer extends Component
         $customConfig =$config->getConfigFromFile('wheelform');
         $view = Craft::$app->getView();
         $templateMode = $view->getTemplateMode();
-
-        $view->setTemplateMode($view::TEMPLATE_MODE_CP);
+        $isFrontTemplate = false;
         $template = $this->defaultConfig['template'];
 
-        if(is_array($customConfig)) {
+        if(! empty($customConfig) && is_array($customConfig)) {
+
             if(array_key_exists('template', $customConfig)) {
-                $view->setTemplateMode($view::TEMPLATE_MODE_SITE);
+                $isFrontTemplate = true;
                 $template = $customConfig['template'];
+            }
+
+            if (array_key_exists('forms', $customConfig)) {
+                if(array_key_exists($this->form->id, $customConfig['forms'])) {
+                    $isFrontTemplate = true;
+                    $template = $customConfig['forms'][$this->form->id]['template'];
+                }
             }
         }
 
+        $currentViewMode = $isFrontTemplate ? $view::TEMPLATE_MODE_SITE : $view::TEMPLATE_MODE_CP;
+        $view->setTemplateMode($currentViewMode);
         $html = $view->renderTemplate($template, [
             'fields' => $variables
         ]);
