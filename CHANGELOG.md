@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.19.0 - 2019-01-19
+### Added
+- Added Placeholders to field options.
+- Added email_html to beforeSend Event that allows overwrite of the email template completely.
+- Added ability to add specific tempaltes based on form ID.
+- Added ability to Labels to be translatable.
+
 ## 1.18.0 - 2019-01-13
 ### Added
 - Added RecaptchaV3 Integration.
