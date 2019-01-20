@@ -133,6 +133,7 @@ export default {
                 containerClass: '',
                 fieldClass: '',
                 selectEmpty: 0,
+                placeholder: '',
             };
 
             for(let property in defaultOptions) {

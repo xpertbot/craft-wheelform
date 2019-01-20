@@ -46,6 +46,9 @@
                     <div class="text-right" v-if="field.options.fieldClass">
                         <span>{{ field.options.fieldClass }}</span>
                     </div>
+                    <div class="text-right" v-if="field.options.placeholder">
+                        <span :style="'color:grey;'">{{ field.options.placeholder }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,12 +133,16 @@
                             />
                     </div>
                     <div>
-                        <label :for="'field-class-' + field.id">Container class</label>
-                        <input type="text" :id="'field-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
+                        <label :for="'container-class-' + field.id">Container class</label>
+                        <input type="text" :id="'container-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
                     </div>
                     <div>
                         <label :for="'field-class-' + field.id">Field class</label>
                         <input type="text" :id="'field-class-' + field.id" v-model="field.options.fieldClass" :name="'fields['+index+'][options][fieldClass]'">
+                    </div>
+                    <div v-if="canPlaceholder">
+                        <label :for="'field-placeholder-' + field.id">Field placeholder</label>
+                        <input type="text" :id="'field-placeholder-' + field.id" v-model="field.options.placeholder" :name="'fields['+index+'][options][placeholder]'">
                     </div>
                 </div>
             </div>
@@ -224,6 +231,17 @@ export default {
             let isMultiOption = multiOption.indexOf(this.field.type);
 
             return (isMultiOption >= 0);
+        },
+        canPlaceholder()
+        {
+            const canPlaceholderFields = [
+                'text',
+                'textarea',
+                'email',
+                'number',
+            ];
+
+            return (canPlaceholderFields.indexOf(this.field.type)) >= 0;
         }
     },
     methods: {

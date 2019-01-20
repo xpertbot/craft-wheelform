@@ -88,6 +88,11 @@ class FieldService extends BaseService
         return $this->value;
     }
 
+    public function getPlaceholder()
+    {
+        return (isset($this->options->placeholder) ? $this->options->placeholder : "");
+    }
+
     //Setter
     public function setType($value)
     {
@@ -180,7 +185,7 @@ class FieldService extends BaseService
             case "textarea":
                 $value = empty($this->value) ? '' : $this->value;
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<textarea id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\">{$value}</textarea>";
+                $html .= "<textarea id=\"{$this->generateId()}\" name=\"{$this->name}\" placeholder=\"{$this->getPlaceholder()}\" class=\"wf-field {$this->fieldClass}\">{$value}</textarea>";
                 break;
             case "list":
                 $items = $this->getValue();
@@ -197,8 +202,9 @@ class FieldService extends BaseService
             default:
                 // Email, Text, Hidden
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<input id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\" type=\"{$this->type}\"
-                    value=\"{$this->value}\" />";
+                $html .= "<input id=\"{$this->generateId()}\" name=\"{$this->name}\"
+                    placeholder=\"{$this->getPlaceholder()}\" class=\"wf-field {$this->fieldClass}\"
+                    type=\"{$this->type}\" value=\"{$this->value}\" />";
                 break;
         }
         $html .= "</div>";
