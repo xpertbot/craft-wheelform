@@ -193,7 +193,7 @@ Advanced templating:
                 <div class="form-select">
                 <select id="wf-select" name="{{field.name}}" class="wf-field {{field.fieldClass}}">
                 {% for item in field.items %}
-                    <option value="{{ field.item}}" {{values[field.name] is defined and item == values[field.name] ? 'selected="selected"' : '' }}>{{item}}</option>
+                    <option value="{{ item }}" {{values[field.name] is defined and item == values[field.name] ? 'selected="selected"' : '' }}>{{item}}</option>
                 {% endfor %}
                 </select>
                 </div>
