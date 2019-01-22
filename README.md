@@ -487,11 +487,15 @@ return [
 ### Honeypot Field
 Honeypot field is a field that is meant to be left blank by humans. Usually hidden by CSS. [More information](https://stackoverflow.com/questions/36227376/better-honeypot-implementation-form-anti-spam) about Honeypot fields.
 
+If not using `{{ form.close() }}` helper tag make sure you add a text field with the name you used when creating the form. Then, hide it from the user using CSS or Javascript.
+
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)
 
 `beforeSave` Event, this allows developers to modify the value Active Records objects before being saved to the database, these changes cascade into the other Events and Mailers.
+
 `beforeSend` Event, this allows developers to modify the fields being sent in an email, this event does not modify the values entered in the database. Only the fields being sent to the client.
+
 `afterSend` Event, Final Values sent to the user email, perfect for Third Party integrations and libraries.
 
 You can also trigger other custom functionality such as gathering custom field values to add to a Third party service such as a Mailing list.
