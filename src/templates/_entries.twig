@@ -7,7 +7,36 @@
     { label: 'Wheel Form', url: url('wheelform') },
 ] %}
 
+{% set fullPageForm = true %}
+
+{% block actionButton %}
+<div class="btngroup">
+    <div class="btn menubtn" data-icon="settings" tabindex="0" role="combobox"></div>
+    <div class="menu">
+        <ul>
+            <li>
+                <a class="formsubmit" data-redirect="{{ url('wheelform/form/' ~ form_id ~ '/entries')|hash }}">
+                    {{ "Mark Read"|t('wheelform') }}
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <ul>
+            <li>
+                <a class="formsubmit error"
+                    data-action="wheelform/entries/delete-entries"
+                    data-confirm="{{ 'Are you sure you want to delete these entries?'|t('app') }}"
+                    data-redirect="{{ url('wheelform/form/' ~ form_id ~ '/entries')|hash }}">{{ 'Delete'|t('app') }}</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
 {% set content %}
+<input type="hidden" name="action" value="wheelform/entries/update-entries">
+<input type="hidden" name="read_status" value="1">
+
 <div class="tableview">
     {% if entries is not empty %}
     <div class="clearfix">
@@ -16,6 +45,7 @@
         <table class="data fullwidth" id="entries-table">
             <thead>
                 <tr>
+                    <th class="thin">{{ '' | t('wheelform') }}</th>
                     <th scope="col" data-attribute="View">
                         {{ 'View Message' | t('wheelform') }}
                     </th>
@@ -24,7 +54,7 @@
                             <th>{{h.getLabel()}}</th>
                         {% endfor %}
                     {% endif %}
-                    <th class="thin text-center">{{ "Status" | t('wheelform') }}</th>
+                    <th class="thin text-center">{{ "New" | t('wheelform') }}</th>
                     <th scope="col" data-attribute="dateSubmitted" class="text-right">
                         {{ 'Date Submitted' | t('wheelform') }}
                     </th>
@@ -32,7 +62,13 @@
             </thead>
             <tbody>
                 {% for entry in entries %}
-                    <tr data-id="{{ entry.id }}">
+                    <tr>
+                        <td>
+                            <div class="field checkboxfield">
+                                <input type="checkbox" class="checkbox" name="message_id[]" value="{{ entry.id }}" id="wi-action-input-{{ entry.id }}" \>
+                                <label for="wi-action-input-{{ entry.id }}"></label>
+                            </div>
+                        </td>
                         <td class="view-message">
                             <a href="{{ url('wheelform/entry/' ~ entry.id)}}">
                                 {{ "View" | t('wheelform') }}
@@ -53,7 +89,7 @@
                                 <span>-</span>
                             {% endif %}
                         </td>
-                        <td class="text-right">{{ entry.dateCreated | datetime('short') }}</td>
+                        <td class="text-right"><span>{{ entry.dateCreated | datetime('short') }}</span></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -63,3 +99,9 @@
     {% endif %}
 </div>
 {% endset %}
+
+{% css %}
+input.checkbox + label:before {
+    top: 8px;
+}
+{% endcss %}

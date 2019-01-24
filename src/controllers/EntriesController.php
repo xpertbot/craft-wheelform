@@ -48,6 +48,7 @@ class EntriesController extends Controller
             ->all();
 
         return $this->renderTemplate('wheelform/_entries.twig', [
+            'form_id' => $form_id,
             'entries' => $entries,
             'pager' => $pager,
             'headerFields' => $headerFields,
@@ -115,6 +116,37 @@ class EntriesController extends Controller
 
     }
 
+    public function actionUpdateEntries()
+    {
+        $this->requirePostRequest();
+
+        $request = Craft::$app->getRequest();
+        $read_status = $request->getRequiredBodyParam('read_status');
+        $params = [
+            'read' => $read_status,
+        ];
+        $message_ids = $request->getBodyParam('message_id', []);
+        $result = Message::updateAll($params, ['IN', "id", $message_ids]);
+
+        if ($result === false) {
+            if ($request->getAcceptsJson()) {
+                return $this->asJson(['success' => false]);
+            }
+
+            Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t udpate entries.'));
+
+        } else {
+            if ($request->getAcceptsJson()) {
+                return $this->asJson(['success' => true]);
+            }
+
+            Craft::$app->getSession()->setNotice(Craft::t('app', 'Entries updated.'));
+        }
+
+        return $this->redirectToPostedUrl();
+
+    }
+
     public function actionDeleteEntry()
     {
         $this->requirePostRequest();
@@ -144,6 +176,31 @@ class EntriesController extends Controller
         Craft::$app->getSession()->setNotice(Craft::t('app', 'Entry deleted.'));
 
         return $this->redirectToPostedUrl($entry);
+    }
+
+    public function actionDeleteEntries()
+    {
+        $this->requirePostRequest();
+
+        $request = Craft::$app->getRequest();
+        $message_ids = $request->getBodyParam('message_id', []);
+
+        MessageValue::deleteAll(['in', 'message_id', $message_ids]);
+        $result = Message::deleteAll(['in', 'id', $message_ids]);
+
+        if ($result === false) {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
+                return $this->asJson(['success' => false]);
+            }
+            Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t delete entries.'));
+        } else {
+            if (Craft::$app->getRequest()->getAcceptsJson()) {
+                return $this->asJson(['success' => true]);
+            }
+            Craft::$app->getSession()->setNotice(Craft::t('app', 'Entries deleted.'));
+        }
+
+        return $this->redirectToPostedUrl();
     }
 
     public function actionExport()
