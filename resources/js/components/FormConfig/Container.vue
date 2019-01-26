@@ -1,21 +1,35 @@
 <template>
     <div id="formapp">
-        <div class="btn-container">
-            <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
-            <button v-show="fields.length > 0" v-on:click.prevent="handleEditMode" class="btn primary pull-right">{{isEditMode ? "Drag" : "Edit"}} Fields</button>
+        <div class="row">
+            <div class="col-sm-4">
+                <Settings
+                    :form="form"
+                    @handleInput="handleSettingsInput"
+                />
+            </div>
+            <div class="col-sm-4">
+                <div class="btn-container">
+                    <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
+                    <button v-show="form.fields.length > 0"
+                        v-on:click.prevent="handleEditMode" class="btn primary pull-right">
+                        {{isEditMode ? "Drag" : "Edit"}} Fields
+                    </button>
+                </div>
+                <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}"
+                    id="field-container">
+                    <Field
+                        v-for="(field, index) in form.fields"
+                        :key="field.uniqueId"
+                        :index="index"
+                        :order="index + 1"
+                        :default-field="field"
+                        :is-edit-mode="isEditMode"
+                        @delete-field="form.fields.splice(index, 1)"
+                        :validate-name-callback="validateFieldName"
+                    />
+                </draggable>
+            </div>
         </div>
-        <draggable v-model="fields" :options="{handle: '.wheelform-field-handle'}" id="field-container">
-              <Field
-               v-for="(field, index) in fields"
-               :key="field.uniqueId"
-               :index="index"
-               :order="index + 1"
-               :default-field="field"
-               :is-edit-mode="isEditMode"
-               @delete-field="fields.splice(index, 1)"
-               :validate-name-callback="validateFieldName"
-              />
-        </draggable>
     </div>
 </template>
 
@@ -23,17 +37,28 @@
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import Field from './Field.vue';
+import Settings from './Settings.vue';
 
 export default {
     components:{
         draggable,
-        Field
+        Field,
+        Settings,
     },
     data() {
         return {
             isEditMode: false,
-            fields: [],
             nextFieldIndex: 0,
+            form: {
+                name: "",
+                to_email: "",
+                active: true,
+                save_entry: true,
+                recaptcha: true,
+                send_email: true,
+                fields: [],
+                options: this.mergeFieldOptions({})
+            },
         }
     },
     mounted()
@@ -44,25 +69,29 @@ export default {
         if (form_id) {
             axios.get(cpUrl, {
                 params: {
-                    action: 'wheelform/form/get-fields',
+                    action: 'wheelform/form/get-settings',
                     form_id: form_id
                 }
             })
             .then((res) => {
-                if(res.data.length > 0)
-                {
-                    for (let index = 0; index < res.data.length; index++) {
-                        let field = res.data[index];
-                        field.uniqueId = this.generateKeyId();
-                        field.isValidName= {
-                            status: true,
-                            msg: ''
-                        };
-                        field.options = this.mergeOptions(field.options);
-                        this.fields.push(field);
+                if(res.data) {
+                    const form = res.data;
+                    if(form) {
+                        for (let index = 0; index < form.fields.length; index++) {
+                            let options = JSON.parse(form.fields[index].options);
+
+                            form.fields[index].isValidName = {
+                                status: true,
+                                msg: ''
+                            };
+                            form.fields[index].uniqueId = this.generateKeyId();
+                            form.fields[index].options = this.mergeFieldOptions(options);
+                        }
+                        this.nextFieldIndex = form.fields.length;
+                        this.form = form;
                     }
-                    this.nextFieldIndex = this.fields.length;
                 }
+
             });
         }
     },
@@ -71,7 +100,7 @@ export default {
         {
             this.nextFieldIndex++
 
-            this.fields.push({
+            this.form.fields.push({
                 name: "field_" + this.nextFieldIndex,
                 type: "text",
                 index_view: 0,
@@ -82,7 +111,7 @@ export default {
                     status: true,
                     msg: ''
                 },
-                options: this.mergeOptions({}),
+                options: this.mergeFieldOptions({}),
             });
         },
         handleEditMode()
@@ -95,7 +124,7 @@ export default {
         },
         validateFieldName(userInput)
         {
-            let result = this.fields.filter((field) => {
+            let result = this.form.fields.filter((field) => {
                 return field.name === userInput;
             });
 
@@ -119,7 +148,7 @@ export default {
                 msg: ''
             }
         },
-        mergeOptions(options)
+        mergeFieldOptions(options)
         {
             const booleanProperties = [
                 'validate',
@@ -148,12 +177,11 @@ export default {
                 }
             }
             return options;
+        },
+        handleSettingsInput(key, value) {
+            console.log(key);
+            console.log(value);
         }
     }
 }
 </script>
-
-<style>
-
-</style>
-

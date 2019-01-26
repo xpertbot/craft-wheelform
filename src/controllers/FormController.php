@@ -162,7 +162,7 @@ class FormController extends Controller
     }
 
     // currently this field only accepts json fields
-    public function actionGetFields()
+    public function actionGetSettings()
     {
         $req =  Craft::$app->getRequest();
 
@@ -177,9 +177,9 @@ class FormController extends Controller
             throw new HttpException(404);
         }
 
-        $fields = FormField::find()->where(['form_id' => $formId, 'active' => 1])->orderBy('order', SORT_ASC)->all();
+        $form = Form::find()->where(['id' => $formId])->with('fields')->asArray()->one();
 
-        return $this->asJson($fields);
+        return $this->asJson($form);
     }
 
     public function actionExportFields()

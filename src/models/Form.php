@@ -42,7 +42,7 @@ class Form extends ActiveRecord
     {
         return $this->hasMany(FormField::className(), ['form_id' => 'id'])
             ->orderBy(['order' => SORT_ASC])
-            ->andOnCondition(['active' => 1]);
+            ->andOnCondition([FormField::tableName().'.active' => 1]);
     }
 
     public function getEntryCount(): int

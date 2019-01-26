@@ -295,10 +295,3 @@ export default {
     }
 }
 </script>
-
-<style>
-    ul.list-wrapper{
-        list-style: none;
-        padding: 10px 0px 0px 5px;
-    }
-</style>

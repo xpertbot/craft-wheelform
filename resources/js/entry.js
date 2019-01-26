@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Container from './components/Container.vue';
+import Container from './components/FormConfig/Container.vue';
 
 if(document.getElementById('formapp'))
 {
