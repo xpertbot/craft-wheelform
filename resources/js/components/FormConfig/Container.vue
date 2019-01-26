@@ -4,7 +4,7 @@
             <div class="col-sm-4">
                 <Settings
                     :form="form"
-                    @handleInput="handleSettingsInput"
+                    v-on:handle-form-setting="handleSettingsInput"
                 />
             </div>
             <div class="col-sm-4">
@@ -52,12 +52,14 @@ export default {
             form: {
                 name: "",
                 to_email: "",
-                active: true,
-                save_entry: true,
-                recaptcha: true,
-                send_email: true,
+                active: 1,
+                save_entry: 1,
+                recaptcha: 0,
+                send_email: 1,
                 fields: [],
-                options: this.mergeFieldOptions({})
+                options: {
+                    honeypot: "",
+                }
             },
         }
     },
@@ -75,8 +77,10 @@ export default {
             })
             .then((res) => {
                 if(res.data) {
-                    const form = res.data;
+                    const form = JSON.parse(res.data);
                     if(form) {
+                        form.options = JSON.parse(form.options);
+                        //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
                             let options = JSON.parse(form.fields[index].options);
 
@@ -179,8 +183,7 @@ export default {
             return options;
         },
         handleSettingsInput(key, value) {
-            console.log(key);
-            console.log(value);
+            this.form[key] = value;
         }
     }
 }

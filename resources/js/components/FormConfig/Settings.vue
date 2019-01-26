@@ -79,9 +79,7 @@ export default {
     methods: {
         handleStatusChange(key, value)
         {
-            console.log(key);
-            console.log(value);
-            // this[key] = (value ? 1 : 0);
+            this.$emit('handle-form-setting', key, value);
         }
     }
 }

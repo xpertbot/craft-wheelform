@@ -2,7 +2,7 @@
 
 {% do view.registerAssetBundle("wheelform\\assets\\WheelformCpAsset") %}
 
-{% set title = (form.id is defined ? 'Edit Form'|t : 'New Form'|t) %}
+{% set title = (form.id is empty ? 'New Form'|t : 'Edit Form'|t) %}
 
 {% set crumbs = [
     { label: 'Wheel Form', url: url('wheelform') },

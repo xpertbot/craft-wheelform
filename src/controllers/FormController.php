@@ -2,18 +2,21 @@
 namespace wheelform\controllers;
 
 use Craft;
-use wheelform\Plugin;
-use craft\helpers\Path;
-use yii\base\Exception;
-
 use craft\web\Controller;
+use craft\helpers\Path;
 use craft\web\UploadedFile;
+
+use wheelform\Plugin;
 use wheelform\models\Form;
-use yii\web\HttpException;
 use wheelform\models\FormField;
-use yii\behaviors\SessionBehavior;
 use wheelform\helpers\ExportHelper;
 use wheelform\models\tools\ImportFile;
+
+use yii\base\Exception;
+use yii\web\HttpException;
+use yii\web\Response;
+use yii\behaviors\SessionBehavior;
+use Yii;
 
 class FormController extends Controller
 {
@@ -37,19 +40,14 @@ class FormController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
 
-        if (! empty($params['id']))
-        {
+        if (! empty($params['id'])) {
             $form = Form::findOne(intval($params['id']));
             if (! $form) {
                 throw new HttpException(404);
             }
-        }
-        elseif(! empty($params['form']))
-        {
+        } elseif(! empty($params['form'])) {
             $form = $params['form'];
-        }
-        else
-        {
+        } else {
             $form = new Form();
         }
 
@@ -179,7 +177,11 @@ class FormController extends Controller
 
         $form = Form::find()->where(['id' => $formId])->with('fields')->asArray()->one();
 
-        return $this->asJson($form);
+        $response = Yii::$app->getResponse();
+        $response->format = Response::FORMAT_JSON;
+        $response->data = json_encode($form, JSON_NUMERIC_CHECK);
+
+        return $response;
     }
 
     public function actionExportFields()
