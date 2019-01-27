@@ -196,8 +196,16 @@ export default {
 
             axios.post(cpUrl + "/wheelform/form/save", this.form, {headers: headers})
                 .then((res) => {
-                    if(res.data) {
+                    const success = res.data.success;
+                    if(success) {
                         toastr.success('Success', res.data.message);
+                    } else {
+                        let msg = "";
+                        const errors = res.data.errors;
+                        for(let prop in errors) {
+                            msg += errors[prop] + "<br/>";
+                        }
+                        toastr.error("Error", msg);
                     }
                 }).catch((error) => {
                     console.log(error);

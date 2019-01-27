@@ -65,7 +65,7 @@ class FormController extends Controller
         $request = Craft::$app->getRequest();
 
         $data = json_decode($request->getRawBody(), TRUE);
-        if ($data['id']) {
+        if (! empty($data['id'])) {
             $form = Form::findOne(intval($data['id']));
             if (! $form) {
                 throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
@@ -102,8 +102,7 @@ class FormController extends Controller
                 //If field name is empty skip it, but don't delete it, only delete it if delete icon is clicked.
                 if(empty($field['name'])) continue;
 
-                if(intval($field['id']) > 0)
-                {
+                if(isset($field['id']) && intval($field['id']) > 0) {
                     //update Field Values
                     $formField = FormField::find()->where(['id' => $field['id']])->one();
                     if(! empty($formField))
