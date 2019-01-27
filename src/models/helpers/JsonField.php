@@ -2,7 +2,7 @@
 namespace wheelform\models\helpers;
 
 use yii\base\Arrayable;
-use yii\base\InvalidParamsException;
+use yii\base\InvalidParamException;
 use yii\helpers\Json;
 
 class JsonField implements \ArrayAccess, Arrayable

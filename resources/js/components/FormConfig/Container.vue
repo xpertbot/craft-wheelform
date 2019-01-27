@@ -187,26 +187,22 @@ export default {
         handleSaveSettings()
         {
             const cpUrl = window.Craft.baseCpUrl;
-            let data = {
-                action: 'wheelform/form/save',
-                form: this.form,
-            };
 
             let headers = {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': Craft.csrfTokenValue,
             };
 
-            if (typeof Craft.csrfTokenName !== 'undefined' && typeof Craft.csrfTokenValue !== 'undefined') {
-                // Add the CSRF token
-                data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-            }
+            // if (typeof Craft.csrfTokenName !== 'undefined' && typeof Craft.csrfTokenValue !== 'undefined') {
+            //     // Add the CSRF token
+            //     data[Craft.csrfTokenName] = Craft.csrfTokenValue;
+            // }
 
-            console.log(data);
-
-            axios.post(cpUrl, data, {headers: headers})
+            axios.post(cpUrl + "/wheelform/form/save", this.form, {headers: headers})
                 .then((res) => {
-                    console.log(res);
+                    if(res.data) {
+                        console.log(res.data);
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });

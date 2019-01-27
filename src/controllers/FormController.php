@@ -57,33 +57,30 @@ class FormController extends Controller
         ]);
     }
 
-    function actionSave()
+    public function actionSave()
     {
         $this->requirePostRequest();
         $this->requireAcceptsJson();
 
         $request = Craft::$app->getRequest();
 
-        $form = $request->getBodyParam('form');
-        if ($form->id)
-        {
-            $form = Form::findOne(intval($form->id));
+        $data = json_decode($request->getRawBody(), TRUE);
+        if ($data['id']) {
+            $form = Form::findOne(intval($data['id']));
             if (! $form) {
                 throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
             }
-        }
-        else
-        {
+        } else {
             $form = new Form();
         }
 
-        $form->name = $request->getBodyParam('name');
-        $form->to_email = $request->getBodyParam('to_email');
-        $form->active = $request->getBodyParam('active', 0);
-        $form->send_email = $request->getBodyParam('send_email', 0);
-        $form->recaptcha = $request->getBodyParam('recaptcha', 0);
-        $form->save_entry = intval($request->post('save_entry', 0));
-        $form->options = $request->post('options', []);
+        $form->name = $data['name'];
+        $form->to_email = $data['to_email'];
+        $form->active = $data['active'];
+        $form->send_email = $data['send_email'];
+        $form->recaptcha = $data['recaptcha'];
+        $form->save_entry = $data['save_entry'];
+        $form->options = $data['options'];
         $form->site_id = Craft::$app->sites->currentSite->id;
 
         $result = $form->save();
@@ -94,7 +91,7 @@ class FormController extends Controller
 
         //Rebuild fields
         $oldFields = FormField::find()->select('id')->where(['form_id' => $form->id])->all();
-        $newFields = $request->getBodyParam('fields', []);
+        $newFields = $data['fields'];
         //Get ID of fields that are missing on the oldFields compared to newfields
         $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
 
