@@ -1,6 +1,9 @@
 <template>
     <div>
         <div class="heading">{{ label }}</div>
+        <div v-if="instructions" class="instructions">
+            {{instructions}}
+        </div>
         <a href="" @click.prevent="handleStatusChange(name, ! status)">
             <i :style="getStatusColor" :class="getStatusClass"></i>
         </a>
@@ -13,6 +16,7 @@ export default {
         'label',
         'handleStatusChange',
         'status',
+        'instructions',
         'name'
     ],
     computed: {

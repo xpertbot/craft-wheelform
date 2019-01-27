@@ -60,14 +60,16 @@ class FormController extends Controller
     function actionSave()
     {
         $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
         $request = Craft::$app->getRequest();
 
-        $form_id = $request->getBodyParam('form_id');
-        if ($form_id)
+        $form = $request->getBodyParam('form');
+        if ($form->id)
         {
-            $form = Form::findOne(intval($form_id));
+            $form = Form::findOne(intval($form->id));
             if (! $form) {
-                throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form_id)));
+                throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
             }
         }
         else
@@ -86,12 +88,8 @@ class FormController extends Controller
 
         $result = $form->save();
 
-        Craft::$app->getUrlManager()->setRouteParams([
-            'form' => $form
-        ]);
         if(! $result){
-            Craft::$app->getSession()->setError(Craft::t('wheelform', 'Couldn’t save form.'));
-            return null;
+            return $this->asJson(['success' => false, 'errors' => $form->getErrors()]);
         }
 
         //Rebuild fields
@@ -155,8 +153,7 @@ class FormController extends Controller
             )->execute();
         }
 
-        Craft::$app->getSession()->setNotice(Craft::t('wheelform', 'Form saved.'));
-        return $this->redirectToPostedUrl();
+        return $this->asJson(['success' => Craft::t('wheelform', 'Form saved.')]);
     }
 
     // currently this field only accepts json fields

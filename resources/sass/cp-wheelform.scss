@@ -88,23 +88,6 @@ th.text-center, td.text-center {
     label {
         display: block;
     }
-    .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        & > .col {
-            position: relative;
-            width: 100%;
-            min-height: 1px;
-            @media(min-width: 576px) {
-                flex: 0 0 50%;
-                max-width: 50%;
-            }
-            & > div{
-                margin: 0px 0px 5px;
-            }
-        }
-    }
     .field-details {
         position: relative;
         padding-left: 25px;
@@ -175,16 +158,67 @@ th.text-center, td.text-center {
         list-style: none;
         padding: 10px 0px 0px 5px;
     }
-}
+    .form-settings {
+        margin-bottom: 20px;
+        .heading {
+            position: relative;
+            font-weight: bold;
+            color: #576575;
+        }
+        .instructions {
+            font-weight: normal;
+            color: #8f98a3;
+        }
+    }
 
-@media screen and (min-width: 480px) {
-    #formapp {
-        width: 28rem;
+    //Grid
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    .col, .col-6{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .col {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+    .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .col-sm, .col-sm-6 {
+        position: relative;
+        width: 100%;
+        min-height: 1px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }
 
-@media screen and (min-width: 767px) {
+@media(min-width: 1200px) {
     #formapp {
-        width: 40rem;
+        max-width: 1140px;
+    }
+}
+
+@media(min-width: 576px) {
+    #formapp {
+        .form-settings {
+            margin-bottom: 0px;
+        }
+        .col-sm {
+            flex-basis: 0;
+            flex-grow: 1;
+            max-width: 100%;
+        }
+        .col-sm-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
     }
 }

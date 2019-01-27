@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div>
+        <div  class="field">
             <Lightswitch
                 :name="'active'"
                 :label="'Active'"
@@ -39,15 +39,16 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-        <div>
+        <div  class="field">
             <Lightswitch
-                :name="'saveEntries'"
+                :name="'save_entry'"
                 :label="'Save Entries'"
+                :instructions="'Save Entries to database'"
                 :status="form.save_entry"
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-        <div>
+        <div  class="field">
             <Lightswitch
                 :name="'send_email'"
                 :label="'Send Email'"
@@ -55,7 +56,7 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-        <div>
+        <div  class="field">
             <Lightswitch
                 :name="'recaptcha'"
                 :label="'Recaptcha'"
@@ -63,7 +64,9 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-
+        <div class="field">
+            <button v-on:click.prevent="$emit('handle-save-settings')" class="btn submit">Save</button>
+        </div>
     </div>
 </template>
 <script>

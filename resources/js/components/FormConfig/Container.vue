@@ -1,34 +1,33 @@
 <template>
-    <div id="formapp">
-        <div class="row">
-            <div class="col-sm-4">
-                <Settings
-                    :form="form"
-                    v-on:handle-form-setting="handleSettingsInput"
+    <div class="row">
+        <div class="col-sm-6">
+            <Settings
+                :form="form"
+                v-on:handle-form-setting="handleSettingsInput"
+                v-on:handle-save-settings="handleSaveSettings"
+            />
+        </div>
+        <div class="col-sm">
+            <div class="btn-container">
+                <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
+                <button v-show="form.fields.length > 0"
+                    v-on:click.prevent="handleEditMode" class="btn primary pull-right">
+                    {{isEditMode ? "Drag" : "Edit"}} Fields
+                </button>
+            </div>
+            <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}"
+                id="field-container">
+                <Field
+                    v-for="(field, index) in form.fields"
+                    :key="field.uniqueId"
+                    :index="index"
+                    :order="index + 1"
+                    :default-field="field"
+                    :is-edit-mode="isEditMode"
+                    @delete-field="form.fields.splice(index, 1)"
+                    :validate-name-callback="validateFieldName"
                 />
-            </div>
-            <div class="col-sm-4">
-                <div class="btn-container">
-                    <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
-                    <button v-show="form.fields.length > 0"
-                        v-on:click.prevent="handleEditMode" class="btn primary pull-right">
-                        {{isEditMode ? "Drag" : "Edit"}} Fields
-                    </button>
-                </div>
-                <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}"
-                    id="field-container">
-                    <Field
-                        v-for="(field, index) in form.fields"
-                        :key="field.uniqueId"
-                        :index="index"
-                        :order="index + 1"
-                        :default-field="field"
-                        :is-edit-mode="isEditMode"
-                        @delete-field="form.fields.splice(index, 1)"
-                        :validate-name-callback="validateFieldName"
-                    />
-                </draggable>
-            </div>
+            </draggable>
         </div>
     </div>
 </template>
@@ -184,6 +183,33 @@ export default {
         },
         handleSettingsInput(key, value) {
             this.form[key] = value;
+        },
+        handleSaveSettings()
+        {
+            const cpUrl = window.Craft.baseCpUrl;
+            let data = {
+                action: 'wheelform/form/save',
+                form: this.form,
+            };
+
+            let headers = {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': Craft.csrfTokenValue,
+            };
+
+            if (typeof Craft.csrfTokenName !== 'undefined' && typeof Craft.csrfTokenValue !== 'undefined') {
+                // Add the CSRF token
+                data[Craft.csrfTokenName] = Craft.csrfTokenValue;
+            }
+
+            console.log(data);
+
+            axios.post(cpUrl, data, {headers: headers})
+                .then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                });
         }
     }
 }
