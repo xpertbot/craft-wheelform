@@ -35,6 +35,7 @@
 <script>
 import axios from 'axios';
 import draggable from 'vuedraggable';
+import toastr from 'toastr';
 import Field from './Field.vue';
 import Settings from './Settings.vue';
 
@@ -193,15 +194,10 @@ export default {
                 'X-CSRF-Token': Craft.csrfTokenValue,
             };
 
-            // if (typeof Craft.csrfTokenName !== 'undefined' && typeof Craft.csrfTokenValue !== 'undefined') {
-            //     // Add the CSRF token
-            //     data[Craft.csrfTokenName] = Craft.csrfTokenValue;
-            // }
-
             axios.post(cpUrl + "/wheelform/form/save", this.form, {headers: headers})
                 .then((res) => {
                     if(res.data) {
-                        console.log(res.data);
+                        toastr.success('Success', res.data.message);
                     }
                 }).catch((error) => {
                     console.log(error);

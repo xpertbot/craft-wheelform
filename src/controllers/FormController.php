@@ -150,7 +150,7 @@ class FormController extends Controller
             )->execute();
         }
 
-        return $this->asJson(['success' => Craft::t('wheelform', 'Form saved.')]);
+        return $this->asJson(['success' => true, 'message' =>  Craft::t('wheelform', 'Form saved.')]);
     }
 
     // currently this field only accepts json fields

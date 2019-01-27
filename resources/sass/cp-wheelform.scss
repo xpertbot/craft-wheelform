@@ -1,3 +1,5 @@
+@import "~toastr/toastr.scss";
+
 // Helpers
 .mt-10 {
     margin-top: 10px;
@@ -168,6 +170,11 @@ th.text-center, td.text-center {
         .instructions {
             font-weight: normal;
             color: #8f98a3;
+        }
+    }
+    .action-buttons {
+        .btn + .btn {
+            margin-left: 10px;
         }
     }
 

@@ -64,8 +64,9 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-        <div class="field">
+        <div class="field action-buttons">
             <button v-on:click.prevent="$emit('handle-save-settings')" class="btn submit">Save</button>
+            <a :href="getBackUrl" class="btn primary">Back</a>
         </div>
     </div>
 </template>
@@ -79,6 +80,13 @@ export default {
     props: [
         "form",
     ],
+    computed: {
+        getBackUrl()
+        {
+            const  cpUrl = window.Craft.baseCpUrl;
+            return cpUrl + "/wheelform";
+        }
+    },
     methods: {
         handleStatusChange(key, value)
         {
