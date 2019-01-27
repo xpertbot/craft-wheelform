@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.20.0 - 2019-01-26
 ### Added
 - Added New Actions to Entries view.
+###Improved
+- Improved Form Settings Layout, 2 column layout for form field configuration
 
 ## 1.19.0 - 2019-01-19
 ### Added
