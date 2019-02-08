@@ -15,13 +15,12 @@
                     {{isEditMode ? "Drag" : "Edit"}} Fields
                 </button>
             </div>
-            <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}"
+            <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}" @end="onDragEnd"
                 id="field-container">
                 <Field
                     v-for="(field, index) in form.fields"
                     :key="field.uniqueId"
                     :index="index"
-                    :order="index + 1"
                     :default-field="field"
                     :is-edit-mode="isEditMode"
                     @delete-field="form.fields.splice(index, 1)"
@@ -116,6 +115,12 @@ export default {
                     msg: ''
                 },
                 options: this.mergeFieldOptions({}),
+            });
+        },
+        onDragEnd()
+        {
+            let fields = this.form.fields.map(function(item, index) {
+                return item.order = index + 1;
             });
         },
         handleEditMode()

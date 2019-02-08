@@ -155,13 +155,6 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" :name="getFieldName('id')" :value="field.id ? field.id : '0'">
-        <input type="hidden" :name="getFieldName('order')" :value="order">
-        <input type="hidden" :name="getFieldName('required')" v-model="field.required">
-        <input type="hidden" :name="getFieldName('index_view')" v-model="field.index_view">
-        <input type="hidden" :name="getFieldName('active')" v-model="field.active">
-        <input type="hidden" :name="'fields['+index+'][options][validate]'" v-model="field.options.validate">
-        <input type="hidden" :name="'fields['+index+'][options][selectEmpty]'" v-model="field.options.selectEmpty">
     </div>
 </template>
 
@@ -171,7 +164,6 @@ import { debounce } from 'lodash';
 
 export default {
     props: [
-        "order",
         "index",
         "defaultField",
         "isEditMode",
