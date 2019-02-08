@@ -102,10 +102,11 @@ export default {
     methods: {
         addField()
         {
-            this.nextFieldIndex++
+            this.nextFieldIndex++;
 
             this.form.fields.push({
                 name: "field_" + this.nextFieldIndex,
+                order: this.nextFieldIndex,
                 type: "text",
                 index_view: 0,
                 active: 1,

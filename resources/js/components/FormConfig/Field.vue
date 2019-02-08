@@ -238,9 +238,11 @@ export default {
         }
     },
     methods: {
-        handleStatusChange(key, value)
+        handleStatusChange(key, boolValue)
         {
-            this.field[key] = (value ? 1 : 0);
+            const value = (boolValue ? 1 : 0);
+            this.updateFieldPropertyCallback(this.index, key, value);
+            this.field[key] = value;
         },
         getFieldName(key)
         {
