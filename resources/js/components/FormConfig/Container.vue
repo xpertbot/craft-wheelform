@@ -25,6 +25,7 @@
                     :is-edit-mode="isEditMode"
                     @delete-field="form.fields.splice(index, 1)"
                     :validate-name-callback="validateFieldName"
+                    :update-field-property-callback="updateFieldProperty"
                 />
             </draggable>
         </div>
@@ -156,6 +157,10 @@ export default {
                 status: true,
                 msg: ''
             }
+        },
+        updateFieldProperty(index, property, value)
+        {
+            this.form.fields[index][property] = value;
         },
         mergeFieldOptions(options)
         {

@@ -57,7 +57,7 @@
                 <div class="col">
                     <div>
                         <label class="required">Name:</label>
-                        <input type="text" v-model="field.name" @change="validateName" :name="getFieldName('name')" />
+                        <input type="text" v-model="field.name" @change="validateName" />
                         <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
                     </div>
                     <div>
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <label>Type:</label>
-                        <select v-model="field.type" :name="getFieldName('type')">
+                        <select v-model="field.type" @change="updateFieldProperty('type', $event.target.value)">
                             <option
                                 v-for="(fieldType, index) in fieldTypes"
                                 :key="index"
@@ -167,7 +167,8 @@ export default {
         "index",
         "defaultField",
         "isEditMode",
-        "validateNameCallback"
+        "validateNameCallback",
+        "updateFieldPropertyCallback",
     ],
     data(){
         return {
@@ -264,6 +265,14 @@ export default {
         validateName()
         {
             this.field.isValidName = this.validateNameCallback(this.field.name);
+            if(this.field.isValidName)
+            {
+                this.updateFieldPropertyCallback(this.index, 'name', this.field.name)
+            }
+        },
+        updateFieldProperty(property, value)
+        {
+            this.updateFieldPropertyCallback(this.index, property, value);
         },
         addOption: function () {
             var value = this.newOption && this.newOption.trim()

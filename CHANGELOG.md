@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.20.3 - 2019-02-08
+### Fixed
+- Multiple field values not updating correctly.
+
 ## 1.20.2 - 2019-02-08
 ### Fixed
 - Order not saving correctly introduced on Last Patch.
