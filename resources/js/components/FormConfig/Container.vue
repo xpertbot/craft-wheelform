@@ -79,10 +79,10 @@ export default {
                 if(res.data) {
                     const form = JSON.parse(res.data);
                     if(form) {
-                        form.options = JSON.parse(form.options);
+                        form.options = form.options ? JSON.parse(form.options) : {};
                         //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
-                            let options = JSON.parse(form.fields[index].options);
+                            let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
 
                             form.fields[index].isValidName = {
                                 status: true,
