@@ -246,7 +246,20 @@ class MessageController extends Controller
             $ipParts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
             $ipAddress = array_pop($ipParts);
         }
-        $jsonRes = file_get_contents($url."?secret=".$secret."&response=".$userRes."&remoteip=".$ipAddress);
+        $data = array(
+            'secret' => $secret,
+            'response' => $userRes,
+            'remoteip' => $ipAddress,
+        );
+        $options = array(
+            'http' => array (
+                'header' => "Content-Type: application/x-www-form-urlencoded",
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            )
+        );
+        $context = stream_context_create($options);
+        $jsonRes = file_get_contents($url, false, $context);
 
         $resp = json_decode($jsonRes);
 
