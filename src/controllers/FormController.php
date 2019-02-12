@@ -23,7 +23,15 @@ class FormController extends Controller
 
     function actionIndex()
     {
-        $forms = Form::find()->orderBy(['dateCreated' => SORT_ASC])->all();
+        $formModels = Form::find()->orderBy(['dateCreated' => SORT_ASC])->all();
+        $forms = [];
+        $user = Craft::$app->getUser();
+
+        foreach($formModels as $formModel) {
+            if($user->checkPermission('wheelform_edit_form_' . $formModel->id)) {
+                $forms[] = $formModel;
+            }
+        }
 
         $settings = Plugin::getInstance()->getSettings();
         if (!$settings->validate()) {
@@ -36,20 +44,33 @@ class FormController extends Controller
         ]);
     }
 
+    function actionNew()
+    {
+        $this->requirePermission('wheelform_new_form');
+
+        $form = new Form();
+         // Render the template
+         return $this->renderTemplate('wheelform/_edit-form.twig', [
+            'form' => $form
+        ]);
+    }
+
     function actionEdit()
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
+        $form = null;
 
         if (! empty($params['id'])) {
             $form = Form::findOne(intval($params['id']));
-            if (! $form) {
-                throw new HttpException(404);
-            }
         } elseif(! empty($params['form'])) {
             $form = $params['form'];
-        } else {
-            $form = new Form();
         }
+
+        if (! $form) {
+            throw new HttpException(404);
+        }
+
+        $this->requirePermission('wheelform_change_settings_' . $form->id);
 
         // Render the template
         return $this->renderTemplate('wheelform/_edit-form.twig', [

@@ -21,6 +21,9 @@ class EntriesController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $form_id = intval($params['id']);
+
+        $this->requirePermission('wheelform_view_entries_' . $form_id);
+
         $form = Form::findOne($form_id);
         if (! $form) {
             throw new HttpException(404);

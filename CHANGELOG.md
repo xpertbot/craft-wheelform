@@ -7,7 +7,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.20.4 - 2019-02-11
 ### Fixed
 - RecpatchaV2 not working on some server setups.
-
 ## Improved
 - Improved Attributes passed on the template to overwritte form default attribute values.
 

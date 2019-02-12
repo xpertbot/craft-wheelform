@@ -5,9 +5,11 @@
 {% set title = title ? title : "Wheel Forms" %}
 
 {% block actionButton %}
+    {% if currentUser.can('wheelform_new_form') %}
     <div class="buttons">
         <a class="btn submit icon" href="{{ url('wheelform/form/new') }}">{{ 'New Form'|t('wheelform') }}</a>
     </div>
+    {% endif %}
 {% endblock %}
 
 
@@ -32,11 +34,9 @@
                         <th scope="col" class="thin">
                             {{ 'New' | t('wheelform') }}
                         </th>
-                        {% if currentUser.admin %}
-                            <th scope="col" class="thin">
-                                {{ 'Settings' | t('wheelform') }}
-                            </th>
-                        {% endif %}
+                        <th scope="col" class="thin">
+                            {{ 'Settings' | t('wheelform') }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,9 +46,15 @@
                             <td><span class="status {{ form.active ? 'active' : 'disabled' }}"></span></td>
                             <td>{{ form.name }}</td>
                             <td>
-                            {% if form.entryCount > 0 %}<a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">{% endif %}
-                            {{ form.entryCount }}
-                            {% if form.entryCount > 0 %}</a>{% endif %}
+                            {% if currentUser.can('wheelform_view_entries_' ~ form.id) and form.entryCount > 0 %}
+                                <a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">
+                            {% endif %}
+
+                                {{ form.entryCount }}
+
+                            {% if currentUser.can('wheelform_view_entries_' ~ form.id) and form.entryCount > 0 %}
+                                </a>
+                            {% endif %}
                             </td>
                             <td>
                             {% if form.hasNew() %}
@@ -57,11 +63,11 @@
                                 --
                             {% endif %}
                             </td>
-                            {% if currentUser.admin %}
-                                <td>
+                            <td>
+                                {% if currentUser.can('wheelform_change_settings_' ~ form.id) %}
                                     <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t('wheelform') }}"></a>
-                                </td>
-                            {% endif %}
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

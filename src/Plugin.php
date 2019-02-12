@@ -12,6 +12,8 @@ use wheelform\models\Message;
 use wheelform\models\Settings;
 use wheelform\utilities\Tools;
 use yii\base\Event;
+use craft\services\UserPermissions;
+use wheelform\services\permissions\WheelformPermissions;
 
 class Plugin extends BasePlugin
 {
@@ -33,7 +35,7 @@ class Plugin extends BasePlugin
                 $event->rules[$this->id] = $this->id.'/form/index';
 
                 //forms
-                $event->rules[$this->id . '/form/new'] = $this->id.'/form/edit';
+                $event->rules[$this->id . '/form/new'] = $this->id.'/form/new';
                 $event->rules[$this->id . '/form/edit/<id:\d+>'] = $this->id.'/form/edit';
                 $event->rules[$this->id . '/form/save'] = $this->id.'/form/save';
 
@@ -58,6 +60,10 @@ class Plugin extends BasePlugin
                 $event->types[] = Tools::class;
             }
             return $event;
+        });
+
+        Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function($event){
+            $event->permissions[$this->name] = WheelformPermissions::getAllPermissions();
         });
 
         if (Craft::$app->request->getIsSiteRequest()) {
