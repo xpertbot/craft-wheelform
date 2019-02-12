@@ -112,17 +112,22 @@ Your form template can look something like this:
 {% endmacro %}
 {% from _self import errorList %}
 
-{# In the submitButton options:
+{# Note: Form attributes take presedence over default values #}
+{# SubmitButton options:
     "type" can be button, or input
     "html" attribute takes precedence over the other properties,
     "attributes" is an easy way to add attributes to the button,
     All attributes are optional #}
+
 {% set form = wheelform.form({
     id: 1,
     redirect: 'contact/thanks',
-    attributes: [
-        'novalidate="novalidate"'
-    ],
+
+    attributes: {
+        'novalidate':"novalidate",
+        'id':'custom-form',
+        'class': 'custom-form',
+    },
     submitButton: {
         "type": "button",
         "label": "Send",
@@ -163,10 +168,11 @@ Advanced templating:
 {% set form = wheelform.form({
     id: 1,
     redirect: 'contact/thanks',
-    styleClass: "form",
-    attributes: [
-        'novalidate="novalidate"'
-    ],
+    attributes: {
+        'novalidate':"novalidate",
+        'id':'custom-form',
+        'class': 'custom-form',
+    },
 }) %}
 
 {{ form.open() }}

@@ -72,15 +72,8 @@ class FormService extends BaseService
 
     public function open()
     {
-        $enctype = '';
-        if( $this->isMultipart() ) {
-            $enctype = "enctype=\"multipart/form-data\"";
-        }
-        $method = strtoupper($this->method);
-        $html = "<form id=\"{$this->generateId()}\" method=\"{$method}\" ";
-        $html .= (empty($this->styleClass) ? '' : " class='{$this->styleClass}' ");
-        $html .= (!empty($this->attributes) ? (is_array($this->attributes) ? implode(' ', $this->attributes) : $this->attributes ) : '');
-        $html .= " {$enctype}>";
+        $attributes = $this->generateFormAttributes();
+        $html = sprintf("<form $attributes>");
         $html .= $this->generateCsrf();
         $html .= "<input type=\"hidden\" name=\"form_id\" value=\"{$this->id}\" />";
         $html .= "<input type=\"hidden\" name=\"action\" value=\"wheelform/message/send\" />";
@@ -220,6 +213,43 @@ class FormService extends BaseService
     }
 
     // Protected
+    protected function generateFormAttributes()
+    {
+        $defaultAttributes = [
+            'method' => strtoupper($this->method),
+            'id' => $this->generateId(),
+            'class' => (empty($this->styleClass) ? "" : $this->styleClass),
+            'style' => "",
+            'enctype' => ( $this->isMultipart() ? "multipart/form-data" : ""),
+        ];
+
+        if(! is_array($this->attributes)) {
+            $userAttributes = explode(' ', $this->attributes);
+        } else {
+            $userAttributes = $this->attributes;
+        }
+
+        if($this->hasStringKeys($userAttributes)) {
+            $attributes = array_merge($defaultAttributes, $userAttributes);
+        } else {
+            // Attributes are values in the array as strings
+            $attributes = $defaultAttributes;
+            foreach($userAttributes as $attr) {
+                $keywords = preg_split("/[\=]+/",trim($attr));
+                if(count($keywords) == 2) {
+                    $attributes[$keywords[0]] = str_replace(["\"", "'"], "", $keywords[1]);
+                }
+            }
+        }
+
+        $return = "";
+        foreach($attributes as $key => $val) {
+            $return .= "{$key}=\"{$val}\" ";
+        }
+
+        return trim($return);
+    }
+
     protected function generateId()
     {
         $name = $this->instance->name;
@@ -318,5 +348,9 @@ class FormService extends BaseService
         }
 
         return $html;
+    }
+
+    protected function hasStringKeys(array $array) {
+        return count(array_filter(array_keys($array), 'is_string')) > 0;
     }
 }
