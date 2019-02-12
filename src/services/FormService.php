@@ -44,15 +44,20 @@ class FormService extends BaseService
         }
 
         if(empty($this->submitButton)) {
-            $this->submitButton = [
-                "label" => Craft::t('app', "Send"),
-                "type" => "input",
-                "attributes" => [
-                    "class" => "",
-                ],
-                "html" => "",
-            ];
+            $this->submitButton = [];
         }
+
+        $defaultSubmitButton = [
+            "label" => Craft::t('app', "Send"),
+            "type" => "input",
+            'label' => '',
+            "attributes" => [
+                "class" => "",
+            ],
+            "html" => "",
+        ];
+
+        $this->submitButton = array_merge($defaultSubmitButton, $this->submitButton);
 
         if(! empty($this->buttonLabel) ) {
             $this->submitButton['label'] = $this->buttonLabel;
@@ -338,9 +343,11 @@ class FormService extends BaseService
         $attributes = "";
         if(!empty($this->submitButton["attributes"]) && is_array($this->submitButton["attributes"])) {
             foreach($this->submitButton["attributes"] as $att => $value) {
-                $attributes .= " {$att}=\"{$value}\"";
+                $attributes .= "{$att}=\"{$value}\" ";
             }
         }
+        $attributes = trim($attributes);
+
         if($this->submitButton['type'] == "button") {
             $html = "<button {$attributes}>{$this->submitButton['label']}</button>";
         } else {
