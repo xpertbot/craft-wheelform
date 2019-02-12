@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.21.0 - 2019-02-12
+### Added
+- Added Permissions for different aspects of the forms.
+
 ## 1.20.4 - 2019-02-11
 ### Fixed
 - RecpatchaV2 not working on some server setups.

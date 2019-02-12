@@ -33,6 +33,7 @@ To install the plugin, follow these instructions.
 - Honeypot Field
 - Ajax and Redirect friendly
 - Send Form submissions to multiple emails
+- Advanced Permissions per form
 - Reordering of fields
 - Save Uploaded files to Asset Manager
 - Multiple Translations
@@ -421,6 +422,13 @@ $('#my-form').submit(function(ev) {
 ```
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
+
+### Permissions
+There are 4 different type of permissions ({Form Name} permissions are repeated per form on your website):
+- Create new Form - Allows User / Group to see the "New Form" button and create new forms.
+- Edit {Form Name} - Allows User / Group to see the form on the list of forms.
+    - {Form Name} Entries - Allows User / Group to view the Entries list.
+    - {Form Name} Settings - Allows User / Group to Edit the form settings.
 
 ### Form Tools
 - CSV Exporter can be based on entry date, under Admin > Utilities > Form Tools.
