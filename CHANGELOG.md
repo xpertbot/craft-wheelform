@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.21.1 - 2019-02-14
+### Fixed
+- Fixed error being thrown on group permissions for bad namespace.
+
 ## 1.21.0 - 2019-02-12
 ### Added
 - Added Permissions for different aspects of the forms.
