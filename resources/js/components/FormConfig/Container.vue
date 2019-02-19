@@ -32,6 +32,8 @@
                         @delete-field="form.fields.splice(index, 1)"
                         :validate-name-callback="validateFieldName"
                         :update-field-property-callback="updateFieldProperty"
+                        :send-notification="form.options.user_notification"
+                        v-on:handle-user-notification-field="handleUserNotificationField"
                     />
                 </draggable>
             </div>
@@ -192,6 +194,7 @@ export default {
                 fieldClass: '',
                 selectEmpty: 0,
                 placeholder: '',
+                is_user_notification_field: false,
             };
         },
 
@@ -202,6 +205,16 @@ export default {
         handleFormOptionChange(option, value)
         {
             this.form.options[option] = value;
+        },
+        handleUserNotificationField(toIndex, value)
+        {
+            this.form.fields.map((field, i) => {
+                if(i == toIndex) {
+                    field.options.is_user_notification_field = value;
+                } else if(field.type == 'email') {
+                    field.options.is_user_notification_field = false;
+                }
+            });
         },
         handleSaveSettings()
         {

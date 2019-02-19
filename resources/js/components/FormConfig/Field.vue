@@ -40,6 +40,9 @@
                     <div class="text-right">
                         <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
                     </div>
+                    <div class="text-right" v-if="isSendNotification && field.options.is_user_notification_field">
+                        <span :style="'color:'+getStatusColor(field.options.is_user_notification_field)">Notification</span>
+                    </div>
                     <div class="text-right" v-if="field.options.containerClass">
                         <span>{{ field.options.containerClass }}</span>
                     </div>
@@ -132,6 +135,14 @@
                             :handle-status-change="handleStatusChange"
                             />
                     </div>
+                    <div v-if="isSendNotification">
+                        <Lightswitch
+                            :name="'is_user_notification_field'"
+                            :label="'User Notification Field'"
+                            :status="field.options.is_user_notification_field"
+                            :handle-status-change="handleUserNotificationChange"
+                            />
+                    </div>
                     <div>
                         <label :for="'container-class-' + field.id">Container class</label>
                         <input type="text" :id="'container-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
@@ -169,6 +180,7 @@ export default {
         "isEditMode",
         "validateNameCallback",
         "updateFieldPropertyCallback",
+        "sendNotification",
     ],
     data(){
         return {
@@ -235,6 +247,10 @@ export default {
             ];
 
             return (canPlaceholderFields.indexOf(this.field.type)) >= 0;
+        },
+        isSendNotification()
+        {
+            return (this.sendNotification && this.field.type == 'email');
         }
     },
     methods: {
@@ -295,6 +311,10 @@ export default {
         {
             this.field.options.selectEmpty = (value ? 1 : 0);
         },
+        handleUserNotificationChange(key, value)
+        {
+            this.$emit('handle-user-notification-field', this.index, value);
+        }
     }
 }
 </script>
