@@ -1,36 +1,43 @@
 <template>
-    <div class="row">
-        <div class="col-sm-6">
-            <Settings
-                :form="form"
-                v-on:handle-form-setting="handleSettingsInput"
-                v-on:handle-form-option-change="handleFormOptionChange"
-                v-on:handle-save-settings="handleSaveSettings"
-            />
-        </div>
-        <div class="col-sm">
-            <div class="btn-container">
-                <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
-                <button v-show="form.fields.length > 0"
-                    v-on:click.prevent="handleEditMode" class="btn primary pull-right">
-                    {{isEditMode ? "Drag" : "Edit"}} Fields
-                </button>
-            </div>
-            <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}" @end="onDragEnd"
-                id="field-container">
-                <Field
-                    v-for="(field, index) in form.fields"
-                    :key="field.uniqueId"
-                    :index="index"
-                    :default-field="field"
-                    :is-edit-mode="isEditMode"
-                    @delete-field="form.fields.splice(index, 1)"
-                    :validate-name-callback="validateFieldName"
-                    :update-field-property-callback="updateFieldProperty"
+<div>
+    <div v-if="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+    <div v-else>
+        <div class="row">
+            <div class="col-sm-6">
+                <Settings
+                    :form="form"
+                    v-on:handle-form-setting="handleSettingsInput"
+                    v-on:handle-form-option-change="handleFormOptionChange"
+                    v-on:handle-save-settings="handleSaveSettings"
                 />
-            </draggable>
+            </div>
+            <div class="col-sm">
+                <div class="btn-container">
+                    <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
+                    <button v-show="form.fields.length > 0"
+                        v-on:click.prevent="handleEditMode" class="btn primary pull-right">
+                        {{isEditMode ? "Drag" : "Edit"}} Fields
+                    </button>
+                </div>
+                <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}" @end="onDragEnd"
+                    id="field-container">
+                    <Field
+                        v-for="(field, index) in form.fields"
+                        :key="field.uniqueId"
+                        :index="index"
+                        :default-field="field"
+                        :is-edit-mode="isEditMode"
+                        @delete-field="form.fields.splice(index, 1)"
+                        :validate-name-callback="validateFieldName"
+                        :update-field-property-callback="updateFieldProperty"
+                    />
+                </draggable>
+            </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -48,6 +55,7 @@ export default {
     },
     data() {
         return {
+            loading: true,
             isEditMode: false,
             nextFieldIndex: 0,
             form: {
@@ -67,7 +75,9 @@ export default {
         const cpUrl = window.Craft.baseCpUrl;
         const form_id = window.Wheelform.form_id;
 
-        if (form_id) {
+        if (! form_id) {
+            this.loading = false;
+        } else {
             axios.get(cpUrl, {
                 params: {
                     action: 'wheelform/form/get-settings',
@@ -94,7 +104,7 @@ export default {
                         this.form = form;
                     }
                 }
-
+                this.loading = false;
             });
         }
     },
