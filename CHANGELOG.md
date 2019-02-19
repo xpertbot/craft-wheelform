@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.22.0 - 2019-02-18
+### Added
+- Added Notification to form submissions.
+### Fixed
+- Fixed Bug that would duplicate forms after initial save
+
 ## 1.21.1 - 2019-02-14
 ### Fixed
 - Fixed error being thrown on group permissions for bad namespace.
