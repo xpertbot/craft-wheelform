@@ -436,19 +436,26 @@ There are 4 different type of permissions ({Form Name} permissions are repeated 
 - Form Fields can be imported from a valid JSON file.
 
 ### Custom Email Template
-Custom Twig templates can be used using these steps:
+Email Templates are Optional. Custom Twig templates can be used using these steps:
 
 1. Create `wheelform.php` file inside Craft's config folder.
 2. `wheelform.php` expects an array of configuration settings to be returned. The options are:
-    - `template`: default template to use for all emails
-    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify
+    - `template`: default template to use for all emails.
+    - `notification`: default notification template overwrite.
+    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify. (These settings take priority over anything else)
 
 ```php
 return [
     'template' => '_emails/custom',
+    'notification' => [
+        'template' => '_emails/notification',
+    ],
     'forms' => [
         1 => [
             'template' => '_emails/form1_template',
+            'notification' => [
+                'template' => '_emails/notification2',
+            ],
         ],
         3 => [
             'template' => '_emails/form3_template',
