@@ -59,6 +59,7 @@ export default {
             isEditMode: false,
             nextFieldIndex: 0,
             form: {
+                id: null,
                 name: "",
                 to_email: "",
                 active: 1,
@@ -215,6 +216,7 @@ export default {
                 .then((res) => {
                     const success = res.data.success;
                     if(success) {
+                        this.form.id = res.data.form_id;
                         toastr.success('Success', res.data.message);
                     } else {
                         let msg = "";
