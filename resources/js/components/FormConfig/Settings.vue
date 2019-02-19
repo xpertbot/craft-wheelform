@@ -64,6 +64,14 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
+        <div  class="field">
+            <Lightswitch
+                :name="'user_notification'"
+                :label="'User Notification'"
+                :status="form.options.user_notification"
+                :handle-status-change="handleOptionsChange"
+                />
+        </div>
         <div class="field action-buttons">
             <button v-on:click.prevent="$emit('handle-save-settings')" class="btn submit">Save</button>
             <a :href="getBackUrl" class="btn primary">Back</a>
@@ -91,6 +99,10 @@ export default {
         handleStatusChange(key, value)
         {
             this.$emit('handle-form-setting', key, value);
+        },
+        handleOptionsChange(option, value)
+        {
+            this.$emit('handle-form-option-change', option, value);
         }
     }
 }

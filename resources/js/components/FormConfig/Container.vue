@@ -4,6 +4,7 @@
             <Settings
                 :form="form"
                 v-on:handle-form-setting="handleSettingsInput"
+                v-on:handle-form-option-change="handleFormOptionChange"
                 v-on:handle-save-settings="handleSaveSettings"
             />
         </div>
@@ -57,9 +58,7 @@ export default {
                 recaptcha: 0,
                 send_email: 1,
                 fields: [],
-                options: {
-                    honeypot: "",
-                }
+                options: this.getDefaultFormOptions(),
             },
         }
     },
@@ -79,7 +78,7 @@ export default {
                 if(res.data) {
                     const form = JSON.parse(res.data);
                     if(form) {
-                        form.options = form.options ? JSON.parse(form.options) : {};
+                        form.options = Object.assign(this.getDefaultFormOptions(), JSON.parse(form.options));
                         //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
                             let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
@@ -89,7 +88,7 @@ export default {
                                 msg: ''
                             };
                             form.fields[index].uniqueId = this.generateKeyId();
-                            form.fields[index].options = this.mergeFieldOptions(options);
+                            form.fields[index].options = Object.assign(this.getDefaultFieldOptions(), options);
                         }
                         this.nextFieldIndex = form.fields.length;
                         this.form = form;
@@ -116,7 +115,7 @@ export default {
                     status: true,
                     msg: ''
                 },
-                options: this.mergeFieldOptions({}),
+                options: this.getDefaultFieldOptions(),
             });
         },
         onDragEnd()
@@ -163,14 +162,18 @@ export default {
         {
             this.form.fields[index][property] = value;
         },
-        mergeFieldOptions(options)
-        {
-            const booleanProperties = [
-                'validate',
-                'selectEmpty'
-            ];
 
-            const defaultOptions = {
+        //Getters
+        getDefaultFormOptions()
+        {
+            return {
+                honeypot: "",
+                user_notification: 0,
+            };
+        },
+        getDefaultFieldOptions()
+        {
+            return {
                 validate: 0,
                 label: '',
                 items: [],
@@ -179,22 +182,15 @@ export default {
                 selectEmpty: 0,
                 placeholder: '',
             };
-
-            for(let property in defaultOptions) {
-                if(! options.hasOwnProperty(property)) {
-                    //Default Option values
-                    options[property] = defaultOptions[property];
-                } else {
-                    //check if booleanProperty
-                    if(options[property] in booleanProperties) {
-                        options[property] = parseInt(options[property]);
-                    }
-                }
-            }
-            return options;
         },
+
+        // Handles
         handleSettingsInput(key, value) {
             this.form[key] = value;
+        },
+        handleFormOptionChange(option, value)
+        {
+            this.form.options[option] = value;
         },
         handleSaveSettings()
         {
