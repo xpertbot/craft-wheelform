@@ -463,7 +463,8 @@ return [
     ],
 ];
 ```
-3. Inside your templates you will have access to a `fields` array. Example
+3. Inside your templates you will have access to a `fields` array and `notification_message` with the message sent on the Form Administration Panel.
+Example:
 
 ```html
 <html>
