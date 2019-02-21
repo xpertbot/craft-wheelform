@@ -75,6 +75,7 @@
                 />
         </div>
         <div  class="field">
+            <span v-show="! form.send_email && form.options.user_notification" style="color: #da5a47">Send Email needs to be active for this feature to work</span>
             <Lightswitch
                 :name="'user_notification'"
                 :label="'User Notification'"
