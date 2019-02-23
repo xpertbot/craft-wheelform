@@ -7,13 +7,15 @@ use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\services\Utilities;
 use craft\web\UrlManager;
+use craft\services\Fields;
+use craft\services\UserPermissions;
 use wheelform\extensions\WheelformVariable;
+use wheelform\fields\FormField;
 use wheelform\models\Message;
 use wheelform\models\Settings;
 use wheelform\utilities\Tools;
-use yii\base\Event;
-use craft\services\UserPermissions;
 use wheelform\services\permissions\WheelformPermissions;
+use yii\base\Event;
 
 class Plugin extends BasePlugin
 {
@@ -27,6 +29,10 @@ class Plugin extends BasePlugin
     public function init()
     {
         parent::init();
+
+        Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
+            $event->types[] = FormField::class;
+        });
 
         Event::on(
             UrlManager::class,

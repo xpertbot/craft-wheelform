@@ -192,7 +192,7 @@ class Mailer extends Component
         $view = Craft::$app->getView();
         $currentMode = $view->getTemplateMode();
         $isFrontTemplate = true;
-        $template = null;
+        $template = '';
 
         if(! empty($this->config['template'])) {
             $template = $this->config['template'];
@@ -224,7 +224,7 @@ class Mailer extends Component
         $view = Craft::$app->getView();
         $currentMode = $view->getTemplateMode();
         $isFrontTemplate = true;
-        $template = null;
+        $template = '';
 
         if (! empty($this->config['notification']['template'])) {
             $template = $this->config['notification']['template'];
