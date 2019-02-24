@@ -59,10 +59,6 @@ Current Field types supported are:
 * List
 
 ## Template Variables
-- errors (Array of errors based on field name, form, recaptcha, honeypot).
-
-- values (Array of User submitted values based on field name).
-
 - wheelform
     - settings
     - form
@@ -96,6 +92,10 @@ Current Field types supported are:
             - label
             - value
             - type
+
+- wheelformErrors (Array of errors based on field name, form, recaptcha, honeypot).
+
+- values (Array of User submitted values based on field name).
 
 ## Template Structure
 
