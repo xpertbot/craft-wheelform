@@ -85,6 +85,20 @@ th.text-center, td.text-center {
     text-align: center !important;
 }
 
+.wheelform-collapsable {
+    border: 1px solid #f1f5f8;
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    > a {
+        background-color: #f1f5f8;;
+        display: block;
+        padding: 5px;
+    }
+    .collapsable-content {
+        position: relative;
+        padding: 5px;
+    }
+}
+
 #formapp {
     width: 100%;
     label {

@@ -20,26 +20,6 @@
                 <input class="text fullwidth" type="text" id="to_email" v-model="form.to_email" autocomplete="off">
             </div>
         </div>
-        <div class="field" id="options[honeypot]-field">
-            <div class="heading">
-                <label id="options[honeypot]-label" for="options[honeypot]">Honeypot</label>
-                <div class="instructions"><p>Name of hidden field that helps prevent bot spam. Leave empty to disable.</p>
-                </div>
-            </div>
-            <div class="input ltr">
-                <input class="text fullwidth" type="text" id="options[honeypot]" v-model="form.options.honeypot" value="" autocomplete="off">
-            </div>
-        </div>
-        <div class="field" v-if="form.options.user_notification">
-            <div class="heading">
-                <label id="options[user_notification_message]-label" for="options[user_notification_message]">User Notification Message</label>
-                <div class="instructions"><p>Message that will be displayed on the body of the user Notification Email</p>
-                </div>
-            </div>
-            <div class="input ltr">
-                <textarea  v-model="form.options.user_notification_message" class="text fullwidth"></textarea>
-            </div>
-        </div>
 
         <div  class="field">
             <Lightswitch
@@ -66,23 +46,48 @@
                 :handle-status-change="handleStatusChange"
                 />
         </div>
-        <div  class="field">
-            <Lightswitch
-                :name="'recaptcha'"
-                :label="'Recaptcha'"
-                :status="form.recaptcha"
-                :handle-status-change="handleStatusChange"
-                />
-        </div>
-        <div  class="field">
-            <span v-show="! form.send_email && form.options.user_notification" style="color: #da5a47">Send Email needs to be active for this feature to work</span>
-            <Lightswitch
-                :name="'user_notification'"
-                :label="'User Notification'"
-                :status="form.options.user_notification"
-                :handle-status-change="handleOptionsChange"
-                />
-        </div>
+
+        <Collapsable>
+            <div  class="field">
+                <Lightswitch
+                    :name="'recaptcha'"
+                    :label="'Recaptcha'"
+                    :status="form.recaptcha"
+                    :handle-status-change="handleStatusChange"
+                    />
+            </div>
+
+            <div class="field" id="options[honeypot]-field">
+                <div class="heading">
+                    <label id="options[honeypot]-label" for="options[honeypot]">Honeypot</label>
+                    <div class="instructions"><p>Name of hidden field that helps prevent bot spam. Leave empty to disable.</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                    <input class="text fullwidth" type="text" id="options[honeypot]" v-model="form.options.honeypot" value="" autocomplete="off">
+                </div>
+            </div>
+            <div class="field">
+                <span v-show="! form.send_email && form.options.user_notification" style="color: #da5a47">Send Email needs to be active for this feature to work</span>
+                <Lightswitch
+                    :name="'user_notification'"
+                    :label="'User Notification'"
+                    :status="form.options.user_notification"
+                    :handle-status-change="handleOptionsChange"
+                    />
+            </div>
+            <div class="field" v-if="form.options.user_notification">
+                <div class="heading">
+                    <label id="options[user_notification_message]-label" for="options[user_notification_message]">User Notification Message</label>
+                    <div class="instructions"><p>Message that will be displayed on the body of the user Notification Email</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                    <textarea  v-model="form.options.user_notification_message" class="text fullwidth"></textarea>
+                </div>
+            </div>
+        </Collapsable>
+
         <div class="field action-buttons">
             <button v-on:click.prevent="$emit('handle-save-settings')" class="btn submit">Save</button>
             <a :href="getBackUrl" class="btn primary">Back</a>
@@ -91,10 +96,12 @@
 </template>
 <script>
 import Lightswitch from './Lightswitch.vue';
+import Collapsable from '../Partials/Collapsable.vue';
 
 export default {
     components: {
         Lightswitch,
+        Collapsable,
     },
     props: [
         "form",
