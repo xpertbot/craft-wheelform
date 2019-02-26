@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.23.0 - 2019-02-25
+### Improved
+- Improved UI for Form Settings so Advanced Options are collapsed by default.
+### Added
+- Added Form Field Type, Where users can select a form and display on the templates.
+
 ## 1.22.0 - 2019-02-18
 ### Added
 - Added Notification to form submissions.

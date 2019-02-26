@@ -11,22 +11,34 @@ use wheelform\services\WheelformService;
 
 class FormField extends Field
 {
+    /**
+     * @inheritdoc
+     */
     public static function displayName(): string
     {
         return 'Wheelform';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getContentColumnType(): string
     {
         return Schema::TYPE_INTEGER;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getSettingsHtml(): string
     {
         return "";
     }
 
-    public function getInputHtml($value, ElementInterface $element = null): string
+    /**
+     * @inheritdoc
+     */
+    public function getInputHtml($service, ElementInterface $element = null): string
     {
         $forms = Form::find()->select('id,name')->where(['active' => 1])->all();
         $formOptions = [];
@@ -45,12 +57,33 @@ class FormField extends Field
         return Craft::$app->getView()->renderTemplate('wheelform/_includes/_form_field', [
             'formOptions' => $formOptions,
             'formName' => $this->handle,
-            'value' => $value,
+            'value' => empty($service->id) ? null : $service->id,
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function serializeValue($service, ElementInterface $element = null)
+    {
+        $value = $service;
+        if($service) {
+            $value = $service->id;
+        }
+
+        return parent::serializeValue($value);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        return intval($value);
+        $id = intval($value);
+        if($id) {
+            return (new WheelformService)->getForm(['id' => $id]);
+        }
+
+        return null;
     }
 }

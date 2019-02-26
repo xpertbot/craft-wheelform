@@ -28,6 +28,7 @@ To install the plugin, follow these instructions.
 - Custom Email HTML Template
 - Template variables for easy development
 - Email Validation based on field type selected
+- Form Field Type for sections
 - Required Fields
 - Checkbox options
 - Honeypot Field
@@ -313,6 +314,20 @@ When a contact form is submitted, the plugin will set a `success` flash message 
 {% elseif craft.app.session.hasFlash('wheelformError') %}
     <p class="message error">{{ craft.app.session.getFlash('wheelformError') }}</p>
 {% endif %}
+```
+
+### Form Field Type
+You can assign a Field Type to your sections where Users can select which form to display based on a Dropdown. This field will return a `wheelform.form` template service (same as other examples) that belongs to the form selected on the Admin Panel. if you need to customize it you can use the `setConfig` variable to modify the default behaviour.
+
+```twig
+{% set form = entry.formField.setConfig({
+    redirect: 'contact/thanks',
+    attributes: {
+        'novalidate':"novalidate",
+        'id':'field-form',
+        'class': 'field-form',
+    },
+}) %}
 ```
 
 ### Displaying the last/current submission

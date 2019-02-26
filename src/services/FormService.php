@@ -47,17 +47,7 @@ class FormService extends BaseService
             $this->submitButton = [];
         }
 
-        $defaultSubmitButton = [
-            "label" => Craft::t('app', "Send"),
-            "type" => "input",
-            'label' => '',
-            "attributes" => [
-                "class" => "",
-            ],
-            "html" => "",
-        ];
-
-        $this->submitButton = array_merge($defaultSubmitButton, $this->submitButton);
+        $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
 
         if(! empty($this->buttonLabel) ) {
             $this->submitButton['label'] = $this->buttonLabel;
@@ -175,8 +165,21 @@ class FormService extends BaseService
         return (bool) $this->instance->recaptcha;
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
 
     //Setters
+    public function setConfig($config)
+    {
+        \Yii::configure($this, $config);
+
+        $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
+
+        return $this; // Don't break the chain in templates;
+    }
+
     public function setId($value)
     {
         $this->id = $value;
@@ -359,5 +362,19 @@ class FormService extends BaseService
 
     protected function hasStringKeys(array $array) {
         return count(array_filter(array_keys($array), 'is_string')) > 0;
+    }
+
+
+    //Private
+    private function getDefaultSubmitButton()
+    {
+        return [
+            'label' => Craft::t('app', "Send"),
+            "type" => "input",
+            "attributes" => [
+                "class" => "",
+            ],
+            "html" => "",
+        ];
     }
 }
