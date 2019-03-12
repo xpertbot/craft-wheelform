@@ -48,6 +48,17 @@
         </div>
 
         <Collapsable>
+            <div class="field" id="options[email_subject]-field">
+                <div class="heading">
+                    <label id="options[email_subject]-label" for="options[email_subject]">Email Subject</label>
+                    <div class="instructions"><p>Subject for the Admin email</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                    <input class="text fullwidth" type="text" id="options[email_subject]" v-model="form.options.email_subject" value="" autocomplete="off">
+                </div>
+            </div>
+
             <div  class="field">
                 <Lightswitch
                     :name="'recaptcha'"

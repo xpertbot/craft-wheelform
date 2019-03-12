@@ -52,6 +52,7 @@ class Mailer extends Component
 
         // Prep the message Variables
         $defaultSubject = $this->form->name . " - " . Craft::t("wheelform", 'Submission');
+        $subject = !empty($this->form->options['email_subject']) ? $this->form->options['email_subject'] : $defaultSubject;
         $from_email = $settings->from_email;
         // Grab any "to" emails set in the form settings.
         $to_emails = StringHelper::split($this->form->to_email);
@@ -61,7 +62,7 @@ class Mailer extends Component
 
         $beforeEvent = new SendEvent([
             'form_id' => $this->form->id,
-            'subject' => $defaultSubject,
+            'subject' => $subject,
             'message' => $message,
             'from' => $from_email,
             'to' => $to_emails,
