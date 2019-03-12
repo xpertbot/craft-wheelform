@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.24.0 - 2019-03-11
 ### Added
 - Custom Subject to Admin Email.
+- Reply-to Field lightswitch to Forms.
 
 ## 1.23.0 - 2019-02-25
 ### Improved

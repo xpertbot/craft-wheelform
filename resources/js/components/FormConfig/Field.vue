@@ -149,7 +149,7 @@
                     <div v-if="isEmailField">
                         <Lightswitch
                             :name="'is_reply_to'"
-                            :label="'Reply to Email'"
+                            :label="'Reply-to Email'"
                             :status="field.options.is_reply_to"
                             :handle-status-change="handleReplyToChange"
                             />
