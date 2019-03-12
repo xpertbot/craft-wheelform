@@ -43,6 +43,9 @@
                     <div class="text-right" v-if="isSendNotification && field.options.is_user_notification_field">
                         <span :style="'color:'+getStatusColor(field.options.is_user_notification_field)">Notification</span>
                     </div>
+                    <div class="text-right" v-if="isEmailField && field.options.is_reply_to">
+                        <span :style="'color:'+getStatusColor(field.options.is_reply_to)">Reply To</span>
+                    </div>
                     <div class="text-right" v-if="field.options.containerClass">
                         <span>{{ field.options.containerClass }}</span>
                     </div>
@@ -141,6 +144,14 @@
                             :label="'User Notification Field'"
                             :status="field.options.is_user_notification_field"
                             :handle-status-change="handleUserNotificationChange"
+                            />
+                    </div>
+                    <div v-if="isEmailField">
+                        <Lightswitch
+                            :name="'is_reply_to'"
+                            :label="'Reply to Email'"
+                            :status="field.options.is_reply_to"
+                            :handle-status-change="handleReplyToChange"
                             />
                     </div>
                     <div>
@@ -251,6 +262,10 @@ export default {
         isSendNotification()
         {
             return (this.sendNotification && this.field.type == 'email');
+        },
+        isEmailField()
+        {
+            return (this.field.type == 'email');
         }
     },
     methods: {
@@ -314,6 +329,10 @@ export default {
         handleUserNotificationChange(key, value)
         {
             this.$emit('handle-user-notification-field', this.index, value);
+        },
+        handleReplyToChange(key, value)
+        {
+            this.$emit('handle-reply-to-field', this.index, value);
         }
     }
 }

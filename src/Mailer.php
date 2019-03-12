@@ -31,6 +31,8 @@ class Mailer extends Component
 
     protected $form = null;
 
+    protected $message = null;
+
     public function __construct()
     {
         $config = Craft::$app->getConfig();
@@ -49,10 +51,11 @@ class Mailer extends Component
         }
 
         $this->form = $form;
+        $this->message = $message;
 
         // Prep the message Variables
         $defaultSubject = $this->form->name . " - " . Craft::t("wheelform", 'Submission');
-        $subject = !empty($this->form->options['email_subject']) ? $this->form->options['email_subject'] : $defaultSubject;
+        $subject = (!empty($this->form->options['email_subject']) ? $this->form->options['email_subject'] : $defaultSubject);
         $from_email = $settings->from_email;
         // Grab any "to" emails set in the form settings.
         $to_emails = StringHelper::split($this->form->to_email);
@@ -66,7 +69,7 @@ class Mailer extends Component
             'message' => $message,
             'from' => $from_email,
             'to' => $to_emails,
-            'reply_to' => '',
+            'reply_to' => $this->getReplyToEmail(),
             'email_html' => '',
         ]);
 
@@ -186,6 +189,23 @@ class Mailer extends Component
         }
 
         return true;
+    }
+
+    protected function getReplyToEmail()
+    {
+        foreach($this->form->fields as $field) {
+            if($field->type !== "email") {
+                continue;
+            }
+
+            if(! empty($field->options['is_reply_to'])) {
+                if(! empty($this->message[$field->name]['value'])) {
+                    return $this->message[$field->name]['value'];
+                }
+            }
+        }
+
+        return "";
     }
 
     public function compileHtmlBody(array $variables)

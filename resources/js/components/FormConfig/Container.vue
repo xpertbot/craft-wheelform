@@ -34,6 +34,7 @@
                         :update-field-property-callback="updateFieldProperty"
                         :send-notification="form.options.user_notification"
                         v-on:handle-user-notification-field="handleUserNotificationField"
+                        v-on:handle-reply-to-field="handleReplyToField"
                     />
                 </draggable>
             </div>
@@ -195,6 +196,7 @@ export default {
                 fieldClass: '',
                 selectEmpty: 0,
                 placeholder: '',
+                is_reply_to: false,
                 is_user_notification_field: false,
             };
         },
@@ -214,6 +216,16 @@ export default {
                     field.options.is_user_notification_field = value;
                 } else if(field.type == 'email') {
                     field.options.is_user_notification_field = false;
+                }
+            });
+        },
+        handleReplyToField(toIndex, value)
+        {
+            this.form.fields.map((field, i) => {
+                if(i == toIndex) {
+                    field.options.is_reply_to = value;
+                } else if(field.type == 'email') {
+                    field.options.is_reply_to = false;
                 }
             });
         },
