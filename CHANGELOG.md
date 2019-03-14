@@ -8,8 +8,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Custom Subject to Admin Email.
 - Reply-to Field lightswitch to Forms.
+- Portuguese translations.
 ### Improved
-- Improved Translations setup and added spanish translations.
+- Improved Translations setup.
+- Improved Spanish Translations.
 
 ## 1.23.0 - 2019-02-25
 ### Improved

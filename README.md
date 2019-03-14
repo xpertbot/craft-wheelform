@@ -550,4 +550,4 @@ You can also trigger other custom functionality such as gathering custom field v
 Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
 
 ### Translations
-New translations can be submitted using the format inside the translations folder. (I will keep "es" translations up to date as much as possible that can be a good starting point for your translations)
+New translations can be submitted using the format inside the translations folder. (I will keep "es" translations up to date as much as possible, that can be a good starting point for your translations)
