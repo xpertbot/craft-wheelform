@@ -23,7 +23,7 @@ return [
     "Form saved." => "Formulário guardado.",
     "From Email" => "Remetente de Email",
     "From email is not a valid email address." => "O Remetente de email não é válido.",
-    "From email cannot be blank." => O Remetente de email não pode ficar em branco.",
+    "From email cannot be blank." => "O Remetente de email não pode ficar em branco.",
     "Label" => "Label",
     "Label displayed on Admin sidebar navigation." => "A Label exibida na barra laterar de navegação de administrador.",
     "Mark Unread" => "Marcar como não lida",
