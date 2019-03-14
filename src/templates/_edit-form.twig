@@ -1,8 +1,52 @@
 {% extends "_layouts/cp" %}
 
+{% do view.registerTranslations('wheelform', [
+    'Active',
+    'Add',
+    'Add Field',
+    'Are you sure you want to delete Field',
+    'Back',
+    'Container class',
+    'Delete',
+    'Default Empty?',
+    'Drag Fields',
+    'Edit Fields',
+    'Email Subject',
+    'Field class',
+    'Field placeholder',
+    'Form Name',
+    'Honeypot',
+    'Index View',
+    'Item to validate',
+    'Label',
+    'More Options',
+    'Name',
+    'Name contains whitespaces',
+    'Name is not unique',
+    'Name of this Form in the CP.',
+    'Name of hidden field that helps prevent bot spam. Leave empty to disable.',
+    'Notification',
+    'Message that will be displayed on the body of the user Notification Email',
+    'Options',
+    'Reply-to Email',
+    'Required',
+    'Save',
+    'Save Entries',
+    'Send Email',
+    'Send Email needs to be active for this feature to work',
+    'Subject for the Admin email',
+    'The email address(es) that the contact form will send to. Separate multiple email addresses with commas.',
+    'To Email',
+    'Type',
+    'User Notification',
+    'User Notification Field',
+    'User Notification Message',
+    'Validate',
+]) %}
+
 {% do view.registerAssetBundle("wheelform\\assets\\WheelformCpAsset") %}
 
-{% set title = (form.id is empty ? 'New Form'|t : 'Edit Form'|t) %}
+{% set title = (form.id is empty ? 'New Form' : 'Edit Form') | t('wheelform') %}
 
 {% set crumbs = [
     { label: 'Wheel Form', url: url('wheelform') },

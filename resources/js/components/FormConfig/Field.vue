@@ -10,15 +10,15 @@
                         </span>
                     </div>
                     <div>
-                        <strong>Label:</strong> {{ getFieldLabel }}
+                        <strong>{{'Label'|t('wheelform')}}:</strong> {{ getFieldLabel }}
                     </div>
                     <div>
-                        <strong>Type:</strong> {{ field.type | capitalize }}
+                        <strong>{{'Type'|t('wheelform')}}:</strong> {{ field.type | capitalize }}
                     </div>
                     <div v-if="isMultiOption">
                         <div>
-                            <strong>Options</strong>
-                            <span :style="'color:'+getStatusColor(field.options.validate)">Validate</span>
+                            <strong>{{'Options'|t('wheelform')}}</strong>
+                            <span :style="'color:'+getStatusColor(field.options.validate)">{{'Validate'|t('wheelform')}}</span>
                         </div>
                         <ul class="list-wrapper">
                             <li v-if="field.type == 'select' && field.options.selectEmpty">
@@ -35,16 +35,16 @@
                 </div>
                 <div class="col">
                     <div class="text-right">
-                        <span :style="'color:'+getStatusColor(field.required)">Required</span>
+                        <span :style="'color:'+getStatusColor(field.required)">{{'Required'|t('wheelform')}}</span>
                     </div>
                     <div class="text-right">
-                        <span :style="'color:'+getStatusColor(field.index_view)">Index</span>
+                        <span :style="'color:'+getStatusColor(field.index_view)">{{'Index'|t('wheelform')}}</span>
                     </div>
                     <div class="text-right" v-if="isSendNotification && field.options.is_user_notification_field">
-                        <span :style="'color:'+getStatusColor(field.options.is_user_notification_field)">Notification</span>
+                        <span :style="'color:'+getStatusColor(field.options.is_user_notification_field)">{{'Notification'|t('wheelform')}}</span>
                     </div>
                     <div class="text-right" v-if="isEmailField && field.options.is_reply_to">
-                        <span :style="'color:'+getStatusColor(field.options.is_reply_to)">Reply To</span>
+                        <span :style="'color:'+getStatusColor(field.options.is_reply_to)">{{'Reply To'|t('wheelform')}}</span>
                     </div>
                     <div class="text-right" v-if="field.options.containerClass">
                         <span>{{ field.options.containerClass }}</span>
@@ -62,16 +62,16 @@
             <div class="row">
                 <div class="col">
                     <div>
-                        <label class="required">Name:</label>
+                        <label class="required">{{'Name'|t('wheelform')}}:</label>
                         <input type="text" v-model="field.name" @change="validateName" />
                         <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
                     </div>
                     <div>
-                        <label>Label:</label>
+                        <label>{{'Label'|t('wheelform')}}:</label>
                         <input type="text" v-model="field.options.label" :name="'fields['+index+'][options][label]'" />
                     </div>
                     <div>
-                        <label>Type:</label>
+                        <label>{{'Type'|t('wheelform')}}:</label>
                         <select v-model="field.type" @change="updateFieldProperty('type', $event.target.value)">
                             <option
                                 v-for="(fieldType, index) in fieldTypes"
@@ -86,16 +86,16 @@
                         <div v-if="field.type == 'select'">
                             <Lightswitch
                                 :name="'options_select_empty'"
-                                :label="'Default Empty?'"
+                                :label="'Default Empty?'|t('wheelform')"
                                 :status="field.options.selectEmpty"
                                 :handle-status-change="handleOptionSelectEmpty"
                             />
                         </div>
                         <div>
-                            <strong>Options</strong>
+                            <strong>{{'Options'|t('wheelform')}}</strong>
                             <Lightswitch
                                 :name="'options_validate'"
-                                :label="'Validate'"
+                                :label="'Validate'|t('wheelform')"
                                 :status="field.options.validate"
                                 :handle-status-change="handleOptionValidate"
                                 />
@@ -103,9 +103,9 @@
                         <div>
                             <input class="new-option"
                                 autocomplete="off"
-                                placeholder="Item to validate"
+                                v-bind:placeholder="'Item to validate'|t('wheelform')"
                                 v-model="newOption">
-                            <a href="" @click.prevent="addOption" class="form-field-add">Add</a>
+                            <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
                         </div>
                         <div>
                             <ul class="list-wrapper">
@@ -125,7 +125,7 @@
                     <div>
                         <Lightswitch
                             :name="'required'"
-                            :label="'Required'"
+                            :label="'Required'|t('wheelform')"
                             :status="field.required"
                             :handle-status-change="handleStatusChange"
                             />
@@ -133,7 +133,7 @@
                     <div>
                         <Lightswitch
                             :name="'index_view'"
-                            :label="'Index View'"
+                            :label="'Index View'|t('wheelform')"
                             :status="field.index_view"
                             :handle-status-change="handleStatusChange"
                             />
@@ -141,7 +141,7 @@
                     <div v-if="isSendNotification">
                         <Lightswitch
                             :name="'is_user_notification_field'"
-                            :label="'User Notification Field'"
+                            :label="'User Notification Field'|t('wheelform')"
                             :status="field.options.is_user_notification_field"
                             :handle-status-change="handleUserNotificationChange"
                             />
@@ -149,21 +149,21 @@
                     <div v-if="isEmailField">
                         <Lightswitch
                             :name="'is_reply_to'"
-                            :label="'Reply-to Email'"
+                            :label="'Reply-to Email'|t('wheelform')"
                             :status="field.options.is_reply_to"
                             :handle-status-change="handleReplyToChange"
                             />
                     </div>
                     <div>
-                        <label :for="'container-class-' + field.id">Container class</label>
+                        <label :for="'container-class-' + field.id">{{'Container class'|t('wheelform')}}</label>
                         <input type="text" :id="'container-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
                     </div>
                     <div>
-                        <label :for="'field-class-' + field.id">Field class</label>
+                        <label :for="'field-class-' + field.id">{{'Field class'|t('wheelform')}}</label>
                         <input type="text" :id="'field-class-' + field.id" v-model="field.options.fieldClass" :name="'fields['+index+'][options][fieldClass]'">
                     </div>
                     <div v-if="canPlaceholder">
-                        <label :for="'field-placeholder-' + field.id">Field placeholder</label>
+                        <label :for="'field-placeholder-' + field.id">{{'Field placeholder'|t('wheelform')}}</label>
                         <input type="text" :id="'field-placeholder-' + field.id" v-model="field.options.placeholder" :name="'fields['+index+'][options][placeholder]'">
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                 <div class="col"></div>
                 <div class="col">
                     <div class="text-right mt-10">
-                        <a href="" @click.prevent="validateDeleteField" class="form-field-rm">Delete</a>
+                        <a href="" @click.prevent="validateDeleteField" class="form-field-rm">{{'Delete'|t('wheelform')}}</a>
                     </div>
                 </div>
             </div>
@@ -289,7 +289,7 @@ export default {
         },
         validateDeleteField()
         {
-            const result = window.confirm("Are you sure you want to delete Field: "+this.field.name);
+            const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Field")+ ": " + this.field.name);
             if(result)
             {
                 this.$emit('delete-field');

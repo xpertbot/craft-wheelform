@@ -15,10 +15,10 @@
             </div>
             <div class="col-sm">
                 <div class="btn-container">
-                    <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">Add  Field</button>
+                    <button v-on:click.prevent="addField" style="margin-bottom: 15px" class="btn submit">{{ 'Add Field' | t('wheelform')}}</button>
                     <button v-show="form.fields.length > 0"
                         v-on:click.prevent="handleEditMode" class="btn primary pull-right">
-                        {{isEditMode ? "Drag" : "Edit"}} Fields
+                        {{ (isEditMode ? "Drag" : "Edit") + ' Fields' | t('wheelform')}}
                     </button>
                 </div>
                 <draggable v-model="form.fields" :options="{handle: '.wheelform-field-handle'}" @end="onDragEnd"
@@ -156,14 +156,14 @@ export default {
             {
                 return {
                     status: false,
-                    msg: 'Name is not unique'
+                    msg: Craft.t('wheelform', 'Name is not unique')
                 }
             }
 
             if(userInput.indexOf(' ') >= 0){
                 return {
                     status: false,
-                    msg: 'Name contains whitespaces'
+                    msg: Craft.t('wheelform', 'Name contains whitespaces')
                 }
             }
 

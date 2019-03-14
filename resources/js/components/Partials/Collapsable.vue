@@ -1,6 +1,6 @@
 <template>
     <div class="wheelform-collapsable">
-        <a href="" @click.prevent="isActive = ! isActive"><i :class="getIconClass"></i> More Options</a>
+        <a href="" @click.prevent="isActive = ! isActive"><i :class="getIconClass"></i> {{'More Options'|t('wheelform')}}</a>
         <div class="collapsable-content" v-show="isActive">
             <slot></slot>
         </div>

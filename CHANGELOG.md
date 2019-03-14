@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 1.24.0 - 2019-03-11
+## 1.24.0 - 2019-03-13
 ### Added
 - Custom Subject to Admin Email.
 - Reply-to Field lightswitch to Forms.
+### Improved
+- Improved Translations setup and added spanish translations.
 
 ## 1.23.0 - 2019-02-25
 ### Improved
