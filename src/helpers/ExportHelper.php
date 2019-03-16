@@ -2,7 +2,6 @@
 namespace wheelform\helpers;
 
 use Craft;
-use craft\i18n\Formatter;
 use craft\helpers\StringHelper;
 use wheelform\models\Message;
 use wheelform\models\FormField;

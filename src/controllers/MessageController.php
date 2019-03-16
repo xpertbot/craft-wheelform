@@ -8,22 +8,30 @@ use craft\helpers\Assets;
 use craft\web\Controller;
 use craft\web\UploadedFile;
 use craft\errors\UploadFailedException;
+use wheelform\events\MessageEvent;
 use wheelform\models\Form;
 use wheelform\models\Message;
-use wheelform\models\FormField;
 use wheelform\models\fields\File;
 use wheelform\models\MessageValue;
 use wheelform\Plugin;
-use yii\web\Response;
 use yii\web\HttpException;
 use yii\web\BadRequestHttpException;
-use wheelform\events\MessageEvent;
 
 class MessageController extends Controller
 {
+    /**
+     * @var Form
+     */
+    protected $formModel;
 
+    /**
+     * @var boolean
+     */
     public $allowAnonymous = true;
 
+    /**
+     * @var string
+     */
     const EVENT_BEFORE_SAVE = "beforeSave";
 
     public function actionSend()
@@ -40,10 +48,9 @@ class MessageController extends Controller
             return null;
         }
 
-        $formModel = Form::find()->where(['id' => $form_id])->with('fields')->one();
+        $this->formModel = Form::find()->where(['id' => $form_id])->with('fields')->one();
 
-        if(empty($formModel))
-        {
+        if(empty($this->formModel)) {
             throw new HttpException(404);
             return null;
         }
@@ -55,13 +62,11 @@ class MessageController extends Controller
         //Array of MessageValues to Link to Message;
         $entryValues = [];
 
-        if($formModel->active == 0)
-        {
+        if($this->formModel->active == 0) {
             $errors['form'] = [Craft::t('wheelform', 'Form is no longer active.')];
         }
 
-        if($formModel->recaptcha == 1)
-        {
+        if($this->formModel->recaptcha == 1) {
             $userRes = $request->getBodyParam('g-recaptcha-response', '');
             if($this->validateRecaptcha($userRes, $settings->recaptcha_secret) == false)
             {
@@ -69,25 +74,21 @@ class MessageController extends Controller
             }
         }
 
-        if(! empty($formModel->options['honeypot']))
-        {
-            $userHoneypot = $request->getBodyParam($formModel->options['honeypot'], '');
+        if(! empty($this->formModel->options['honeypot'])) {
+            $userHoneypot = $request->getBodyParam($this->formModel->options['honeypot'], '');
             if(! empty($userHoneypot))
             {
                 $errors['honeypot'] = [Craft::t('wheelform', "Leave honeypot field empty.")];
             }
         }
 
-        if(empty($errors))
-        {
-            foreach ($formModel->fields as $field)
-            {
+        if(empty($errors)) {
+            foreach ($this->formModel->fields as $field) {
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;
 
-                if($field->type == "file")
-                {
+                if($field->type == "file") {
                     $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
                     $uploadedFile = UploadedFile::getInstanceByName($field->name);
                     $fileModel = $uploadedFile;
@@ -140,19 +141,15 @@ class MessageController extends Controller
                     $messageValue->value = $request->getBodyParam($field->name, null);
                 }
 
-                if(! $messageValue->validate())
-                {
+                if(! $messageValue->validate()) {
                     $errors[$field->name] = $messageValue->getErrors('value');
-                }
-                else
-                {
+                } else {
                     $entryValues[] = $messageValue;
                 }
             }
         }
 
-        if (! empty($errors))
-        {
+        if (! empty($errors)) {
             $response = [
                 'values' => $request->getBodyParams(),
                 'errors' => $errors,
@@ -162,9 +159,7 @@ class MessageController extends Controller
 
             if ($request->isAjax) {
                 return $this->asJson($response);
-            }
-            else
-            {
+            } else {
                 Craft::$app->getUrlManager()->setRouteParams([
                     'variables' => $response,
                 ]);
@@ -173,18 +168,19 @@ class MessageController extends Controller
         }
 
         $event = new MessageEvent([
-            'form_id' => $formModel->id,
+            'form_id' => $this->formModel->id,
             'message' => $entryValues
         ]);
         $this->trigger(self::EVENT_BEFORE_SAVE, $event);
         // Values for Mailer
         $senderValues = [];
 
-        if(boolval($formModel->save_entry)) {
+        if(boolval($this->formModel->save_entry)) {
             $message->save();
             //$message->id does not exists if user turned off database saving
             Craft::$app->getSession()->setFlash('wheelformLastSubmissionId', $message->id, true);
         }
+
         if(is_array($event->message)) {
             foreach($event->message as $eventValue) {
                 $field = $eventValue->field;
@@ -201,15 +197,15 @@ class MessageController extends Controller
                         $senderValues[$field->name]['value'] = $eventValue->value;
                         break;
                 }
-                if(boolval($formModel->save_entry)) {
+
+                if(boolval($this->formModel->save_entry)) {
                     $message->link('value', $eventValue);
                 }
             }
         }
 
-        if($formModel->send_email)
-        {
-            if (!$plugin->getMailer()->send($formModel, $senderValues)) {
+        if($this->formModel->send_email) {
+            if (!$plugin->getMailer()->send($this->formModel, $senderValues)) {
                 if ($request->isAjax) {
                     return $this->asJson(['errors' => $errors]);
                 }
@@ -235,6 +231,7 @@ class MessageController extends Controller
 
         Craft::$app->getSession()->setNotice($settings->success_message);
         Craft::$app->getSession()->setFlash('wheelformSuccess',$settings->success_message);
+
         return $this->redirectToPostedUrl($message);
     }
 

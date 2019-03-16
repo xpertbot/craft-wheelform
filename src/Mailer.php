@@ -2,15 +2,14 @@
 namespace wheelform;
 
 use Craft;
-use yii\base\Component;
-use yii\helpers\Markdown;
-use craft\services\Assets;
-use wheelform\models\Form;
 use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
-use wheelform\events\SendEvent;
-use yii\base\InvalidConfigException;
 use craft\mail\Message as MailMessage;
+use wheelform\events\SendEvent;
+use wheelform\models\Form;
+use yii\base\InvalidConfigException;
+use yii\base\Component;
+
 
 class Mailer extends Component
 {

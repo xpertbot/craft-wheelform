@@ -15,7 +15,6 @@ use wheelform\models\tools\ImportFile;
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\Response;
-use yii\behaviors\SessionBehavior;
 use Yii;
 
 class FormController extends Controller
