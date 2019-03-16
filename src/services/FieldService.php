@@ -1,9 +1,8 @@
 <?php
 namespace wheelform\services;
 
-use Craft;
 use craft\helpers\Template;
-use Yii;
+use yii\helpers\Html;
 
 class FieldService extends BaseService
 {
@@ -137,9 +136,14 @@ class FieldService extends BaseService
 
                 foreach($this->items as $key => $item) {
                     $html .= '<div class="wf-radio">';
-                    $html .= "<input id=\"wf-radio-" . $this->order . '-' . $key . "\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\"
-                        type='radio'".( ($item == $this->value) ? ' checked="checked"' : '' ). " value=\"{$item}\"/>";
-                    $html .= "<label for=\"wf-radio-" . $this->order . '-' . $key . "\" class=\"wf-label\">{$item}</label>";
+                    $html .= Html::radio($this->name, ($item == $this->value), [
+                        'id' => "wf-radio-" . $this->order . '-' . $key,
+                        'class' => "wf-field " . $this->fieldClass,
+                        'value' => $item,
+                    ]);
+                    $html .= Html::label($item, "wf-radio-" . $this->order . '-' . $key, [
+                        'class' => 'wf-label'
+                    ]);
                     $html .= '</div>';
                 }
 
@@ -157,9 +161,14 @@ class FieldService extends BaseService
 
                 foreach($this->items as $key => $item) {
                     $html .= '<div class="wf-checkbox">';
-                    $html .= "<input id=\"wf-checkbox-" . $this->order . '-' . $key . "\" name=\"{$this->name}[]\" class=\"wf-field {$this->fieldClass}\"
-                        type='checkbox'".( (in_array($item, $value)) ? ' checked="checked"' : '' ). " value=\"{$item}\"/>";
-                    $html .= "<label for=\"wf-checkbox-" . $this->order . '-' . $key . "\" class=\"wf-label\">{$item}</label>";
+                    $html .= Html::checkbox($this->name . '[]', in_array($item, $value), [
+                        'id' => "wf-checkbox-" . $this->order . '-' . $key,
+                        'class' => 'wf-field '.$this->fieldClass,
+                        'value' => $item,
+                    ]);
+                    $html .= Html::label($item, "wf-checkbox-" . $this->order . '-' . $key, [
+                        'class' => 'wf-label',
+                    ]);
                     $html .= '</div>';
                 }
                 break;
@@ -179,33 +188,52 @@ class FieldService extends BaseService
                 $html .= '</select></div>';
                 break;
             case "file":
-                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<input id=\"{$this->generateId()}\"  name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\" type=\"file\" />";
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-field']);
+                $html .= Html::fileInput($this->name, null, [
+                    'id' => $this->generateId(),
+                    'class' => "wf-field " . $this->fieldClass,
+                ]);
                 break;
             case "textarea":
-                $value = empty($this->value) ? '' : $this->value;
-                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<textarea id=\"{$this->generateId()}\" name=\"{$this->name}\" placeholder=\"{$this->getPlaceholder()}\" class=\"wf-field {$this->fieldClass}\">{$value}</textarea>";
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-field']);
+                $html .= Html::textarea($this->name, $this->value, [
+                    'id' => $this->generateId(),
+                    'placeholder' => $this->getPlaceholder(),
+                    'class' => 'wf-field ' . $this->fieldClass,
+                ]);
                 break;
             case "list":
                 $items = $this->getValue();
-                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<div class=\"wf-list-container\"><a href=\"#\" class=\"wf-list-add\" data-field-name=\"{$this->name}\">Add {$this->getLabel()}</a><br />";
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= "<div class=\"wf-list-container\">";
+                $html .= Html::a(\Craft::t('wheelform', 'Add') . ' ' . $this->getLabel(), '#', [
+                    'class' => 'wf-list-add',
+                    'data-field-name' => $this->name,
+                ]);
+                $html .= "<br />";
                 if($items && is_array($items)) {
                     foreach($items as $item) {
-                        $html .= "<input name=\"{$this->name}[]\" class=\"wf-field wf-list-entry {$this->fieldClass}\" type=\"text\"
-                        value=\"{$item}\" />";
+                        $html .= Html::textInput($this->name . '[]', $item, [
+                            'class' => 'wf-field wf-list-entry ' . $this->fieldClass
+                        ]);
                     }
                 }
                 $html .= "</div>";
                 break;
-            default:
+            case 'email':
+            case 'text':
+            case 'hidden':
                 // Email, Text, Hidden
-                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<input id=\"{$this->generateId()}\" name=\"{$this->name}\"
-                    placeholder=\"{$this->getPlaceholder()}\" class=\"wf-field {$this->fieldClass}\"
-                    type=\"{$this->type}\" value=\"{$this->value}\" />";
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::input($this->type, $this->name, $this->value, [
+                    'id' => $this->generateId(),
+                    'placeholder' => $this->getPlaceholder(),
+                    'class' => 'wf-field ' . $this->fieldClass,
+                ]);
                 break;
+            default:
+                    $html .= "";
+                    break;
         }
         $html .= "</div>";
         return Template::raw($html);
@@ -213,6 +241,6 @@ class FieldService extends BaseService
 
     protected function generateId()
     {
-        return "wf-" . trim(str_replace(['_', '-'], " ", $this->name)) . "-" . $this->order;
+        return "wf-" . trim(str_replace([' ', '_'], "-", $this->name)) . "-" . $this->order;
     }
 }

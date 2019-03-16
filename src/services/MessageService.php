@@ -2,7 +2,6 @@
 namespace wheelform\services;
 
 use wheelform\models\Message;
-use craft\helpers\DateTimeHelper;
 
 class MessageService extends BaseService
 {
