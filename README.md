@@ -464,12 +464,14 @@ return [
     'template' => '_emails/custom',
     'notification' => [
         'template' => '_emails/notification',
+        'subject' => 'Default Notification Subject',
     ],
     'forms' => [
         1 => [
             'template' => '_emails/form1_template',
             'notification' => [
                 'template' => '_emails/notification2',
+                'subject' => 'Form specific Subject',
             ],
         ],
         3 => [

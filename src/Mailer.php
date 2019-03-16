@@ -23,7 +23,6 @@ class Mailer extends Component
         'template' => '',
         'notification' =>  [
             'template' => '',
-            'from' => '',
             'subject' => '',
         ],
     ];
@@ -169,19 +168,25 @@ class Mailer extends Component
 
             if(! empty($notificationTo)) {
                 $notificationSubject = $this->form->name . " - " . Craft::t("wheelform", 'Notification');
+                // Generic Notification Subject
+                if(! empty($this->config['notification']['subject'])) {
+                    $notificationSubject = $this->config['notification']['subject'];
+                }
+
+                //Form specific Notification Subject
                 if(! empty($this->config['forms'][$this->form->id]['notification']['subject'])) {
                     $notificationSubject = $this->config['forms'][$this->form->id]['notification']['subject'];
                 }
 
                 $notificationText = (! empty($this->form->options['user_notification_message']) ? $this->form->options['user_notification_message'] : "");
 
-                $noitificationHtml = $this->getNotificationHtml($beforeEvent->message, $notificationText);
+                $notificationHtml = $this->getNotificationHtml($beforeEvent->message, $notificationText);
 
                 $userNotification = new MailMessage();
                 $userNotification->setFrom($from_email);
                 $userNotification->setSubject($notificationSubject);
                 $userNotification->setTextBody($notificationText);
-                $userNotification->setHtmlBody($noitificationHtml);
+                $userNotification->setHtmlBody($notificationHtml);
                 $userNotification->setTo($notificationTo);
                 $mailer->send($userNotification);
             }
