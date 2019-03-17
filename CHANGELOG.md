@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.24.1 - 2019-03-13
+### Improved
+- Improved the way the Twig Services render the form, Now using Yii2 Html helpers to display the forms and the CSRF fields
+
 ## 1.24.0 - 2019-03-13
 ### Added
 - Custom Subject to Admin Email.
