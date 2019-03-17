@@ -33,6 +33,11 @@ class FormService extends BaseService
 
     private $styleClass;
 
+    /**
+     * @var craft\web\View
+     */
+    protected $view;
+
     public function init()
     {
         $this->instance = Form::find()
@@ -43,6 +48,10 @@ class FormService extends BaseService
         if(empty($this->instance)) {
             throw new ErrorException("Wheelform Form ID not found");
         }
+
+        $this->view = Craft::$app->getView();
+
+        $this->view->registerCsrfMetaTags();
 
         if(empty($this->submitButton)) {
             $this->submitButton = [];
@@ -287,8 +296,7 @@ class FormService extends BaseService
 
     protected function registerListAsset()
     {
-        $view = Craft::$app->getView();
-        $view->registerAssetBundle(ListFieldAsset::class);
+        $this->view->registerAssetBundle(ListFieldAsset::class);
     }
 
     protected function loadMessage($model)
