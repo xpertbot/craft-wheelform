@@ -10,6 +10,7 @@ use wheelform\Plugin as Wheelform;
 use wheelform\assets\ListFieldAsset;
 use yii\base\ErrorException;
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 
 class FormService extends BaseService
 {
@@ -27,7 +28,7 @@ class FormService extends BaseService
 
     private $submitButton;
 
-    private $attributes;
+    private $_attributes;
 
     private $values;
 
@@ -69,11 +70,13 @@ class FormService extends BaseService
         {
             $this->values = $params['variables']['values'];
         }
+
+        $this->_attributes = $this->getFormAttributes();
     }
 
     public function open()
     {
-        $html = Html::beginForm("", $this->method, $this->getFormAttributes());
+        $html = Html::beginForm("", $this->method, $this->_attributes);
         $html .= Html::hiddenInput('form_id', $this->id);
         $html .= Html::hiddenInput('action', "/wheelform/message/send");
         if($this->redirect) {
@@ -222,7 +225,7 @@ class FormService extends BaseService
 
     public function setAttributes($value)
     {
-        $this->attributes = $value;
+        $this->_attributes = $value;
     }
 
     public function setStyleClass($value)
@@ -240,10 +243,10 @@ class FormService extends BaseService
 
         $attributes = [];
 
-        if(! is_array($this->attributes)) {
-            $userAttributes = explode(' ', $this->attributes);
+        if(! is_array($this->_attributes)) {
+            $userAttributes = explode(' ', $this->_attributes);
         } else {
-            $userAttributes = $this->attributes;
+            $userAttributes = $this->_attributes;
         }
 
         if($this->hasStringKeys($userAttributes)) {
