@@ -450,6 +450,19 @@ There are 4 different type of permissions ({Form Name} permissions are repeated 
 - Form Fields can be exported as a JSON file.
 - Form Fields can be imported from a valid JSON file.
 
+### Delete Messages Cron Job
+You can schedule a Cron Job on your server to run daily an check to Delete any old Messages values saved on your database. The cron Job Command is:
+`php var/www/yourwebsite/craft wheelform/message/purge` where`var\www\yourwebsite\craft` is the parth to the craft executable package.
+
+and the two values required inside `config\wheelform.php` are:
+
+```php
+return [
+    'purgeMessages' => true, //True / False value to allow Cron Job to go
+    'purgeMessagesDays' => 30, //Number of days messages should live in your database
+];
+```
+
 ### Custom Email Template
 Email Templates are Optional. Custom Twig templates can be used using these steps:
 

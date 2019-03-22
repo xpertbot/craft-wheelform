@@ -3,6 +3,7 @@ namespace wheelform;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
+use craft\console\Application as ConsoleApplication;
 use craft\events\RegisterComponentTypesEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\services\Utilities;
@@ -29,6 +30,12 @@ class Plugin extends BasePlugin
     public function init()
     {
         parent::init();
+
+        if (Craft::$app instanceof ConsoleApplication) {
+            $this->controllerNamespace = 'wheelform\\console\\controllers';
+            //Don't do the rest that only apply for web
+            return;
+        }
 
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = FormField::class;
