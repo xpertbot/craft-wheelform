@@ -20,7 +20,7 @@ class ImportFile extends Model
     {
 
         if ($this->jsonFile->getHasError()) {
-            throw new UploadFailedException($jsonFile->error);
+            throw new UploadFailedException($this->jsonFile->error);
         }
 
         // Move the uploaded file to the temp folder
