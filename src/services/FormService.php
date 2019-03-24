@@ -50,6 +50,11 @@ class FormService extends BaseService
      */
     protected $view;
 
+    /**
+     * @var boolean
+     */
+    private $_refreshCsrf = false;
+
     public function init()
     {
         $this->instance = Form::find()
@@ -258,6 +263,16 @@ class FormService extends BaseService
         $this->_registerScripts = $value;
     }
 
+    /**
+     * @param bool $value
+     * @return void
+     */
+
+    public function setRefreshCsrf($value)
+    {
+        $this->_refreshCsrf = $value;
+    }
+
     // Protected
     protected function getFormAttributes()
     {
@@ -390,9 +405,13 @@ class FormService extends BaseService
             $this->view->registerAssetBundle(ListFieldAsset::class, View::POS_END);
         }
 
+        if($this->_refreshCsrf) {
+            $this->view->registerAssetBundle(YiiAsset::class);
+            $this->view->registerJs("window.yii.refreshCsrfToken()");
+        }
+
         $this->_scriptsLoaded = true;
     }
-
 
     //Private
     private function getDefaultSubmitButton()

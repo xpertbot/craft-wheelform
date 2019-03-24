@@ -104,7 +104,8 @@ These are configuration opens you can pass to `wheelform.open` to configure your
 - `id`: **Required** ID of the form being used.
 - `redirect`: URL where form will redirect to after a successful submission.
 - `registerScripts`: Boolean to load Scripts before `wheelform.open` call (This is useful for caching forms and templates). Defaults to False.
-- `attributes`: Key: Value Array of Attributes for the current form. example:
+- `refreshCsrf`: Boolean to load Javascript that will refresh the CSRF token for the form on the current page (This is useful for caching forms and templates).
+- `attributes`: Key: Value Array of Attributes for the current form. Example:
 ```twig
 {# Note: Form attributes take presedence over default values #}
 attributes: {
