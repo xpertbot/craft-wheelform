@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 1.25.0 - 2019-03-21
 ### Added
-- Added ability to create Cron Jobs to delete Messages after a configurable amount fo days.
+- Added ability to create Cron Jobs to delete Messages after a determined amount of days.
 
 ## 1.24.1 - 2019-03-13
 ### Improved

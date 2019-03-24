@@ -11,6 +11,7 @@ use wheelform\assets\ListFieldAsset;
 use yii\base\ErrorException;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
+use yii\web\View;
 
 class FormService extends BaseService
 {
@@ -110,8 +111,9 @@ class FormService extends BaseService
         }
 
         if($this->hasList()) {
-            $this->registerListAsset();
+            $this->view->registerAssetBundle(ListFieldAsset::class, View::POS_END);
         }
+
         $html .= $this->renderSubmitButton();
         $html .= Html::endForm();
         return Template::raw($html);
@@ -295,11 +297,6 @@ class FormService extends BaseService
     {
         $field = FormField::find()->where(['form_id' =>$this->id, 'active' => 1, 'type' => 'list'])->one();
         return( ! empty($field));
-    }
-
-    protected function registerListAsset()
-    {
-        $this->view->registerAssetBundle(ListFieldAsset::class);
     }
 
     protected function loadMessage($model)

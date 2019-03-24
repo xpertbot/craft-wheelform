@@ -452,9 +452,9 @@ There are 4 different type of permissions ({Form Name} permissions are repeated 
 
 ### Delete Messages Cron Job
 You can schedule a Cron Job on your server to run daily an check to Delete any old Messages values saved on your database. The cron Job Command is:
-`php var/www/yourwebsite/craft wheelform/message/purge` where`var\www\yourwebsite\craft` is the parth to the craft executable package.
+`php var/www/yourwebsite/craft wheelform/message/purge` where `var\www\yourwebsite\craft` is the path to the craft executable package.
 
-and the two values required inside `config\wheelform.php` are:
+The only configuration needed inside `config\wheelform.php` is:
 
 ```php
 return [

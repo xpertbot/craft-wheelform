@@ -3,6 +3,7 @@ namespace wheelform\services;
 
 use craft\helpers\Template;
 use wheelform\Plugin as Wheelform;
+use yii\helpers\Html;
 
 class RecaptchaV3Service extends BaseService
 {
@@ -23,8 +24,8 @@ class RecaptchaV3Service extends BaseService
             }
         }
 
-        $html = "<script src='https://www.google.com/recaptcha/api.js?render={$settings->recaptcha_public}&onload=wheelformRecaptchaV3onload'></script>";
-        $html .= "<script>
+        $html = Html::jsFile("https://www.google.com/recaptcha/api.js?render={$settings->recaptcha_public}&onload=wheelformRecaptchaV3onload");
+        $html .= Html::script("
         var WheelformRecaptcha = {
             callbacks: [],
         };
@@ -39,7 +40,7 @@ class RecaptchaV3Service extends BaseService
                     }
                 });
             });
-        }</script>";
+        }");
         return Template::raw($html);
     }
 }
