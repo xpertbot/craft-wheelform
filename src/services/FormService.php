@@ -36,6 +36,16 @@ class FormService extends BaseService
     private $styleClass;
 
     /**
+     * @var boolean
+     */
+    private $_registerScripts = false;
+
+    /**
+     * @var boolean
+     */
+    private $_scriptsLoaded = false;
+
+    /**
      * @var craft\web\View
      */
     protected $view;
@@ -53,8 +63,6 @@ class FormService extends BaseService
 
         $this->view = Craft::$app->getView();
 
-        $this->view->registerCsrfMetaTags();
-
         if(empty($this->submitButton)) {
             $this->submitButton = [];
         }
@@ -62,6 +70,7 @@ class FormService extends BaseService
         $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
 
         if(! empty($this->buttonLabel) ) {
+            Craft::$app->getDeprecator()->log('wheelform.open({buttonLabel: "label"})', 'wheelform.open buttonLabel for the form attributes will be deprecated. Use submitButton array instead.');
             $this->submitButton['label'] = $this->buttonLabel;
         }
 
@@ -73,6 +82,10 @@ class FormService extends BaseService
         }
 
         $this->_attributes = $this->getFormAttributes();
+
+        if($this->_registerScripts) {
+            $this->handleScripts();
+        }
     }
 
     public function open()
@@ -82,6 +95,10 @@ class FormService extends BaseService
         $html .= Html::hiddenInput('action', "/wheelform/message/send");
         if($this->redirect) {
             $html .= Html::hiddenInput('redirect', $this->hashUrl($this->redirect));
+        }
+
+        if($this->_scriptsLoaded === false) {
+            $this->handleScripts();
         }
 
         return Template::raw($html);
@@ -108,10 +125,6 @@ class FormService extends BaseService
             $html .= Html::textInput($this->instance->options['honeypot'], $hpValue, [
                 'class' => "wf-{$this->instance->options['honeypot']}-{$this->id}",
             ]);
-        }
-
-        if($this->hasList()) {
-            $this->view->registerAssetBundle(ListFieldAsset::class, View::POS_END);
         }
 
         $html .= $this->renderSubmitButton();
@@ -232,7 +245,17 @@ class FormService extends BaseService
 
     public function setStyleClass($value)
     {
+        Craft::$app->getDeprecator()->log('wheelform.open({styleClass: "styles"})', 'wheelform.open styleClass for the form attributes will be deprecated. Use Attributes array instead.');
         $this->styleClass = $value;
+    }
+
+    /**
+     * @param bool $value
+     * @return void
+     */
+    public function setRegisterScripts($value)
+    {
+        $this->_registerScripts = $value;
     }
 
     // Protected
@@ -246,12 +269,14 @@ class FormService extends BaseService
         $attributes = [];
 
         if(! is_array($this->_attributes)) {
+            Craft::$app->getDeprecator()->log('wheelform.open({attributes: "attribute"})', 'wheelform.open attributes for the form as strings will be deprecated. Use Attribute Key:Value array instead');
             $userAttributes = explode(' ', $this->_attributes);
         } else {
             $userAttributes = $this->_attributes;
         }
 
         if($this->hasStringKeys($userAttributes)) {
+            Craft::$app->getDeprecator()->log('wheelform.open({attributes: ["attribute"]})', 'wheelform.open attributes for the form as array of strings will be deprecated. Use Attribute Key:Value array instead');
             $attributes = array_merge($defaultAttributes, $userAttributes);
         } else {
             // Attributes are values in the array as strings
@@ -355,6 +380,17 @@ class FormService extends BaseService
 
     protected function hasStringKeys(array $array) {
         return count(array_filter(array_keys($array), 'is_string')) > 0;
+    }
+
+    protected function handleScripts() : void
+    {
+        $this->view->registerCsrfMetaTags();
+
+        if($this->hasList()) {
+            $this->view->registerAssetBundle(ListFieldAsset::class, View::POS_END);
+        }
+
+        $this->_scriptsLoaded = true;
     }
 
 

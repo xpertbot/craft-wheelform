@@ -98,6 +98,40 @@ Current Field types supported are:
 
 - values (Array of User submitted values based on field name).
 
+## Form Configuration Options
+These are configuration opens you can pass to `wheelform.open` to configure your form.
+
+- `id`: **Required** ID of the form being used.
+- `redirect`: URL where form will redirect to after a successful submission.
+- `registerScripts`: Boolean to load Scripts before `wheelform.open` call (This is useful for caching forms and templates). Defaults to False.
+- `attributes`: Key: Value Array of Attributes for the current form. example:
+```twig
+{# Note: Form attributes take presedence over default values #}
+attributes: {
+    'novalidate':"novalidate",
+    'id':'custom-form',
+    'class': 'custom-form',
+}
+```
+- `submitForm`: Configuration options for the submitButton. Example:
+```twig
+{# SubmitButton options:
+    "type" can be button, or input
+    "html" attribute takes precedence over the other properties,
+    "attributes" is an easy way to add attributes to the button, all attributes are optional #}
+
+submitButton: {
+    "type": "button",
+    "label": "Send", // Text displayed for the button
+    "attributes": { // Array of attributes for the Button. Same as Form
+        "class": "btn btn-success",
+        "id": "submit-btn",
+        "data-submit": "Foo",
+    },
+    "html": "<span><button>Custom Button</button></span>", // Custom HTML Overwrittes any other options and will render it as final.
+}
+```
+
 ## Template Structure
 
 Your form template can look something like this:
@@ -114,32 +148,9 @@ Your form template can look something like this:
 {% endmacro %}
 {% from _self import errorList %}
 
-{# Note: Form attributes take presedence over default values #}
-{# SubmitButton options:
-    "type" can be button, or input
-    "html" attribute takes precedence over the other properties,
-    "attributes" is an easy way to add attributes to the button,
-    All attributes are optional #}
-
 {% set form = wheelform.form({
     id: 1,
-    redirect: 'contact/thanks',
-
-    attributes: {
-        'novalidate':"novalidate",
-        'id':'custom-form',
-        'class': 'custom-form',
-    },
-    submitButton: {
-        "type": "button",
-        "label": "Send",
-        "attributes": {
-            "class": "btn btn-success",
-            "id": "submit-btn",
-            "data-submit": "Foo",
-        },
-        "html": "<span><button>Custom Button</button></span>",
-    }
+    redirect: 'contact/thanks'
 }) %}
 
 {{ form.open() }}
@@ -170,11 +181,6 @@ Advanced templating:
 {% set form = wheelform.form({
     id: 1,
     redirect: 'contact/thanks',
-    attributes: {
-        'novalidate':"novalidate",
-        'id':'custom-form',
-        'class': 'custom-form',
-    },
 }) %}
 
 {{ form.open() }}
@@ -243,6 +249,7 @@ Advanced templating:
 ```
 
 If you want to stick to HTML and not use the variables:
+
 ```twig
 {% macro errorList(errors) %}
     {% if errors %}

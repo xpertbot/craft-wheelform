@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 1.25.0 - 2019-03-21
 ### Added
 - Added ability to create Cron Jobs to delete Messages after a determined amount of days.
+- Added new form configuration to allow assets to be registered before getting cached.
 
 ## 1.24.1 - 2019-03-13
 ### Improved
