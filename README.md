@@ -463,6 +463,8 @@ return [
 ];
 ```
 
+Note: This action cannot be reverted.
+
 ### Custom Email Template
 Email Templates are Optional. Custom Twig templates can be used using these steps:
 
