@@ -7,6 +7,7 @@ use craft\base\ElementInterface;
 use yii\db\Schema;
 use wheelform\models\Form;
 use wheelform\services\WheelformService;
+use wheelform\services\FormService;
 
 
 class FormField extends Field
@@ -79,9 +80,14 @@ class FormField extends Field
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        $id = intval($value);
-        if($id) {
-            return (new WheelformService)->getForm(['id' => $id]);
+        if($value instanceof FormService) {
+            // FormService already initialized
+            return $value;
+        } elseif(is_numeric($value)) {
+            $id = intval($value);
+            if($id) {
+                return (new WheelformService)->getForm(['id' => $id]);
+            }
         }
 
         return null;
