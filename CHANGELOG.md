@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.25.1 - 2019-04-01
+### Fixed
+- Fixed Bug related to Deprecation error on form Attributes.
+
 ## 1.25.0 - 2019-03-30
 ### Added
 - Added ability to create Cron Jobs to delete Messages after a determined amount of days.
