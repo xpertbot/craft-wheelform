@@ -283,7 +283,11 @@ class FormService extends BaseService
 
         $attributes = [];
 
-        if(! is_array($this->_attributes)) {
+        if(is_null($this->_attributes)) {
+            $this->_attributes = [];
+        }
+
+        if(! empty($this->_attributes) && ! is_array($this->_attributes)) {
             Craft::$app->getDeprecator()->log('wheelform.open({attributes: "attribute"})', 'wheelform.open attributes for the form as strings will be deprecated. Use Attribute Key:Value array instead');
             $userAttributes = explode(' ', $this->_attributes);
         } else {
