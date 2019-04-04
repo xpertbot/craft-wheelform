@@ -3,7 +3,7 @@ namespace wheelform\console\controllers;
 
 use Craft;
 use craft\helpers\DateTimeHelper;
-use wheelform\Models\Message;
+use wheelform\models\Message;
 use yii\console\Controller;
 
 /**
