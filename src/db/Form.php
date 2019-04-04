@@ -1,10 +1,10 @@
 <?php
-namespace wheelform\models;
+namespace wheelform\db;
 
 use Craft;
 use craft\db\ActiveRecord;
 use craft\helpers\StringHelper;
-use wheelform\models\Message;
+use wheelform\db\Message;
 use wheelform\behaviors\JsonFieldBehavior;
 use wheelform\validators\JsonValidator;
 use yii\validators\EmailValidator;

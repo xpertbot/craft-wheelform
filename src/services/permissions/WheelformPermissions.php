@@ -4,7 +4,7 @@ namespace wheelform\services\permissions;
 use Craft;
 use craft\base\Component;
 
-use wheelform\models\Form;
+use wheelform\db\Form;
 
 class WheelformPermissions extends Component
 {

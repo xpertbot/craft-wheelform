@@ -3,9 +3,9 @@ namespace wheelform\services;
 
 use Craft;
 use craft\helpers\Template;
-use wheelform\models\Form;
-use wheelform\models\FormField;
-use wheelform\models\Message;
+use wheelform\db\Form;
+use wheelform\db\FormField;
+use wheelform\db\Message;
 use wheelform\Plugin as Wheelform;
 use wheelform\assets\ListFieldAsset;
 use yii\base\ErrorException;

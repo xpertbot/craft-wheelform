@@ -7,8 +7,8 @@ use craft\helpers\Path;
 use craft\web\UploadedFile;
 
 use wheelform\Plugin;
-use wheelform\models\Form;
-use wheelform\models\FormField;
+use wheelform\db\Form;
+use wheelform\db\FormField;
 use wheelform\helpers\ExportHelper;
 use wheelform\models\tools\ImportFile;
 

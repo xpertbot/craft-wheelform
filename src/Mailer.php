@@ -6,7 +6,7 @@ use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
 use craft\mail\Message as MailMessage;
 use wheelform\events\SendEvent;
-use wheelform\models\Form;
+use wheelform\db\Form;
 use yii\base\InvalidConfigException;
 use yii\base\Component;
 

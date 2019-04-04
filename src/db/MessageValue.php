@@ -1,5 +1,5 @@
 <?php
-namespace wheelform\models;
+namespace wheelform\db;
 
 use Craft;
 use craft\helpers\Html;

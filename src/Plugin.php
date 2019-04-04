@@ -12,7 +12,7 @@ use craft\services\Fields;
 use craft\services\UserPermissions;
 use wheelform\extensions\WheelformVariable;
 use wheelform\fields\FormField;
-use wheelform\models\Message;
+use wheelform\db\Message;
 use wheelform\models\Settings;
 use wheelform\utilities\Tools;
 use wheelform\services\permissions\WheelformPermissions;

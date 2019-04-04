@@ -1,7 +1,7 @@
 <?php
 namespace wheelform\services;
 
-use wheelform\models\Message;
+use wheelform\db\Message;
 
 class MessageService extends BaseService
 {

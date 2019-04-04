@@ -5,7 +5,7 @@ use Craft;
 use craft\base\Field;
 use craft\base\ElementInterface;
 use yii\db\Schema;
-use wheelform\models\Form;
+use wheelform\db\Form;
 use wheelform\services\WheelformService;
 use wheelform\services\FormService;
 

@@ -3,7 +3,7 @@ namespace wheelform\utilities;
 
 use Craft;
 use craft\base\Utility;
-use wheelform\models\Form;
+use wheelform\db\Form;
 
 use wheelform\assets\ToolsAsset;
 
