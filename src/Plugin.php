@@ -25,7 +25,7 @@ class Plugin extends BasePlugin
 
     public $controllerNamespace = "wheelform\\controllers";
 
-    public $schemaVersion = '1.6.0';
+    public $schemaVersion = '2.0.0';
 
     public function init()
     {
@@ -37,6 +37,7 @@ class Plugin extends BasePlugin
             return;
         }
 
+        //Event to Register Control Panel Fields
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPES, function(RegisterComponentTypesEvent $event) {
             $event->types[] = FormField::class;
         });
