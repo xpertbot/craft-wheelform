@@ -76,9 +76,9 @@
                             <option
                                 v-for="(fieldType, index) in fieldTypes"
                                 :key="index"
-                                :value="fieldType"
+                                :value="fieldType.type"
                                 >
-                                {{ fieldType | capitalize }}
+                                {{ fieldType.name | capitalize }}
                             </option>
                         </select>
                     </div>
@@ -192,21 +192,10 @@ export default {
         "validateNameCallback",
         "updateFieldPropertyCallback",
         "sendNotification",
+        "fieldTypes",
     ],
     data(){
         return {
-            fieldTypes: [
-                'text',
-                'textarea',
-                'email',
-                'number',
-                'checkbox',
-                'radio',
-                'hidden',
-                'select',
-                'file',
-                'list',
-            ],
             newOption: '',
             field: Object.assign({}, this.defaultField),
         }

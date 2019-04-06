@@ -10,6 +10,7 @@ use wheelform\Plugin;
 use wheelform\db\Form;
 use wheelform\db\FormField;
 use wheelform\helpers\ExportHelper;
+use wheelform\interfaces\FieldInterface;
 use wheelform\models\tools\ImportFile;
 
 use yii\base\Exception;
@@ -189,10 +190,26 @@ class FormController extends Controller
         }
 
         $form = Form::find()->where(['id' => $formId])->with('fields')->asArray()->one();
+        $fieldModel = new FormField();
+        $fields = $fieldModel->getAllFields();
+        $fieldTypes = [];
+        foreach($fields as $class) {
+            $field = new $class;
+            if($field instanceof FieldInterface) {
+                $fieldTypes[] = [
+                    'name' => $field->getName(),
+                    'type' => $field->getType(),
+                    'options' => array_merge($fieldModel->getDefaultOptions(), $field->getOptions()),
+                ];
+            }
+        }
 
         $response = Yii::$app->getResponse();
         $response->format = Response::FORMAT_JSON;
-        $response->data = json_encode($form, JSON_NUMERIC_CHECK);
+        $response->data = json_encode([
+            'form' => $form,
+            'fieldTypes' => $fieldTypes,
+        ], JSON_NUMERIC_CHECK);
 
         return $response;
     }

@@ -5,22 +5,24 @@ use Craft;
 use craft\db\ActiveRecord;
 use wheelform\behaviors\JsonFieldBehavior;
 use wheelform\validators\JsonValidator;
+use wheelform\models\fields\Text;
+use wheelform\models\fields\Textarea;
+use wheelform\models\fields\Checkbox;
+use wheelform\models\fields\Email;
+use wheelform\models\fields\File;
+use wheelform\models\fields\Hidden;
+use wheelform\models\fields\ListField;
+use wheelform\models\fields\Number;
+use wheelform\models\fields\Radio;
+use wheelform\models\fields\Select;
+use wheelform\events\RegisterFieldsEvent;
 
 class FormField extends ActiveRecord
 {
 
-    const FIELD_TYPES = [
-        'text',
-        'textarea',
-        'email',
-        'number',
-        'checkbox',
-        'radio',
-        'hidden',
-        'select',
-        'file',
-        'list',
-    ];
+    public const EVENT_REGISTER_FIELD_TYPES = "registerFieldTypes";
+
+    protected $fields = [];
 
     public static function tableName(): String
     {
@@ -38,7 +40,6 @@ class FormField extends ActiveRecord
                 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
-            ['type', 'in', 'range' => self::FIELD_TYPES],
             ['options', JsonValidator::class],
         ];
     }
@@ -77,6 +78,62 @@ class FormField extends ActiveRecord
                 'class' => JsonFieldBehavior::class,
                 'attributes' => ['options'],
             ]
+        ];
+    }
+
+    public function getAllFields()
+    {
+        if(! empty($this->fields)) {
+            return $this->fields;
+        }
+
+        $fields = [
+            Text::class,
+            Textarea::class,
+            Checkbox::class,
+            Email::class,
+            File::class,
+            Hidden::class,
+            ListField::class,
+            Number::class,
+            Radio::class,
+            Select::class,
+        ];
+
+        $event = new RegisterFieldsEvent([
+            'fields' => $fields
+        ]);
+
+        $this->trigger(self::EVENT_REGISTER_FIELD_TYPES, $event);
+
+        $this->fields = $event->fields;
+
+        return $this->fields;
+    }
+
+    public function getDefaultOptions()
+    {
+        return [
+            [
+                'name' => 'required',
+                'label' => 'Required',
+                'type' => 'boolean',
+            ],
+            [
+                'name' => 'index_view',
+                'label' => 'Index View',
+                'type' => 'boolean',
+            ],
+            [
+                'name' => 'containerClass',
+                'label' => 'Container Class',
+                'type' => 'text',
+            ],
+            [
+                'name' => 'fieldClass',
+                'label' => 'Field Class',
+                'type' => 'text',
+            ],
         ];
     }
 }

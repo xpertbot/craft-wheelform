@@ -2,8 +2,9 @@
 namespace wheelform\models\fields;
 
 use craft\base\Model;
+use wheelform\interfaces\FieldInterface;
 
-class File extends Model
+class File extends Model implements FieldInterface
 {
     public $name;
 
@@ -17,6 +18,22 @@ class File extends Model
             [['name', 'filePath'], 'string'],
             [['name', 'filePath'], 'required'],
             ['assetId', 'integer'],
+        ];
+    }
+
+    public function getType()
+    {
+        return "file";
+    }
+
+    public function getName()
+    {
+        return "File";
+    }
+
+    public function getOptions()
+    {
+        return [
         ];
     }
 }

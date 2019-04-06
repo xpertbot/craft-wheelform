@@ -35,6 +35,7 @@
                         :send-notification="form.options.user_notification"
                         v-on:handle-user-notification-field="handleUserNotificationField"
                         v-on:handle-reply-to-field="handleReplyToField"
+                        :fieldTypes="fieldTypes"
                     />
                 </draggable>
             </div>
@@ -61,6 +62,7 @@ export default {
             loading: true,
             isEditMode: false,
             nextFieldIndex: 0,
+            fieldTypes: [],
             form: {
                 id: null,
                 name: "",
@@ -90,7 +92,9 @@ export default {
             })
             .then((res) => {
                 if(res.data) {
-                    const form = JSON.parse(res.data);
+                    const data = JSON.parse(res.data);
+                    const form = data.form;
+                    this.fieldTypes = data.fieldTypes;
                     if(form) {
                         form.options = Object.assign(this.getDefaultFormOptions(), JSON.parse(form.options));
                         //parse fields
