@@ -52,15 +52,18 @@
     { label: 'Wheel Form', url: url('wheelform') },
 ] %}
 
-{% block content %}
+{% set sidebar = 1 %}
 
-    {% js at head %}
-        window.Wheelform = {
-            form_id: {{ form.id ? form.id : 0 }}
-        }
-    {% endjs %}
+{% js at head %}
+    window.Wheelform = {
+        form_id: {{ form.id ? form.id : 0 }},
+        fieldTypes: {{ fieldTypes | json_encode | raw }}
+    }
+{% endjs %}
 
-    <div id="formapp">
+{% block main %}
+
+    <div id="wheelform-app">
         <Container />
     </div>
 

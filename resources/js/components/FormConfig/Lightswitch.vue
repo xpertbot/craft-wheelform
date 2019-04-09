@@ -4,7 +4,7 @@
         <div v-if="instructions" class="instructions">
             {{instructions}}
         </div>
-        <a href="" @click.prevent="handleStatusChange(name, ! status)">
+        <a href="" @click.prevent="$emit('handle-status-change', name, ! status)">
             <i :style="getStatusColor" :class="getStatusClass"></i>
         </a>
     </div>
@@ -14,7 +14,6 @@
 export default {
     props:[
         'label',
-        'handleStatusChange',
         'status',
         'instructions',
         'name'

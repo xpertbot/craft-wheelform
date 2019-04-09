@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Hidden implements FieldInterface
+class Hidden extends BaseFieldType
 {
-    public function rules()
+    public $name = "Hidden";
+
+    public $type = "hidden";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "hidden";
-    }
-
-    public function getName()
-    {
-        return "Hidden";
     }
 
     public function getOptions()

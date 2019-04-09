@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Number implements FieldInterface
+class Number extends BaseFieldType
 {
-    public function rules()
+    public $name = "Number";
+
+    public $type = "number";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "number";
-    }
-
-    public function getName()
-    {
-        return "Number";
     }
 
     public function getOptions()

@@ -1,31 +1,21 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Email implements FieldInterface
+class Email extends BaseFieldType
 {
-    public function rules()
+    public $name = "Email";
+
+    public $type = "email";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "email";
-    }
-
-    public function getName()
-    {
-        return "Email";
     }
 
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
+            'user_validation' => 'boolean'
         ];
     }
 }

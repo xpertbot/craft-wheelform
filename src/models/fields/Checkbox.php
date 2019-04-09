@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Checkbox implements FieldInterface
+class Checkbox extends BaseFieldType
 {
-    public function rules()
+    public $name = "Checkbox";
+
+    public $type = "checkbox";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "checkbox";
-    }
-
-    public function getName()
-    {
-        return "Checkbox";
     }
 
     public function getOptions()

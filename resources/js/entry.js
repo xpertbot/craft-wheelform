@@ -4,10 +4,10 @@ import Container from './components/FormConfig/Container.vue';
 
 Vue.filter('t', t)
 
-if(document.getElementById('formapp'))
+if(document.getElementById('wheelform-app'))
 {
     new Vue({
-        el: '#formapp',
+        el: '#wheelform-app',
         components: {
             Container
         },

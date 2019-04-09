@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Select implements FieldInterface
+class Select extends BaseFieldType
 {
-    public function rules()
+    public $name = "Select";
+
+    public $type = "select";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "select";
-    }
-
-    public function getName()
-    {
-        return "Select";
     }
 
     public function getOptions()

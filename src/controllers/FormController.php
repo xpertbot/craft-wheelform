@@ -10,16 +10,30 @@ use wheelform\Plugin;
 use wheelform\db\Form;
 use wheelform\db\FormField;
 use wheelform\helpers\ExportHelper;
-use wheelform\interfaces\FieldInterface;
 use wheelform\models\tools\ImportFile;
+
+use wheelform\models\fields\BaseFieldType;
+use wheelform\models\fields\Text;
+use wheelform\models\fields\Textarea;
+use wheelform\models\fields\Checkbox;
+use wheelform\models\fields\Email;
+use wheelform\models\fields\File;
+use wheelform\models\fields\Hidden;
+use wheelform\models\fields\ListField;
+use wheelform\models\fields\Number;
+use wheelform\models\fields\Radio;
+use wheelform\models\fields\Select;
 
 use yii\base\Exception;
 use yii\web\HttpException;
 use yii\web\Response;
 use Yii;
+use wheelform\events\RegisterFieldsEvent;
 
 class FormController extends Controller
 {
+
+    public const EVENT_REGISTER_FIELD_TYPES = "registerFieldTypes";
 
     function actionIndex()
     {
@@ -49,9 +63,11 @@ class FormController extends Controller
         $this->requirePermission('wheelform_new_form');
 
         $form = new Form();
+        $fieldTypes = $this->getFieldTypes();
          // Render the template
          return $this->renderTemplate('wheelform/_edit-form.twig', [
-            'form' => $form
+            'form' => $form,
+            'fieldTypes' => $fieldTypes,
         ]);
     }
 
@@ -72,9 +88,12 @@ class FormController extends Controller
 
         $this->requirePermission('wheelform_change_settings_' . $form->id);
 
+        $fieldTypes = $this->getFieldTypes();
+
         // Render the template
         return $this->renderTemplate('wheelform/_edit-form.twig', [
-            'form' => $form
+            'form' => $form,
+            'fieldTypes' => $fieldTypes,
         ]);
     }
 
@@ -190,25 +209,11 @@ class FormController extends Controller
         }
 
         $form = Form::find()->where(['id' => $formId])->with('fields')->asArray()->one();
-        $fieldModel = new FormField();
-        $fields = $fieldModel->getAllFields();
-        $fieldTypes = [];
-        foreach($fields as $class) {
-            $field = new $class;
-            if($field instanceof FieldInterface) {
-                $fieldTypes[] = [
-                    'name' => $field->getName(),
-                    'type' => $field->getType(),
-                    'options' => array_merge($fieldModel->getDefaultOptions(), $field->getOptions()),
-                ];
-            }
-        }
 
         $response = Yii::$app->getResponse();
         $response->format = Response::FORMAT_JSON;
         $response->data = json_encode([
             'form' => $form,
-            'fieldTypes' => $fieldTypes,
         ], JSON_NUMERIC_CHECK);
 
         return $response;
@@ -336,5 +341,37 @@ class FormController extends Controller
         }
 
         return $toDelete;
+    }
+
+    protected function getFieldTypes()
+    {
+        $fields = [
+            Text::class,
+            Textarea::class,
+            Checkbox::class,
+            Email::class,
+            File::class,
+            Hidden::class,
+            ListField::class,
+            Number::class,
+            Radio::class,
+            Select::class,
+        ];
+
+        $event = new RegisterFieldsEvent([
+            'fields' => $fields
+        ]);
+
+        $this->trigger(self::EVENT_REGISTER_FIELD_TYPES, $event);
+
+        $fieldTypes = [];
+        foreach($event->fields as $class) {
+            $field = new $class;
+            if($field instanceof BaseFieldType) {
+                $fieldTypes[] = $field;
+            }
+        }
+
+        return $fieldTypes;
     }
 }

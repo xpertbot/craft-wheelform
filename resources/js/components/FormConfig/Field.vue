@@ -1,183 +1,112 @@
 <template>
-    <div class="wheelform-field" :style="getFieldStyle">
-        <div v-show="!isEditMode" class="field-details">
-            <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
-            <div class="row">
-                <div class="col">
-                    <div>
-                        <span class="field-label">
-                            {{ field.name }}
-                        </span>
-                    </div>
-                    <div>
-                        <strong>{{'Label'|t('wheelform')}}:</strong> {{ getFieldLabel }}
-                    </div>
-                    <div>
-                        <strong>{{'Type'|t('wheelform')}}:</strong> {{ field.type | capitalize }}
-                    </div>
-                    <div v-if="isMultiOption">
-                        <div>
-                            <strong>{{'Options'|t('wheelform')}}</strong>
-                            <span :style="'color:'+getStatusColor(field.options.validate)">{{'Validate'|t('wheelform')}}</span>
-                        </div>
-                        <ul class="list-wrapper">
-                            <li v-if="field.type == 'select' && field.options.selectEmpty">
-                                --
-                            </li>
-                            <li
-                                v-for="(item, index) in field.options.items"
-                                v-bind:key="index"
-                            >
-                                {{ item }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="text-right">
-                        <span :style="'color:'+getStatusColor(field.required)">{{'Required'|t('wheelform')}}</span>
-                    </div>
-                    <div class="text-right">
-                        <span :style="'color:'+getStatusColor(field.index_view)">{{'Index'|t('wheelform')}}</span>
-                    </div>
-                    <div class="text-right" v-if="isSendNotification && field.options.is_user_notification_field">
-                        <span :style="'color:'+getStatusColor(field.options.is_user_notification_field)">{{'Notification'|t('wheelform')}}</span>
-                    </div>
-                    <div class="text-right" v-if="isEmailField && field.options.is_reply_to">
-                        <span :style="'color:'+getStatusColor(field.options.is_reply_to)">{{'Reply To'|t('wheelform')}}</span>
-                    </div>
-                    <div class="text-right" v-if="field.options.containerClass">
-                        <span>{{ field.options.containerClass }}</span>
-                    </div>
-                    <div class="text-right" v-if="field.options.fieldClass">
-                        <span>{{ field.options.fieldClass }}</span>
-                    </div>
-                    <div class="text-right" v-if="field.options.placeholder">
-                        <span :style="'color:grey;'">{{ field.options.placeholder }}</span>
-                    </div>
-                </div>
+<div class="wheelform-field" :style="getFieldStyle">
+    <div class="field-details">
+        <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
+        <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }}</a>
+    </div>
+    <div class="field-content" v-show="isActive">
+        <div>
+            <label class="required">{{'Name'|t('wheelform')}}:</label>
+            <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
+            <p v-show="! isValidName.status" style="color: #da5a47">{{ isValidName.msg }}</p>
+        </div>
+        <div>
+            <label>{{'Label'|t('wheelform')}}:</label>
+            <input type="text" :value="options.label" @input="updateFieldOptionProperty('label', $event.target.value)" />
+        </div>
+        <div>
+            <Lightswitch
+                :name="'required'"
+                :label="'Required'|t('wheelform')"
+                :status="required"
+                @handle-status-change="handleStatusChange"
+                />
+        </div>
+        <div>
+            <Lightswitch
+                :name="'index_view'"
+                :label="'Index View'|t('wheelform')"
+                :status="index_view"
+                @handle-status-change="handleStatusChange"
+                />
+        </div>
+        <div>
+            <Lightswitch
+                :name="'is_user_notification_field'"
+                :label="'User Notification Field'|t('wheelform')"
+                :status="options.is_user_notification_field"
+                @handle-status-change="handleStatusOptionChange"
+                />
+        </div>
+        <div>
+            <Lightswitch
+                :name="'is_reply_to'"
+                :label="'Reply-to Email'|t('wheelform')"
+                :status="options.is_reply_to"
+                @handle-status-change="handleStatusOptionChange"
+                />
+        </div>
+        <div>
+            <label :for="'container-class-' + index">{{'Container class'|t('wheelform')}}</label>
+            <input type="text" :id="'container-class-' + index" :value="options.containerClass" @input="updateFieldOptionProperty('containerClass', $event.target.value)">
+        </div>
+        <div>
+            <label :for="'field-class-' + index">{{'Field class'|t('wheelform')}}</label>
+            <input type="text" :id="'field-class-' + index" :value="options.fieldClass" @input="updateFieldOptionProperty('fieldClass', $event.target.value)">
+        </div>
+        <div>
+            <label :for="'field-placeholder-' + index">{{'Field placeholder'|t('wheelform')}}</label>
+            <input type="text" :id="'field-placeholder-' + index" :value="options.placeholder" @input="updateFieldOptionProperty('placeholder', $event.target.value)">
+        </div>
+        <div>
+            <div v-if="type == 'select'">
+                <Lightswitch
+                    :name="'options_select_empty'"
+                    :label="'Default Empty?'|t('wheelform')"
+                    :status="options.selectEmpty"
+                    @handle-status-change="handleStatusOptionChange"
+                />
+            </div>
+            <div>
+                <strong>{{'Options'|t('wheelform')}}</strong>
+                <Lightswitch
+                    :name="'validate'"
+                    :label="'Validate'|t('wheelform')"
+                    :status="options.validate"
+                    @handle-status-change="handleStatusOptionChange"
+                    />
+            </div>
+            <div>
+                <input class="new-option"
+                    autocomplete="off"
+                    :placeholder="'Item to validate'|t('wheelform')"
+                    :value="newOption"
+                    @input="newOption = $event.target.value"
+                >
+                <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
+            </div>
+            <div>
+                <ul class="list-wrapper">
+                    <li
+                        v-for="(item, key) in options.items"
+                        :key="key"
+                    >
+                        {{ item }}
+                        <a href="" @click.prevent="deleteFieldOptionItem($event.target.value)" class="form-field-rm">X</a>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div v-show="isEditMode">
-            <div class="row">
-                <div class="col">
-                    <div>
-                        <label class="required">{{'Name'|t('wheelform')}}:</label>
-                        <input type="text" v-model="field.name" @change="validateName" />
-                        <p v-show="! field.isValidName.status" style="color: #da5a47">{{ field.isValidName.msg }}</p>
-                    </div>
-                    <div>
-                        <label>{{'Label'|t('wheelform')}}:</label>
-                        <input type="text" v-model="field.options.label" :name="'fields['+index+'][options][label]'" />
-                    </div>
-                    <div>
-                        <label>{{'Type'|t('wheelform')}}:</label>
-                        <select v-model="field.type" @change="updateFieldProperty('type', $event.target.value)">
-                            <option
-                                v-for="(fieldType, index) in fieldTypes"
-                                :key="index"
-                                :value="fieldType.type"
-                                >
-                                {{ fieldType.name | capitalize }}
-                            </option>
-                        </select>
-                    </div>
-                    <div v-if="isMultiOption">
-                        <div v-if="field.type == 'select'">
-                            <Lightswitch
-                                :name="'options_select_empty'"
-                                :label="'Default Empty?'|t('wheelform')"
-                                :status="field.options.selectEmpty"
-                                :handle-status-change="handleOptionSelectEmpty"
-                            />
-                        </div>
-                        <div>
-                            <strong>{{'Options'|t('wheelform')}}</strong>
-                            <Lightswitch
-                                :name="'options_validate'"
-                                :label="'Validate'|t('wheelform')"
-                                :status="field.options.validate"
-                                :handle-status-change="handleOptionValidate"
-                                />
-                        </div>
-                        <div>
-                            <input class="new-option"
-                                autocomplete="off"
-                                v-bind:placeholder="'Item to validate'|t('wheelform')"
-                                v-model="newOption">
-                            <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
-                        </div>
-                        <div>
-                            <ul class="list-wrapper">
-                                <li
-                                    v-for="(item, key) in field.options.items"
-                                    v-bind:key="key"
-                                >
-                                    {{ item }}
-                                    <a href="" @click.prevent="removeOption(item)" class="form-field-rm">X</a>
-                                    <input type="hidden" :name="'fields['+index+'][options][items]['+key+']'" :value="item">
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div>
-                        <Lightswitch
-                            :name="'required'"
-                            :label="'Required'|t('wheelform')"
-                            :status="field.required"
-                            :handle-status-change="handleStatusChange"
-                            />
-                    </div>
-                    <div>
-                        <Lightswitch
-                            :name="'index_view'"
-                            :label="'Index View'|t('wheelform')"
-                            :status="field.index_view"
-                            :handle-status-change="handleStatusChange"
-                            />
-                    </div>
-                    <div v-if="isSendNotification">
-                        <Lightswitch
-                            :name="'is_user_notification_field'"
-                            :label="'User Notification Field'|t('wheelform')"
-                            :status="field.options.is_user_notification_field"
-                            :handle-status-change="handleUserNotificationChange"
-                            />
-                    </div>
-                    <div v-if="isEmailField">
-                        <Lightswitch
-                            :name="'is_reply_to'"
-                            :label="'Reply-to Email'|t('wheelform')"
-                            :status="field.options.is_reply_to"
-                            :handle-status-change="handleReplyToChange"
-                            />
-                    </div>
-                    <div>
-                        <label :for="'container-class-' + field.id">{{'Container class'|t('wheelform')}}</label>
-                        <input type="text" :id="'container-class-' + field.id" v-model="field.options.containerClass" :name="'fields['+index+'][options][containerClass]'">
-                    </div>
-                    <div>
-                        <label :for="'field-class-' + field.id">{{'Field class'|t('wheelform')}}</label>
-                        <input type="text" :id="'field-class-' + field.id" v-model="field.options.fieldClass" :name="'fields['+index+'][options][fieldClass]'">
-                    </div>
-                    <div v-if="canPlaceholder">
-                        <label :for="'field-placeholder-' + field.id">{{'Field placeholder'|t('wheelform')}}</label>
-                        <input type="text" :id="'field-placeholder-' + field.id" v-model="field.options.placeholder" :name="'fields['+index+'][options][placeholder]'">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col"></div>
-                <div class="col">
-                    <div class="text-right mt-10">
-                        <a href="" @click.prevent="validateDeleteField" class="form-field-rm">{{'Delete'|t('wheelform')}}</a>
-                    </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="text-right mt-10">
+                    <a href="" @click.prevent="validateDeleteField" class="form-field-rm">{{'Delete'|t('wheelform')}}</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -187,17 +116,20 @@ import { debounce } from 'lodash';
 export default {
     props: [
         "index",
-        "defaultField",
-        "isEditMode",
-        "validateNameCallback",
-        "updateFieldPropertyCallback",
-        "sendNotification",
-        "fieldTypes",
+        "name",
+        "required",
+        "type",
+        "index_view",
+        "options",
     ],
     data(){
         return {
+            isValidName: {
+                status: true,
+                msg: ''
+            },
             newOption: '',
-            field: Object.assign({}, this.defaultField),
+            isActive: false,
         }
     },
     components: {
@@ -215,113 +147,72 @@ export default {
     computed:{
         getFieldLabel()
         {
-            if(this.field.options.label)
+            if(this.options.label)
             {
-                return this.field.options.label;
+                return this.options.label;
             }
-            let label = this.field.name.toString();
+            let label = this.name.toString();
             label = label.replace(/_/g, ' ');
             label = label.replace(/-/g, ' ');
             label = label.charAt(0).toUpperCase() + label.slice(1);
             return label;
         },
-        isMultiOption()
+        validateName()
         {
-            const multiOption = [
-                "checkbox",
-                "radio",
-                "select"
-            ];
-
-            let isMultiOption = multiOption.indexOf(this.field.type);
-
-            return (isMultiOption >= 0);
+            this.isValidName = this.validateNameCallback(this.name);
+            if(this.isValidName.status)
+            {
+                this.$emit('update-field-property', this.index, 'name', this.name)
+            }
         },
-        canPlaceholder()
-        {
-            const canPlaceholderFields = [
-                'text',
-                'textarea',
-                'email',
-                'number',
-            ];
-
-            return (canPlaceholderFields.indexOf(this.field.type)) >= 0;
-        },
-        isSendNotification()
-        {
-            return (this.sendNotification && this.field.type == 'email');
-        },
-        isEmailField()
-        {
-            return (this.field.type == 'email');
-        }
     },
     methods: {
         handleStatusChange(key, boolValue)
         {
             const value = (boolValue ? 1 : 0);
-            this.updateFieldPropertyCallback(this.index, key, value);
-            this.field[key] = value;
+            this.$emit('update-field-property', this.index, key, value);
         },
-        getFieldName(key)
+        handleStatusOptionChange(key, boolValue)
         {
-            return "fields[" + this.index + "]["+ key +"]"
+            const value = (boolValue ? 1 : 0);
+            this.$emit('update-field-option', this.index, key, value);
         },
         getFieldStyle()
         {
             return "position: relative, cursor: move";
         },
-        getStatusColor(status)
-        {
-            return (status ? "#00b007" : "grey");
-        },
         validateDeleteField()
         {
-            const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Field")+ ": " + this.field.name);
+            const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Field")+ ": " + this.name);
             if(result)
             {
                 this.$emit('delete-field');
             }
         },
-        validateName()
-        {
-            this.field.isValidName = this.validateNameCallback(this.field.name);
-            if(this.field.isValidName)
-            {
-                this.updateFieldPropertyCallback(this.index, 'name', this.field.name)
-            }
-        },
         updateFieldProperty(property, value)
         {
-            this.updateFieldPropertyCallback(this.index, property, value);
+            this.$emit('update-field-property', this.index, property, value);
         },
-        addOption: function () {
-            var value = this.newOption && this.newOption.trim()
+        updateFieldOptionProperty(property, value) {
+            this.$emit('update-field-option',this.index, property, value);
+        },
+        addOption() {
+            var value = this.newOption && this.newOption.trim();
             if (!value) {
                 return
             }
-            this.field.options.items.push(value)
-            this.newOption = ''
+            let items = this.options.items;
+            items.push(value);
+            console.log(items);
+            this.$emit('update-field-option', this.index, 'items', items);
+            this.newOption = '';
         },
-        removeOption: function (option) {
-            this.field.options.items.splice(this.field.options.items.indexOf(option), 1)
-        },
-        handleOptionValidate(name, value)
+        deleteFieldOptionItem(value)
         {
-            this.field.options.validate = (value ? 1 : 0);
-        },
-        handleOptionSelectEmpty(name, value)
-        {
-            this.field.options.selectEmpty = (value ? 1 : 0);
-        },
-        handleUserNotificationChange(key, value)
-        {
-            this.$emit('handle-user-notification-field', this.index, value);
-        },
-        handleReplyToChange(key, value)
-        {
-            this.$emit('handle-reply-to-field', this.index, value);
+            let items = this.options.items;
+            items.splice(items.indexOf(value), 1);
+            console.log(items);
+            this.$emit('update-field-option', this.index, 'items', items);
         }
     }
 }

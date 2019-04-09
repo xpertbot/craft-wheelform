@@ -89,7 +89,7 @@ th.text-center, td.text-center {
     border: 1px solid #f1f5f8;
     border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
     > a {
-        background-color: #f1f5f8;;
+        background-color: #f1f5f8;
         display: block;
         padding: 5px;
     }
@@ -99,26 +99,58 @@ th.text-center, td.text-center {
     }
 }
 
-#formapp {
+#wheelform-app {
     width: 100%;
+    height: 100%;
+    .settings-container {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        flex-direction: column;
+        max-height: none;
+        align-items: stretch;
+        width: 100vw;
+        height: 100%;
+    }
+    .mb-20 {
+        margin-bottom: 20px;
+    }
     label {
         display: block;
     }
-    .field-details {
+    .field-details, .field-type {
         position: relative;
-        padding-left: 25px;
+        background-color: #f1f5f8;
+        padding: 0.5rem 0.5rem 0.5rem 40px;
         .text-right{
             @media(max-width: 576px){
                 text-align: left !important;
             }
         }
+        > a {
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+    }
+    .field-type {
+        padding: 0.5rem;
+        margin-bottom: 10px;
+        cursor: move;
+        font-weight: bold;
+        &:last-child {
+            margin-bottom: 0px;
+        }
     }
     .field-label {
         font-size: 18px;
     }
-    #field-container {
+    .field-container {
         position: relative;
-        width: 100%;
+        // width: 100%;
+        min-height: 35px;
+        border: 1px dashed #333;
+        padding: 10px;
     }
     .form-field-add, .form-field-rm {
         color: rgba(0, 0, 0, 0.2);
@@ -132,30 +164,23 @@ th.text-center, td.text-center {
         color: #da5a47 !important;
     }
     .wheelform-field {
-        border: 1px dashed gray;
-        padding: 0.5rem 0.5rem;
+        border: 1px solid #f1f5f8;
+        border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
         margin-bottom: 0.5rem;
         background-color: #fff;
         color: #333;
         z-index: 0;
-        h4 {
-            color: #333;
-            padding-right: 20px;
-            position: relative;
-            > a {
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: auto;
-                z-index: 25;
-                padding: 5px;
-            }
+        .field-content {
+            padding: 0.5rem;
+        }
+        &:last-child {
+            margin-bottom: 0px;
         }
     }
     .wheelform-field-handle {
         position: absolute;
         top: 50%;
-        left: 0;
+        left: 0.5rem;
         z-index: 10;
         cursor: move;
         max-width: 18px;
@@ -212,31 +237,46 @@ th.text-center, td.text-center {
         flex: 0 0 50%;
         max-width: 50%;
     }
-    .col-sm, .col-sm-6 {
+    .col-sm, .col-sm-6, .col-sm-4 {
         position: relative;
         width: 100%;
         min-height: 1px;
         margin-left: 10px;
         margin-right: 10px;
+        position: relative;
+        overflow: hidden;
     }
 }
 
-@media(min-width: 1200px) {
-    #formapp {
-        max-width: 1140px;
+@media(min-width: 1223px) {
+    #wheelform-app {
+        .settings-container {
+            width: calc(100vw - 225px);
+        }
+    }
+}
+
+@media (min-width: 998px) {
+    #wheelform-app {
+        .settings-container {
+            flex-direction: row;
+            min-height: 0;
+        }
     }
 }
 
 @media(min-width: 576px) {
-    #formapp {
-        .form-settings {
-            margin-bottom: 0px;
-        }
+    #wheelform-app {
         .col-sm {
             flex-basis: 0;
             flex-grow: 1;
             max-width: 100%;
         }
+        .col-sm-4 {
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
         .col-sm-6 {
             flex: 0 0 50%;
             max-width: 50%;

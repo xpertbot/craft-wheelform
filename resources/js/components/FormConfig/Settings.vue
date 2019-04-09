@@ -98,11 +98,6 @@
                 </div>
             </div>
         </Collapsable>
-
-        <div class="field action-buttons">
-            <button v-on:click.prevent="$emit('handle-save-settings')" class="btn submit">{{'Save'|t('wheelform')}}</button>
-            <a :href="getBackUrl" class="btn primary">{{'Back'|t('wheelform')}}</a>
-        </div>
     </div>
 </template>
 <script>
@@ -117,13 +112,6 @@ export default {
     props: [
         "form",
     ],
-    computed: {
-        getBackUrl()
-        {
-            const  cpUrl = window.Craft.baseCpUrl;
-            return cpUrl + "/wheelform";
-        }
-    },
     methods: {
         handleStatusChange(key, value)
         {

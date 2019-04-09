@@ -6,12 +6,7 @@ interface FieldInterface
     /**
      * @return array
      */
-    public function rules();
-
-    /**
-     * @return string
-     */
-    public function getName();
+    public function fieldRules();
 
     /**
      * @return array

@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Radio implements FieldInterface
+class Radio extends BaseFieldType
 {
-    public function rules()
+    public $name = "Radio";
+
+    public $type = "radio";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "radio";
-    }
-
-    public function getName()
-    {
-        return "Radio";
     }
 
     public function getOptions()

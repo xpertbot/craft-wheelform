@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class Textarea implements FieldInterface
+class Textarea extends BaseFieldType
 {
-    public function rules()
+    public $name = "Textarea";
+
+    public $type = "textarea";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "textarea";
-    }
-
-    public function getName()
-    {
-        return "Textarea";
     }
 
     public function getOptions()

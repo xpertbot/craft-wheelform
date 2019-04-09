@@ -1,23 +1,15 @@
 <?php
 namespace wheelform\models\fields;
 
-use wheelform\interfaces\FieldInterface;
-
-class ListField implements FieldInterface
+class ListField extends BaseFieldType
 {
-    public function rules()
+    public $name = "List";
+
+    public $type = "list";
+
+    public function fieldRules()
     {
         return [];
-    }
-
-    public function getType()
-    {
-        return "list";
-    }
-
-    public function getName()
-    {
-        return "List";
     }
 
     public function getOptions()
