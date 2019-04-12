@@ -203,7 +203,6 @@ export default {
             }
             let items = this.options.items;
             items.push(value);
-            console.log(items);
             this.$emit('update-field-option', this.index, 'items', items);
             this.newOption = '';
         },
@@ -211,7 +210,6 @@ export default {
         {
             let items = this.options.items;
             items.splice(items.indexOf(value), 1);
-            console.log(items);
             this.$emit('update-field-option', this.index, 'items', items);
         }
     }

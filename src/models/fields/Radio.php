@@ -7,7 +7,7 @@ class Radio extends BaseFieldType
 
     public $type = "radio";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,7 @@ class Radio extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
+            'items' => [],
         ];
     }
 }

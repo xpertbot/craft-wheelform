@@ -7,7 +7,7 @@ class Select extends BaseFieldType
 
     public $type = "select";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,8 @@ class Select extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
+            'validate' => true,
+            'items' => [],
         ];
     }
 }

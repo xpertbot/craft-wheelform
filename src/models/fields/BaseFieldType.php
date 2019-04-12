@@ -12,7 +12,7 @@ abstract class BaseFieldType extends Model implements FieldInterface
 
     public $required = 0;
 
-    public $index_view;
+    public $index_view = 0;
 
     public $order = 0;
 
@@ -20,19 +20,19 @@ abstract class BaseFieldType extends Model implements FieldInterface
 
     public $options = [];
 
-    public function getDefaultOptions()
+    public function init()
     {
-        return [
-            [
-                'name' => 'containerClass',
-                'label' => 'Container Class',
-                'type' => 'text',
-            ],
-            [
-                'name' => 'fieldClass',
-                'label' => 'Field Class',
-                'type' => 'text',
-            ],
+        $this->options = $this->getFieldOptions();
+    }
+
+    public function getFieldOptions()
+    {
+        $default = [
+           'label' => '',
+           'containerClass' => '',
+            'fieldClass' => '',
         ];
+
+        return array_merge_recursive($default, $this->getOptions());
     }
 }

@@ -7,7 +7,7 @@ class ListField extends BaseFieldType
 
     public $type = "list";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,7 @@ class ListField extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
+            'item' => [],
         ];
     }
 }

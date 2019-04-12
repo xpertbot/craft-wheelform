@@ -7,7 +7,7 @@ class Textarea extends BaseFieldType
 
     public $type = "textarea";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,6 @@ class Textarea extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
         ];
     }
 }

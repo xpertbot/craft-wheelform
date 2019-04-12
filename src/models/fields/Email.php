@@ -7,7 +7,7 @@ class Email extends BaseFieldType
 
     public $type = "email";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,7 +15,8 @@ class Email extends BaseFieldType
     public function getOptions()
     {
         return [
-            'user_validation' => 'boolean'
+            'is_reply_to' => false,
+            'is_user_notification_field' =>false,
         ];
     }
 }

@@ -7,7 +7,7 @@ class Checkbox extends BaseFieldType
 
     public $type = "checkbox";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,7 @@ class Checkbox extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
+           'items' => [],
         ];
     }
 }

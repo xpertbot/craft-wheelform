@@ -7,7 +7,7 @@ class Text extends BaseFieldType
 
     public $type = "text";
 
-    public function fieldRules()
+    public function rules()
     {
         return [];
     }
@@ -15,9 +15,6 @@ class Text extends BaseFieldType
     public function getOptions()
     {
         return [
-            'test' => [
-                'type' => 'string',
-            ]
         ];
     }
 }

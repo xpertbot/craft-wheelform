@@ -38,7 +38,7 @@
                         class="field-container mb-20">
                         <Field
                             v-for="(field, index) in form.fields"
-                            :key="field.uniqueId"
+                            :key="index"
                             :index="index"
                             :name="field.name"
                             :required="field.required"
@@ -136,7 +136,6 @@ export default {
                         for (let index = 0; index < form.fields.length; index++) {
                             let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
 
-                            form.fields[index].uniqueId = this.generateKeyId();
                             form.fields[index].options = Object.assign(this.getDefaultFieldOptions(), options);
                         }
                         this.nextFieldIndex = form.fields.length;
@@ -238,26 +237,6 @@ export default {
         handleFieldOptionChange(index, option, value)
         {
             this.form.fields[index].options[option] = value;
-        },
-        handleUserNotificationField(toIndex, value)
-        {
-            this.form.fields.map((field, i) => {
-                if(i == toIndex) {
-                    field.options.is_user_notification_field = value;
-                } else if(field.type == 'email') {
-                    field.options.is_user_notification_field = false;
-                }
-            });
-        },
-        handleReplyToField(toIndex, value)
-        {
-            this.form.fields.map((field, i) => {
-                if(i == toIndex) {
-                    field.options.is_reply_to = value;
-                } else if(field.type == 'email') {
-                    field.options.is_reply_to = false;
-                }
-            });
         },
         handleSaveSettings()
         {
