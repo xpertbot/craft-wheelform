@@ -401,7 +401,7 @@ class FormService extends BaseService
         return count(array_filter(array_keys($array), 'is_string')) > 0;
     }
 
-    protected function handleScripts() : void
+    protected function handleScripts()
     {
         $this->view->registerCsrfMetaTags();
 
