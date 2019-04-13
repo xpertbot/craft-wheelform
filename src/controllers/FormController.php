@@ -152,14 +152,8 @@ class FormController extends Controller
                         if($formField->validate()){
                             $formField->save();
                         }
-                        else
-                        {
-                            //do nothing for now
-                        }
                     }
-                }
-                else
-                {
+                } else {
                     //unassign id to not autopopulate it on model; PostgreSQL doesn't like set ids
                     unset($field['id']);
 

@@ -12,9 +12,15 @@ class Text extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         return [
+            [
+                'name' => 'placeholder',
+                'type' => 'text',
+                'label' => 'Placeholder',
+                'value' => '',
+            ]
         ];
     }
 }

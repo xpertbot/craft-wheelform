@@ -12,10 +12,9 @@ class ListField extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         return [
-            'item' => [],
         ];
     }
 }

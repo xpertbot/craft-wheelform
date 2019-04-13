@@ -12,10 +12,15 @@ class Radio extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         return [
-            'items' => [],
+            [
+                'name' => 'items',
+                'type' => 'list',
+                'label' => 'Options',
+                'value' => [],
+            ],
         ];
     }
 }

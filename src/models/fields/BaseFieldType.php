@@ -6,6 +6,8 @@ use yii\base\Model;
 
 abstract class BaseFieldType extends Model implements FieldInterface
 {
+    public $class;
+
     public $name;
 
     public $type;
@@ -20,19 +22,39 @@ abstract class BaseFieldType extends Model implements FieldInterface
 
     public $options = [];
 
+    public $config = [];
+
+    public $fieldLabel = '';
+
     public function init()
     {
-        $this->options = $this->getFieldOptions();
+        $this->class = get_class($this);
+        $this->config = $this->getFieldConfig();
     }
 
-    public function getFieldOptions()
+    final public function getFieldConfig()
     {
         $default = [
-           'label' => '',
-           'containerClass' => '',
-            'fieldClass' => '',
+            [
+                'name' => 'label',
+                'type' => 'text',
+                'label' => 'Label',
+                'value' => '',
+            ],
+            [
+                'name' => 'containerClass',
+                'type' => 'text',
+                'label' => 'Container Class',
+                'value' => '',
+            ],
+            [
+                'name' => 'fieldClass',
+                'type' => 'text',
+                'label' => 'Field Class',
+                'value' => '',
+            ],
         ];
 
-        return array_merge_recursive($default, $this->getOptions());
+        return array_merge_recursive($default, $this->getConfig());
     }
 }

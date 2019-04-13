@@ -12,11 +12,21 @@ class Select extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         return [
-            'validate' => true,
-            'items' => [],
+            [
+                'name' => 'validate',
+                'type' => 'boolean',
+                'label' => 'Validate Options',
+                'value' => false,
+            ],
+            [
+                'name' => 'items',
+                'type' => 'list',
+                'label' => 'Options',
+                'value' => [],
+            ],
         ];
     }
 }

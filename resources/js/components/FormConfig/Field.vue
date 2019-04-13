@@ -11,10 +11,6 @@
             <p v-show="! isValidName.status" style="color: #da5a47">{{ isValidName.msg }}</p>
         </div>
         <div>
-            <label>{{'Label'|t('wheelform')}}:</label>
-            <input type="text" :value="options.label" @input="updateFieldOptionProperty('label', $event.target.value)" />
-        </div>
-        <div>
             <Lightswitch
                 :name="'required'"
                 :label="'Required'|t('wheelform')"
@@ -30,71 +26,43 @@
                 @handle-status-change="handleStatusChange"
                 />
         </div>
-        <div>
+        <div v-for="(config, i) in config"
+            :key="i"
+        >
             <Lightswitch
-                :name="'is_user_notification_field'"
-                :label="'User Notification Field'|t('wheelform')"
-                :status="options.is_user_notification_field"
+                v-if="config.type == 'boolean'"
+                :name="config.name"
+                :label="config.label|t('wheelform')"
+                :status="options[config.name]"
                 @handle-status-change="handleStatusOptionChange"
                 />
-        </div>
-        <div>
-            <Lightswitch
-                :name="'is_reply_to'"
-                :label="'Reply-to Email'|t('wheelform')"
-                :status="options.is_reply_to"
-                @handle-status-change="handleStatusOptionChange"
-                />
-        </div>
-        <div>
-            <label :for="'container-class-' + index">{{'Container class'|t('wheelform')}}</label>
-            <input type="text" :id="'container-class-' + index" :value="options.containerClass" @input="updateFieldOptionProperty('containerClass', $event.target.value)">
-        </div>
-        <div>
-            <label :for="'field-class-' + index">{{'Field class'|t('wheelform')}}</label>
-            <input type="text" :id="'field-class-' + index" :value="options.fieldClass" @input="updateFieldOptionProperty('fieldClass', $event.target.value)">
-        </div>
-        <div>
-            <label :for="'field-placeholder-' + index">{{'Field placeholder'|t('wheelform')}}</label>
-            <input type="text" :id="'field-placeholder-' + index" :value="options.placeholder" @input="updateFieldOptionProperty('placeholder', $event.target.value)">
-        </div>
-        <div>
-            <div v-if="type == 'select'">
-                <Lightswitch
-                    :name="'options_select_empty'"
-                    :label="'Default Empty?'|t('wheelform')"
-                    :status="options.selectEmpty"
-                    @handle-status-change="handleStatusOptionChange"
-                />
+            <div v-else-if="config.type == 'text'">
+                <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
+                <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]" @input="updateFieldOptionProperty(config.name, $event.target.value)">
             </div>
-            <div>
-                <strong>{{'Options'|t('wheelform')}}</strong>
-                <Lightswitch
-                    :name="'validate'"
-                    :label="'Validate'|t('wheelform')"
-                    :status="options.validate"
-                    @handle-status-change="handleStatusOptionChange"
-                    />
-            </div>
-            <div>
-                <input class="new-option"
-                    autocomplete="off"
-                    :placeholder="'Item to validate'|t('wheelform')"
-                    :value="newOption"
-                    @input="newOption = $event.target.value"
-                >
-                <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
-            </div>
-            <div>
-                <ul class="list-wrapper">
-                    <li
-                        v-for="(item, key) in options.items"
-                        :key="key"
+            <div v-else-if="config.type == 'list'">
+                <div>
+                    <label :for="'field' + index + '-' + config.name">{{config.label | t('wheelform')}}</label>
+                    <input class="new-option"
+                        :id="'field' + index + '-' + config.name"
+                        autocomplete="off"
+                        :placeholder="config.label|t('wheelform')"
+                        :value="newOption"
+                        @input="newOption = $event.target.value"
                     >
-                        {{ item }}
-                        <a href="" @click.prevent="deleteFieldOptionItem($event.target.value)" class="form-field-rm">X</a>
-                    </li>
-                </ul>
+                    <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
+                </div>
+                <div>
+                    <ul class="list-wrapper">
+                        <li
+                            v-for="(item, key) in options[config.name]"
+                            :key="key"
+                        >
+                            {{ item }}
+                            <a href="" @click.prevent="deleteFieldOptionItem($event.target.value)" class="form-field-rm">X</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -121,6 +89,7 @@ export default {
         "type",
         "index_view",
         "options",
+        "config",
     ],
     data(){
         return {

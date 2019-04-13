@@ -16,6 +16,7 @@ class m190405_025303_add_class_to_form_field extends Migration
     public function safeUp()
     {
         $this->addColumn('{{%wheelform_form_fields}}', 'class', $this->text());
+        $this->addColumn('{{%wheelform_form_fields}}', 'config', $this->text());
     }
 
     /**
@@ -24,5 +25,6 @@ class m190405_025303_add_class_to_form_field extends Migration
     public function safeDown()
     {
         $this->dropColumn('{{%wheelform_form_fields}}', 'class');
+        $this->dropColumn('{{%wheelform_form_fields}}', 'config');
     }
 }

@@ -12,11 +12,21 @@ class Email extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
         return [
-            'is_reply_to' => false,
-            'is_user_notification_field' =>false,
+            [
+                'name' => 'is_reply_to',
+                'type' => 'boolean',
+                'label' => 'Reply-to Email',
+                'value' => false,
+            ],
+            [
+                'name' => 'is_user_notification_field',
+                'type' => 'boolean',
+                'label' => 'User Notification Field',
+                'value' => false,
+            ],
         ];
     }
 }

@@ -12,9 +12,8 @@ class Hidden extends BaseFieldType
         return [];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
-        return [
-        ];
+        return [];
     }
 }

@@ -67,6 +67,7 @@ class Install extends Migration
                 'active' => $this->tinyInteger()->notNull()->defaultValue(1),
                 'class' => $this->text(),
                 'options' => $this->text(),
+                'config' => $this->text(),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime(),
                 'uid' => $this->uid(),

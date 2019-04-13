@@ -22,9 +22,8 @@ class File extends BaseFieldType
         ];
     }
 
-    public function getOptions()
+    public function getConfig()
     {
-        return [
-        ];
+        return [];
     }
 }

@@ -11,5 +11,5 @@ interface FieldInterface
     /**
      * @return array
      */
-    public function getOptions();
+    public function getConfig();
 }

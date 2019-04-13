@@ -44,6 +44,7 @@
                             :required="field.required"
                             :index_view="field.index_view"
                             :options="field.options"
+                            :config="field.config"
                             :type="field.type"
                             @delete-field="form.fields.splice(index, 1)"
                             @validate-name="validateFieldName"
@@ -129,14 +130,20 @@ export default {
                 if(res.data) {
                     const data = JSON.parse(res.data);
                     const form = data.form;
-
                     if(form) {
                         form.options = Object.assign(this.getDefaultFormOptions(), JSON.parse(form.options));
                         //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
                             let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
 
-                            form.fields[index].options = Object.assign(this.getDefaultFieldOptions(), options);
+                            // only get options that belong to that fieldType
+                            const fieldType = this.fieldTypes.find((fieldType) => {
+                                return (form.fields[index].type == fieldType.type);
+                            });
+
+                            form.fields[index].class = fieldType.class;
+                            form.fields[index].config = fieldType.config;
+                            form.fields[index].options = Object.assign(this.getOptionsFromConfig(fieldType.config), options);
                         }
                         this.nextFieldIndex = form.fields.length;
                         this.form = form;
@@ -153,8 +160,10 @@ export default {
         }
     },
     methods: {
-        clone(original) {
-            return Object.assign({}, original);
+        clone(fieldType) {
+            let field = Object.assign({}, fieldType);
+            field.options = this.getOptionsFromConfig(fieldType.config);
+            return field;
         },
         onDragEnd()
         {
@@ -201,6 +210,18 @@ export default {
                 sel: (view == this.currentView),
             }
         },
+        getOptionsFromConfig(config) {
+            let options = {};
+            if(Array.isArray(config)) {
+                config.map((config) => {
+                    options[config.name] = config.value;
+                });
+            } else {
+                options[config.name] = config.value;
+            }
+
+            return options;
+        },
 
         //Getters
         getDefaultFormOptions()
@@ -209,20 +230,6 @@ export default {
                 honeypot: "",
                 email_subject: "",
                 user_notification: 0,
-            };
-        },
-        getDefaultFieldOptions()
-        {
-            return {
-                validate: 0,
-                label: '',
-                items: [],
-                containerClass: '',
-                fieldClass: '',
-                selectEmpty: 0,
-                placeholder: '',
-                is_reply_to: false,
-                is_user_notification_field: false,
             };
         },
 
