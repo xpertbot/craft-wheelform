@@ -171,10 +171,6 @@ export default {
                 return item.order = index + 1;
             });
         },
-        generateKeyId()
-        {
-            return '_' + Math.random().toString(36).substr(2, 9);
-        },
         validateFieldName(userInput)
         {
             let result = this.form.fields.filter((field) => {

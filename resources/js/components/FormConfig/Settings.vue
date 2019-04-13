@@ -26,7 +26,7 @@
                 :name="'active'"
                 :label="'Active'|t('wheelform')"
                 :status="form.active"
-                :handle-status-change="handleStatusChange"
+                @handle-status-change="handleStatusChange"
                 />
         </div>
         <div  class="field">
@@ -35,7 +35,7 @@
                 :label="'Save Entries'|t('wheelform')"
                 :instructions="'Save Entries to database'"
                 :status="form.save_entry"
-                :handle-status-change="handleStatusChange"
+                @handle-status-change="handleStatusChange"
                 />
         </div>
         <div  class="field">
@@ -43,7 +43,7 @@
                 :name="'send_email'"
                 :label="'Send Email'|t('wheelform')"
                 :status="form.send_email"
-                :handle-status-change="handleStatusChange"
+                @handle-status-change="handleStatusChange"
                 />
         </div>
 
@@ -64,7 +64,7 @@
                     :name="'recaptcha'"
                     :label="'Recaptcha'"
                     :status="form.recaptcha"
-                    :handle-status-change="handleStatusChange"
+                    @handle-status-change="handleStatusChange"
                     />
             </div>
 
@@ -84,7 +84,7 @@
                     :name="'user_notification'"
                     :label="'User Notification'|t('wheelform')"
                     :status="form.options.user_notification"
-                    :handle-status-change="handleOptionsChange"
+                    @handle-status-change="handleOptionsChange"
                     />
             </div>
             <div class="field" v-if="form.options.user_notification">
