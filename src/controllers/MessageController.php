@@ -5,7 +5,6 @@ use Craft;
 
 use craft\elements\Asset;
 use craft\helpers\Assets;
-use craft\web\Controller;
 use craft\web\UploadedFile;
 use craft\errors\UploadFailedException;
 use wheelform\events\MessageEvent;
@@ -17,7 +16,7 @@ use wheelform\Plugin;
 use yii\web\HttpException;
 use yii\web\BadRequestHttpException;
 
-class MessageController extends Controller
+class MessageController extends BaseController
 {
     /**
      * @var Form

@@ -25,6 +25,7 @@ class FormField extends ActiveRecord
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
             ['options', JsonValidator::class],
+            ['config', JsonValidator::class],
         ];
     }
 
@@ -60,7 +61,7 @@ class FormField extends ActiveRecord
         return [
             'json_field_behavior' => [
                 'class' => JsonFieldBehavior::class,
-                'attributes' => ['options'],
+                'attributes' => ['options', 'config'],
             ]
         ];
     }
