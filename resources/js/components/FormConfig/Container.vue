@@ -35,6 +35,7 @@
                         :handle="'.wheelform-field-handle'"
                         :group="'field-types'"
                         @end="onDragEnd"
+                        @add="onDragAdd"
                         class="field-container mb-20">
                         <Field
                             v-for="(field, index) in form.fields"
@@ -167,9 +168,11 @@ export default {
         },
         onDragEnd()
         {
-            let fields = this.form.fields.map(function(item, index) {
-                return item.order = index + 1;
-            });
+            return this.getSortList();
+        },
+        onDragAdd()
+        {
+            return this.getSortList();
         },
         validateFieldName(userInput)
         {
@@ -217,6 +220,12 @@ export default {
             }
 
             return options;
+        },
+        getSortList()
+        {
+            let fields = this.form.fields.map(function(item, index) {
+                return item.order = index + 1;
+            });
         },
 
         //Getters
