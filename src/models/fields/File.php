@@ -13,12 +13,14 @@ class File extends BaseFieldType
 
     public $assetId;
 
-    public function rules()
+    public function getFieldRules()
     {
+        //TODO This needs fixing
         return [
             [['name', 'filePath'], 'string'],
             [['name', 'filePath'], 'required'],
             ['assetId', 'integer'],
+            ['value', 'file'],
         ];
     }
 

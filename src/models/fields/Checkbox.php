@@ -7,9 +7,13 @@ class Checkbox extends BaseFieldType
 
     public $type = "checkbox";
 
-    public function rules()
+    public function getFieldRules()
     {
-        return [];
+        return [
+            [
+                'value', 'each', 'rule' => ['string']
+            ],
+        ];
     }
 
     public function getConfig()

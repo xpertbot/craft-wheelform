@@ -1,15 +1,19 @@
 <?php
 namespace wheelform\models\fields;
 
+use Craft;
+
 class Email extends BaseFieldType
 {
     public $name = "Email";
 
     public $type = "email";
 
-    public function rules()
+    public function getFieldRules()
     {
-        return [];
+        return [
+            ['value', 'email', 'message' => $this->label.Craft::t('wheelform', ' is not a valid email address.')],
+        ];
     }
 
     public function getConfig()

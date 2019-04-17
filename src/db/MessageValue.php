@@ -31,43 +31,6 @@ class MessageValue extends ActiveRecord
             [['field_id'], 'required', 'message' => Craft::t('wheelform', 'Field ID cannot be blank.')],
             [['message_id', 'field_id'], 'integer', 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['message_id', 'field_id'], 'filter', 'filter' => 'intval'],
-            ['value', 'required', 'when' => function($model){
-                    return (bool)$model->field->required;
-                }, 'message' => $this->field->getLabel().Craft::t('wheelform', ' cannot be blank.')
-            ],
-            ['value', 'string', 'on' => [
-                    self::TEXT_SCENARIO,
-                    self::TEXTAREA_SCENARIO,
-                    self::HIDDEN_SCENARIO,
-                    self::SELECT_SCENARIO,
-                    self::RADIO_SCENARIO,
-                ],
-                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')
-            ],
-            ['value', 'email', 'on' => self::EMAIL_SCENARIO,
-                'message' => $this->field->getLabel().Craft::t('wheelform', ' is not a valid email address.')],
-            ['value', 'number', 'on' => self::NUMBER_SCENARIO,
-                'message' => $this->field->getLabel().Craft::t('wheelform', ' must be a number.')],
-            ['value', 'file', 'on' => self::FILE_SCENARIO],
-            ['value', function($attribute, $params, $validator){
-                if(! is_array($this->$attribute)) {
-                    $this->addError($this->field->getLabel().Craft::t('wheelform', ' must be an array.'));
-                }
-            }, 'on' => self::LIST_SCENARIO
-        ],
-            ['value', 'each', 'rule' => ['string'], 'on' => [
-                    self::CHECKBOX_SCENARIO,
-                    self::LIST_SCENARIO,
-                ]
-            ],
-            ['value', 'in', 'range' => function(){
-                    return (empty($this->field->options['items']) ? [] : $this->field->options['items']);
-                }, 'when' => function($model){
-                    return boolval($model->field->options['validate']);
-                },
-                "allowArray" => true,
-                'message' => $this->field->getLabel().Craft::t('wheelform', ' has invalid options.')
-            ],
         ];
     }
 

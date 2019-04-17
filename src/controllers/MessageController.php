@@ -83,70 +83,96 @@ class MessageController extends BaseController
 
         if(empty($errors)) {
             foreach ($this->formModel->fields as $field) {
-                $messageValue = new MessageValue;
-                $messageValue->setScenario($field->type);
-                $messageValue->field_id = $field->id;
+                $fieldModel = $field->getClass();
 
-                if($field->type == "file") {
-                    $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
-                    $uploadedFile = UploadedFile::getInstanceByName($field->name);
-                    $fileModel = $uploadedFile;
-                    if($uploadedFile) {
-                        $fileModel = new File();
-                        try {
-                            $assets = Craft::$app->getAssets();
-                            $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
-                            //No folder to upload files has been selected
-                            if(! is_numeric($folder_id)) {
-                                $fileModel->name = $uploadedFile->name;
-                                $fileModel->filePath = $tempPath;
-                            } else {
-                                $folder = $assets->getRootFolderByVolumeId($folder_id);;
-                                if (!$folder) {
-                                    throw new BadRequestHttpException('The target folder provided for uploading is not valid');
-                                }
-                                $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
-                                $filename = Assets::prepareAssetName($tempName);
-
-                                $asset = new Asset();
-                                $asset->tempFilePath = $tempPath;
-                                $asset->filename = $filename;
-                                $asset->newFolderId = $folder->id;
-                                $asset->volumeId = $folder->volumeId;
-                                $asset->avoidFilenameConflicts = true;
-                                $asset->setScenario(Asset::SCENARIO_CREATE);
-
-                                $result = Craft::$app->getElements()->saveElement($asset);
-
-                                if($result) {
-                                    $volume = $asset->getVolume();
-                                    $fileModel->name = $asset->filename;
-                                    $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
-                                    $fileModel->assetId = $asset->id;
-                                    if($fileModel->validate()) {
-                                        Craft::warning('File not uploaded', 'wheelform');
-                                    }
-                                }
-                            }
-                        } catch (\Throwable $exception) {
-                            Craft::error('An error occurred when saving an asset: ' . $exception->getMessage(), __METHOD__);
-                            Craft::$app->getErrorHandler()->logException($exception);
-                            return $exception->getMessage();
-                        }
-                    }
-
-                    $messageValue->value = (empty($fileModel) ? NULL : $fileModel );
-                } else {
-                    $messageValue->value = $request->getBodyParam($field->name, null);
+                if(empty($fieldModel)) {
+                    $fieldModel = $this->getFieldByType($field->type);
                 }
 
-                if(! $messageValue->validate()) {
-                    $errors[$field->name] = $messageValue->getErrors('value');
-                } else {
-                    $entryValues[] = $messageValue;
+                if(empty($fieldModel)) {
+                    throw new BadRequestHttpException('Invalid Field Type selected. {'.$field->type.'}');
                 }
+
+                $fieldModel->setAttributes([
+                    'required' => $field->required,
+                    'active' => $field->active,
+                    'options' => $field->options,
+                    'label' => $field->getLabel(),
+                    'value' => $request->getBodyParam($field->name, null),
+                ], false);
+
+                if(! $fieldModel->validate()) {
+                    $errors[$field->name] = $fieldModel->getErrors('value');
+                } else {
+                    $entryValues[] = $fieldModel;
+                }
+
+                // $messageValue = new MessageValue;
+                // $messageValue->setScenario($field->type);
+                // $messageValue->field_id = $field->id;
+
+                // if($field->type == "file") {
+                //     $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
+                //     $uploadedFile = UploadedFile::getInstanceByName($field->name);
+                //     $fileModel = $uploadedFile;
+                //     if($uploadedFile) {
+                //         $fileModel = new File();
+                //         try {
+                //             $assets = Craft::$app->getAssets();
+                //             $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
+                //             //No folder to upload files has been selected
+                //             if(! is_numeric($folder_id)) {
+                //                 $fileModel->name = $uploadedFile->name;
+                //                 $fileModel->filePath = $tempPath;
+                //             } else {
+                //                 $folder = $assets->getRootFolderByVolumeId($folder_id);;
+                //                 if (!$folder) {
+                //                     throw new BadRequestHttpException('The target folder provided for uploading is not valid');
+                //                 }
+                //                 $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
+                //                 $filename = Assets::prepareAssetName($tempName);
+
+                //                 $asset = new Asset();
+                //                 $asset->tempFilePath = $tempPath;
+                //                 $asset->filename = $filename;
+                //                 $asset->newFolderId = $folder->id;
+                //                 $asset->volumeId = $folder->volumeId;
+                //                 $asset->avoidFilenameConflicts = true;
+                //                 $asset->setScenario(Asset::SCENARIO_CREATE);
+
+                //                 $result = Craft::$app->getElements()->saveElement($asset);
+
+                //                 if($result) {
+                //                     $volume = $asset->getVolume();
+                //                     $fileModel->name = $asset->filename;
+                //                     $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
+                //                     $fileModel->assetId = $asset->id;
+                //                     if($fileModel->validate()) {
+                //                         Craft::warning('File not uploaded', 'wheelform');
+                //                     }
+                //                 }
+                //             }
+                //         } catch (\Throwable $exception) {
+                //             Craft::error('An error occurred when saving an asset: ' . $exception->getMessage(), __METHOD__);
+                //             Craft::$app->getErrorHandler()->logException($exception);
+                //             return $exception->getMessage();
+                //         }
+                //     }
+
+                //     $messageValue->value = (empty($fileModel) ? NULL : $fileModel );
+                // } else {
+                //     $messageValue->value = $request->getBodyParam($field->name, null);
+                // }
+
+                // if(! $messageValue->validate()) {
+                //     $errors[$field->name] = $messageValue->getErrors('value');
+                // } else {
+                //     $entryValues[] = $messageValue;
+                // }
             }
         }
+
+        var_dump($errors);
 
         if (! empty($errors)) {
             $response = [

@@ -56,6 +56,15 @@ class FormField extends ActiveRecord
         return $this->hasMany(MessageValue::className(), ['field_id' => 'id']);
     }
 
+    public function getClass()
+    {
+        if(! empty($this->class)) {
+            return (new $this->class);
+        }
+
+        return null;
+    }
+
     public function behaviors()
     {
         return [

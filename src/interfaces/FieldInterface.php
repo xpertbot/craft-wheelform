@@ -6,7 +6,7 @@ interface FieldInterface
     /**
      * @return array
      */
-    public function rules();
+    public function getFieldRules();
 
     /**
      * @return array

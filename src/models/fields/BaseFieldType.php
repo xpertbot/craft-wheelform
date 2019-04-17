@@ -1,6 +1,7 @@
 <?php
 namespace wheelform\models\fields;
 
+use Craft;
 use wheelform\interfaces\FieldInterface;
 use yii\base\Model;
 
@@ -20,16 +21,31 @@ abstract class BaseFieldType extends Model implements FieldInterface
 
     public $active = 1;
 
-    public $options = [];
+    public $options= [];
 
     public $config = [];
 
-    public $fieldLabel = '';
+    public $label;
+
+    public $value;
 
     public function init()
     {
         $this->class = get_class($this);
         $this->config = $this->getFieldConfig();
+    }
+
+    public function rules()
+    {
+        $customRules = $this->getFieldRules();
+        $rules = [
+            ['value', 'required', 'when' => function($model){
+                    return (bool) $model->required;
+                }, 'message' => $this->label . Craft::t('wheelform', ' cannot be blank.')
+            ]
+        ];
+
+        return array_merge_recursive($rules, $customRules);
     }
 
     final public function getFieldConfig()

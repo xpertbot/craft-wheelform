@@ -1,15 +1,21 @@
 <?php
 namespace wheelform\models\fields;
 
+use Craft;
+
 class Radio extends BaseFieldType
 {
     public $name = "Radio";
 
     public $type = "radio";
 
-    public function rules()
+    public function getFieldRules()
     {
-        return [];
+        return [
+            [
+                'value', 'string', 'message' => $this->label . Craft::t('wheelform', ' must be valid characters.')
+            ]
+        ];
     }
 
     public function getConfig()
