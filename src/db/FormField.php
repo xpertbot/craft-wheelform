@@ -8,6 +8,20 @@ use wheelform\validators\JsonValidator;
 
 class FormField extends ActiveRecord
 {
+
+    const FIELD_TYPES = [
+        'text',
+        'textarea',
+        'email',
+        'number',
+        'checkbox',
+        'radio',
+        'hidden',
+        'select',
+        'file',
+        'list',
+    ];
+
     public static function tableName(): String
     {
         return '{{%wheelform_form_fields}}';
@@ -24,8 +38,8 @@ class FormField extends ActiveRecord
                 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
+            ['type', 'in', 'range' => self::FIELD_TYPES],
             ['options', JsonValidator::class],
-            ['config', JsonValidator::class],
         ];
     }
 
@@ -56,21 +70,12 @@ class FormField extends ActiveRecord
         return $this->hasMany(MessageValue::className(), ['field_id' => 'id']);
     }
 
-    public function getClass()
-    {
-        if(! empty($this->class)) {
-            return (new $this->class);
-        }
-
-        return null;
-    }
-
     public function behaviors()
     {
         return [
             'json_field_behavior' => [
                 'class' => JsonFieldBehavior::class,
-                'attributes' => ['options', 'config'],
+                'attributes' => ['options'],
             ]
         ];
     }

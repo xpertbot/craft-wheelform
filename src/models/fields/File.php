@@ -1,31 +1,22 @@
 <?php
 namespace wheelform\models\fields;
 
-class File extends BaseFieldType
+use craft\base\Model;
+
+class File extends Model
 {
-    public $name = "File";
-
-    public $type = "file";
-
-    public $fieldName;
+    public $name;
 
     public $filePath;
 
     public $assetId;
 
-    public function getFieldRules()
+    public function rules()
     {
-        //TODO This needs fixing
         return [
             [['name', 'filePath'], 'string'],
             [['name', 'filePath'], 'required'],
             ['assetId', 'integer'],
-            ['value', 'file'],
         ];
-    }
-
-    public function getConfig()
-    {
-        return [];
     }
 }

@@ -136,8 +136,14 @@ class FormController extends BaseController
                         if($formField->validate()){
                             $formField->save();
                         }
+                        else
+                        {
+                            //do nothing for now
+                        }
                     }
-                } else {
+                }
+                else
+                {
                     //unassign id to not autopopulate it on model; PostgreSQL doesn't like set ids
                     unset($field['id']);
 
@@ -190,9 +196,7 @@ class FormController extends BaseController
 
         $response = Yii::$app->getResponse();
         $response->format = Response::FORMAT_JSON;
-        $response->data = json_encode([
-            'form' => $form,
-        ], JSON_NUMERIC_CHECK);
+        $response->data = json_encode($form, JSON_NUMERIC_CHECK);
 
         return $response;
     }
