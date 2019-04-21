@@ -53,16 +53,4 @@ class BaseController extends Controller
 
         return $fieldTypes;
     }
-
-    protected function getFieldByType($type)
-    {
-        $fields = $this->getFieldByTypes();
-        foreach($fields as $field) {
-            if($field->type == $type) {
-                return $field;
-            }
-        }
-
-        return null;
-    }
 }

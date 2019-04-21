@@ -129,19 +129,21 @@ export default {
             })
             .then((res) => {
                 if(res.data) {
-                    const data = JSON.parse(res.data);
-                    const form = data.form;
+                    const form = JSON.parse(res.data);
                     if(form) {
                         form.options = Object.assign(this.getDefaultFormOptions(), JSON.parse(form.options));
                         //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
-                            let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
-
                             // only get options that belong to that fieldType
                             const fieldType = this.fieldTypes.find((fieldType) => {
                                 return (form.fields[index].type == fieldType.type);
                             });
 
+                            if(! fieldType) {
+                                continue;
+                            }
+
+                            let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};6
                             form.fields[index].class = fieldType.class;
                             form.fields[index].config = fieldType.config;
                             form.fields[index].options = Object.assign(this.getOptionsFromConfig(fieldType.config), options);
