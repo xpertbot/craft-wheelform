@@ -119,31 +119,22 @@ class FormController extends BaseController
         //Get ID of fields that are missing on the oldFields compared to newfields
         $toDeleteIds = $this->getToDeleteIds($oldFields, $newFields);
 
-        if(! empty($newFields))
-        {
-            foreach($newFields as $field)
-            {
+        if(! empty($newFields)) {
+            foreach($newFields as $field) {
                 //If field name is empty skip it, but don't delete it, only delete it if delete icon is clicked.
                 if(empty($field['name'])) continue;
 
                 if(isset($field['id']) && intval($field['id']) > 0) {
                     //update Field Values
                     $formField = FormField::find()->where(['id' => $field['id']])->one();
-                    if(! empty($formField))
-                    {
+                    if(! empty($formField)) {
                         $formField->setAttributes($field, false);
 
                         if($formField->validate()){
                             $formField->save();
                         }
-                        else
-                        {
-                            //do nothing for now
-                        }
                     }
-                }
-                else
-                {
+                } else {
                     //unassign id to not autopopulate it on model; PostgreSQL doesn't like set ids
                     unset($field['id']);
 
@@ -151,8 +142,7 @@ class FormController extends BaseController
                     $formField = new FormField();
                     $formField->setAttributes($field, false);
 
-                    if($formField->save())
-                    {
+                    if($formField->save()) {
                         $form->link('fields', $formField);
                     }
                 }
