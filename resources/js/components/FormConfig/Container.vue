@@ -143,10 +143,18 @@ export default {
                                 continue;
                             }
 
-                            let options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};6
-                            form.fields[index].class = fieldType.class;
+                            let fieldOptions = this.getOptionsFromConfig(fieldType.config);
+                            const options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
+
+                            //set Options from database
+                            Object.keys(options).forEach((key) => {
+                                if(fieldOptions.hasOwnProperty(key)) {
+                                    fieldOptions[key] = options[key];
+                                }
+                            });
+
                             form.fields[index].config = fieldType.config;
-                            form.fields[index].options = Object.assign(this.getOptionsFromConfig(fieldType.config), options);
+                            form.fields[index].options = fieldOptions;
                         }
                         this.nextFieldIndex = form.fields.length;
                         this.form = form;
