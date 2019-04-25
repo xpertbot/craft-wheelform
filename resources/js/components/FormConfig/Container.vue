@@ -27,49 +27,51 @@
                 @handle-form-option-change="handleFormOptionChange"
             />
 
-            <div v-show="currentView == 'field'" class="row">
-                <div class="col-sm">
-                    <h3>{{ 'Form Fields' |t('wheelform')}}</h3>
-                    <draggable
-                        :list="form.fields"
-                        :handle="'.wheelform-field-handle'"
-                        :group="'field-types'"
-                        @end="onDragEnd"
-                        @add="onDragAdd"
-                        class="field-container mb-20">
-                        <Field
-                            v-for="(field, index) in form.fields"
-                            :key="index"
-                            :index="index"
-                            :name="field.name"
-                            :required="field.required"
-                            :index_view="field.index_view"
-                            :options="field.options"
-                            :config="field.config"
-                            :type="field.type"
-                            @delete-field="form.fields.splice(index, 1)"
-                            @validate-name="validateFieldName"
-                            @update-field-property="updateFieldProperty"
-                            @update-field-option="handleFieldOptionChange"
-                        />
-                    </draggable>
-                </div>
-                <div class="col-sm-4">
-                    <h3>{{ 'Field Types' |t('wheelform')}}</h3>
-                    <draggable
-                        :list="fieldTypes"
-                        :group="{ name: 'field-types', pull: 'clone', put: false }"
-                        :sort="false"
-                        :clone="clone"
-                        class="field-container"
-                    >
-                    <div class="field-type"
-                        v-for="(fieldType, index) in fieldTypes"
-                        :key="index"
-                    >
-                        {{ fieldType.name }}
+            <div v-show="currentView == 'field'" class="wheelform-container">
+                <div class="row">
+                    <div class="col-sm">
+                        <h3>{{ 'Form Fields' |t('wheelform')}}</h3>
+                        <draggable
+                            :list="form.fields"
+                            :handle="'.wheelform-field-handle'"
+                            :group="'field-types'"
+                            @end="onDragEnd"
+                            @add="onDragAdd"
+                            class="field-container mb-20">
+                            <Field
+                                v-for="(field, index) in form.fields"
+                                :key="index"
+                                :index="index"
+                                :name="field.name"
+                                :required="field.required"
+                                :index_view="field.index_view"
+                                :options="field.options"
+                                :config="field.config"
+                                :type="field.type"
+                                @delete-field="form.fields.splice(index, 1)"
+                                @validate-name="validateFieldName"
+                                @update-field-property="updateFieldProperty"
+                                @update-field-option="handleFieldOptionChange"
+                            />
+                        </draggable>
                     </div>
-                    </draggable>
+                    <div class="col-sm-4">
+                        <h3>{{ 'Field Types' |t('wheelform')}}</h3>
+                        <draggable
+                            :list="fieldTypes"
+                            :group="{ name: 'field-types', pull: 'clone', put: false }"
+                            :sort="false"
+                            :clone="clone"
+                            class="field-container"
+                        >
+                        <div class="field-type"
+                            v-for="(fieldType, index) in fieldTypes"
+                            :key="index"
+                        >
+                            {{ fieldType.name }}
+                        </div>
+                        </draggable>
+                    </div>
                 </div>
             </div>
             <div class="field action-buttons">

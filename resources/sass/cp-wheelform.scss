@@ -102,6 +102,12 @@ th.text-center, td.text-center {
 #wheelform-app {
     width: 100%;
     height: 100%;
+    .wheelform-container {
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+        display: block;
+    }
     .settings-container {
         display: flex;
         flex: 1;
@@ -250,6 +256,9 @@ th.text-center, td.text-center {
 
 @media(min-width: 1223px) {
     #wheelform-app {
+        .wheelform-container {
+            max-width: 915px;
+        }
         .settings-container {
             width: calc(100vw - 225px);
         }

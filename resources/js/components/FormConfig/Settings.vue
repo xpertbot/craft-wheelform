@@ -1,5 +1,5 @@
 <template>
-    <div class="form-settings">
+    <div class="wheelform-container form-settings">
         <div class="field first" id="name-field">
             <div class="heading">
                 <label class="required" for="name">{{'Form Name'|t('wheelform')}}</label>
