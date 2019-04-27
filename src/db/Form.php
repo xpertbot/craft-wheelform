@@ -47,8 +47,7 @@ class Form extends ActiveRecord
 
     public function getEntryCount(): int
     {
-         if ($this->isNewRecord)
-         {
+        if ($this->isNewRecord) {
             return null; // this avoid calling a query searching for null primary keys
         }
 
