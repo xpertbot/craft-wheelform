@@ -8,20 +8,6 @@ use wheelform\validators\JsonValidator;
 
 class FormField extends ActiveRecord
 {
-
-    const FIELD_TYPES = [
-        'text',
-        'textarea',
-        'email',
-        'number',
-        'checkbox',
-        'radio',
-        'hidden',
-        'select',
-        'file',
-        'list',
-    ];
-
     public static function tableName(): String
     {
         return '{{%wheelform_form_fields}}';
@@ -38,7 +24,7 @@ class FormField extends ActiveRecord
                 'message' => Craft::t('wheelform', '{attribute} must be a number.')],
             [['active'], 'default', 'value' => 1],
             [['required', 'index_view'], 'default', 'value' => 0],
-            ['type', 'in', 'range' => self::FIELD_TYPES],
+            ['type', 'in', 'range' => array_keys(self::getFieldTypeClasses())],
             ['options', JsonValidator::class],
         ];
     }
@@ -77,6 +63,22 @@ class FormField extends ActiveRecord
                 'class' => JsonFieldBehavior::class,
                 'attributes' => ['options'],
             ]
+        ];
+    }
+
+    public static function getFieldTypeClasses()
+    {
+        return  [
+            'text' => \wheelform\models\fields\Text::class,
+            'textarea' => \wheelform\models\fields\Textarea::class,
+            'checkbox' => \wheelform\models\fields\Checkbox::class,
+            'email' => \wheelform\models\fields\Email::class,
+            'file' => \wheelform\models\fields\File::class,
+            'hidden' => \wheelform\models\fields\Hidden::class,
+            'list' => \wheelform\models\fields\ListField::class,
+            'number' => \wheelform\models\fields\Number::class,
+            'radio' => \wheelform\models\fields\Radio::class,
+            'select' => \wheelform\models\fields\Select::class,
         ];
     }
 }

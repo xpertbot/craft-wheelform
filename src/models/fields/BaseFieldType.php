@@ -2,13 +2,9 @@
 namespace wheelform\models\fields;
 
 use Craft;
-use wheelform\interfaces\FieldInterface;
-use yii\base\Model;
 
-abstract class BaseFieldType extends Model implements FieldInterface
+abstract class BaseFieldType
 {
-    public $class;
-
     public $name;
 
     public $type;
@@ -29,9 +25,8 @@ abstract class BaseFieldType extends Model implements FieldInterface
 
     public $value;
 
-    public function init()
+    public function __construct()
     {
-        $this->class = get_class($this);
         $this->config = $this->getFieldConfig();
     }
 

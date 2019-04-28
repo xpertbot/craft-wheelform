@@ -57,7 +57,7 @@
 {% js at head %}
     window.Wheelform = {
         form_id: {{ form.id ? form.id : 0 }},
-        fieldTypes: {{ fieldTypes | json_encode | raw }}
+        fieldTypes: {{ fieldTypes | raw }}
     }
 {% endjs %}
 

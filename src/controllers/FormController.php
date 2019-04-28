@@ -12,6 +12,7 @@ use wheelform\helpers\ExportHelper;
 use wheelform\models\tools\ImportFile;
 
 use yii\base\Exception;
+use yii\helpers\Json;
 use yii\web\HttpException;
 use yii\web\Response;
 use Yii;
@@ -47,7 +48,7 @@ class FormController extends BaseController
         $this->requirePermission('wheelform_new_form');
 
         $form = new Form();
-        $fieldTypes = $this->getFieldTypes();
+        $fieldTypes = Json::encode($this->getFieldTypes());
          // Render the template
          return $this->renderTemplate('wheelform/_edit-form.twig', [
             'form' => $form,
@@ -72,7 +73,7 @@ class FormController extends BaseController
 
         $this->requirePermission('wheelform_change_settings_' . $form->id);
 
-        $fieldTypes = $this->getFieldTypes();
+        $fieldTypes = Json::encode($this->getFieldTypes());
 
         // Render the template
         return $this->renderTemplate('wheelform/_edit-form.twig', [

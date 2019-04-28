@@ -16,6 +16,7 @@ use wheelform\models\fields\Radio;
 use wheelform\models\fields\Select;
 
 use wheelform\events\RegisterFieldsEvent;
+use wheelform\db\FormField;
 
 class BaseController extends Controller
 {
@@ -24,18 +25,7 @@ class BaseController extends Controller
 
     protected function getFieldTypes()
     {
-        $fields = [
-            Text::class,
-            Textarea::class,
-            Checkbox::class,
-            Email::class,
-            File::class,
-            Hidden::class,
-            ListField::class,
-            Number::class,
-            Radio::class,
-            Select::class,
-        ];
+        $fields = FormField::getFieldTypeClasses();
 
         $event = new RegisterFieldsEvent([
             'fields' => $fields
