@@ -25,15 +25,11 @@ class FormService extends BaseService
 
     private $method = 'post';
 
-    private $buttonLabel;
-
     private $submitButton;
 
     private $_attributes;
 
     private $values;
-
-    private $styleClass;
 
     /**
      * @var boolean
@@ -73,11 +69,6 @@ class FormService extends BaseService
         }
 
         $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
-
-        if(! empty($this->buttonLabel) ) {
-            Craft::$app->getDeprecator()->log('wheelform.open({buttonLabel: "label"})', 'wheelform.open buttonLabel for the form attributes will be deprecated. Use submitButton array instead.');
-            $this->submitButton['label'] = $this->buttonLabel;
-        }
 
         $params = Craft::$app->getUrlManager()->getRouteParams();
 
@@ -233,11 +224,6 @@ class FormService extends BaseService
         $this->method = $value;
     }
 
-    public function setButtonLabel($value)
-    {
-        $this->buttonLabel = $value;
-    }
-
     public function setSubmitButton($value)
     {
         $this->submitButton = $value;
@@ -246,12 +232,6 @@ class FormService extends BaseService
     public function setAttributes($value)
     {
         $this->_attributes = $value;
-    }
-
-    public function setStyleClass($value)
-    {
-        Craft::$app->getDeprecator()->log('wheelform.open({styleClass: "styles"})', 'wheelform.open styleClass for the form attributes will be deprecated. Use Attributes array instead.');
-        $this->styleClass = $value;
     }
 
     /**
@@ -278,7 +258,7 @@ class FormService extends BaseService
     {
         $defaultAttributes = [
             'id' => $this->generateId(),
-            'class' => (empty($this->styleClass) ? "" : $this->styleClass),
+            'class' => '',
         ];
 
         $attributes = [];
@@ -287,17 +267,8 @@ class FormService extends BaseService
             $this->_attributes = [];
         }
 
-        if(! empty($this->_attributes) && ! is_array($this->_attributes)) {
-            Craft::$app->getDeprecator()->log('wheelform.open({attributes: "attribute"})', 'wheelform.open attributes for the form as strings will be deprecated. Use Attribute Key:Value array instead');
-            $userAttributes = explode(' ', $this->_attributes);
-        } else {
+        if(! empty($this->_attributes) && is_array($this->_attributes)) {
             $userAttributes = $this->_attributes;
-        }
-
-        if($this->hasStringKeys($userAttributes)) {
-            Craft::$app->getDeprecator()->log('wheelform.open({attributes: ["attribute"]})', 'wheelform.open attributes for the form as array of strings will be deprecated. Use Attribute Key:Value array instead');
-            $attributes = array_merge($defaultAttributes, $userAttributes);
-        } else {
             // Attributes are values in the array as strings
             $attributes = $defaultAttributes;
             foreach($userAttributes as $attr) {
@@ -395,10 +366,6 @@ class FormService extends BaseService
         }
 
         return $html;
-    }
-
-    protected function hasStringKeys(array $array) {
-        return count(array_filter(array_keys($array), 'is_string')) > 0;
     }
 
     protected function handleScripts()
