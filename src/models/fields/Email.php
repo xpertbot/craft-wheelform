@@ -9,13 +9,6 @@ class Email extends BaseFieldType
 
     public $type = "email";
 
-    public function getFieldRules()
-    {
-        return [
-            ['value', 'email', 'message' => $this->label.Craft::t('wheelform', ' is not a valid email address.')],
-        ];
-    }
-
     public function getConfig()
     {
         return [

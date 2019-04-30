@@ -1,8 +1,6 @@
 <?php
 namespace wheelform\models\fields;
 
-use Craft;
-
 abstract class BaseFieldType
 {
     public $name;
@@ -30,19 +28,6 @@ abstract class BaseFieldType
         $this->config = $this->getFieldConfig();
     }
 
-    public function rules()
-    {
-        $customRules = $this->getFieldRules();
-        $rules = [
-            ['value', 'required', 'when' => function($model){
-                    return (bool) $model->required;
-                }, 'message' => $this->label . Craft::t('wheelform', ' cannot be blank.')
-            ]
-        ];
-
-        return array_merge_recursive($rules, $customRules);
-    }
-
     final public function getFieldConfig()
     {
         $default = [
@@ -67,5 +52,10 @@ abstract class BaseFieldType
         ];
 
         return array_merge_recursive($default, $this->getConfig());
+    }
+
+    public function getConfig()
+    {
+        return [];
     }
 }

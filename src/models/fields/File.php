@@ -5,18 +5,7 @@ use craft\base\Model;
 
 class File extends Model
 {
-    public $name;
+    public $name = "File";
 
-    public $filePath;
-
-    public $assetId;
-
-    public function rules()
-    {
-        return [
-            [['name', 'filePath'], 'string'],
-            [['name', 'filePath'], 'required'],
-            ['assetId', 'integer'],
-        ];
-    }
+    public $type = "file";
 }

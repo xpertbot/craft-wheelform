@@ -3,18 +3,12 @@ namespace wheelform\controllers;
 
 use Craft;
 
-use craft\elements\Asset;
-use craft\helpers\Assets;
-use craft\web\UploadedFile;
-use craft\errors\UploadFailedException;
 use wheelform\events\MessageEvent;
 use wheelform\db\Form;
 use wheelform\db\Message;
-use wheelform\models\fields\File;
 use wheelform\db\MessageValue;
 use wheelform\Plugin;
 use yii\web\HttpException;
-use yii\web\BadRequestHttpException;
 
 class MessageController extends BaseController
 {
@@ -86,64 +80,12 @@ class MessageController extends BaseController
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;
+                $messageValue->value = $request->getBodyParam($field->name, null);
 
-                if($field->type == "file") {
-                    $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
-                    $uploadedFile = UploadedFile::getInstanceByName($field->name);
-                    $fileModel = $uploadedFile;
-                    if($uploadedFile) {
-                        $fileModel = new File();
-                        try {
-                            $assets = Craft::$app->getAssets();
-                            $tempPath = $this->_getUploadedFileTempPath($uploadedFile);
-                            //No folder to upload files has been selected
-                            if(! is_numeric($folder_id)) {
-                                $fileModel->name = $uploadedFile->name;
-                                $fileModel->filePath = $tempPath;
-                            } else {
-                                $folder = $assets->getRootFolderByVolumeId($folder_id);;
-                                if (!$folder) {
-                                    throw new BadRequestHttpException('The target folder provided for uploading is not valid');
-                                }
-                                $tempName = $uploadedFile->baseName . '_'. uniqid() .'.' . $uploadedFile->extension;
-                                $filename = Assets::prepareAssetName($tempName);
-
-                                $asset = new Asset();
-                                $asset->tempFilePath = $tempPath;
-                                $asset->filename = $filename;
-                                $asset->newFolderId = $folder->id;
-                                $asset->volumeId = $folder->volumeId;
-                                $asset->avoidFilenameConflicts = true;
-                                $asset->setScenario(Asset::SCENARIO_CREATE);
-
-                                $result = Craft::$app->getElements()->saveElement($asset);
-
-                                if($result) {
-                                    $volume = $asset->getVolume();
-                                    $fileModel->name = $asset->filename;
-                                    $fileModel->filePath = $volume->getRootPath() . '/' . $asset->filename;
-                                    $fileModel->assetId = $asset->id;
-                                    if($fileModel->validate()) {
-                                        Craft::warning('File not uploaded', 'wheelform');
-                                    }
-                                }
-                            }
-                        } catch (\Throwable $exception) {
-                            Craft::error('An error occurred when saving an asset: ' . $exception->getMessage(), __METHOD__);
-                            Craft::$app->getErrorHandler()->logException($exception);
-                            return $exception->getMessage();
-                        }
-                    }
-
-                    $messageValue->value = (empty($fileModel) ? NULL : $fileModel );
-                } else {
-                    $messageValue->value = $request->getBodyParam($field->name, null);
-                }
-
-                if(! $messageValue->validate()) {
-                    $errors[$field->name] = $messageValue->getErrors('value');
-                } else {
+                if($messageValue->validate()) {
                     $entryValues[] = $messageValue;
+                } else {
+                    $errors[$field->name] = $messageValue->getErrors('value');
                 }
             }
         }
@@ -260,25 +202,5 @@ class MessageController extends BaseController
         $resp = json_decode($jsonRes);
 
         return $resp->success;
-    }
-
-    private function _getUploadedFileTempPath(UploadedFile $uploadedFile)
-    {
-        if ($uploadedFile->getHasError()) {
-            throw new UploadFailedException($uploadedFile->error);
-        }
-
-        // Move the uploaded file to the temp folder
-        try {
-            $tempPath = $uploadedFile->saveAsTempFile();
-        } catch (ErrorException $e) {
-            throw new UploadFailedException(0);
-        }
-
-        if ($tempPath === false) {
-            throw new UploadFailedException(UPLOAD_ERR_CANT_WRITE);
-        }
-
-        return $tempPath;
     }
 }
