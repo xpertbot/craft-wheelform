@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0 - 2019-04-29
+### Improved
+- Improved Form Field configuration page.
+- Improved Field Configuration options
+- Faster Form Submission
+
 ## 1.25.3 - 2019-04-07
 ### Fixed
 - Fixed Bug on Form Service
