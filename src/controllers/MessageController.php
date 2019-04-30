@@ -76,6 +76,7 @@ class MessageController extends BaseController
         }
 
         if(empty($errors)) {
+            // Get Form Fields to validate them
             foreach ($this->formModel->fields as $field) {
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
@@ -88,6 +89,7 @@ class MessageController extends BaseController
                     $errors[$field->name] = $messageValue->getErrors('value');
                 }
             }
+
         }
 
         if (! empty($errors)) {
@@ -108,11 +110,13 @@ class MessageController extends BaseController
             }
         }
 
+        //Trigger Event to allow plugins to modify fields before being saved to the database
         $event = new MessageEvent([
             'form_id' => $this->formModel->id,
             'message' => $entryValues
         ]);
         $this->trigger(self::EVENT_BEFORE_SAVE, $event);
+
         // Values for Mailer
         $senderValues = [];
 
@@ -128,16 +132,8 @@ class MessageController extends BaseController
                 $senderValues[$field->name] = [
                     'label' => $field->getLabel(),
                     'type' => $field->type,
+                    'value' => $eventValue->value,
                 ];
-                switch($field->type) {
-                    case "file":
-                        $senderValues[$field->name]['value'] = (empty($eventValue->value) ? NULL : json_encode($eventValue->value) );
-                        break;
-
-                    default:
-                        $senderValues[$field->name]['value'] = $eventValue->value;
-                        break;
-                }
 
                 if(boolval($this->formModel->save_entry)) {
                     $message->link('value', $eventValue);

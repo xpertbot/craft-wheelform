@@ -11,9 +11,9 @@ use craft\errors\UploadFailedException;
 
 use wheelform\Plugin;
 
-use yii\web\UploadedFile;
 use yii\web\BadRequestHttpException;
 use yii\base\ErrorException;
+use craft\web\UploadedFile;
 
 //Using Active Record because it extends Models.
 class MessageValue extends ActiveRecord
@@ -114,7 +114,7 @@ class MessageValue extends ActiveRecord
     public function afterValidate()
     {
         if(! empty($this->value) && $this->field->type == FormField::FILE_SCENARIO) {
-            $this->uploadFile();
+            $this->value = $this->uploadFile();
         }
 
         parent::afterValidate();
@@ -124,18 +124,14 @@ class MessageValue extends ActiveRecord
     {
         if($this->field->type == FormField::CHECKBOX_SCENARIO && ! empty($this->value)) {
             $this->value = implode(', ', $this->value);
-        } else if(
-                ($this->field->type == FormField::LIST_SCENARIO || $this->field->type == FormField::FILE_SCENARIO)
-                && !empty($this->value)
-            ) {
-
+        } elseif (!empty($this->value) && $this->field->type == FormField::LIST_SCENARIO) {
             $this->value = json_encode($this->value);
         }
 
         return parent::beforesave($insert);
     }
 
-    private function uploadFile()
+    protected function uploadFile()
     {
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
@@ -183,11 +179,10 @@ class MessageValue extends ActiveRecord
         $fileModel->filePath = $filePath;
         $fileModel->assetId = $assetId;
 
-
-        $this->value = $fileModel;
+        return json_encode($fileModel);
     }
 
-    private function _getUploadedFileTempPath(UploadedFile $uploadedFile)
+    protected function _getUploadedFileTempPath(UploadedFile $uploadedFile)
     {
         if ($uploadedFile->getHasError()) {
             throw new UploadFailedException($uploadedFile->error);
