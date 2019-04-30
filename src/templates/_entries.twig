@@ -78,7 +78,20 @@
                             {% for field in headerFields %}
                                 <td>
                                 {% set messageValue = entry.getValueById(field.id) %}
-                                {{ messageValue is not empty ? messageValue.value|nl2br : '' }}
+                                {% if messageValue is not empty %}
+                                    {% switch field.type %}
+                                        {% case "list" %}
+                                            {% if messageValue.getValue() %}
+                                                <ul>
+                                                    {% for item in messageValue.getValue() %}
+                                                        <li>{{ item }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        {% default %}
+                                            {{ messageValue.getValue()|nl2br }}
+                                    {% endswitch %}
+                                {% endif %}
                                 </td>
                             {% endfor %}
                         {% endif %}
