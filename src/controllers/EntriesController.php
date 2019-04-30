@@ -14,6 +14,7 @@ use yii\web\HttpException;
 use yii\base\Exception;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
+use craft\helpers\UrlHelper;
 
 class EntriesController extends Controller
 {
@@ -80,7 +81,8 @@ class EntriesController extends Controller
         return $this->renderTemplate('wheelform/_entry.twig', [
             'messageValues' => $messageValues,
             'entry' => $message,
-            'form_id' => $message->form->id
+            'form_id' => $message->form->id,
+            'backUrl' => UrlHelper::cpUrl('wheelform/form/'.$message->form->id.'/entries'),
         ]);
     }
 
