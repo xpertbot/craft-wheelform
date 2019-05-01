@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import Lightswitch from './Lightswitch.vue';
+import Lightswitch from '../Lightswitch.vue';
 import { debounce } from 'lodash';
 
 export default {

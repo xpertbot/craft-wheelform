@@ -38,7 +38,8 @@
                             @end="onDragEnd"
                             @add="onDragAdd"
                             class="field-container mb-20">
-                            <Field
+
+                            <component
                                 v-for="(field, index) in form.fields"
                                 :key="index"
                                 :index="index"
@@ -52,7 +53,8 @@
                                 @validate-name="validateFieldName"
                                 @update-field-property="updateFieldProperty"
                                 @update-field-option="handleFieldOptionChange"
-                            />
+                                :is="field.fieldComponent" />
+
                         </draggable>
                     </div>
                     <div class="col-sm-4">
@@ -87,13 +89,11 @@
 import axios from 'axios';
 import draggable from 'vuedraggable';
 import toastr from 'toastr';
-import Field from './Field.vue';
 import Settings from './Settings.vue';
 
 export default {
     components:{
         draggable,
-        Field,
         Settings,
     },
     data() {
@@ -133,7 +133,7 @@ export default {
                 if(res.data) {
                     const form = JSON.parse(res.data);
                     if(form) {
-                        form.options = Object.assign(this.getDefaultFormOptions(), JSON.parse(form.options));
+                        form.options = Object.assign(this.getDefaultFormOptions(), form.options);
                         //parse fields
                         for (let index = 0; index < form.fields.length; index++) {
                             // only get options that belong to that fieldType
@@ -146,7 +146,7 @@ export default {
                             }
 
                             let fieldOptions = this.getOptionsFromConfig(fieldType.config);
-                            const options = form.fields[index].options ? JSON.parse(form.fields[index].options) : {};
+                            const options = form.fields[index].options ? form.fields[index].options : {};
 
                             //set Options from database
                             Object.keys(options).forEach((key) => {

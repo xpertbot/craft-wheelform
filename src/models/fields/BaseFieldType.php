@@ -23,12 +23,14 @@ abstract class BaseFieldType
 
     public $value;
 
+    public $fieldComponent = 'Field';
+
     public function __construct()
     {
         $this->config = $this->getFieldConfig();
     }
 
-    final public function getFieldConfig()
+    public function getFieldConfig()
     {
         $default = [
             [

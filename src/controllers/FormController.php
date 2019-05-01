@@ -183,11 +183,36 @@ class FormController extends BaseController
             throw new HttpException(404);
         }
 
-        $form = Form::find()->where(['id' => $formId])->with('fields')->asArray()->one();
+        $form = Form::find()->where(['id' => $formId])->with('fields')->one();
+        $data = [
+            'id' => $form->id,
+            'name' => $form->name,
+            'to_email' => $form->to_email,
+            'active' => $form->active,
+            'send_email' => $form->send_email,
+            'recaptcha' => $form->recaptcha,
+            'save_entry' => $form->save_entry,
+            'options' => (!empty($form->options) ? json_decode($form->options) : NULL),
+        ];
+
+        foreach($form->fields as $field) {
+            $data['fields'][] = [
+                'id' => $field->id,
+                'form_id' => $field->form_id,
+                'name' => $field->name,
+                'type' => $field->type,
+                'required' => $field->required,
+                'index_view' => $field->index_view,
+                'order' => $field->order,
+                'active' => $field->active,
+                'options' => (!empty($field->options) ? json_decode($field->options) : NULL),
+                'fieldComponent' => $field->fieldComponent,
+            ];
+        }
 
         $response = Yii::$app->getResponse();
         $response->format = Response::FORMAT_JSON;
-        $response->data = json_encode($form, JSON_NUMERIC_CHECK);
+        $response->data = json_encode($data, JSON_NUMERIC_CHECK);
 
         return $response;
     }

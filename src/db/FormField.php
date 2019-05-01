@@ -19,6 +19,9 @@ class FormField extends ActiveRecord
     const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";
+    const HTML_SCENARIO = "html";
+
+    public $fieldComponent = "Field";
 
     public static function tableName(): String
     {
@@ -91,6 +94,7 @@ class FormField extends ActiveRecord
             self::NUMBER_SCENARIO => \wheelform\models\fields\Number::class,
             self::RADIO_SCENARIO => \wheelform\models\fields\Radio::class,
             self::SELECT_SCENARIO => \wheelform\models\fields\Select::class,
+            self::HTML_SCENARIO => \wheelform\models\fields\HtmlField::class,
         ];
     }
 }
