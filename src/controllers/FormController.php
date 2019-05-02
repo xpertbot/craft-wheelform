@@ -206,7 +206,7 @@ class FormController extends BaseController
                 'order' => $field->order,
                 'active' => $field->active,
                 'options' => (!empty($field->options) ? json_decode($field->options) : NULL),
-                'fieldComponent' => $field->fieldComponent,
+                'fieldComponent' => $field->model->fieldComponent,
             ];
         }
 

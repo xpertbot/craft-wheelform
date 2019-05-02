@@ -1,9 +1,7 @@
 <?php
 namespace wheelform\models\fields;
 
-use craft\base\Model;
-
-class File extends Model
+class File extends BaseFieldType
 {
     public $name = "File";
 
