@@ -2,7 +2,7 @@
 <div class="wheelform-field" :style="getFieldStyle">
     <div class="field-details">
         <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
-        <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }}</a>
+        <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }} <small class="pull-right">{{type}}</small></a>
     </div>
     <div class="field-content" v-show="isActive">
         <div>
@@ -79,7 +79,6 @@
 
 <script>
 import Lightswitch from '../Lightswitch.vue';
-import { debounce } from 'lodash';
 
 export default {
     props: [

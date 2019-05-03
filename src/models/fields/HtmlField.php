@@ -11,6 +11,13 @@ class HtmlField extends BaseFieldType
 
     public function getFieldConfig()
     {
-        return [];
+        return [
+            [
+                'name' => 'content',
+                'type' => 'text',
+                'label' => '',
+                'value' => '',
+            ],
+        ];
     }
 }

@@ -137,6 +137,11 @@ th.text-center, td.text-center {
             color: #333;
             font-weight: bold;
             display: block;
+            > small {
+                user-select: none;
+                font-weight: normal;
+                font-size: 12px;
+            }
         }
     }
     .field-type {
