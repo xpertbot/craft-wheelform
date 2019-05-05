@@ -31,7 +31,12 @@ module.exports = {
                     use: [
                         { loader: 'css-loader', options: { importLoaders: 1 } },
                         'postcss-loader',
-                        'sass-loader'
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                implementation: require("sass")
+                            }
+                        },
                     ]
                 })
             }

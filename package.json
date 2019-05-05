@@ -7,7 +7,7 @@
     "codemirror": "^5.46.0",
     "css-loader": "^2.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "node-sass": "^4.9.0",
+    "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.21.0",
     "toastr": "^2.1.4",

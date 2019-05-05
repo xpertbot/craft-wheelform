@@ -9,6 +9,7 @@ use wheelform\db\Message;
 use wheelform\db\MessageValue;
 use wheelform\Plugin;
 use yii\web\HttpException;
+use wheelform\db\FormField;
 
 class MessageController extends BaseController
 {
@@ -75,9 +76,13 @@ class MessageController extends BaseController
             }
         }
 
+        $visualFields = FormField::getVisualFields();
         if(empty($errors)) {
             // Get Form Fields to validate them
             foreach ($this->formModel->fields as $field) {
+                if(in_array($field->type, $visualFields)) {
+                    continue;
+                }
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;

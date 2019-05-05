@@ -129,6 +129,11 @@ class FieldService extends BaseService
         $html = "<div class=\"wf-group {$this->containerClass}\">";
         switch($this->type)
         {
+            case "html":
+                if(! empty($this->options->content)) {
+                    $html .= Template::raw($this->options->content);
+                }
+                break;
             case "radio":
                 if(empty($this->items)) {
                     break;
@@ -220,9 +225,16 @@ class FieldService extends BaseService
                 }
                 $html .= "</div>";
                 break;
+            case 'hidden':
+                // Hidden doesn't put a label
+                $html .= Html::input($this->type, $this->name, $this->value, [
+                    'id' => $this->generateId(),
+                    'placeholder' => $this->getPlaceholder(),
+                    'class' => 'wf-field ' . $this->fieldClass,
+                ]);
+                break;
             case 'email':
             case 'text':
-            case 'hidden':
                 // Email, Text, Hidden
                 $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
                 $html .= Html::input($this->type, $this->name, $this->value, [
