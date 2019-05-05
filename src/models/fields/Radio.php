@@ -13,6 +13,12 @@ class Radio extends BaseFieldType
     {
         return [
             [
+                'name' => 'display_label',
+                'type' => 'boolean',
+                'label' => 'Display group label',
+                'value' => '',
+            ],
+            [
                 'name' => 'items',
                 'type' => 'list',
                 'label' => 'Options',

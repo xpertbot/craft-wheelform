@@ -139,6 +139,12 @@ class FieldService extends BaseService
                     break;
                 }
 
+                if(! empty($this->options->display_label)) {
+                    $html .= '<div class="wf-group-heading">' . Html::label($this->getLabel(), null, [
+                        'class' => 'wf-label',
+                    ]) . '</div>';
+                }
+
                 foreach($this->items as $key => $item) {
                     $html .= '<div class="wf-radio">';
                     $html .= Html::radio($this->name, ($item == $this->value), [
@@ -154,8 +160,7 @@ class FieldService extends BaseService
 
                 break;
             case "checkbox":
-                if(empty($this->items))
-                {
+                if(empty($this->items)) {
                     break;
                 }
                 if(! is_array($this->value)) {
@@ -166,6 +171,11 @@ class FieldService extends BaseService
 
                 foreach($this->items as $key => $item) {
                     $html .= '<div class="wf-checkbox">';
+                    if(! empty($this->options->display_label)) {
+                        $html .= '<div class="wf-group-heading">' . Html::label($this->getLabel(), null, [
+                            'class' => 'wf-label',
+                        ]) . '</div>';
+                    }
                     $html .= Html::checkbox($this->name . '[]', in_array($item, $value), [
                         'id' => "wf-checkbox-" . $this->order . '-' . $key,
                         'class' => 'wf-field '.$this->fieldClass,
@@ -184,7 +194,7 @@ class FieldService extends BaseService
                 $html .= '<div class="wf-select">';
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
                 $html .= "<select id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\">";
-                if($this->options->selectEmpty) {
+                if(!empty($this->options->selectEmpty) && (bool) $this->options->selectEmpty) {
                     $html .= "<option value=\"\"> -- </option>";
                 }
                 foreach($this->items as $key => $item) {

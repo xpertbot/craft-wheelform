@@ -13,6 +13,12 @@ class Select extends BaseFieldType
     {
         return [
             [
+                'name' => 'selectEmpty',
+                'type' => 'boolean',
+                'label' => 'Select Empty',
+                'value' => false,
+            ],
+            [
                 'name' => 'validate',
                 'type' => 'boolean',
                 'label' => 'Validate Options',
