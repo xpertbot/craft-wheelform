@@ -11,7 +11,14 @@
             </div>
             <div>
                 <label>{{'Content'|t('app')}}:</label>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <Editor
+                    :value="options.content"
+                    @input="handleEditorUpdate"
+                    :options="{
+                        lineNumbers: true,
+                        mode: 'text/html',
+                    }"
+                ></Editor>
             </div>
         </div>
     </div>
@@ -54,8 +61,8 @@ export default {
         updateFieldProperty(property, value) {
             this.$emit('update-field-property', this.index, property, value);
         },
-        updateFieldOptionProperty(property, value) {
-            this.$emit('update-field-option',this.index, property, value);
+        handleEditorUpdate(value) {
+            this.$emit('update-field-option',this.index, 'content', value);
         },
     }
 }
