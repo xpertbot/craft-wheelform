@@ -169,13 +169,14 @@ class FieldService extends BaseService
                     $value = $this->value;
                 }
 
+                if(! empty($this->options->display_label)) {
+                    $html .= '<div class="wf-group-heading">' . Html::label($this->getLabel(), null, [
+                        'class' => 'wf-label',
+                    ]) . '</div>';
+                }
+
                 foreach($this->items as $key => $item) {
                     $html .= '<div class="wf-checkbox">';
-                    if(! empty($this->options->display_label)) {
-                        $html .= '<div class="wf-group-heading">' . Html::label($this->getLabel(), null, [
-                            'class' => 'wf-label',
-                        ]) . '</div>';
-                    }
                     $html .= Html::checkbox($this->name . '[]', in_array($item, $value), [
                         'id' => "wf-checkbox-" . $this->order . '-' . $key,
                         'class' => 'wf-field '.$this->fieldClass,
@@ -203,14 +204,14 @@ class FieldService extends BaseService
                 $html .= '</select></div>';
                 break;
             case "file":
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-field']);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
                 $html .= Html::fileInput($this->name, null, [
                     'id' => $this->generateId(),
                     'class' => "wf-field " . $this->fieldClass,
                 ]);
                 break;
             case "textarea":
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-field']);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
                 $html .= Html::textarea($this->name, $this->value, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
