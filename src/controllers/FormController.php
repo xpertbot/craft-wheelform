@@ -19,6 +19,16 @@ use Yii;
 
 class FormController extends BaseController
 {
+    protected $settings;
+    public function init()
+    {
+        $this->settings = Plugin::getInstance()->getSettings();
+        if (!$this->settings->validate()) {
+            Craft::$app->getSession()->setError(Craft::t('wheelform', 'Plugin settings need to be configured.'));
+        }
+
+        parent::init();
+    }
 
     function actionIndex()
     {
@@ -32,14 +42,11 @@ class FormController extends BaseController
             }
         }
 
-        $settings = Plugin::getInstance()->getSettings();
-        if (!$settings->validate()) {
-            Craft::$app->getSession()->setError(Craft::t('wheelform', 'Plugin settings need to be configured.'));
-        }
+
 
         return $this->renderTemplate('wheelform/_index.twig', [
             'wheelforms' => $forms,
-            'title' => $settings->cp_label,
+            'title' => $this->settings->cp_label,
         ]);
     }
 
@@ -53,6 +60,7 @@ class FormController extends BaseController
          return $this->renderTemplate('wheelform/_edit-form.twig', [
             'form' => $form,
             'fieldTypes' => $fieldTypes,
+            'CPLabel' => $this->settings->cp_label,
         ]);
     }
 
@@ -79,6 +87,7 @@ class FormController extends BaseController
         return $this->renderTemplate('wheelform/_edit-form.twig', [
             'form' => $form,
             'fieldTypes' => $fieldTypes,
+            'CPLabel' => $this->settings->cp_label,
         ]);
     }
 
