@@ -245,6 +245,7 @@ class FieldService extends BaseService
                 ]);
                 break;
             case 'email':
+            case 'number':
             case 'text':
                 // Email, Text, Hidden
                 $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
