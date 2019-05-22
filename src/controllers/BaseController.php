@@ -11,7 +11,7 @@ use wheelform\db\FormField;
 class BaseController extends Controller
 {
 
-    public const EVENT_REGISTER_FIELD_TYPES = "registerFieldTypes";
+    const EVENT_REGISTER_FIELD_TYPES = "registerFieldTypes";
 
     protected function getFieldTypes()
     {
