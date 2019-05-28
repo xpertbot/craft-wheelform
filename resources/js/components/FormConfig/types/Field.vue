@@ -8,7 +8,7 @@
         <div>
             <label class="required">{{'Name'|t('wheelform')}}:</label>
             <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
-            <p v-show="! isValidName.status" style="color: #da5a47">{{ isValidName.msg }}</p>
+            <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
         </div>
         <div>
             <Lightswitch
@@ -89,13 +89,10 @@ export default {
         "index_view",
         "options",
         "config",
+        "errors",
     ],
     data(){
         return {
-            isValidName: {
-                status: true,
-                msg: ''
-            },
             newOption: '',
             isActive: false,
         }
@@ -117,15 +114,7 @@ export default {
             label = label.replace(/-/g, ' ');
             label = label.charAt(0).toUpperCase() + label.slice(1);
             return label;
-        },
-        validateName()
-        {
-            this.isValidName = this.validateNameCallback(this.name);
-            if(this.isValidName.status)
-            {
-                this.$emit('update-field-property', this.index, 'name', this.name)
-            }
-        },
+        }
     },
     methods: {
         handleStatusChange(key, boolValue)
@@ -172,6 +161,12 @@ export default {
             let items = this.options.items;
             items.splice(items.indexOf(value), 1);
             this.$emit('update-field-option', this.index, 'items', items);
+        },
+        getErrorFor(property) {
+            if(this.errors[property]) {
+                return this.errors[property];
+            }
+            return null;
         }
     }
 }

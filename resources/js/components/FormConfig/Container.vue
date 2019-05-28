@@ -49,8 +49,8 @@
                                 :options="field.options"
                                 :config="field.config"
                                 :type="field.type"
+                                :errors="field.errors"
                                 @delete-field="form.fields.splice(index, 1)"
-                                @validate-name="validateFieldName"
                                 @update-field-property="updateFieldProperty"
                                 @update-field-option="handleFieldOptionChange"
                                 :is="field.fieldComponent" />
@@ -155,6 +155,7 @@ export default {
                                 }
                             });
 
+                            form.fields[index].errors = {};
                             form.fields[index].config = fieldType.config;
                             form.fields[index].options = fieldOptions;
                         }
@@ -174,7 +175,9 @@ export default {
     },
     methods: {
         clone(fieldType) {
-            let field = Object.assign({}, fieldType);
+            let field = Object.assign({
+                errors: {},
+            }, fieldType);
             field.options = this.getOptionsFromConfig(fieldType.config);
             return field;
         },
@@ -194,26 +197,20 @@ export default {
 
             if(result.length > 0)
             {
-                return {
-                    status: false,
-                    msg: Craft.t('wheelform', 'Name is not unique')
-                }
+                return Craft.t('wheelform', 'Name is not unique')
             }
 
             if(userInput.indexOf(' ') >= 0){
-                return {
-                    status: false,
-                    msg: Craft.t('wheelform', 'Name contains whitespaces')
-                }
+                return Craft.t('wheelform', 'Name contains whitespaces')
             }
 
-            return {
-                status: true,
-                msg: ''
-            }
+            return null;
         },
         updateFieldProperty(index, property, value)
         {
+            if(property == 'name') {
+                this.form.fields[index].errors.name = this.validateFieldName(value);
+            }
             this.form.fields[index][property] = value;
         },
         activeTabClasses(view) {

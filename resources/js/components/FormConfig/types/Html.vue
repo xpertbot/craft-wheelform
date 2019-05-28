@@ -8,6 +8,7 @@
             <div>
                 <label class="required">{{'Name'|t('wheelform')}}:</label>
                 <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
+                <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
             </div>
             <div>
                 <label>{{'Content'|t('app')}}:</label>
@@ -34,6 +35,7 @@ export default {
         "index_view",
         "options",
         "config",
+         "errors",
     ],
     components: {
 
@@ -64,6 +66,12 @@ export default {
         handleEditorUpdate(value) {
             this.$emit('update-field-option',this.index, 'content', value);
         },
+        getErrorFor(property) {
+            if(this.errors[property]) {
+                return this.errors[property];
+            }
+            return null;
+        }
     }
 }
 </script>
