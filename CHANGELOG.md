@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Improved Field Configuration options
 - Faster Form Submission
 
+### Added
+- Added new HTMl Field
+- Added French Translation (@timbertens)
+
 ## 1.25.3 - 2019-04-07
 ### Fixed
 - Fixed Bug on Form Service
