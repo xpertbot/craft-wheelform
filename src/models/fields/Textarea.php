@@ -8,4 +8,16 @@ class Textarea extends BaseFieldType
     public $name = "Textarea";
 
     public $type = "textarea";
+
+    public function getConfig()
+    {
+        return [
+            [
+                'name' => 'placeholder',
+                'type' => 'text',
+                'label' => 'Placeholder',
+                'value' => '',
+            ]
+        ];
+    }
 }
