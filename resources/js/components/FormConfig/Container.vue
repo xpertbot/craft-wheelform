@@ -135,6 +135,7 @@ export default {
                     if(form) {
                         form.options = Object.assign(this.getDefaultFormOptions(), form.options);
                         //parse fields
+                        form.fields = form.fields ? form.fields : [];
                         for (let index = 0; index < form.fields.length; index++) {
                             // only get options that belong to that fieldType
                             const fieldType = this.fieldTypes.find((fieldType) => {
