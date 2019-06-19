@@ -194,6 +194,11 @@ class FormService extends BaseService
         return $this->id;
     }
 
+    public function getName()
+    {
+        return $this->instance->name;
+    }
+
     //Setters
     public function setConfig($config)
     {

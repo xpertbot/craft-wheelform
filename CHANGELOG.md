@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.0 - 2019-06-19
+### Added
+- Added ability to use Aliases inside Recaptcha fields.
+- Added `name` variable for individual forms.
+### Fixed
+- Fixed typo in README
+
 ## 2.0.2 - 2019-05-05
 ### Fixed
 - Fixed placeholder for Email and Textarea
