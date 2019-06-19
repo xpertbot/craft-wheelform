@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Added `name` variable for individual forms.
 ### Fixed
 - Fixed typo in README
+- Fixed error on new forms with no fields present
 
 ## 2.0.2 - 2019-05-05
 ### Fixed
