@@ -104,14 +104,14 @@ class FormService extends BaseService
     {
         $html = '';
         $settings = Wheelform::getInstance()->getSettings();
-
-        if(intval($this->instance->recaptcha) && ! empty($settings['recaptcha_public'])) {
+        $recaptcha_public = empty($settings['recaptcha_public']) ? "" : Craft::parseEnv($settings['recaptcha_public']);
+        if(intval($this->instance->recaptcha) && ! empty($recaptcha_public)) {
             if(! empty($settings['recaptcha_version'] && $settings['recaptcha_version'] == '3')) {
                 $html .= $this->renderRecaptchaV3Event();
             } else {
                 $html .= "<div>";
                 $html .= Html::jsFile('https://www.google.com/recaptcha/api.js');
-                $html .= "<div class=\"g-recaptcha\" data-sitekey=\"{$settings['recaptcha_public']}\"></div>";
+                $html .= "<div class=\"g-recaptcha\" data-sitekey=\"{$recaptcha_public}\"></div>";
                 $html .= "</div>";
             }
         }

@@ -68,18 +68,24 @@
     </div>
 </div>
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: "Recaptcha Public Key"|t('wheelform'),
     id: "recaptcha_public",
+    class: 'ltr',
     name: "recaptcha_public",
+    suggestEnvVars: true,
+    suggestAliases: true,
     value: settings.recaptcha_public | default(''),
     errors: settings.getErrors('recaptcha_public'),
     required: false,
 }) }}
 
-{{ forms.textField({
+{{ forms.autosuggestField({
     label: "Recaptcha Private Key"|t('wheelform'),
     id: "recaptcha_secret",
+    class: 'ltr',
+    suggestEnvVars: true,
+    suggestAliases: true,
     name: "recaptcha_secret",
     value: settings.recaptcha_secret | default(''),
     errors: settings.getErrors('recaptcha_secret'),

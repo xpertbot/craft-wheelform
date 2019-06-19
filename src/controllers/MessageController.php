@@ -62,7 +62,8 @@ class MessageController extends BaseController
 
         if($this->formModel->recaptcha == 1) {
             $userRes = $request->getBodyParam('g-recaptcha-response', '');
-            if($this->validateRecaptcha($userRes, $settings->recaptcha_secret) == false)
+            $recaptcha_secret = empty($settings->recaptcha_secret) ? "" : Craft::parseEnv($settings->recaptcha_secret);
+            if($this->validateRecaptcha($userRes, $recaptcha_secret) == false)
             {
                 $errors['recaptcha'] = [Craft::t('wheelform', "The reCAPTCHA wasn't entered correctly. Try again.")];
             }
