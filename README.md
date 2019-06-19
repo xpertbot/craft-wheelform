@@ -194,7 +194,7 @@ Advanced templating:
             {% case "checkbox" %}
                 <div class="form-checkbox">
                 {% for item in field.items %}
-                </label><input class="checkbox" type="checkbox" value="{{ item }}" {{values[field.name] is defined and item in values[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}[]" id=""/>{{item}}</label>
+                <label><input class="checkbox" type="checkbox" value="{{ item }}" {{values[field.name] is defined and item in values[field.name] ? ' checked="checked"' : '' }} name="{{field.name}}[]" id=""/>{{item}}</label>
                 {% endfor %}
                 </div>
             {% case "radio" %}
