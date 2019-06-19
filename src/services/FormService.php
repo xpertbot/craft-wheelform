@@ -268,15 +268,8 @@ class FormService extends BaseService
         }
 
         if(! empty($this->_attributes) && is_array($this->_attributes)) {
-            $userAttributes = $this->_attributes;
-            // Attributes are values in the array as strings
-            $attributes = $defaultAttributes;
-            foreach($userAttributes as $attr) {
-                $keywords = preg_split("/[\=]+/",trim($attr));
-                if(count($keywords) == 2) {
-                    $attributes[$keywords[0]] = str_replace(["\"", "'"], "", $keywords[1]);
-                }
-            }
+            // Merge Arrays
+            $attributes = array_merge($defaultAttributes, $this->_attributes);
         }
 
         if($this->isMultipart()) {

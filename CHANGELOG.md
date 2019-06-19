@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.2 - 2019-05-05
+### Fixed
+- Fixed placeholder for Email and Textarea
+
+## 2.0.1 - 2019-05-03
+### Fixed
+- Fixed Form Attributes not displaying correctly
+
 ## 2.0.0 - 2019-04-29
 ### Improved
 - Improved Form Field configuration page.

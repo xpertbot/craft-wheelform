@@ -19,6 +19,12 @@ class Email extends BaseFieldType
                 'value' => false,
             ],
             [
+                'name' => 'placeholder',
+                'type' => 'text',
+                'label' => 'Placeholder',
+                'value' => '',
+            ],
+            [
                 'name' => 'is_user_notification_field',
                 'type' => 'boolean',
                 'label' => 'User Notification Field',
