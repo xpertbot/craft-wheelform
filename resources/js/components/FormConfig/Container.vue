@@ -47,7 +47,7 @@
                                 :required="field.required"
                                 :index_view="field.index_view"
                                 :options="field.options"
-                                :config="field.config"
+                                :configuration="field.config"
                                 :type="field.type"
                                 :errors="field.errors"
                                 @delete-field="form.fields.splice(index, 1)"

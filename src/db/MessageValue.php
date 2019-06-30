@@ -46,7 +46,9 @@ class MessageValue extends ActiveRecord
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' is not a valid email address.')],
             ['value', 'number', 'on' => FormField::NUMBER_SCENARIO,
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' must be a number.')],
-            ['value', 'file', 'on' => FormField::FILE_SCENARIO, 'skipOnEmpty' => !(bool) $this->field->required],
+            ['value', 'file', 'on' => FormField::FILE_SCENARIO,
+                'skipOnEmpty' => !(bool) $this->field->required,
+                'extensions' => (empty($this->field->options['extensions']) ? null : $this->field->options['extensions'])],
             ['value', function($attribute, $params, $validator){
                 if(! is_array($this->$attribute)) {
                     $this->addError($this->field->getLabel().Craft::t('wheelform', ' must be an array.'));

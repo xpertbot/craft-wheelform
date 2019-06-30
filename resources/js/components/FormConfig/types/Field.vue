@@ -26,7 +26,7 @@
                 @handle-status-change="handleStatusChange"
                 />
         </div>
-        <div v-for="(config, i) in config"
+        <div v-for="(config, i) in configuration"
             :key="i"
         >
             <Lightswitch
@@ -39,6 +39,7 @@
             <div v-else-if="config.type == 'text'">
                 <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
                 <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]" @input="updateFieldOptionProperty(config.name, $event.target.value)">
+                <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
             </div>
             <div v-else-if="config.type == 'list'">
                 <div>
@@ -88,7 +89,7 @@ export default {
         "type",
         "index_view",
         "options",
-        "config",
+        "configuration",
         "errors",
     ],
     data(){
