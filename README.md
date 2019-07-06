@@ -31,6 +31,7 @@ To install the plugin, follow these instructions.
 - Form Field Type for sections
 - Required Fields
 - Checkbox options
+- File extension restriction
 - Honeypot Field
 - Ajax and Redirect friendly
 - Send Form submissions to multiple emails
@@ -58,6 +59,7 @@ Current Field types supported are:
 * Hidden
 * File
 * List
+* HTML
 
 ## Template Variables
 - wheelform
