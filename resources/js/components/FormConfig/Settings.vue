@@ -33,7 +33,7 @@
             <Lightswitch
                 :name="'save_entry'"
                 :label="'Save Entries'|t('wheelform')"
-                :instructions="'Save Entries to database'"
+                :instructions="'Save Entries to database'|t('wheelform')"
                 :status="form.save_entry"
                 @handle-status-change="handleStatusChange"
                 />

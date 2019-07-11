@@ -176,6 +176,26 @@ class FormController extends BaseController
         return $this->asJson(['success' => true, 'message' =>  Craft::t('wheelform', 'Form saved.'), 'form_id' => $form->id]);
     }
 
+    public function actionDelete()
+    {
+        $this->requirePostRequest();
+        $this->requireAcceptsJson();
+
+        $request = Craft::$app->getRequest();
+
+        $data = json_decode($request->getRawBody(), TRUE);
+        if (empty($data['id'])) {
+            throw new Exception(Craft::t('wheelform', 'No form selected.'));
+        }
+
+        $form = Form::findOne(intval($data['id']));
+        if (! $form) {
+            throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
+        }
+
+        return $this->asJson(['success' => $form->delete(), 'message' =>  Craft::t('wheelform', 'Form deleted.')]);
+    }
+
     // currently this field only accepts json fields
     public function actionGetSettings()
     {

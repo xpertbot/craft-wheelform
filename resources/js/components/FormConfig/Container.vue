@@ -77,8 +77,15 @@
                 </div>
             </div>
             <div class="field action-buttons">
-                <button @click.prevent="handleSaveSettings" class="btn submit">{{'Save'|t('wheelform')}}</button>
-                <a :href="getBackUrl" class="btn primary">{{'Back'|t('wheelform')}}</a>
+                <div class="row">
+                    <div class="col">
+                        <button @click.prevent="handleSaveSettings" class="btn submit">{{'Save'|t('wheelform')}}</button>
+                        <a :href="getBackUrl" class="btn primary">{{'Back'|t('wheelform')}}</a>
+                    </div>
+                    <div class="col">
+                        <a @click.prevent="handleDelete" class="form-field-rm pull-right">{{ 'Delete' |t('wheelform')}}</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -286,6 +293,36 @@ export default {
                 }).catch((error) => {
                     console.log(error);
                 });
+        },
+        handleDelete()
+        {
+            const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Form")+ ": " + this.form.name);
+            if(result)
+            {
+                const cpUrl = window.Craft.baseCpUrl;
+
+                let headers = {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': Craft.csrfTokenValue,
+                };
+
+                axios.post(cpUrl + "/wheelform/form/delete", this.form, {headers: headers})
+                    .then((res) => {
+                        const success = res.data.success;
+                        if(success) {
+                            window.location.replace(cpUrl + '/wheelform');
+                        } else {
+                            let msg = "";
+                            const errors = res.data.errors;
+                            for(let prop in errors) {
+                                msg += errors[prop] + "<br/>";
+                            }
+                            toastr.error("Error", msg);
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+            }
         },
         handleViewChange(view) {
             this.currentView = view;

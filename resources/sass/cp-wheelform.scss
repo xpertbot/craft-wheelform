@@ -240,7 +240,7 @@ th.text-center, td.text-center {
         margin-left: -10px;
         margin-right: -10px;
     }
-    .col, .col-6{
+    .col{
         margin-left: 10px;
         margin-right: 10px;
     }
@@ -249,11 +249,7 @@ th.text-center, td.text-center {
         flex-grow: 1;
         max-width: 100%;
     }
-    .col-6 {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-    .col-sm, .col-sm-6, .col-sm-4 {
+    .col-sm, .col-sm-4 {
         position: relative;
         width: 100%;
         min-height: 1px;

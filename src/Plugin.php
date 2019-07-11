@@ -52,6 +52,7 @@ class Plugin extends BasePlugin
                 $event->rules[$this->id . '/form/new'] = $this->id.'/form/new';
                 $event->rules[$this->id . '/form/edit/<id:\d+>'] = $this->id.'/form/edit';
                 $event->rules[$this->id . '/form/save'] = $this->id.'/form/save';
+                $event->rules[$this->id . '/form/delete'] = $this->id.'/form/delete';
 
                 //Entries
                 $event->rules[$this->id . '/form/<id:\d+>/entries'] = $this->id.'/entries/index';
