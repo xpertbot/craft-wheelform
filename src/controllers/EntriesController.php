@@ -5,16 +5,18 @@ use Craft;
 use craft\web\Controller;
 use craft\helpers\Path;
 use craft\helpers\DateTimeHelper;
+use craft\helpers\UrlHelper;
+
 use wheelform\db\Form;
 use wheelform\db\FormField;
 use wheelform\db\Message;
 use wheelform\db\MessageValue;
 use wheelform\helpers\ExportHelper;
+use wheelform\widgets\LinkPager;
+
+
 use yii\web\HttpException;
 use yii\base\Exception;
-use yii\data\Pagination;
-use yii\widgets\LinkPager;
-use craft\helpers\UrlHelper;
 
 class EntriesController extends Controller
 {
@@ -30,20 +32,27 @@ class EntriesController extends Controller
             throw new HttpException(404);
         }
 
+        $request = Craft::$app->getRequest();
         $query = Message::find()->where(['form_id' => $form_id]);
-        $count = $query->count();
-        $pages = new Pagination(['totalCount' => $count]);
-        $pages->setPageSize(50);
+        $total = $query->count();
+        $limit = (int) $request->getParam('limit', 50);
+        $currentPage = (int) $request->getParam('page', 1);
+        $offset = ($currentPage - 1) * $limit;
 
         $entries = $query
             ->orderBy(['dateCreated' => SORT_DESC])
             ->with('value')
-            ->offset($pages->offset)
-            ->limit($pages->limit)
+            ->offset($offset)
+            ->limit($limit)
             ->all();
 
         $pager = LinkPager::widget([
-            'pagination' => $pages,
+            'baseUrl' => $request->getPathInfo(),
+            'limit' => $limit,
+            'currentPage' => $currentPage,
+            'totalCount' => $total,
+            // 'firstPageLabel' => "First",
+            // 'lastPageLabel' => "Last",
         ]);
 
         $headerFields = FormField::find()
