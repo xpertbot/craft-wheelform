@@ -60,7 +60,7 @@
                             :key="key"
                         >
                             {{ item }}
-                            <a href="" @click.prevent="deleteFieldOptionItem($event.target.value)" class="form-field-rm">X</a>
+                            <a href="" @click.prevent="deleteFieldOptionItem(key)" class="form-field-rm">X</a>
                         </li>
                     </ul>
                 </div>
@@ -157,10 +157,10 @@ export default {
             this.$emit('update-field-option', this.index, 'items', items);
             this.newOption = '';
         },
-        deleteFieldOptionItem(value)
+        deleteFieldOptionItem(index)
         {
             let items = this.options.items;
-            items.splice(items.indexOf(value), 1);
+            items.splice(index, 1);
             this.$emit('update-field-option', this.index, 'items', items);
         },
         getErrorFor(property) {
