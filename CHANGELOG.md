@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.2.0 - 2019-10-07
+## 2.2.0 - 2019-13-07
 ### Added
 - Added ability to delete forms.
+### Fixed
+- Fixed Pagination on entries list
+- Fixed Items not deleting correctly in Multi options fields.
 
 ## 2.1.1 - 2019-07-06
 ### Added
