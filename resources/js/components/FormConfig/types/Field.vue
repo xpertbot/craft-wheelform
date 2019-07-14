@@ -5,64 +5,70 @@
         <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }} <small class="pull-right">{{type}}</small></a>
     </div>
     <div class="field-content" v-show="isActive">
-        <div>
-            <label class="required">{{'Name'|t('wheelform')}}:</label>
-            <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
-            <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
-        </div>
-        <div>
-            <Lightswitch
-                :name="'required'"
-                :label="'Required'|t('wheelform')"
-                :status="required"
-                @handle-status-change="handleStatusChange"
-                />
-        </div>
-        <div>
-            <Lightswitch
-                :name="'index_view'"
-                :label="'Index View'|t('wheelform')"
-                :status="index_view"
-                @handle-status-change="handleStatusChange"
-                />
-        </div>
-        <div v-for="(config, i) in configuration"
-            :key="i"
-        >
-            <Lightswitch
-                v-if="config.type == 'boolean'"
-                :name="config.name"
-                :label="config.label|t('wheelform')"
-                :status="options[config.name]"
-                @handle-status-change="handleStatusOptionChange"
-                />
-            <div v-else-if="config.type == 'text'">
-                <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
-                <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]" @input="updateFieldOptionProperty(config.name, $event.target.value)">
-                <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
-            </div>
-            <div v-else-if="config.type == 'list'">
+        <div class="row">
+            <div class="col">
                 <div>
-                    <label :for="'field' + index + '-' + config.name">{{config.label | t('wheelform')}}</label>
-                    <input class="new-option"
-                        :id="'field' + index + '-' + config.name"
-                        autocomplete="off"
-                        :placeholder="config.label|t('wheelform')"
-                        :value="newOption"
-                        @input="newOption = $event.target.value"
-                    >
-                    <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
+                    <label class="required">{{'Name'|t('wheelform')}}:</label>
+                    <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
+                    <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
                 </div>
                 <div>
-                    <ul class="list-wrapper">
-                        <li
-                            v-for="(item, key) in options[config.name]"
-                            :key="key"
-                        >
-                            {{ item }}
-                            <a href="" @click.prevent="deleteFieldOptionItem(key)" class="form-field-rm">X</a>
-                        </li>
-                    </ul>
+                    <Lightswitch
+                        :name="'required'"
+                        :label="'Required'|t('wheelform')"
+                        :status="required"
+                        @handle-status-change="handleStatusChange"
+                        />
+                </div>
+                <div>
+                    <Lightswitch
+                        :name="'index_view'"
+                        :label="'Index View'|t('wheelform')"
+                        :status="index_view"
+                        @handle-status-change="handleStatusChange"
+                        />
+                </div>
+            </div>
+            <div class="col">
+                <div v-for="(config, i) in configuration"
+                    :key="i"
+                >
+                    <Lightswitch
+                        v-if="config.type == 'boolean'"
+                        :name="config.name"
+                        :label="config.label|t('wheelform')"
+                        :status="options[config.name]"
+                        @handle-status-change="handleStatusOptionChange"
+                        />
+                    <div v-else-if="config.type == 'text'">
+                        <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
+                        <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]" @input="updateFieldOptionProperty(config.name, $event.target.value)">
+                        <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
+                    </div>
+                    <div v-else-if="config.type == 'list'">
+                        <div>
+                            <label :for="'field' + index + '-' + config.name">{{config.label | t('wheelform')}}</label>
+                            <input class="new-option"
+                                :id="'field' + index + '-' + config.name"
+                                autocomplete="off"
+                                :placeholder="config.label|t('wheelform')"
+                                :value="newOption"
+                                @input="newOption = $event.target.value"
+                            >
+                            <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
+                        </div>
+                        <div>
+                            <ul class="list-wrapper">
+                                <li
+                                    v-for="(item, key) in options[config.name]"
+                                    :key="key"
+                                >
+                                    {{ item }}
+                                    <a href="" @click.prevent="deleteFieldOptionItem(key)" class="form-field-rm">X</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
