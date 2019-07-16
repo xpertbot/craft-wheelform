@@ -42,8 +42,6 @@ class FormController extends BaseController
             }
         }
 
-
-
         return $this->renderTemplate('wheelform/_index.twig', [
             'wheelforms' => $forms,
             'title' => $this->settings->cp_label,

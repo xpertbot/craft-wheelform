@@ -85,8 +85,9 @@ class FormField extends Field
             return $value;
         } elseif(is_numeric($value)) {
             $id = intval($value);
-            if($id) {
-                return (new WheelformService)->getForm(['id' => $id]);
+            $form = Form::find()->where(['id' => $id])->one();
+            if($form) {
+                return (new WheelformService)->getForm(['id' => $form->id]);
             }
         }
 
