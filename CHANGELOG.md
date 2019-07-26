@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.2 - 2019-25-07
+### Fixed
+- Ability to delete HTML fields
+
 ## 2.2.1 - 2019-15-07
 ### Fixed
 - Bug related to deleted form not displaying correctly on form fields.

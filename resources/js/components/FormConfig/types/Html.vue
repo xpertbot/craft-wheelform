@@ -5,10 +5,15 @@
             <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }} <small class="pull-right">{{type}}</small></a>
         </div>
         <div class="field-content" v-show="isActive">
-            <div>
-                <label class="required">{{'Name'|t('wheelform')}}:</label>
-                <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
-                <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
+            <div class="row">
+                <div class="col">
+                    <label class="required">{{'Name'|t('wheelform')}}:</label>
+                    <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
+                    <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
+                </div>
+                <div class="col text-right">
+                    <a @click.prevent="validateDeleteField" class="form-field-rm">{{'Delete'|t('wheelform')}}</a>
+                </div>
             </div>
             <div>
                 <label>{{'Content'|t('app')}}:</label>
@@ -71,7 +76,15 @@ export default {
                 return this.errors[property];
             }
             return null;
-        }
+        },
+        validateDeleteField()
+        {
+            const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Field")+ ": " + this.name);
+            if(result)
+            {
+                this.$emit('delete-field');
+            }
+        },
     }
 }
 </script>
