@@ -115,7 +115,7 @@ class MessageValue extends ActiveRecord
 
     public function afterValidate()
     {
-        if(! empty($this->value) && $this->field->type == FormField::FILE_SCENARIO) {
+        if(! $this->hasErrors() && ! empty($this->value) && $this->field->type == FormField::FILE_SCENARIO) {
             $this->value = $this->uploadFile();
         }
 
