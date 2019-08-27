@@ -21,7 +21,7 @@ class RecaptchaV3Service extends BaseService
             if($uri == '/') {
                 $action = "homepage";
             } else {
-                $action = ltrim($uri, '/');
+                $action = preg_replace("/[^A-Za-z ]/", '', $uri);
             }
         }
 
