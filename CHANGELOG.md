@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 - Fixed bug newly created radio and select fields couldn't add options.
 
+## 2.2.4 - 2019-08-27
+### Fixed
+- Fixed bug on reaptcha 3 actions (@Moskydesign).
+
 ## 2.2.3 - 2019-01-08
 ### Fixed
 - Fixed bug where files were being uploaded after form errors.
