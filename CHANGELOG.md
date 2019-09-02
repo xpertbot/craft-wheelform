@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.4 - 2019-09-03
+### Fixed
+- Fixed bug newly created radio and select fields couldn't add options.
+
 ## 2.2.3 - 2019-01-08
 ### Fixed
 - Fixed bug where files were being uploaded after form errors.

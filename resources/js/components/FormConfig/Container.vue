@@ -53,7 +53,8 @@
                                 @delete-field="form.fields.splice(index, 1)"
                                 @update-field-property="updateFieldProperty"
                                 @update-field-option="handleFieldOptionChange"
-                                :is="field.fieldComponent" />
+                                :is="field.fieldComponent">
+                            </component>
 
                         </draggable>
                     </div>
@@ -183,11 +184,29 @@ export default {
     },
     methods: {
         clone(fieldType) {
-            let field = Object.assign({
-                errors: {},
-            }, fieldType);
+            let field = this.deepClone(fieldType);
+            field.errors = {};
             field.options = this.getOptionsFromConfig(fieldType.config);
             return field;
+        },
+        deepClone(src, exclude = []) {
+            let target = {};
+            for(let prop in src) {
+                if(exclude.indexOf(prop) > -1) {
+                    continue;
+                }
+                // if the value is a nested object, recursively copy all it's properties
+                if (this.isObject(src[prop])) {
+                    target[prop] = this.deepClone(src[prop]);
+                } else {
+                    target[prop] = src[prop];
+                }
+            }
+            return target;
+        },
+        isObject(obj) {
+            var type = typeof obj;
+            return type === 'function' || type === 'object' && !!obj;
         },
         onDragEnd()
         {
@@ -226,14 +245,14 @@ export default {
                 sel: (view == this.currentView),
             }
         },
-        getOptionsFromConfig(config) {
+        getOptionsFromConfig(config = []) {
             let options = {};
-            if(Array.isArray(config)) {
-                config.map((config) => {
-                    options[config.name] = config.value;
-                });
-            } else {
-                options[config.name] = config.value;
+            for(let i = 0; i < config.length; i++) {
+                if(Array.isArray(config[i].value)) {
+                    options[config[i].name] = config[i].value.slice(0);
+                } else {
+                    options[config[i].name] =  config[i].value;
+                }
             }
 
             return options;

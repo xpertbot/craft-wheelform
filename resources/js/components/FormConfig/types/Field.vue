@@ -49,11 +49,11 @@
                         <div>
                             <label :for="'field' + index + '-' + config.name">{{config.label | t('wheelform')}}</label>
                             <input class="new-option"
+                                type="text"
                                 :id="'field' + index + '-' + config.name"
                                 autocomplete="off"
                                 :placeholder="config.label|t('wheelform')"
-                                :value="newOption"
-                                @input="newOption = $event.target.value"
+                                v-model="newOption"
                             >
                             <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
                         </div>
@@ -154,14 +154,15 @@ export default {
             this.$emit('update-field-option',this.index, property, value);
         },
         addOption() {
-            var value = this.newOption && this.newOption.trim();
+            var value = this.newOption.trim();
             if (!value) {
                 return
             }
+            this.newOption = '';
+
             let items = this.options.items;
             items.push(value);
             this.$emit('update-field-option', this.index, 'items', items);
-            this.newOption = '';
         },
         deleteFieldOptionItem(index)
         {
