@@ -31,6 +31,11 @@
                 <div class="row">
                     <div class="col-sm">
                         <h3>{{ 'Form Fields' |t('wheelform')}}</h3>
+                        <div class="row">
+                            <div class="col">
+                                <a @click.prevent="handleCollapseExpandFields" class="btn primary pull-right" style="margin-bottom:10px;">{{ areExpanded ? "Collapse" : "Expand" | t('wheelform') }}</a>
+                            </div>
+                        </div>
                         <draggable
                             :list="form.fields"
                             :handle="'.wheelform-field-handle'"
@@ -50,6 +55,7 @@
                                 :configuration="field.config"
                                 :type="field.type"
                                 :errors="field.errors"
+                                :isActive="field.isActive"
                                 @delete-field="form.fields.splice(index, 1)"
                                 @update-field-property="updateFieldProperty"
                                 @update-field-option="handleFieldOptionChange"
@@ -164,6 +170,7 @@ export default {
                                 }
                             });
 
+                            form.fields[index].isActive = 0;
                             form.fields[index].errors = {};
                             form.fields[index].config = fieldType.config;
                             form.fields[index].options = fieldOptions;
@@ -180,11 +187,20 @@ export default {
         getBackUrl() {
             const  cpUrl = window.Craft.baseCpUrl;
             return cpUrl + "/wheelform";
+        },
+        areExpanded()
+        {
+            const activeField = this.form.fields.find((field) => {
+                return (field.isActive);
+            });
+
+            return (activeField ? true : false);
         }
     },
     methods: {
         clone(fieldType) {
             let field = this.deepClone(fieldType);
+            field.isActive = 0;
             field.errors = {};
             field.options = this.getOptionsFromConfig(fieldType.config);
             return field;
@@ -345,6 +361,14 @@ export default {
         },
         handleViewChange(view) {
             this.currentView = view;
+        },
+        handleCollapseExpandFields()
+        {
+            const isActive = ! this.areExpanded;
+
+            this.form.fields.map((field) => {
+                field.isActive = isActive;
+            });
         }
     }
 }

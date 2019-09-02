@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.2.4 - 2019-09-03
+## 2.3.0 - 2019-09-02
+### Added
+- Added ability collapse / expand all the fields at once.
+
 ### Fixed
 - Fixed bug newly created radio and select fields couldn't add options.
 

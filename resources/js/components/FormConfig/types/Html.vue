@@ -2,7 +2,7 @@
     <div class="wheelform-field" :style="getFieldStyle">
         <div class="field-details">
             <div class="wheelform-field-handle"><i class="fa fa-bars"></i></div>
-            <a @click.prevent="isActive = ! isActive">{{ getFieldLabel }} <small class="pull-right">{{type}}</small></a>
+            <a @click.prevent="updateFieldProperty('isActive', ! isActive)">{{ getFieldLabel }} <small class="pull-right">{{type}}</small></a>
         </div>
         <div class="field-content" v-show="isActive">
             <div class="row">
@@ -33,6 +33,7 @@
 <script>
 export default {
     props: [
+        "isActive",
         "index",
         "name",
         "required",
@@ -40,14 +41,13 @@ export default {
         "index_view",
         "options",
         "config",
-         "errors",
+        "errors",
     ],
     components: {
 
     },
     data() {
         return {
-            isActive: false,
         }
     },
     computed: {
