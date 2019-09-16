@@ -8,6 +8,8 @@ class Settings extends Model
 {
     public $from_email;
 
+    public $from_name;
+
     public $cp_label;
 
     public $success_message;
@@ -33,7 +35,7 @@ class Settings extends Model
             ['recaptcha_version', 'in', 'range' => ["2", "3"]],
             ['recaptcha_version', 'default', 'value' => 2],
             ['from_email', 'email', 'message' => Craft::t('wheelform', 'From email is not a valid email address.')],
-            [['success_message', 'cp_label', 'recaptcha_public', 'recaptcha_secret'], 'string'],
+            [['success_message', 'cp_label', 'recaptcha_public', 'recaptcha_secret', 'from_name'], 'string'],
             [['volume_id'], 'integer'],
         ];
     }

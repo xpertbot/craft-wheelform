@@ -13,6 +13,16 @@
 }) }}
 
 {{ forms.textField({
+    label: "From Name"|t('wheelform'),
+    id: 'from_name',
+    name: 'from_name',
+    instructions: "Name used for from-email address"|t('wheelform'),
+    value: settings.from_name ?? "",
+    autofocus: true,
+    errors: settings.getErrors('from_name')
+}) }}
+
+{{ forms.textField({
     label: "CP Nav Label"|t('wheelform'),
     required: false,
     id: 'cp_label',

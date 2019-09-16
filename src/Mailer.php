@@ -55,17 +55,26 @@ class Mailer extends Component
         $defaultSubject = $this->form->name . " - " . Craft::t("wheelform", 'Submission');
         $subject = (!empty($this->form->options['email_subject']) ? $this->form->options['email_subject'] : $defaultSubject);
         $from_email = $settings->from_email;
+        $from_name = empty($settings->from_name) ? ""  : $settings->from_name;
         // Grab any "to" emails set in the form settings.
         $to_emails = StringHelper::split($this->form->to_email);
         $mailMessage = new MailMessage();
         $mailer = Craft::$app->getMailer();
         $text = '';
 
+        $from = $from_email;
+
+        if(!empty($from_name)) {
+            $from = [
+                $from_email => $from_name
+            ];
+        }
+
         $beforeEvent = new SendEvent([
             'form_id' => $this->form->id,
             'subject' => $subject,
             'message' => $message,
-            'from' => $from_email,
+            'from' => $from,
             'to' => $to_emails,
             'reply_to' => $this->getReplyToEmail(),
             'email_html' => '',
@@ -183,7 +192,7 @@ class Mailer extends Component
                 $notificationHtml = $this->getNotificationHtml($beforeEvent->message, $notificationText);
 
                 $userNotification = new MailMessage();
-                $userNotification->setFrom($from_email);
+                $userNotification->setFrom($afterEvent->from);
                 $userNotification->setSubject($notificationSubject);
                 $userNotification->setTextBody($notificationText);
                 $userNotification->setHtmlBody($notificationHtml);
