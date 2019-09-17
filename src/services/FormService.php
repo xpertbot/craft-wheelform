@@ -189,6 +189,11 @@ class FormService extends BaseService
         return (bool) $this->instance->recaptcha;
     }
 
+    public function getHoneypot()
+    {
+        return !empty($this->instance->options['honeypot']) ? $this->instance->options['honeypot'] : "";
+    }
+
     public function getId()
     {
         return $this->id;
