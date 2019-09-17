@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.2 - 2019-09-17
+### Fixed
+- Fixed bug where HTML content is not accessible from the field Service.
+
 ## 2.3.1 - 2019-09-16
 ### Added
 - Added ability to add a name to the from_email field.

@@ -92,6 +92,15 @@ class FieldService extends BaseService
         return (isset($this->options->placeholder) ? $this->options->placeholder : "");
     }
 
+    public function getContent()
+    {
+        if(empty($this->options->content)) {
+            return "";
+        }
+
+        return Template::raw($this->options->content);
+    }
+
     //Setter
     public function setType($value)
     {
