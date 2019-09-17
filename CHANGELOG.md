@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.3.3 - 2019-09-17
-### Added
-- Added Ability to retrieve Honeypot field from form variable.
+## 2.3.4 - 2019-09-17
+### Fixed
+- Fixed Layout issue with delete button and form configuration UI.
+- Translations for new settings.
 
 ## 2.3.2 - 2019-09-17
 ### Fixed

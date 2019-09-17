@@ -83,7 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div class="field action-buttons">
+            <div class="field action-buttons wheelform-container">
                 <div class="row">
                     <div class="col">
                         <button @click.prevent="handleSaveSettings" class="btn submit">{{'Save'|t('wheelform')}}</button>
