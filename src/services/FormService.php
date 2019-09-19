@@ -70,7 +70,10 @@ class FormService extends BaseService
 
         $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
 
-        $params = Craft::$app->getUrlManager()->getRouteParams();
+        $params = [];
+        if (method_exists(Craft::$app->getUrlManager(), 'getRouteParams')) {
+            $params = Craft::$app->getUrlManager()->getRouteParams();
+        }
 
         if(! empty($params['variables']['values']))
         {
