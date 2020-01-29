@@ -70,11 +70,15 @@ class FormService extends BaseService
 
         $this->submitButton = array_replace_recursive($this->getDefaultSubmitButton(), $this->submitButton);
 
-        $params = Craft::$app->getUrlManager()->getRouteParams();
+        if(! Craft::$app instanceof \Yii\console\Application) {
+            // Only try to grab values if not in console mode
+            // Get previous values to reload them.
+            $params = Craft::$app->getUrlManager()->getRouteParams();
 
-        if(! empty($params['variables']['values']))
-        {
-            $this->values = $params['variables']['values'];
+            if(! empty($params['variables']['values']))
+            {
+                $this->values = $params['variables']['values'];
+            }
         }
 
         $this->_attributes = $this->getFormAttributes();

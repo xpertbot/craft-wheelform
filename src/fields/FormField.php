@@ -83,7 +83,7 @@ class FormField extends Field
         if($value instanceof FormService) {
             // FormService already initialized
             return $value;
-        } elseif(is_numeric($value)) {
+        } else if (is_numeric($value)) {
             $id = intval($value);
             $form = Form::find()->where(['id' => $id])->one();
             if($form) {
