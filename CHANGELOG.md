@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.6 - 2020-01-31
+### Fixed
+- Fixed layout on Edit Form to use new Craft 3.4 admin classes.
+- Fixed fields not deleting old settings when type changes.
+
 ## 2.3.5 - 2020-01-29
 ### Fixed
 - Fixed pages with Form Field being used not indexing correctly on console commands.

@@ -17,7 +17,7 @@
         </nav>
     </div>
     <div id="content-container">
-        <div id="content">
+        <div id="content" class="content-pane">
             <i class="fas fa-spinner fa-spin" v-show="currentView == 'loading'"></i>
 
             <Settings

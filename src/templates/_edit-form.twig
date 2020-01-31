@@ -57,8 +57,6 @@
     { label: CPLabel, url: url('wheelform') },
 ] %}
 
-{% set sidebar = 1 %}
-
 {% js at head %}
     window.Wheelform = {
         form_id: {{ form.id ? form.id : 0 }},

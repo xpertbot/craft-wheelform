@@ -50,11 +50,11 @@ class MessageValue extends ActiveRecord
                 'skipOnEmpty' => !(bool) $this->field->required,
                 'extensions' => (empty($this->field->options['extensions']) ? null : $this->field->options['extensions'])],
             ['value', function($attribute, $params, $validator){
-                if(! is_array($this->$attribute)) {
-                    $this->addError($this->field->getLabel().Craft::t('wheelform', ' must be an array.'));
-                }
-            }, 'on' => FormField::LIST_SCENARIO
-        ],
+                    if(! is_array($this->$attribute)) {
+                        $this->addError($this->field->getLabel().Craft::t('wheelform', ' must be an array.'));
+                    }
+                }, 'on' => FormField::LIST_SCENARIO
+            ],
             ['value', 'each', 'rule' => ['string'], 'on' => [
                     FormField::CHECKBOX_SCENARIO,
                     FormField::LIST_SCENARIO,
@@ -63,7 +63,7 @@ class MessageValue extends ActiveRecord
             ['value', 'in', 'range' => function(){
                     return (empty($this->field->options['items']) ? [] : $this->field->options['items']);
                 }, 'when' => function($model){
-                    return boolval($model->field->options['validate']);
+                    return (isset($model->field->options['validate']) && boolval($model->field->options['validate']) );
                 },
                 "allowArray" => true,
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' has invalid options.')

@@ -46,6 +46,9 @@
             <thead>
                 <tr>
                     <th class="thin">{{ '' | t('wheelform') }}</th>
+                    <th class="thin">
+                        ID
+                    </th>
                     <th scope="col" data-attribute="View">
                         {{ 'View Message' | t('wheelform') }}
                     </th>
@@ -69,8 +72,10 @@
                                 <label for="wi-action-input-{{ entry.id }}"></label>
                             </div>
                         </td>
+                        <td>
+                            {{entry.id}}
+                        </td>
                         <td class="view-message">
-                        {{entry.id}}
                             <a href="{{ url('wheelform/entry/' ~ entry.id)}}">
                                 {{ "View" | t('wheelform') }}
                             </a>
@@ -113,9 +118,3 @@
     {% endif %}
 </div>
 {% endset %}
-
-{% css %}
-input.checkbox + label:before {
-    top: 8px;
-}
-{% endcss %}
