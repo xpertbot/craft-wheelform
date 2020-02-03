@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.7 - 2020-02-02
+### Fixed
+- Recaptcha V3 action.
+
 ## 2.3.6 - 2020-01-31
 ### Fixed
 - Fixed layout on Edit Form to use new Craft 3.4 admin classes.
