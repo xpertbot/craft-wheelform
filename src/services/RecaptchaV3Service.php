@@ -15,7 +15,7 @@ class RecaptchaV3Service extends BaseService
             return NULL;
         }
         if(array_key_exists('action', $attributes)) {
-            $action = $attributes['action'];
+            $action = preg_replace("/[^A-Za-z ]/", '', $attributes['action']);
         } else {
             $uri = \Craft::$app->getRequest()->getUrl();
             if($uri == '/') {
