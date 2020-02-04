@@ -3,7 +3,6 @@ namespace wheelform\db;
 
 use Craft;
 use craft\helpers\Html;
-use craft\db\ActiveRecord;
 use craft\helpers\Template;
 use craft\helpers\Assets;
 use craft\elements\Asset;
@@ -16,7 +15,7 @@ use yii\base\ErrorException;
 use craft\web\UploadedFile;
 
 //Using Active Record because it extends Models.
-class MessageValue extends ActiveRecord
+class MessageValue extends BaseActiveRecord
 {
     public static function tableName()
     {

@@ -10,6 +10,7 @@ use wheelform\db\MessageValue;
 use wheelform\Plugin;
 use yii\web\HttpException;
 use wheelform\db\FormField;
+use Yii;
 
 class MessageController extends BaseController
 {
@@ -32,11 +33,11 @@ class MessageController extends BaseController
     {
         $this->requirePostRequest();
 
-        $request = Craft::$app->getRequest();
+        $request = Yii::$app->request;
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
 
-        $form_id = intval($request->getBodyParam('form_id', "0"));
+        $form_id = intval($request->post('form_id', "0"));
         if($form_id <= 0){
             throw new HttpException(404);
             return null;
@@ -61,7 +62,7 @@ class MessageController extends BaseController
         }
 
         if($this->formModel->recaptcha == 1) {
-            $userRes = $request->getBodyParam('g-recaptcha-response', '');
+            $userRes = $request->post('g-recaptcha-response', '');
             $recaptcha_secret = empty($settings->recaptcha_secret) ? "" : Craft::parseEnv($settings->recaptcha_secret);
             if($this->validateRecaptcha($userRes, $recaptcha_secret) == false)
             {
@@ -70,7 +71,7 @@ class MessageController extends BaseController
         }
 
         if(! empty($this->formModel->options['honeypot'])) {
-            $userHoneypot = $request->getBodyParam($this->formModel->options['honeypot'], '');
+            $userHoneypot = $request->post($this->formModel->options['honeypot'], '');
             if(! empty($userHoneypot))
             {
                 $errors['honeypot'] = [Craft::t('wheelform', "Leave honeypot field empty.")];
@@ -87,7 +88,7 @@ class MessageController extends BaseController
                 $messageValue = new MessageValue;
                 $messageValue->setScenario($field->type);
                 $messageValue->field_id = $field->id;
-                $messageValue->value = $request->getBodyParam($field->name, null);
+                $messageValue->value = $request->post($field->name, null);
 
                 if($messageValue->validate()) {
                     $entryValues[] = $messageValue;
@@ -95,12 +96,11 @@ class MessageController extends BaseController
                     $errors[$field->name] = $messageValue->getErrors('value');
                 }
             }
-
         }
 
         if (! empty($errors)) {
             $response = [
-                'values' => $request->getBodyParams(),
+                'values' => $request->post(),
                 'errors' => $errors,
                 'wheelformErrors' => $errors,
                 'success' => false,
@@ -160,7 +160,7 @@ class MessageController extends BaseController
 
                 Craft::$app->getUrlManager()->setRouteParams([
                     'variables' => [
-                        'values' => $request->getBodyParams(),
+                        'values' => $request->post(),
                     ]
                 ]);
 

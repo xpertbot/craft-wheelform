@@ -2,11 +2,10 @@
 namespace wheelform\db;
 
 use Craft;
-use craft\db\ActiveRecord;
 use craft\helpers\DateTimeHelper;
 
 //Using Active Record because it extends Models.
-class Message extends ActiveRecord
+class Message extends BaseActiveRecord
 {
 
     public static function tableName(): String
@@ -50,10 +49,12 @@ class Message extends ActiveRecord
         return $this->getValue()->where(['field_id' => $valueId])->one();
     }
 
-    public function afterFind()
+    public function __get($name)
     {
-        $this->dateCreated = DateTimeHelper::toDateTime($this->dateCreated, false);
+        if($name == 'dateCreated') {
+            return DateTimeHelper::toDateTime($this->getAttribute($name), false);
+        }
 
-        parent::afterFind();
+        return parent::__get($name);
     }
 }

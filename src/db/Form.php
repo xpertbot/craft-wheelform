@@ -2,7 +2,6 @@
 namespace wheelform\db;
 
 use Craft;
-use craft\db\ActiveRecord;
 use craft\helpers\StringHelper;
 use wheelform\db\Message;
 use wheelform\behaviors\JsonFieldBehavior;
@@ -11,7 +10,8 @@ use yii\validators\EmailValidator;
 
 //Using Active Record because it extends Models.
 //__get() in BaseActiveRecord does not allow properties to be predefined it sets them to null;
-class Form extends ActiveRecord
+// Moved on from Craft/db/ActiveRecord because they make changes to default Yii2 behavior
+class Form extends BaseActiveRecord
 {
     protected $_entryCount;
 

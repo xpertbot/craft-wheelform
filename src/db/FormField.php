@@ -2,12 +2,11 @@
 namespace wheelform\db;
 
 use Craft;
-use craft\db\ActiveRecord;
 use wheelform\behaviors\JsonFieldBehavior;
 use wheelform\validators\JsonValidator;
 use wheelform\behaviors\FormFieldBehavior;
 
-class FormField extends ActiveRecord
+class FormField extends BaseActiveRecord
 {
 
     const TEXT_SCENARIO = "text";
