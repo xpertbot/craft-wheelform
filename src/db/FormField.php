@@ -49,7 +49,6 @@ class FormField extends BaseActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->name = strtolower($this->name);
         $this->name = trim(preg_replace('/[^\w-]/', "", $this->name));
         return parent::beforeSave($insert);
     }

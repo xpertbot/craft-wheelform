@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.3.9 - 2020-02-19
+### Fixed
+- Form Field name to be capitalized.
+
 ## 2.3.8 - 2020-02-04
 ### Fixed
 - Views not loading correctly for single messages.
