@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.4.0 - 2020-02-22
+### Fixed
+- New ability to overwritte default "From" address using configuration file.
+
 ## 2.3.9 - 2020-02-19
 ### Fixed
 - Form Field name to be capitalized.

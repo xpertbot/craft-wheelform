@@ -473,6 +473,30 @@ return [
 
 Note: This action cannot be reverted.
 
+### Custom "From" Address per Form
+Change the "From" Address based on each form, this will overwritte the General email set on the form settings.
+
+1. Create `wheelform.php` file inside Craft's configuration folder.
+2. Add and `array` with the key `forms` with the `ID` of the form you would like to overwrite as the key followed
+by an array with the key `from`. Example below:
+```php
+return [
+    'forms' => [
+        // ID of form
+        3 => [
+            // This is the email to use for this specific form
+            'from' => 'form3@example.com',
+        ],
+        5 => [
+            // This can also be an array with a custom name
+            'from' => [
+                'form5@example.com' => "Form 5 Custom Name",
+            ]
+        ]
+    ]
+];
+```
+
 ### Custom Email Template
 Email Templates are Optional. Custom Twig templates can be used using these steps:
 
@@ -480,7 +504,7 @@ Email Templates are Optional. Custom Twig templates can be used using these step
 2. `wheelform.php` expects an array of configuration settings to be returned. The options are:
     - `template`: default template to use for all emails.
     - `notification`: default notification template overwrite.
-    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify. (These settings take priority over anything else)
+    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify. (These settings take priority over anything else) (Note: This `forms` key is the same as above for custom "From" Address)
 
 ```php
 return [
