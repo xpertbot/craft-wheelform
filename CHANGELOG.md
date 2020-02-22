@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 2.4.0 - 2020-02-22
 ### Fixed
+- Improved Edit Form Layout to better match New Craft layout
 - New ability to overwritte default "From" address using configuration file.
 
 ## 2.3.9 - 2020-02-19

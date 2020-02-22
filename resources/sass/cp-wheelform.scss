@@ -103,12 +103,13 @@ th.text-center, td.text-center {
     width: 100%;
     height: 100%;
     #sidebar {
-        padding: 0px 10px;
+        padding: 0px;
         overflow: hidden;
         nav {
             margin-left: 0px;
             margin-right: 0px;
             padding: 0px;
+            background-color: #e4edf6;
             li {
                 a {
                     margin: 0px 0px 4px;
@@ -116,21 +117,22 @@ th.text-center, td.text-center {
             }
         }
     }
+    #wheelform-content {
+        width: 100%;
+    }
     .wheelform-container {
         max-width: 100%;
         width: 100%;
         overflow: hidden;
         display: block;
     }
-    .settings-container {
+    .content-pane {
         display: flex;
         flex: 1;
         min-height: 0;
         flex-direction: column;
         max-height: none;
         align-items: stretch;
-        width: 100vw;
-        height: 100%;
     }
     .mb-20 {
         margin-bottom: 20px;
@@ -279,15 +281,15 @@ th.text-center, td.text-center {
         .wheelform-container {
             max-width: 915px;
         }
-        .settings-container {
-            width: calc(100vw - 225px);
-        }
     }
 }
 
 @media (min-width: 998px) {
     #wheelform-app {
-        .settings-container {
+        #sidebar {
+            padding-right: 15px;
+        }
+        .content-pane {
             flex-direction: row;
             min-height: 0;
         }

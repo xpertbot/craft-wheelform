@@ -1,5 +1,5 @@
 <template>
-<div class="settings-container">
+<div id="content" class="content-pane">
     <div id="sidebar" class="sidebar" style="display:block;">
         <nav>
             <ul>
@@ -16,82 +16,80 @@
             </ul>
         </nav>
     </div>
-    <div id="content-container">
-        <div id="content" class="content-pane">
-            <i class="fas fa-spinner fa-spin" v-show="currentView == 'loading'"></i>
+    <div id="wheelform-content">
+        <i class="fas fa-spinner fa-spin" v-show="currentView == 'loading'"></i>
 
-            <Settings
-                v-show="currentView == 'form'"
-                :form="form"
-                @handle-form-setting="handleSettingsInput"
-                @handle-form-option-change="handleFormOptionChange"
-            />
+        <Settings
+            v-show="currentView == 'form'"
+            :form="form"
+            @handle-form-setting="handleSettingsInput"
+            @handle-form-option-change="handleFormOptionChange"
+        />
 
-            <div v-show="currentView == 'field'" class="wheelform-container">
-                <div class="row">
-                    <div class="col-sm">
-                        <h3>{{ 'Form Fields' |t('wheelform')}}</h3>
-                        <div class="row">
-                            <div class="col">
-                                <a @click.prevent="handleCollapseExpandFields" class="btn primary pull-right" style="margin-bottom:10px;">{{ areExpanded ? "Collapse" : "Expand" | t('wheelform') }}</a>
-                            </div>
+        <div v-show="currentView == 'field'" class="wheelform-container">
+            <div class="row">
+                <div class="col-sm">
+                    <h3>{{ 'Form Fields' |t('wheelform')}}</h3>
+                    <div class="row">
+                        <div class="col">
+                            <a @click.prevent="handleCollapseExpandFields" class="btn primary pull-right" style="margin-bottom:10px;">{{ areExpanded ? "Collapse" : "Expand" | t('wheelform') }}</a>
                         </div>
-                        <draggable
-                            :list="form.fields"
-                            :handle="'.wheelform-field-handle'"
-                            :group="'field-types'"
-                            @end="onDragEnd"
-                            @add="onDragAdd"
-                            class="field-container mb-20">
-
-                            <component
-                                v-for="(field, index) in form.fields"
-                                :key="index"
-                                :index="index"
-                                :name="field.name"
-                                :required="field.required"
-                                :index_view="field.index_view"
-                                :options="field.options"
-                                :configuration="field.config"
-                                :type="field.type"
-                                :errors="field.errors"
-                                :isActive="field.isActive"
-                                @delete-field="form.fields.splice(index, 1)"
-                                @update-field-property="updateFieldProperty"
-                                @update-field-option="handleFieldOptionChange"
-                                :is="field.fieldComponent">
-                            </component>
-
-                        </draggable>
                     </div>
-                    <div class="col-sm-4">
-                        <h3>{{ 'Field Types' |t('wheelform')}}</h3>
-                        <draggable
-                            :list="fieldTypes"
-                            :group="{ name: 'field-types', pull: 'clone', put: false }"
-                            :sort="false"
-                            :clone="clone"
-                            class="field-container"
-                        >
-                        <div class="field-type"
-                            v-for="(fieldType, index) in fieldTypes"
+                    <draggable
+                        :list="form.fields"
+                        :handle="'.wheelform-field-handle'"
+                        :group="'field-types'"
+                        @end="onDragEnd"
+                        @add="onDragAdd"
+                        class="field-container mb-20">
+
+                        <component
+                            v-for="(field, index) in form.fields"
                             :key="index"
-                        >
-                            {{ fieldType.name }}
-                        </div>
-                        </draggable>
+                            :index="index"
+                            :name="field.name"
+                            :required="field.required"
+                            :index_view="field.index_view"
+                            :options="field.options"
+                            :configuration="field.config"
+                            :type="field.type"
+                            :errors="field.errors"
+                            :isActive="field.isActive"
+                            @delete-field="form.fields.splice(index, 1)"
+                            @update-field-property="updateFieldProperty"
+                            @update-field-option="handleFieldOptionChange"
+                            :is="field.fieldComponent">
+                        </component>
+
+                    </draggable>
+                </div>
+                <div class="col-sm-4">
+                    <h3>{{ 'Field Types' |t('wheelform')}}</h3>
+                    <draggable
+                        :list="fieldTypes"
+                        :group="{ name: 'field-types', pull: 'clone', put: false }"
+                        :sort="false"
+                        :clone="clone"
+                        class="field-container"
+                    >
+                    <div class="field-type"
+                        v-for="(fieldType, index) in fieldTypes"
+                        :key="index"
+                    >
+                        {{ fieldType.name }}
                     </div>
+                    </draggable>
                 </div>
             </div>
-            <div class="field action-buttons wheelform-container">
-                <div class="row">
-                    <div class="col">
-                        <button @click.prevent="handleSaveSettings" class="btn submit">{{'Save'|t('wheelform')}}</button>
-                        <a :href="getBackUrl" class="btn primary">{{'Back'|t('wheelform')}}</a>
-                    </div>
-                    <div class="col">
-                        <a @click.prevent="handleDelete" class="form-field-rm pull-right">{{ 'Delete' |t('wheelform')}}</a>
-                    </div>
+        </div>
+        <div class="field action-buttons wheelform-container">
+            <div class="row">
+                <div class="col">
+                    <button @click.prevent="handleSaveSettings" class="btn submit">{{'Save'|t('wheelform')}}</button>
+                    <a :href="getBackUrl" class="btn primary">{{'Back'|t('wheelform')}}</a>
+                </div>
+                <div class="col">
+                    <a @click.prevent="handleDelete" class="form-field-rm pull-right">{{ 'Delete' |t('wheelform')}}</a>
                 </div>
             </div>
         </div>
