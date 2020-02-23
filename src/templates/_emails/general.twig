@@ -8,7 +8,11 @@
 
                 {% case "file" %}
                     {% if field.value is not empty %}
-                        {{ field.value.name }}
+                        {% if field.value.assetUrl is not empty %}
+                            <a href="{{ field.value.assetUrl }}" target="_blank">{{ field.value.name }}</a>
+                        {% else %}
+                            {{ field.value.name }}
+                        {% endif %}
                     {% endif %}
                 {% case "list" %}
                     {% if field.value %}

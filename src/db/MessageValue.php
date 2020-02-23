@@ -2,12 +2,13 @@
 namespace wheelform\db;
 
 use Craft;
+use craft\base\LocalVolumeInterface;
 use craft\helpers\Html;
 use craft\helpers\Template;
 use craft\helpers\Assets;
 use craft\elements\Asset;
 use craft\errors\UploadFailedException;
-
+use craft\helpers\FileHelper;
 use wheelform\Plugin;
 
 use yii\web\BadRequestHttpException;
@@ -141,11 +142,13 @@ class MessageValue extends BaseActiveRecord
         try {
             $filename = $this->value->name;
             $tempPath = $this->_getUploadedFileTempPath($this->value);
-            $filePath = $tempPath;
-            $assetId = $folder_id;
+            $filePath = NULL;
+            $assetId = NULL;
+            $assetUrl = NULL;
 
             // folder to upload files has been selected
-            if(is_numeric($folder_id)) {
+            if (is_numeric($folder_id)) {
+                // Save file in the folder / Volume selected
                 $assets = Craft::$app->getAssets();
                 $folder = $assets->getRootFolderByVolumeId($folder_id);
                 if (!$folder) {
@@ -155,19 +158,26 @@ class MessageValue extends BaseActiveRecord
                 $filename = Assets::prepareAssetName($tempName);
 
                 $asset = new Asset();
+                $asset->setScenario(Asset::SCENARIO_CREATE);
                 $asset->tempFilePath = $tempPath;
                 $asset->filename = $filename;
                 $asset->newFolderId = $folder->id;
                 $asset->volumeId = $folder->volumeId;
                 $asset->avoidFilenameConflicts = true;
-                $asset->setScenario(Asset::SCENARIO_CREATE);
                 $result = Craft::$app->getElements()->saveElement($asset);
                 if($result) {
                     $volume = $asset->getVolume();
                     $filename = $asset->filename;
-                    $filePath = $volume->getRootPath() . '/' . $asset->filename;
                     $assetId = $asset->id;
+                    $assetUrl = $asset->getUrl();
+                    // Local volume storage
+                    if ($volume instanceof LocalVolumeInterface) {
+                        $filePath = FileHelper::normalizePath($volume->getRootPath() . DIRECTORY_SEPARATOR . $asset->filename);
+                    }
                 }
+            } else {
+                // No folder to save the file was selected, use the temp_folder path to attach the file to email
+                $filePath = $tempPath;
             }
 
         } catch (\Throwable $exception) {
@@ -179,6 +189,7 @@ class MessageValue extends BaseActiveRecord
         $fileModel->name = $filename;
         $fileModel->filePath = $filePath;
         $fileModel->assetId = $assetId;
+        $fileModel->assetUrl = $assetUrl;
 
         return json_encode($fileModel);
     }
