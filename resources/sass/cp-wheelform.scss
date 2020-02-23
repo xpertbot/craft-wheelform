@@ -105,11 +105,11 @@ th.text-center, td.text-center {
     #sidebar {
         padding: 0px;
         overflow: hidden;
+        background-color: #e4edf6;
         nav {
             margin-left: 0px;
             margin-right: 0px;
             padding: 0px;
-            background-color: #e4edf6;
             li {
                 a {
                     margin: 0px 0px 4px;
@@ -287,7 +287,7 @@ th.text-center, td.text-center {
 @media (min-width: 998px) {
     #wheelform-app {
         #sidebar {
-            padding-right: 15px;
+            margin-right: 15px;
         }
         .content-pane {
             flex-direction: row;
