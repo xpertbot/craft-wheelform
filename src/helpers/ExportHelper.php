@@ -103,7 +103,11 @@ class ExportHelper
                                     $row[] = '';
                                 } else {
                                     $attachment = json_decode($m['value']);
-                                    $row[] = $attachment->name;
+                                    if(! empty($attachment) && !empty($attachment->name)) {
+                                        $row[] = $attachment->name;
+                                    } else {
+                                        $row[] = '';
+                                    }
                                 }
                                 break;
                             default:
