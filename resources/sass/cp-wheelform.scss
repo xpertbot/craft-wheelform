@@ -119,6 +119,8 @@ th.text-center, td.text-center {
     }
     #wheelform-content {
         width: 100%;
+        background-color: #fff;
+        padding: 15px 0px;
     }
     .wheelform-container {
         max-width: 100%;
@@ -284,14 +286,19 @@ th.text-center, td.text-center {
     }
 }
 
-@media (min-width: 998px) {
+@media (min-width: 974px) {
     #wheelform-app {
-        #sidebar {
-            margin-right: 15px;
-        }
         .content-pane {
             flex-direction: row;
             min-height: 0;
+            height: 100% !important;
+        }
+        #sidebar {
+            height: 100% !important;
+        }
+        #wheelform-content {
+            height: 100% !important;
+            padding: 15px 15px;
         }
     }
 }

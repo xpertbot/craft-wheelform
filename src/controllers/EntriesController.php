@@ -17,6 +17,8 @@ use wheelform\widgets\LinkPager;
 
 use yii\web\HttpException;
 use yii\base\Exception;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 class EntriesController extends Controller
 {
@@ -24,8 +26,14 @@ class EntriesController extends Controller
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $form_id = intval($params['id']);
+        $user = Craft::$app->getUser();
 
-        $this->requirePermission('wheelform_view_entries_' . $form_id);
+        // if user cannot see all entries make sure he can see this specific form
+        if (!$user->checkPermission('wheelform_view_all_forms_entries')) {
+            if (!$user->checkPermission('wheelform_view_entries_' . $form_id)) {
+                throw new ForbiddenHttpException('User is not permitted to perform this action');
+            }
+        }
 
         $form = Form::findOne($form_id);
         if (! $form) {

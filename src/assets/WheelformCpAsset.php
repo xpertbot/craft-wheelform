@@ -15,12 +15,12 @@ class WheelformCpAsset extends AssetBundle
         ];
 
         $this->js = [
-            'js/wheelform-bundle.js?v2.4.0',
+            'js/wheelform-bundle.js?v2.4.1',
         ];
 
         $this->css = [
             'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
-            'css/cp-wheelform.css?v2.4.0',
+            'css/cp-wheelform.css?v2.4.1',
         ];
 
         parent::init();

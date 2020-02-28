@@ -12,6 +12,7 @@ use wheelform\models\tools\ImportFile;
 use Yii;
 use yii\base\Exception;
 use yii\helpers\Json;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\HttpException;
@@ -36,7 +37,8 @@ class FormController extends BaseController
         $user = Craft::$app->getUser();
 
         foreach($formModels as $formModel) {
-            if($user->checkPermission('wheelform_edit_form_' . $formModel->id)) {
+            // Can user Manage all forms or the specific one?
+            if($user->checkPermission('wheelform_manage_all_forms') || $user->checkPermission('wheelform_edit_form_' . $formModel->id)) {
                 $forms[] = $formModel;
             }
         }
@@ -65,6 +67,7 @@ class FormController extends BaseController
     {
         $params = Craft::$app->getUrlManager()->getRouteParams();
         $form = null;
+        $user = Craft::$app->getUser();
 
         if (! empty($params['id'])) {
             $form = Form::findOne(intval($params['id']));
@@ -76,7 +79,11 @@ class FormController extends BaseController
             throw new HttpException(404);
         }
 
-        $this->requirePermission('wheelform_change_settings_' . $form->id);
+        if (!$user->checkPermission('wheelform_change_all_forms_settings')) {
+            if (!$user->checkPermission('wheelform_change_settings_' . $form->id)) {
+                throw new ForbiddenHttpException('User is not permitted to perform this action');
+            }
+        }
 
         $fieldTypes = Json::encode($this->getFieldTypes());
 

@@ -46,13 +46,13 @@
                             <td><span class="status {{ form.active ? 'active' : 'disabled' }}"></span></td>
                             <td>{{ form.name }}</td>
                             <td>
-                            {% if currentUser.can('wheelform_view_entries_' ~ form.id) and form.entryCount > 0 %}
+                            {% if (currentUser.can('wheelform_view_all_forms_entries') or currentUser.can('wheelform_view_entries_' ~ form.id)) and form.entryCount > 0 %}
                                 <a href="{{ url('wheelform/form/' ~ form.id ~ '/entries')}}">
                             {% endif %}
 
                                 {{ form.entryCount }}
 
-                            {% if currentUser.can('wheelform_view_entries_' ~ form.id) and form.entryCount > 0 %}
+                            {% if (currentUser.can('wheelform_view_all_forms_entries') or currentUser.can('wheelform_view_entries_' ~ form.id)) and form.entryCount > 0 %}
                                 </a>
                             {% endif %}
                             </td>
@@ -64,7 +64,7 @@
                             {% endif %}
                             </td>
                             <td>
-                                {% if currentUser.can('wheelform_change_settings_' ~ form.id) %}
+                                {% if (currentUser.can('wheelform_change_all_forms_settings') or currentUser.can('wheelform_change_settings_' ~ form.id)) %}
                                     <a href="{{ url('wheelform/form/edit/'~ form.id) }}" class="settings icon" title="{{ 'Settings'|t('wheelform') }}"></a>
                                 {% endif %}
                             </td>
