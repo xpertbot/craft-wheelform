@@ -183,6 +183,10 @@ th.text-center, td.text-center {
         color: rgba(0, 0, 0, 0.2);
     }
 
+    .form-field-rm {
+        float: right;
+    }
+
     .form-field-add:hover {
         color: #00b007 !important;
     }
@@ -222,9 +226,18 @@ th.text-center, td.text-center {
         clear: right;
         float: right;
     }
-    ul.list-wrapper{
+    .list-wrapper{
         list-style: none;
         padding: 10px 0px 0px 5px;
+        .list-wrapper-item {
+            margin-bottom: 3px;
+            padding: 5px;
+            border: 1px dashed #333;
+            position: relative;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
     .form-settings {
         margin-bottom: 20px;

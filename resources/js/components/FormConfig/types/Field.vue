@@ -58,15 +58,19 @@
                             <a href="" @click.prevent="addOption" class="form-field-add">{{'Add'|t('wheelform')}}</a>
                         </div>
                         <div>
-                            <ul class="list-wrapper">
-                                <li
+                            <draggable
+                                :list="options[config.name]"
+                                class="list-wrapper"
+                            >
+                                <div
                                     v-for="(item, key) in options[config.name]"
                                     :key="key"
+                                    class="list-wrapper-item"
                                 >
                                     {{ item }}
                                     <a href="" @click.prevent="deleteFieldOptionItem(key)" class="form-field-rm">X</a>
-                                </li>
-                            </ul>
+                                </div>
+                            </draggable>
                         </div>
                     </div>
                 </div>
@@ -86,6 +90,7 @@
 
 <script>
 import Lightswitch from '../Lightswitch.vue';
+import draggable from 'vuedraggable';
 
 export default {
     props: [
@@ -105,7 +110,8 @@ export default {
         }
     },
     components: {
-        Lightswitch
+        Lightswitch,
+        draggable,
     },
     filters: {
     },
