@@ -120,13 +120,11 @@ th.text-center, td.text-center {
     #wheelform-content {
         width: 100%;
         background-color: #fff;
-        padding: 15px 0px;
     }
     .wheelform-container {
-        max-width: 100%;
-        width: 100%;
         overflow: hidden;
         display: block;
+        padding: 0px 15px;
     }
     .content-pane {
         display: flex;
@@ -291,7 +289,7 @@ th.text-center, td.text-center {
         .content-pane {
             flex-direction: row;
             min-height: 0;
-            height: 100% !important;
+            // height: 100% !important;
         }
         #wheelform-content {
             height: 100% !important;
