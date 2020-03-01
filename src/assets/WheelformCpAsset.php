@@ -20,7 +20,7 @@ class WheelformCpAsset extends AssetBundle
 
         $this->css = [
             'https://use.fontawesome.com/releases/v5.0.13/css/all.css',
-            'css/cp-wheelform.css?v2.4.1',
+            'css/cp-wheelform.css?v2.4.2',
         ];
 
         parent::init();
