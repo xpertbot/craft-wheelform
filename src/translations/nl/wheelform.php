@@ -51,7 +51,6 @@ return [
     "Save Entries" => "Items opslaan",
     "Save Entries to database" => "Items opslaan in de database",
     "Send Email" => "E-mail versturen",
-    "Settings" => "Instellingen",
     "Success Flash Message" => "Succes flash bericht",
     "Thank You! we will review your submission shortly." => "Bedankt! We bekijken uw inzending zo spoedig mogelijk.",
     "The email address that the contact form will send from." => "Het e-mailadres dat gebruikt wordt om e-mails te verzenden.",

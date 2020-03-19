@@ -51,7 +51,6 @@ return [
     "Save Entries" => "Eingaben speichern",
     "Save Entries to database" => "Einträge in Datenbank speichern",
     "Send Email" => "E-Mail senden",
-    "Settings" => "Einstellungen",
     "Success Flash Message" => "Erfolgsmeldung",
     "Thank You! we will review your submission shortly." => "Danke! Wir werden Ihre Nachricht in Kürze bearbeiten.",
     "The email address that the contact form will send from." => "Kontaktformular sendet von dieser E-Mail-Adresse.",
