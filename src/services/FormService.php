@@ -88,9 +88,9 @@ class FormService extends BaseService
         }
     }
 
-    public function open()
+    public function open($action = '')
     {
-        $html = Html::beginForm("", $this->method, $this->_attributes);
+        $html = Html::beginForm($action, $this->method, $this->_attributes);
         $html .= Html::hiddenInput('form_id', $this->id);
         $html .= Html::hiddenInput('action', "/wheelform/message/send");
         if($this->redirect) {
