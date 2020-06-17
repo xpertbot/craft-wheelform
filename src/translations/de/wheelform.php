@@ -32,7 +32,6 @@ return [
     "New" => "Neu",
     "Field Name" => "Feld Name",
     "Type" => "Typ",
-	"Settings" => "Einstellungen",
     "Setting" => "Einstellung",
     "Actions" => "Aktionen",
     "Action" => "Aktion",
