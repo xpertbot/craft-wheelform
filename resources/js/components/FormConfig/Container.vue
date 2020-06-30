@@ -210,7 +210,9 @@ export default {
                     continue;
                 }
                 // if the value is a nested object, recursively copy all it's properties
-                if (this.isObject(src[prop])) {
+                if (Array.isArray(src[prop])) {
+                    target[prop] = src[prop]; // for some reason next if statement validates some arrays as objects
+                } else if (this.isObject(src[prop])) {
                     target[prop] = this.deepClone(src[prop]);
                 } else {
                     target[prop] = src[prop];

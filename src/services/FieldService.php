@@ -136,6 +136,13 @@ class FieldService extends BaseService
     public function render()
     {
         $html = "<div class=\"wf-group {$this->containerClass}\">";
+        $html_default_args = [
+            'class' => 'wf-field ' . $this->fieldClass,
+        ];
+        if ($this->required && !empty($this->options->display_required_attribute)) {
+            $html_default_args['required'] = 'required';
+        }
+
         switch($this->type)
         {
             case "html":
@@ -155,12 +162,12 @@ class FieldService extends BaseService
                 }
 
                 foreach($this->items as $key => $item) {
-                    $html .= '<div class="wf-radio">';
-                    $html .= Html::radio($this->name, ($item == $this->value), [
+                    $args = array_merge($html_default_args, [
                         'id' => "wf-radio-" . $this->order . '-' . $key,
-                        'class' => "wf-field " . $this->fieldClass,
                         'value' => $item,
                     ]);
+                    $html .= '<div class="wf-radio">';
+                    $html .= Html::radio($this->name, ($item == $this->value), $args);
                     $html .= Html::label($item, "wf-radio-" . $this->order . '-' . $key, [
                         'class' => 'wf-label'
                     ]);
@@ -185,12 +192,12 @@ class FieldService extends BaseService
                 }
 
                 foreach($this->items as $key => $item) {
-                    $html .= '<div class="wf-checkbox">';
-                    $html .= Html::checkbox($this->name . '[]', in_array($item, $value), [
+                    $args = array_merge($html_default_args, [
                         'id' => "wf-checkbox-" . $this->order . '-' . $key,
-                        'class' => 'wf-field '.$this->fieldClass,
                         'value' => $item,
                     ]);
+                    $html .= '<div class="wf-checkbox">';
+                    $html .= Html::checkbox($this->name . '[]', in_array($item, $value), $args);
                     $html .= Html::label($item, "wf-checkbox-" . $this->order . '-' . $key, [
                         'class' => 'wf-label',
                     ]);
@@ -203,7 +210,9 @@ class FieldService extends BaseService
                 }
                 $html .= '<div class="wf-select">';
                 $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<select id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\">";
+                $html .= "<select id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\"";
+                $html .= (!empty($this->options->display_required_attribute) ? ' required="required"' : '');
+                $html .= '>';
                 if(!empty($this->options->selectEmpty) && (bool) $this->options->selectEmpty) {
                     $html .= "<option value=\"\"> -- </option>";
                 }
@@ -213,19 +222,20 @@ class FieldService extends BaseService
                 $html .= '</select></div>';
                 break;
             case "file":
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
-                $html .= Html::fileInput($this->name, null, [
+                $args = array_merge($html_default_args, [
                     'id' => $this->generateId(),
                     'class' => "wf-field " . $this->fieldClass,
                 ]);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::fileInput($this->name, null, $args);
                 break;
             case "textarea":
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
-                $html .= Html::textarea($this->name, $this->value, [
+                $args = array_merge($html_default_args, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
-                    'class' => 'wf-field ' . $this->fieldClass,
                 ]);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::textarea($this->name, $this->value, $args);
                 break;
             case "list":
                 $items = $this->getValue();
@@ -250,19 +260,18 @@ class FieldService extends BaseService
                 $html .= Html::input($this->type, $this->name, $this->value, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
-                    'class' => 'wf-field ' . $this->fieldClass,
                 ]);
                 break;
             case 'email':
             case 'number':
             case 'text':
                 // Email, Text, Hidden
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
-                $html .= Html::input($this->type, $this->name, $this->value, [
+                $args = array_merge($html_default_args, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
-                    'class' => 'wf-field ' . $this->fieldClass,
                 ]);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::input($this->type, $this->name, $this->value, $args);
                 break;
             default:
                     $html .= "";
