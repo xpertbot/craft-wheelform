@@ -4,6 +4,7 @@ namespace wheelform\controllers;
 use Craft;
 
 use wheelform\events\MessageEvent;
+use wheelform\events\ResponseEvent;
 use wheelform\db\Form;
 use wheelform\db\Message;
 use wheelform\db\MessageValue;
@@ -28,6 +29,11 @@ class MessageController extends BaseController
      * @var string
      */
     const EVENT_BEFORE_SAVE = "beforeSave";
+
+    /**
+     * @var string
+     */
+    const EVENT_BEFORE_RESPONSE = "beforeResponse";
 
     public function actionSend()
     {
@@ -168,12 +174,32 @@ class MessageController extends BaseController
             }
         }
 
+        $responseEvent = new ResponseEvent([
+            'success' => true,
+            'message' => $settings->success_message,
+            'errors' => [],
+            'data' => [],
+            'headers' => [],
+        ]);
+        $this->trigger(self::EVENT_BEFORE_RESPONSE, $responseEvent);
+
         if ($request->isAjax) {
-            return $this->asJson(['success' => true, 'message' => $settings->success_message]);
+            if (! empty($responseEvent->headers) && is_array($responseEvent->headers)) {
+                $headers = Yii::$app->response->headers;
+                foreach($responseEvent->headers as $k => $v) {
+                    $headers->add($k, $v);
+                }
+            }
+            return $this->asJson([
+                'success' => $responseEvent->success,
+                'message' => $responseEvent->message,
+                'data' => $responseEvent->data,
+                'errors' => $responseEvent->errors,
+            ]);
         }
 
-        Craft::$app->getSession()->setNotice($settings->success_message);
-        Craft::$app->getSession()->setFlash('wheelformSuccess',$settings->success_message);
+        Craft::$app->getSession()->setNotice($responseEvent->message);
+        Craft::$app->getSession()->setFlash('wheelformSuccess',$responseEvent->message);
 
         return $this->redirectToPostedUrl($message);
     }

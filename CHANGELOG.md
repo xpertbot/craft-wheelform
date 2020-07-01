@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.4.3 - 2020-06-29
 ### Added
 - Ability to enable/disable "required" attribute for most fields.
+- Ability to add custom HTTP Responses to submissions through an Event.
 ### Fixed
 - Fixed bug related to console purge not running correctly
 

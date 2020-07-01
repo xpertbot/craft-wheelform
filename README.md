@@ -584,6 +584,8 @@ If not using `{{ form.close() }}` helper tag make sure you add a text field with
 
 `afterSend` Event, Final Values sent to the user email, perfect for Third Party integrations and libraries.
 
+`beforeResponse` Event, event that modifies the response of the submission, good place to add Custom headers, dynamic success messages, or custom data to consume on the frontend.
+
 You can also trigger other custom functionality such as gathering custom field values to add to a Third party service such as a Mailing list.
 
 `beforeSend` and `afterSend` object is as follows:
