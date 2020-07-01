@@ -174,9 +174,15 @@ class MessageController extends BaseController
             }
         }
 
+        $success_message = $settings->success_message;
+
+        if (! empty($this->formModel->options['submit_message'])) {
+            $success_message = $this->formModel->options['submit_message'];
+        }
+
         $responseEvent = new ResponseEvent([
             'success' => true,
-            'message' => $settings->success_message,
+            'message' => $success_message,
             'errors' => [],
             'data' => [],
             'headers' => [],

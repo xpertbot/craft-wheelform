@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Ability to enable/disable "required" attribute for most fields.
 - Ability to add custom HTTP Responses to submissions through an Event.
 - Ability to add custom User Notification Subject from CP.
+- Ability to add custom Submission message to individual forms.
 ### Fixed
 - Fixed bug related to console purge not running correctly
 

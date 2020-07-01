@@ -51,11 +51,22 @@
             <div class="field" id="options[email_subject]-field">
                 <div class="heading">
                     <label id="options[email_subject]-label" for="options[email_subject]">{{'Email Subject'|t('wheelform')}}</label>
-                    <div class="instructions"><p>{{'Subject for the Admin email'|t('wheelform')}}</p>
+                    <div class="instructions"><p>{{'The subject for the admin email.'|t('wheelform')}}</p>
                     </div>
                 </div>
                 <div class="input ltr">
                     <input class="text fullwidth" type="text" id="options[email_subject]" v-model="form.options.email_subject" value="" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="field" id="options[submit_message]-field">
+                <div class="heading">
+                    <label id="options[submit_message]-label" for="options[submit_message]">{{'Submit Message'|t('wheelform')}}</label>
+                    <div class="instructions"><p>{{'The message displayed after successful form submission.'|t('wheelform')}}</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                    <input class="text fullwidth" type="text" id="options[submit_message]" v-model="form.options.submit_message" autocomplete="off">
                 </div>
             </div>
 
