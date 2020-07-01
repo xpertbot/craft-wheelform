@@ -45,9 +45,11 @@
 
 <script>
 import Lightswitch from '../Lightswitch.vue';
+import draggable from 'vuedraggable';
 
 export default {
     components: {
+        draggable,
         Lightswitch,
     },
     props: [

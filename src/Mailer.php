@@ -186,6 +186,12 @@ class Mailer extends Component
 
             if(! empty($notificationTo)) {
                 $notificationSubject = $this->form->name . " - " . Craft::t("wheelform", 'Notification');
+
+                // User CP Subject
+                if (!empty($this->form->options['user_notification_subject'])) {
+                    $notificationSubject = $this->form->options['user_notification_subject'];
+                }
+
                 // Generic Notification Subject
                 if(! empty($this->config['notification']['subject'])) {
                     $notificationSubject = $this->config['notification']['subject'];

@@ -89,6 +89,16 @@
             </div>
             <div class="field" v-if="form.options.user_notification">
                 <div class="heading">
+                    <label id="options[user_notification_subject]-label" for="options[user_notification_subject]">{{'User Notification Subject'|t('wheelform')}}</label>
+                    <div class="instructions"><p>{{'Subject for the User Notification email'|t('wheelform')}}</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                   <input class="text fullwidth" type="text"  v-model="form.options.user_notification_subject" />
+                </div>
+            </div>
+            <div class="field" v-if="form.options.user_notification">
+                <div class="heading">
                     <label id="options[user_notification_message]-label" for="options[user_notification_message]">{{'User Notification Message'|t('wheelform')}}</label>
                     <div class="instructions"><p>{{'Message that will be displayed on the body of the user Notification Email'|t('wheelform')}}</p>
                     </div>
