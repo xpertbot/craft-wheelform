@@ -23,7 +23,7 @@ class FormService extends BaseService
 
     private $redirect;
 
-    private $method = 'post';
+    private $method = 'POST';
 
     private $submitButton;
 
@@ -88,9 +88,11 @@ class FormService extends BaseService
         }
     }
 
-    public function open()
+    public function open(string $action = '', array $userAttrs = [], string $userMethod = 'POST')
     {
-        $html = Html::beginForm("", $this->method, $this->_attributes);
+        $method = (!empty($userMethod) ? $userMethod : $this->method);
+        $attributes = array_merge($userAttrs, $this->_attributes);
+        $html = Html::beginForm($action, $method, $attributes);
         $html .= Html::hiddenInput('form_id', $this->id);
         $html .= Html::hiddenInput('action', "/wheelform/message/send");
         if($this->redirect) {

@@ -101,21 +101,12 @@ Current Field types supported are:
 - values (Array of User submitted values based on field name).
 
 ## Form Configuration Options
-These are configuration opens you can pass to `wheelform.open` to configure your form.
+These are configuration opens you can pass to `wheelform.form` to configure your form.
 
 - `id`: **Required** ID of the form being used.
 - `redirect`: URL where form will redirect to after a successful submission.
 - `registerScripts`: Boolean to load Scripts before `wheelform.open` call (This is useful for caching forms and templates). Defaults to False.
 - `refreshCsrf`: Boolean to load Javascript that will refresh the CSRF token for the form on the current page (This is useful for caching forms and templates). In order for this to work `form.open()` needs to be outside the `{% cache %}` block.
-- `attributes`: Key: Value Array of Attributes for the current form. Example:
-```twig
-{# Note: Form attributes take presedence over default values #}
-attributes: {
-    'novalidate':"novalidate",
-    'id':'custom-form',
-    'class': 'custom-form',
-}
-```
 - `submitForm`: Configuration options for the submitButton. Example:
 ```twig
 {# SubmitButton options:
@@ -133,6 +124,29 @@ submitButton: {
     },
     "html": "<span><button>Custom Button</button></span>", // Custom HTML Overwrittes any other options and will render it as final.
 }
+```
+
+### Form.open() parameter options
+- `action`: String to overwritte where the form submits to. This is useful if you need to overwrite it with Javascript. Defaults to empty string.
+- `attributes`: {Key: Value} Array of Attributes for the current form. Defaults to empty array. Note: Form attributes take presedence over default values. Example:
+```twig
+{#
+    - Special Attribute: `csrf`: {boolean}, enables/disables csrf token field, disable if you would like to implement your own csrf token generation. Example:
+    {{ form.open('', {
+        'csrf': false,
+    }) }}
+        {% craft.blitz.csrfInput() %}
+        ... Rest of form template ...
+#}
+```
+- `method`: String to overwritte the form HTML `method` attribute. Defaults to "POST"
+
+```twig
+{{ form.open("", {
+        'novalidate': 'novalidate',
+        'id':'custom-form',
+        'class': 'custom-form',
+    }, "POST") }}
 ```
 
 ## Template Structure
