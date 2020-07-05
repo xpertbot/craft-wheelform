@@ -13,6 +13,7 @@ return [
     "CP Nav Label" => "CP Navigationslabel",
     "Couldn’t save form." => "Formular konnte nicht gespeichert werden.",
     "Date Submitted" => "Versanddatum",
+    "Disabled fields" => "Deaktivierte Felder",
     "Entries" => "Eingaben",
     "Entries View" => "Ansicht der Eingaben",
     "Form ID" => "Formular-ID",
@@ -49,6 +50,7 @@ return [
     "Required" => "Erforderlich",
     "Save Entries" => "Eingaben speichern",
     "Save Entries to database" => "Einträge in Datenbank speichern",
+    "Select the fields to disable in the form dialog." => "Wähle die Felder, die im Formular-Dialog deaktiviert werden.",
     "Send Email" => "E-Mail senden",
     "Settings" => "Einstellungen",
     "Success Flash Message" => "Erfolgsmeldung",
@@ -61,4 +63,5 @@ return [
     "Value" => "Wert",
     "View" => "Ansicht",
     "View Message" => "Nachricht anzeigen",
+    "Unknown disabled field: '{attribute}'" => "Unbekanntes Feld: '{attribute}'",
 ];

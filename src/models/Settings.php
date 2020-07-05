@@ -1,8 +1,11 @@
 <?php
+
 namespace wheelform\models;
 
 use Craft;
 use craft\base\Model;
+use wheelform\db\FormField;
+use wheelform\models\fields\BaseFieldType;
 
 class Settings extends Model
 {
@@ -22,10 +25,24 @@ class Settings extends Model
 
     public $recaptcha_secret;
 
+    public $disabled_fields;
+
+    private $availableFields = [];
+
     public function init()
     {
         parent::init();
 
+        $activeRecord = new FormField;
+
+        foreach ($activeRecord->getFieldTypeClasses() as $field) {
+            $fieldClass = new $field;
+            if (!($fieldClass instanceof BaseFieldType)) {
+                continue;
+            }
+
+            $this->availableFields[] = $fieldClass->type;
+        }
     }
 
     public function rules()
@@ -37,6 +54,21 @@ class Settings extends Model
             ['from_email', 'email', 'message' => Craft::t('wheelform', 'From email is not a valid email address.')],
             [['success_message', 'cp_label', 'recaptcha_public', 'recaptcha_secret', 'from_name'], 'string'],
             [['volume_id'], 'integer'],
+            [['disabled_fields'], 'validateDisabledFields'],
         ];
+    }
+
+    public function validateDisabledFields($attribute)
+    {
+        if (empty($this->$attribute)) {
+            return;
+        }
+
+        foreach ($this->$attribute as $disabledField) {
+            if (!in_array($disabledField, $this->availableFields)) {
+                $this->addError($attribute, Craft::t('wheelform', "Unknown disabled field: '{attribute}'", ['attribute' => $attribute]));
+                break;
+            }
+        }
     }
 }

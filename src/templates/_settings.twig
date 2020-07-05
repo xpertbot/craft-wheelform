@@ -101,3 +101,22 @@
     errors: settings.getErrors('recaptcha_secret'),
     required: false,
 }) }}
+
+<div class="field">
+    <div class="heading">
+        <label for="disabled_fields">{{ "Disabled fields"|t('wheelform')}}</label>
+        <div class="instructions">
+            {{ "Select the fields to disable in the form dialog."|t('wheelform') }}
+        </div>
+    </div>
+    <div class="input ltr">
+        {{ forms.checkboxGroup({
+            id: "disabled_fields",
+            name: "disabled_fields",
+            options: fields,
+            values: settings.disabled_fields ?? settings.disabled_fields,
+            errors: settings.getErrors('disabled_fields'),
+            required: false,
+        }) }}
+    </div>
+</div>

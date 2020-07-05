@@ -12,7 +12,9 @@ use craft\services\Fields;
 use craft\services\UserPermissions;
 use wheelform\extensions\WheelformVariable;
 use wheelform\fields\FormField;
+use wheelform\db\FormField as DbFormField;
 use wheelform\db\Message;
+use wheelform\models\fields\BaseFieldType;
 use wheelform\models\Settings;
 use wheelform\utilities\Tools;
 use wheelform\services\permissions\WheelformPermissions;
@@ -119,7 +121,19 @@ class Plugin extends BasePlugin
         $settings = $this->getSettings();
         $settings->validate();
         $volumeList = Craft::$app->getVolumes()->getAllVolumes();
-        $emptyLabel =  Craft::t("wheelform", '-- Select Volume --');
+
+        $activeRecord = new DbFormField;
+        $fields = [];
+        foreach($activeRecord->getFieldTypeClasses() as $field) {
+            $fieldClass = new $field;
+            if (!($fieldClass instanceof BaseFieldType)) {
+                continue;
+            }
+
+            $fields[$fieldClass->type] = Craft::t("wheelform", $fieldClass->name);
+        }
+
+        $emptyLabel = Craft::t("wheelform", '-- Select Volume --');
         $volumes = [
             '' => $emptyLabel,
         ];
@@ -134,6 +148,7 @@ class Plugin extends BasePlugin
         return Craft::$app->view->renderTemplate('wheelform/_settings', [
             'settings' => $settings,
             'volumes' => $volumes,
+            'fields' => $fields,
         ]);
     }
 }
