@@ -70,7 +70,7 @@ class FieldService extends BaseService
     {
         if(! empty($this->options->label))
         {
-            return $this->options->label;
+            return \Craft::t('site', $this->options->label);
         }
         $label = trim(str_replace(['_', '-'], " ", $this->name));
         $label = ucfirst($label);
