@@ -217,7 +217,7 @@ class FieldService extends BaseService
                     $html .= "<option value=\"\"> -- </option>";
                 }
                 foreach($this->items as $key => $item) {
-                    $html .= "<option value=\"{$item}\"".( ($item == $this->value) ? ' selected="selected"' : '' ). ">{$item}</option>";
+                    $html .= "<option value=\"{$item}\"".( ($item == $this->value) ? ' selected="selected"' : '' ). ">".\Craft::t('site', $item)."</option>";
                 }
                 $html .= '</select></div>';
                 break;
