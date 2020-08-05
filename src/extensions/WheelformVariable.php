@@ -1,11 +1,11 @@
 <?php
 namespace wheelform\extensions;
 
-use Twig_Extension;
-use Twig_Extension_GlobalsInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use wheelform\services\WheelformService;
 
-class WheelformVariable extends Twig_Extension implements Twig_Extension_GlobalsInterface
+class WheelformVariable extends AbstractExtension implements GlobalsInterface
 {
 
     public function getGlobals()

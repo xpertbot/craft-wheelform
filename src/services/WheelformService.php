@@ -54,4 +54,10 @@ class WheelformService extends BaseObject
 
         return $recaptcha($attributes);
     }
+
+    public function metaTags()
+    {
+        $metaTags = new MetaTagsService();
+        return $metaTags();
+    }
 }

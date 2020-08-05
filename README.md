@@ -460,6 +460,9 @@ $('#my-form').submit(function(ev) {
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
 
+### CSRF Meta Tags
+If submitting Ajax request and need Meta Tags inside `head` element you can use `{{ wheelform.metaTags() }}` to generate the appropriate CSRF values.
+
 ### Permissions
 There are 4 different type of permissions ({Form Name} permissions are repeated per form on your website):
 - Create new Form - Allows User / Group to see the "New Form" button and create new forms.

@@ -379,8 +379,6 @@ class FormService extends BaseService
 
     protected function handleScripts()
     {
-        $this->view->registerCsrfMetaTags();
-
         if($this->hasList()) {
             $this->view->registerAssetBundle(ListFieldAsset::class, View::POS_END);
         }
