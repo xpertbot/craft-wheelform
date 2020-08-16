@@ -209,7 +209,7 @@ class FieldService extends BaseService
                 foreach($this->items as $key => $item) {
                     $args = array_merge($html_default_args, [
                         'id' => "wf-checkbox-" . $this->order . '-' . $key,
-                        'value' => $item,
+                        'value' => $key,
                     ]);
                     $html .= '<div class="wf-checkbox">';
                     $html .= Html::checkbox($this->name . '[]', in_array($item, $value), $args);
@@ -222,10 +222,13 @@ class FieldService extends BaseService
             case "toggle":
                 $args = array_merge($html_default_args, [
                     'id' => $this->generateId(),
-                    'class' => "wf-field " . $this->fieldClass
+                    'class' => "wf-field " . $this->fieldClass,
+                    'value' => 'yes'
                 ]);
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= '<div class="wf-toggle">';
                 $html .= Html::checkbox($this->name, !empty($this->value), $args);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= '</div>';
                 break;
             case "select":
                 if(empty($this->items)) {
