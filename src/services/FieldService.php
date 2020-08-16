@@ -66,6 +66,11 @@ class FieldService extends BaseService
         return (bool) $this->required;
     }
 
+    public function hasLabel()
+    {
+        return !empty($this->options->label);
+    }
+
     public function getLabel()
     {
         if(! empty($this->options->label))
@@ -90,6 +95,16 @@ class FieldService extends BaseService
     public function getPlaceholder()
     {
         return (isset($this->options->placeholder) ? $this->options->placeholder : "");
+    }
+
+    public function getExtensions()
+    {
+        return (isset($this->options->extensions) ? $this->options->extensions : "");
+    }
+
+    public function displayRequiredAttribute()
+    {
+        return !empty($this->options->display_required_attribute);
     }
 
     public function getContent()
@@ -204,6 +219,14 @@ class FieldService extends BaseService
                     $html .= '</div>';
                 }
                 break;
+            case "toggle":
+                $args = array_merge($html_default_args, [
+                    'id' => $this->generateId(),
+                    'class' => "wf-field " . $this->fieldClass
+                ]);
+                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::checkbox($this->name, !empty($this->value), $args);
+                break;
             case "select":
                 if(empty($this->items)) {
                     break;
@@ -281,7 +304,7 @@ class FieldService extends BaseService
         return Template::raw($html);
     }
 
-    protected function generateId()
+    public function generateId()
     {
         return "wf-" . trim(str_replace([' ', '_'], "-", $this->name)) . "-" . $this->order;
     }

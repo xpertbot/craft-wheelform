@@ -19,6 +19,7 @@ class FormFieldBehavior extends Behavior
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";
     const HTML_SCENARIO = "html";
+    const TOGGLE_SCENARIO = "toggle";
 
     public function events()
     {
@@ -53,6 +54,7 @@ class FormFieldBehavior extends Behavior
             self::RADIO_SCENARIO => \wheelform\models\fields\Radio::class,
             self::SELECT_SCENARIO => \wheelform\models\fields\Select::class,
             self::HTML_SCENARIO => \wheelform\models\fields\HtmlField::class,
+            self::TOGGLE_SCENARIO => \wheelform\models\fields\ToggleField::class,
         ];
     }
 }

@@ -31,6 +31,13 @@ class MessageValue extends BaseActiveRecord
             [['message_id', 'field_id'], 'filter', 'filter' => 'intval'],
             ['value', 'required', 'when' => function($model){
                     return (bool)$model->field->required;
+                }, 'message' => Craft::t('wheelform', 'Please check the box'),
+                'on' => [
+                    FormField::TOGGLE_SCENARIO
+                ]
+            ],
+            ['value', 'required', 'when' => function($model){
+                    return (bool)$model->field->required;
                 }, 'message' => $this->field->getLabel().Craft::t('wheelform', ' cannot be blank.')
             ],
             ['value', 'string', 'on' => [
@@ -125,7 +132,10 @@ class MessageValue extends BaseActiveRecord
     public function beforeSave($insert)
     {
         if($this->field->type == FormField::CHECKBOX_SCENARIO && ! empty($this->value)) {
-            $this->value = implode(', ', $this->value);
+            $items = $this->field->options['items'];
+            $this->value = implode(', ', array_map(function($id) use ($items){
+                return $items[(int)$id] ?? null;
+            }, $this->value));
         } elseif (!empty($this->value) && $this->field->type == FormField::LIST_SCENARIO) {
             $this->value = json_encode($this->value);
         }

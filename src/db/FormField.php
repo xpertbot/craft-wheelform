@@ -20,6 +20,7 @@ class FormField extends BaseActiveRecord
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";
     const HTML_SCENARIO = "html";
+    const TOGGLE_SCENARIO = "toggle";
 
     public static function tableName(): String
     {
