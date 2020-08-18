@@ -7,6 +7,7 @@ use wheelform\models\fields\BaseFieldType;
 
 use wheelform\events\RegisterFieldsEvent;
 use wheelform\db\FormField;
+use wheelform\Plugin;
 
 class BaseController extends Controller
 {
@@ -15,6 +16,9 @@ class BaseController extends Controller
 
     protected function getFieldTypes()
     {
+        $plugin = Plugin::getInstance();
+        $settings = $plugin->getSettings();
+
         $activeRecord = new FormField;
         $fields = $activeRecord->getFieldTypeClasses();
 
@@ -27,9 +31,15 @@ class BaseController extends Controller
         $fieldTypes = [];
         foreach($event->fields as $class) {
             $field = new $class;
-            if($field instanceof BaseFieldType) {
-                $fieldTypes[] = $field;
+            if (!($field instanceof BaseFieldType)) {
+                continue;
             }
+
+            if (is_array($settings->disabled_fields) && in_array($field->type, $settings->disabled_fields)) {
+                continue;
+            }
+
+            $fieldTypes[] = $field;
         }
 
         return $fieldTypes;
