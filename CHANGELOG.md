@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.5.1 - 2020-08-04
+### Added
+- Added Norwegian Translation (@AlexFUNBIT)
+- Ability to make available fields configurable (@vandres)
+
 ## 2.5.0 - 2020-08-04
 ### Fixed
 - Fixed critical bug with Craft CMS 3.5 version and CSRF meta tags.
