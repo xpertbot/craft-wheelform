@@ -42,10 +42,12 @@
     <div class="clearfix">
         {{ pager | raw }}
     </div>
-        <table class="data fullwidth" id="entries-table">
+        <table class="data fullwidth" id="wheelform-entries-table">
             <thead>
                 <tr>
-                    <th class="thin">{{ '' | t('wheelform') }}</th>
+                    <th class="checkbox-cell selectallcontainer" tabindex="0">
+                        <div class="checkbox"></div>
+                    </th>
                     <th class="thin">
                         ID
                     </th>

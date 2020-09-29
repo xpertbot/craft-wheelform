@@ -4,6 +4,7 @@ import Container from './components/FormConfig/Container.vue';
 import Field from './components/FormConfig/types/Field.vue';
 import Html from './components/FormConfig/types/Html.vue';
 import Editor from './components/Partials/Editor.vue';
+import EntriesService from './classes/EntriesService';
 
 // require styles
 import 'codemirror/lib/codemirror.css';
@@ -21,4 +22,8 @@ if(document.getElementById('wheelform-app')) {
             Container
         },
     })
+}
+
+if (document.getElementById('wheelform-entries-table')) {
+    new EntriesService();
 }

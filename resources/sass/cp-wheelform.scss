@@ -28,8 +28,17 @@ span.new-badge {
     margin-left: 5px;
 }
 
-#entries-table thead th:last-child {
-    width: 145px;
+#wheelform-entries-table {
+    thead {
+        th.checkbox-cell {
+            &:focus {
+                outline: none;
+            }
+        }
+        th:last-child {
+            width: 145px;
+        }
+    }
 }
 
 .pagination {
