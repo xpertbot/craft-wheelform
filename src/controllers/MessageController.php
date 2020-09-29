@@ -35,6 +35,11 @@ class MessageController extends BaseController
      */
     const EVENT_BEFORE_RESPONSE = "beforeResponse";
 
+    /**
+     * @var array
+     */
+    private $config = [];
+
     public function actionSend()
     {
         $this->requirePostRequest();
@@ -54,6 +59,12 @@ class MessageController extends BaseController
         if(empty($this->formModel)) {
             throw new HttpException(404);
             return null;
+        }
+
+        $configService = Craft::$app->getConfig();
+        $customConfig = $configService->getConfigFromFile('wheelform');
+        if(! empty($customConfig) && is_array($customConfig)) {
+            $this->config = $customConfig;
         }
 
         $message = new Message();
@@ -77,10 +88,13 @@ class MessageController extends BaseController
         }
 
         if(! empty($this->formModel->options['honeypot'])) {
-            $userHoneypot = $request->post($this->formModel->options['honeypot'], '');
-            if(! empty($userHoneypot))
-            {
-                $errors['honeypot'] = [Craft::t('wheelform', "Leave honeypot field empty.")];
+            $userHoneypot = $request->post($this->formModel->options['honeypot'], '0');
+            if (!empty($userHoneypot) && $userHoneypot !== '0') {
+                $honeypot_error = Craft::t('wheelform', "Leave honeypot field empty.");
+                if (!empty($this->config['honeypotField']['error_message']) && is_string($this->config['honeypotField']['error_message'])) {
+                    $honeypot_error = $this->config['honeypotField']['error_message'];
+                }
+                $errors['honeypot'] = [$honeypot_error];
             }
         }
 

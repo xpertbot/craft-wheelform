@@ -123,9 +123,10 @@ class FormService extends BaseService
         }
 
         if(! empty($this->instance->options['honeypot']) ) {
-            $hpValue = empty($this->values[$this->instance->options['honeypot']]) ? '' : $this->values[$this->instance->options['honeypot']];
+            $hpValue = empty($this->values[$this->instance->options['honeypot']]) ? '0' : $this->values[$this->instance->options['honeypot']];
             $html .= Html::textInput($this->instance->options['honeypot'], $hpValue, [
                 'class' => "wf-{$this->instance->options['honeypot']}-{$this->id}",
+                'autofill' => 'false',
             ]);
         }
 
