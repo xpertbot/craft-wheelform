@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.5.2 - 2020-10-05
+### Added
+- `getFileExtensions` getter function for field template service
+- Added ability to select all entries on current entries list.
+
+### Fixed
+- Honeypot field autocomplete problems on some browsers.
+
+
 ## 2.5.1 - 2020-08-04
 ### Added
 - Added Norwegian Translation (@AlexFUNBIT)
