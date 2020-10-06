@@ -101,6 +101,15 @@ class FieldService extends BaseService
         return Template::raw($this->options->content);
     }
 
+    public function getFileExtensions()
+    {
+        if ($this->type !== 'file') {
+            return Null;
+        }
+
+        return empty($this->options->extensions) ? '' : $this->options->extensions;
+    }
+
     //Setter
     public function setType($value)
     {

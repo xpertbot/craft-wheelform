@@ -149,6 +149,9 @@ submitButton: {
     }, "POST") }}
 ```
 
+### Field Service options
+- `getFileExtensions` If current Field Type is "file" you can retrieve the current "File Extension Restrictions" set on that field.
+
 ## Template Structure
 
 Your form template can look something like this:

@@ -308,6 +308,9 @@ class FormService extends BaseService
 
     protected function hashUrl($url)
     {
+        /**
+         * @var craft\services\Security
+         */
         $security = Craft::$app->getSecurity();
         return $security->hashData($url);
     }
