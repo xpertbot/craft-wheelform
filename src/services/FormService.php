@@ -3,6 +3,7 @@ namespace wheelform\services;
 
 use Craft;
 use craft\helpers\Template;
+use Exception;
 use wheelform\db\Form;
 use wheelform\db\FormField;
 use wheelform\db\Message;
@@ -50,6 +51,9 @@ class FormService extends BaseService
      * @var boolean
      */
     private $_refreshCsrf = false;
+
+    /** @var bool */
+    private $_isHoneypotRendered = false;
 
     public function init()
     {
@@ -122,17 +126,58 @@ class FormService extends BaseService
             }
         }
 
-        if(! empty($this->instance->options['honeypot']) ) {
-            $hpValue = empty($this->values[$this->instance->options['honeypot']]) ? '0' : $this->values[$this->instance->options['honeypot']];
-            $html .= Html::textInput($this->instance->options['honeypot'], $hpValue, [
-                'class' => "wf-{$this->instance->options['honeypot']}-{$this->id}",
-                'autofill' => 'false',
-            ]);
+        // Make sure option in the form settings is available as well as we haven't called the honeypot field directly
+        if (! empty($this->instance->options['honeypot']) && $this->_isHoneypotRendered == false ) {
+            $html .= $this->honeypot('text', [], true);
         }
 
         $html .= $this->renderSubmitButton();
         $html .= Html::endForm();
         return Template::raw($html);
+    }
+
+    /**
+     * @param string $fieldType
+     * @param mixed $defaultValue
+     * @param array $atts
+     * @param bool $returnString
+     * @return string
+     */
+    public function honeypot($fieldType = 'text', $atts = [], $returnString = false)
+    {
+        if (! in_array($fieldType, ['text', 'password', 'hidden'])) {
+            throw new Exception('fieldType attribute needs to be a valid field type.');
+        }
+        $honeypotFieldName = $this->instance->options['honeypot'];
+        if (empty($honeypotFieldName)) {
+            throw new Exception('calling `form.honeypot()` incorrectly. Honeypot field name not set on Form Configuration.');
+        }
+        $honeypotFieldValue = isset($this->instance->options['honeypot_value']) ? $this->instance->options['honeypot_value'] : '';
+        $options = array_merge([
+            'class' => "wf-{$honeypotFieldName}-{$this->id}",
+            'autofill' => 'false',
+        ], $atts);
+        $value = empty($this->values[$honeypotFieldName]) ? $honeypotFieldValue : $this->values[$honeypotFieldName];
+        $html = '';
+        switch($fieldType) {
+            case 'text':
+                $html = Html::textInput($honeypotFieldName, $value, $options);
+                break;
+            case 'password':
+                $html = Html::passwordInput($honeypotFieldName, $value, $options);
+                break;
+            case 'hidden':
+                $html = Html::hiddenInput($honeypotFieldName, $value, $options);
+                break;
+        }
+
+        $this->_isHoneypotRendered = true;
+
+        if ($returnString) {
+            return $html;
+        } else {
+            return Template::raw($html);
+        }
     }
 
     public function getFields()

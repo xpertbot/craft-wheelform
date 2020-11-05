@@ -285,6 +285,7 @@ export default {
         {
             return {
                 honeypot: "",
+                honeypot_value: "",
                 email_subject: "",
                 user_notification: 0,
             };

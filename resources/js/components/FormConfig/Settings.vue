@@ -89,6 +89,16 @@
                     <input class="text fullwidth" type="text" id="options[honeypot]" v-model="form.options.honeypot" value="" autocomplete="off">
                 </div>
             </div>
+            <div class="field" id="options[honeypot_value]-field">
+                <div class="heading">
+                    <label id="options[honeypot_value]-label" for="options[honeypot_value]">{{'Honeypot Value'|t('wheelform')}}</label>
+                    <div class="instructions"><p>{{'Leave empty for no value on field.'|t('wheelform')}}</p>
+                    </div>
+                </div>
+                <div class="input ltr">
+                    <input class="text fullwidth" type="text" id="options[honeypot_value]" v-model="form.options.honeypot_value" value="" autocomplete="off">
+                </div>
+            </div>
             <div class="field">
                 <span v-show="! form.send_email && form.options.user_notification" style="color: #da5a47">{{'Send Email needs to be active for this feature to work'|t('wheelform')}}</span>
                 <Lightswitch
