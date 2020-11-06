@@ -599,7 +599,7 @@ If not using `{{ form.close() }}` helper tag make sure you add a text field with
 If you need complete control of how the Honeypot field should behave. You can call `{{ form.honeypot($type, $attributes = [], $returnString = false) }}` where:
 - `$type`: can be 1 of 3 types; `text`, `password`, `hidden`.
 - `$attributes`: (Optional) an array of options for the field. E.G. `{'autocomplete': 'none', 'class': 'comments-field'}`.
-- `$returnString`: (Optional) This will return the string for further manipulation, instead of template ready entities.
+- `$returnString`: (Optional) This will return the field HTML string for further manipulation, instead of template ready entities.
 
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)
