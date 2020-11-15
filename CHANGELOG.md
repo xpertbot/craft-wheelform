@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 2.5.4 - 2020-11-15
+### Fixed
+- Bundles not minified correctly on Control Panel.
+
 ## 2.5.3 - 2020-11-15
 ### Fixed
 - Honeypot field autocomplete problems on some browsers.
