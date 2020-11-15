@@ -109,11 +109,11 @@ class Mailer extends Component
                                         'contentType' => FileHelper::getMimeType($attachment->filePath),
                                     ]);
                                 }
-                                $text .= (!empty($attachment->name) ? $attachment->name : Craft::t("wheelform", 'Uploaded File'));
+                                $text .= (!empty($attachment->name) ? $attachment->name : Craft::t("wheelform", 'Uploaded file'));
                                 // Prepare for Twig
                                 $beforeEvent->message[$k]['value'] = $attachment;
                             } else {
-                                $text .= Craft::t("wheelform", 'Uploaded file not found.');
+                                $text .= Craft::t("wheelform", 'Uploaded file not found');
                             }
                         }
                         break;
