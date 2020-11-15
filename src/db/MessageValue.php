@@ -9,11 +9,10 @@ use craft\helpers\Assets;
 use craft\elements\Asset;
 use craft\errors\UploadFailedException;
 use craft\helpers\FileHelper;
-use wheelform\Plugin;
-
+use craft\web\UploadedFile;
 use yii\web\BadRequestHttpException;
 use yii\base\ErrorException;
-use craft\web\UploadedFile;
+use wheelform\Plugin;
 
 //Using Active Record because it extends Models.
 class MessageValue extends BaseActiveRecord
@@ -73,12 +72,12 @@ class MessageValue extends BaseActiveRecord
 
     public function getMessage()
     {
-        return $this->hasOne(Message::classname(), ['id' => 'message_id']);
+        return $this->hasOne(Message::class, ['id' => 'message_id']);
     }
 
     public function getField()
     {
-        return $this->hasOne(FormField::classname(), ['id' => 'field_id']);
+        return $this->hasOne(FormField::class, ['id' => 'field_id']);
     }
 
     public function getValue()
@@ -138,7 +137,7 @@ class MessageValue extends BaseActiveRecord
         $plugin = Plugin::getInstance();
         $settings = $plugin->getSettings();
         $folder_id = empty($settings->volume_id) ? NULL : $settings->volume_id;
-        $fileModel = new \stdClass();
+
         try {
             $filename = $this->value->name;
             $tempPath = $this->_getUploadedFileTempPath($this->value);
@@ -186,6 +185,7 @@ class MessageValue extends BaseActiveRecord
             return $exception->getMessage();
         }
 
+        $fileModel = new \stdClass();
         $fileModel->name = $filename;
         $fileModel->filePath = $filePath;
         $fileModel->assetId = $assetId;

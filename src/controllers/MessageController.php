@@ -91,7 +91,6 @@ class MessageController extends BaseController
             $honeypotFieldValue = isset($this->formModel->options['honeypot_value']) ? $this->formModel->options['honeypot_value'] : '';
             $userHoneypot = $request->post($this->formModel->options['honeypot'], $honeypotFieldValue);
             if (!empty($userHoneypot) && $userHoneypot !== $honeypotFieldValue) {
-                die('here');
                 $honeypot_error = Craft::t('wheelform', "Leave honeypot field empty.");
                 if (!empty($this->config['honeypotField']['error_message']) && is_string($this->config['honeypotField']['error_message'])) {
                     $honeypot_error = $this->config['honeypotField']['error_message'];

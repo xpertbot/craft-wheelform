@@ -98,19 +98,23 @@ class Mailer extends Component
                 switch ($m['type'])
                 {
                     case 'file':
+                        $beforeEvent->message[$k]['value'] = NULL;
                         if(! empty($m['value'])){
                             $attachment = json_decode($m['value']);
-                            // Only Attach files that are stored locally
-                            if (!empty($attachment->filePath)) {
-                                $mailMessage->attach($attachment->filePath, [
-                                    'fileName' => $attachment->name,
-                                    'contentType' => FileHelper::getMimeType($attachment->filePath),
-                                ]);
+                            if (!empty($attachment)) {
+                                // Only Attach files that are stored locally
+                                if (!empty($attachment->filePath)) {
+                                    $mailMessage->attach($attachment->filePath, [
+                                        'fileName' => $attachment->name,
+                                        'contentType' => FileHelper::getMimeType($attachment->filePath),
+                                    ]);
+                                }
+                                $text .= (!empty($attachment->name) ? $attachment->name : Craft::t("wheelform", 'Uploaded File'));
+                                // Prepare for Twig
+                                $beforeEvent->message[$k]['value'] = $attachment;
+                            } else {
+                                $text .= Craft::t("wheelform", 'Uploaded file not found.');
                             }
-                            $text .= $attachment->name;
-
-                            // Prepare for Twig
-                            $beforeEvent->message[$k]['value'] = $attachment;
                         }
                         break;
                     case 'checkbox':
@@ -238,6 +242,9 @@ class Mailer extends Component
 
     public function compileHtmlBody(array $variables)
     {
+        /**
+         * @var craft/web/View
+         */
         $view = Craft::$app->getView();
         $currentMode = $view->getTemplateMode();
         $isFrontTemplate = true;
@@ -270,6 +277,9 @@ class Mailer extends Component
 
     public function getNotificationHtml(array $variables, string $notificationMessage)
     {
+        /**
+         * @var craft/web/View
+         */
         $view = Craft::$app->getView();
         $currentMode = $view->getTemplateMode();
         $isFrontTemplate = true;
