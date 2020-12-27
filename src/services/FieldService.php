@@ -77,6 +77,22 @@ class FieldService extends BaseService
         return $label;
     }
 
+    /**
+     * @return bool
+     */
+    public function getdisplayLabel()
+    {
+        return (empty($this->options->display_label) ? false : true);
+    }
+
+    /**
+     * @return null|stdClass
+     */
+    public function getOptions()
+    {
+        return (empty($this->options) ? null : $this->options);
+    }
+
     public function getOrder($value)
     {
         return $this->order;
