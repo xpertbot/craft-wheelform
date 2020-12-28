@@ -103,7 +103,7 @@ class Mailer extends Component
                             $attachment = json_decode($m['value']);
                             if (!empty($attachment)) {
                                 // Only Attach files that are stored locally
-                                if (!empty($attachment->filePath)) {
+                                if (!empty($attachment->filePath) && empty($this->config['forms'][$this->form->id]['skip_attachments'])) {
                                     $mailMessage->attach($attachment->filePath, [
                                         'fileName' => $attachment->name,
                                         'contentType' => FileHelper::getMimeType($attachment->filePath),

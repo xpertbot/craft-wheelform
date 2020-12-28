@@ -78,6 +78,8 @@ Current Field types supported are:
             - required
             - order
             - value
+            - options
+            - displayLabel
         - entries
             - id
             - formId
@@ -524,7 +526,7 @@ Email Templates are Optional. Custom Twig templates can be used using these step
 2. `wheelform.php` expects an array of configuration settings to be returned. The options are:
     - `template`: default template to use for all emails.
     - `notification`: default notification template overwrite.
-    - `forms`: is an array that overwrites any settings specific to the form. They key on each array is the ID of the form to modify. (These settings take priority over anything else) (Note: This `forms` key is the same as above for custom "From" Address)
+    - `forms`: is an array that overwrites any settings specific to the form. The key on each array is the ID of the form to modify. (These settings take priority over anything else) (Note: This `forms` key is the same as above for custom "From" Address)
 
 ```php
 return [
@@ -588,6 +590,18 @@ Example:
     </ul>
 </body>
 </html>
+```
+
+### Skip attaching files to email
+Inside `wheelform.php` each form can have a flag to skip attaching email:
+```php
+return [
+    'forms' => [
+        1 => [
+            'skip_attachments' => true, // True/False value, leave empty if not needed.
+        ],
+    ],
+];
 ```
 
 ### Honeypot Field

@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.5.6 - 2020-12-28
+### Added
+- New config key to allow forms to skip attaching files to email.
+
 ## 2.5.5 - 2020-12-27
 ### Fixed
 - Access to Field options in custom templates
