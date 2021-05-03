@@ -26,7 +26,7 @@ class BaseActiveRecord extends ActiveRecord
         $now = Db::prepareDateForDb(new \DateTime());
 
         if ($this->getIsNewRecord()) {
-            if ($this->hasAttribute('dateCreated') && !isset($this->dateCreated)) {
+            if ($this->hasAttribute('dateCreated') && (!isset($this->dateCreated) || false === $this->dateCreated)) {
                 $this->dateCreated = $now;
             }
 
