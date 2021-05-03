@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.5.7 - 2021-05-03
+### Fixed
+- Fixed bug on DateCreated field for Messages Model (@jgdevweb).
+- NPM dependencies
+
 ## 2.5.6 - 2020-12-28
 ### Added
 - New config key to allow forms to skip attaching files to email.
