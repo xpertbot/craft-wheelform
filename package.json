@@ -4,7 +4,7 @@
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
-    "codemirror": "^5.56.0",
+    "codemirror": "^5.58.2",
     "css-loader": "^2.1.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "fibers": "^5.0.0",
