@@ -26,6 +26,11 @@ class MessageController extends BaseController
     public $allowAnonymous = true;
 
     /**
+     * @var array
+     */
+    protected $settings = [];
+
+    /**
      * @var string
      */
     const EVENT_BEFORE_SAVE = "beforeSave";
@@ -46,7 +51,7 @@ class MessageController extends BaseController
 
         $request = Yii::$app->request;
         $plugin = Plugin::getInstance();
-        $settings = $plugin->getSettings();
+        $this->settings = $plugin->getSettings();
 
         $form_id = intval($request->post('form_id', "0"));
         if($form_id <= 0){
@@ -80,7 +85,7 @@ class MessageController extends BaseController
 
         if($this->formModel->recaptcha == 1) {
             $userRes = $request->post('g-recaptcha-response', '');
-            $recaptcha_secret = empty($settings->recaptcha_secret) ? "" : Craft::parseEnv($settings->recaptcha_secret);
+            $recaptcha_secret = empty($this->settings->recaptcha_secret) ? "" : Craft::parseEnv($this->settings->recaptcha_secret);
             if($this->validateRecaptcha($userRes, $recaptcha_secret) == false)
             {
                 $errors['recaptcha'] = [Craft::t('wheelform', "The reCAPTCHA wasn't entered correctly. Try again.")];
@@ -189,7 +194,7 @@ class MessageController extends BaseController
             }
         }
 
-        $success_message = $settings->success_message;
+        $success_message = $this->settings->success_message;
 
         if (! empty($this->formModel->options['submit_message'])) {
             $success_message = $this->formModel->options['submit_message'];
@@ -249,6 +254,10 @@ class MessageController extends BaseController
         $jsonRes = file_get_contents($url, false, $context);
 
         $resp = json_decode($jsonRes);
+
+        if ($this->settings['recaptcha_version'] == '3') {
+          return $resp->success && $resp->score >= (float) $this->settings['recaptcha_min_score'];
+        }
 
         return $resp->success;
     }
