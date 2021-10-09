@@ -27,9 +27,11 @@ class RecaptchaV3Service extends BaseService
 
         $html = Html::jsFile("https://www.google.com/recaptcha/api.js?render={$recaptcha_public}&onload=wheelformRecaptchaV3onload");
         $html .= Html::script("
-        var WheelformRecaptcha = {
-            callbacks: [],
-        };
+        if (!WheelformRecaptcha) {
+            var WheelformRecaptcha = {
+                callbacks: [],
+            };
+        }
         var wheelformRecaptchaV3onload = function() {
             grecaptcha.ready(function() {
                 grecaptcha.execute('{$recaptcha_public}', {action: '{$action}'}).then(function(token) {
