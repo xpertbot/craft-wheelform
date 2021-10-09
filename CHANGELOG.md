@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.6.0 - 2021-10-08
+### Fixed
+- Fixed multiple forms with recpatchas V3 on same page (@timvermaercke).
+
 ## 2.5.8 - 2021-05-03
 ### Fixed
 - Fixed bug on DateCreated field for Messages Model (@jgdevweb).
