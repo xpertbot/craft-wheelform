@@ -25,6 +25,8 @@ class Settings extends Model
 
     public $recaptcha_secret;
 
+    public $recaptcha_min_score;
+
     public $disabled_fields;
 
     private $availableFields = [];
@@ -51,6 +53,7 @@ class Settings extends Model
             [['from_email', 'success_message'], 'required', 'message' => Craft::t('wheelform', 'From email / Success Message cannot be blank.')],
             ['recaptcha_version', 'in', 'range' => ["2", "3"]],
             ['recaptcha_version', 'default', 'value' => 2],
+            ['recaptcha_min_score', 'default', 'value' => 0.5],
             ['from_email', 'email', 'message' => Craft::t('wheelform', 'From email is not a valid email address.')],
             [['success_message', 'cp_label', 'recaptcha_public', 'recaptcha_secret', 'from_name'], 'string'],
             [['volume_id'], 'integer'],
