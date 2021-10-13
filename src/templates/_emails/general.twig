@@ -3,7 +3,7 @@
     <ul>
     {% for name, field in fields %}
         <li>
-            <strong>{{ field.label }}:</strong><br>
+            <strong>{{ field.label|t }}:</strong><br>
             {% switch field.type %}
 
                 {% case "file" %}

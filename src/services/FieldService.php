@@ -1,6 +1,7 @@
 <?php
 namespace wheelform\services;
 
+use Craft;
 use craft\helpers\Template;
 use yii\helpers\Html;
 
@@ -70,11 +71,11 @@ class FieldService extends BaseService
     {
         if(! empty($this->options->label))
         {
-            return $this->options->label;
+            return Craft::t('site', $this->options->label);
         }
         $label = trim(str_replace(['_', '-'], " ", $this->name));
         $label = ucfirst($label);
-        return $label;
+        return Craft::t('site', $label);
     }
 
     /**
@@ -105,7 +106,7 @@ class FieldService extends BaseService
 
     public function getPlaceholder()
     {
-        return (isset($this->options->placeholder) ? $this->options->placeholder : "");
+        return (isset($this->options->placeholder) ? Craft::t('site', $this->options->placeholder) : "");
     }
 
     public function getContent()
@@ -187,13 +188,14 @@ class FieldService extends BaseService
                 }
 
                 foreach($this->items as $key => $item) {
+                    $itemTranslated = Craft::t('site', $item);
                     $args = array_merge($html_default_args, [
                         'id' => "wf-radio-" . $this->order . '-' . $key,
-                        'value' => $item,
+                        'value' => $itemTranslated,
                     ]);
                     $html .= '<div class="wf-radio">';
-                    $html .= Html::radio($this->name, ($item == $this->value), $args);
-                    $html .= Html::label($item, "wf-radio-" . $this->order . '-' . $key, [
+                    $html .= Html::radio($this->name, ($itemTranslated == $this->value), $args);
+                    $html .= Html::label($itemTranslated, "wf-radio-" . $this->order . '-' . $key, [
                         'class' => 'wf-label'
                     ]);
                     $html .= '</div>';
@@ -217,13 +219,14 @@ class FieldService extends BaseService
                 }
 
                 foreach($this->items as $key => $item) {
+                    $itemTranslated = Craft::t('site', $item);
                     $args = array_merge($html_default_args, [
                         'id' => "wf-checkbox-" . $this->order . '-' . $key,
-                        'value' => $item,
+                        'value' => $itemTranslated,
                     ]);
                     $html .= '<div class="wf-checkbox">';
-                    $html .= Html::checkbox($this->name . '[]', in_array($item, $value), $args);
-                    $html .= Html::label($item, "wf-checkbox-" . $this->order . '-' . $key, [
+                    $html .= Html::checkbox($this->name . '[]', in_array($itemTranslated, $value), $args);
+                    $html .= Html::label($itemTranslated, "wf-checkbox-" . $this->order . '-' . $key, [
                         'class' => 'wf-label',
                     ]);
                     $html .= '</div>';
@@ -242,7 +245,8 @@ class FieldService extends BaseService
                     $html .= "<option value=\"\"> -- </option>";
                 }
                 foreach($this->items as $key => $item) {
-                    $html .= "<option value=\"{$item}\"".( ($item == $this->value) ? ' selected="selected"' : '' ). ">{$item}</option>";
+                    $itemTranslated = Craft::t('site', $item);
+                    $html .= "<option value=\"{$itemTranslated}\"".( ($itemTranslated == $this->value) ? ' selected="selected"' : '' ). ">{$itemTranslated}</option>";
                 }
                 $html .= '</select></div>';
                 break;
@@ -266,7 +270,7 @@ class FieldService extends BaseService
                 $items = $this->getValue();
                 $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
                 $html .= "<div class=\"wf-list-container\">";
-                $html .= Html::a(\Craft::t('wheelform', 'Add') . ' ' . $this->getLabel(), '#', [
+                $html .= Html::a(\Craft::t('site', 'Add') . ' ' . $this->getLabel(), '#', [
                     'class' => 'wf-list-add',
                     'data-field-name' => $this->name,
                 ]);
@@ -281,7 +285,7 @@ class FieldService extends BaseService
                 $html .= "</div>";
                 break;
             case 'hidden':
-                // Hidden doesn't put a label
+                // Hidden doesn't use a label
                 $html .= Html::input($this->type, $this->name, $this->value, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
@@ -290,7 +294,6 @@ class FieldService extends BaseService
             case 'email':
             case 'number':
             case 'text':
-                // Email, Text, Hidden
                 $args = array_merge($html_default_args, [
                     'id' => $this->generateId(),
                     'placeholder' => $this->getPlaceholder(),
