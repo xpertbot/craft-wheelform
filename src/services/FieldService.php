@@ -19,6 +19,11 @@ class FieldService extends BaseService
 
     private $value;
 
+    /**
+     * @var string
+     */
+    private $field_id;
+
     public function init()
     {
         if(! empty($this->options))
@@ -76,6 +81,18 @@ class FieldService extends BaseService
         $label = trim(str_replace(['_', '-'], " ", $this->name));
         $label = ucfirst($label);
         return Craft::t('site', $label);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFieldId()
+    {
+        if (empty($this->field_id)) {
+            $this->field_id = $this->generateId();
+        }
+
+        return $this->field_id;
     }
 
     /**
@@ -237,8 +254,8 @@ class FieldService extends BaseService
                     break;
                 }
                 $html .= '<div class="wf-select">';
-                $html .= "<label for=\"{$this->generateId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<select id=\"{$this->generateId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\"";
+                $html .= "<label for=\"{$this->getFieldId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
+                $html .= "<select id=\"{$this->getFieldId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\"";
                 $html .= (!empty($this->options->display_required_attribute) ? ' required="required"' : '');
                 $html .= '>';
                 if(!empty($this->options->selectEmpty) && (bool) $this->options->selectEmpty) {
@@ -252,23 +269,23 @@ class FieldService extends BaseService
                 break;
             case "file":
                 $args = array_merge($html_default_args, [
-                    'id' => $this->generateId(),
+                    'id' => $this->getFieldId(),
                     'class' => "wf-field " . $this->fieldClass,
                 ]);
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
                 $html .= Html::fileInput($this->name, null, $args);
                 break;
             case "textarea":
                 $args = array_merge($html_default_args, [
-                    'id' => $this->generateId(),
+                    'id' => $this->getFieldId(),
                     'placeholder' => $this->getPlaceholder(),
                 ]);
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
                 $html .= Html::textarea($this->name, $this->value, $args);
                 break;
             case "list":
                 $items = $this->getValue();
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
                 $html .= "<div class=\"wf-list-container\">";
                 $html .= Html::a(\Craft::t('site', 'Add') . ' ' . $this->getLabel(), '#', [
                     'class' => 'wf-list-add',
@@ -287,7 +304,7 @@ class FieldService extends BaseService
             case 'hidden':
                 // Hidden doesn't use a label
                 $html .= Html::input($this->type, $this->name, $this->value, [
-                    'id' => $this->generateId(),
+                    'id' => $this->getFieldId(),
                     'placeholder' => $this->getPlaceholder(),
                 ]);
                 break;
@@ -295,10 +312,10 @@ class FieldService extends BaseService
             case 'number':
             case 'text':
                 $args = array_merge($html_default_args, [
-                    'id' => $this->generateId(),
+                    'id' => $this->getFieldId(),
                     'placeholder' => $this->getPlaceholder(),
                 ]);
-                $html .= Html::label($this->getLabel(), $this->generateId(), ['class' => 'wf-label']);
+                $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
                 $html .= Html::input($this->type, $this->name, $this->value, $args);
                 break;
             default:
