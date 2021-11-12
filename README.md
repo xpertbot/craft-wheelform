@@ -438,6 +438,7 @@ On Plugin Settings select the Folder you would like to save files. Make sure `Al
 
 You can optionally post contact form submissions over Ajax if you’d like. Just send a POST request to your site with all of the same data that would normally be sent:
 
+**JQuery**
 ```js
 $('#my-form').submit(function(ev) {
     // Prevent the form from actually submitting
@@ -461,6 +462,58 @@ $('#my-form').submit(function(ev) {
         }
     );
 });
+```
+
+**Basic Javascript using [Axios](https://github.com/axios/axios) and [Babel](https://babeljs.io/) with [Webpack](https://webpack.js.org/)**
+```js
+import axios from 'axios';
+
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', function(event) {
+    /**
+     * This prevents the default behaviour of the browser submitting
+     * the form so that we can handle things instead.
+     */
+    event.preventDefault();
+
+    /**
+     * This gets the element which the event handler was attached to.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/Event/currentTarget
+     */
+    const form = event.currentTarget;
+
+    /**
+      * Hidden field named action
+      */
+    const url = form.action.value;
+
+    /**
+     * This takes all the fields in the form and makes their values
+     * available through a `FormData` instance.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/FormData
+     */
+    const formData = new FormData(form);
+
+    axios({
+      method: 'post',
+      url: url,
+      responseType: 'json',
+      headers: {'X-Requested-With': 'XMLHttpRequest'},
+      data: formData,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  });
+}
+
 ```
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.

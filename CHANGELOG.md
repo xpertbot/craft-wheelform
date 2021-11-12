@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 2.6.3 - 2021-11-11
 ### Added
+- Better examples of Vanilla Javascript and AJAX submisions.
 - Added ability to retrieve the Form field ID in the templates.
 
 ## 2.6.2 - 2021-10-13
