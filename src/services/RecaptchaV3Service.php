@@ -32,16 +32,21 @@ class RecaptchaV3Service extends BaseService
                 callbacks: [],
             };
         }
+        
+        var wheelformProcessRecaptchaCallback = function() {
+            grecaptcha.execute('{$recaptcha_public}', {action: '{$action}'}).then(function(token) {
+                if(WheelformRecaptcha.callbacks.length > 0) {
+                    for(var i = 0; i < WheelformRecaptcha.callbacks.length; i++) {
+                        var callback = WheelformRecaptcha.callbacks[i];
+                        callback(token);
+                    }
+                }
+            });
+        }
+        
         var wheelformRecaptchaV3onload = function() {
             grecaptcha.ready(function() {
-                grecaptcha.execute('{$recaptcha_public}', {action: '{$action}'}).then(function(token) {
-                    if(WheelformRecaptcha.callbacks.length > 0) {
-                        for(var i = 0; i < WheelformRecaptcha.callbacks.length; i++) {
-                            var callback = WheelformRecaptcha.callbacks[i];
-                            callback(token);
-                        }
-                    }
-                });
+                wheelformProcessRecaptchaCallback()
             });
         }");
         return Template::raw($html);
