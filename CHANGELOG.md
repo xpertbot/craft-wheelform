@@ -5,10 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## 2.6.3 - 2021-11-11
+## 2.6.3 - 2021-11-28
 ### Added
 - Better examples of Vanilla Javascript and AJAX submisions.
 - Added ability to retrieve the Form field ID in the templates.
+- Ability to refresh Recaptcha after an error (@lenvanessen)
 
 ## 2.6.2 - 2021-10-13
 ### Added
