@@ -2,7 +2,8 @@
 namespace wheelform\controllers;
 
 use Craft;
-
+use Throwable;
+use craft\errors\SiteNotFoundException;
 use wheelform\events\MessageEvent;
 use wheelform\events\ResponseEvent;
 use wheelform\db\Form;
@@ -10,8 +11,13 @@ use wheelform\db\Message;
 use wheelform\db\MessageValue;
 use wheelform\Plugin;
 use yii\web\HttpException;
+use yii\web\Response as YiiResponse;
 use wheelform\db\FormField;
 use Yii;
+use yii\web\BadRequestHttpException;
+use yii\base\InvalidConfigException;
+use yii\base\Exception;
+use yii\base\InvalidArgumentException;
 
 class MessageController extends BaseController
 {
@@ -206,6 +212,7 @@ class MessageController extends BaseController
             'errors' => [],
             'data' => [],
             'headers' => [],
+            'redirect' => $this->request->getValidatedBodyParam('redirect')
         ]);
         $this->trigger(self::EVENT_BEFORE_RESPONSE, $responseEvent);
 
@@ -227,7 +234,7 @@ class MessageController extends BaseController
         Craft::$app->getSession()->setNotice($responseEvent->message);
         Craft::$app->getSession()->setFlash('wheelformSuccess',$responseEvent->message);
 
-        return $this->redirectToPostedUrl($message);
+        return $this->redirectToEventUrl($responseEvent->redirect, $message);
     }
 
     protected function validateRecaptcha(string $userRes, string $secret)
@@ -260,5 +267,28 @@ class MessageController extends BaseController
         }
 
         return $resp->success;
+    }
+
+    /**
+     * @param string $url Object containing properties that should be parsed for in the URL.
+     * @param mixed $object Object containing properties that should be parsed for in the URL.
+     * @param string|null $default The default URL to redirect them to, if no 'redirect' parameter exists. If this is left
+     * null, then the current request’s path will be used.
+     * @return YiiResponse
+     * @throws BadRequestHttpException if the redirect param was tampered with
+     */
+    protected function redirectToEventUrl(string $url = null, $object = null, string $default = null): YiiResponse
+    {
+        if ($url === null) {
+            if ($default !== null) {
+                $url = $default;
+            } else {
+                $url = $this->request->getPathInfo();
+            }
+        } else if ($object) {
+            $url = $this->getView()->renderObjectTemplate($url, $object);
+        }
+
+        return $this->redirect($url);
     }
 }
