@@ -25,6 +25,12 @@ class Select extends BaseFieldType
                 'value' => false,
             ],
             [
+                'name' => 'multiple',
+                'type' => 'boolean',
+                'label' => 'Multiple',
+                'value' => false,
+            ],
+            [
                 'name' => 'items',
                 'type' => 'list',
                 'label' => 'Options',

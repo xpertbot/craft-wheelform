@@ -44,7 +44,7 @@ class FormField extends BaseActiveRecord
 
     public function getForm()
     {
-        return $this->hasOne(Form::classname(), ['id' => 'form_id']);
+        return $this->hasOne(Form::class, ['id' => 'form_id']);
     }
 
     public function beforeSave($insert)
@@ -65,7 +65,7 @@ class FormField extends BaseActiveRecord
 
     public function getValues()
     {
-        return $this->hasMany(MessageValue::className(), ['field_id' => 'id']);
+        return $this->hasMany(MessageValue::class, ['field_id' => 'id']);
     }
 
     /**

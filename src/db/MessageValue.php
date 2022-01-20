@@ -36,11 +36,18 @@ class MessageValue extends BaseActiveRecord
                     FormField::TEXT_SCENARIO,
                     FormField::TEXTAREA_SCENARIO,
                     FormField::HIDDEN_SCENARIO,
-                    FormField::SELECT_SCENARIO,
                     FormField::RADIO_SCENARIO,
                 ],
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')
             ],
+            ['value', 'string', 'on' => [
+                FormField::SELECT_SCENARIO,
+            ],
+            'when' => function($model){
+                return !(bool)$model->field->options['multiple'];
+            },
+            'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')
+        ],
             ['value', 'email', 'on' => FormField::EMAIL_SCENARIO,
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' is not a valid email address.')],
             ['value', 'number', 'on' => FormField::NUMBER_SCENARIO,
@@ -58,6 +65,13 @@ class MessageValue extends BaseActiveRecord
                     FormField::CHECKBOX_SCENARIO,
                     FormField::LIST_SCENARIO,
                 ]
+            ],
+            ['value', 'each', 'rule' => ['string'], 'on' => [
+                    FormField::SELECT_SCENARIO,
+                ],
+                'when' => function($model) {
+                    return (bool)$model->field->options['multiple'];
+                }
             ],
             ['value', 'in', 'range' => function(){
                     return (empty($this->field->options['items']) ? [] : $this->field->options['items']);
@@ -124,6 +138,8 @@ class MessageValue extends BaseActiveRecord
     public function beforeSave($insert)
     {
         if($this->field->type == FormField::CHECKBOX_SCENARIO && ! empty($this->value)) {
+            $this->value = implode(', ', $this->value);
+        } elseif ($this->field->type == FormField::SELECT_SCENARIO && (bool)$this->field->options['multiple']) {
             $this->value = implode(', ', $this->value);
         } elseif (!empty($this->value) && $this->field->type == FormField::LIST_SCENARIO) {
             $this->value = json_encode($this->value);

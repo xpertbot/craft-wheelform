@@ -253,10 +253,12 @@ class FieldService extends BaseService
                 if(empty($this->items)) {
                     break;
                 }
+                $fieldName = $this->name.(!empty($this->options->multiple) ? '[]' : '');
                 $html .= '<div class="wf-select">';
                 $html .= "<label for=\"{$this->getFieldId()}\" class=\"wf-label\">{$this->getLabel()}</label>";
-                $html .= "<select id=\"{$this->getFieldId()}\" name=\"{$this->name}\" class=\"wf-field {$this->fieldClass}\"";
+                $html .= "<select id=\"{$this->getFieldId()}\" name=\"{$fieldName}\" class=\"wf-field {$this->fieldClass}\"";
                 $html .= (!empty($this->options->display_required_attribute) ? ' required="required"' : '');
+                $html .= (!empty($this->options->multiple) ? ' multiple' : '');
                 $html .= '>';
                 if(!empty($this->options->selectEmpty) && (bool) $this->options->selectEmpty) {
                     $html .= "<option value=\"\"> -- </option>";
