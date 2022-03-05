@@ -201,6 +201,7 @@ export default {
             field.isActive = 0;
             field.errors = {};
             field.options = this.getOptionsFromConfig(fieldType.config);
+            field.name = this.getCorrectName(field);
             return field;
         },
         deepClone(src, exclude = []) {
@@ -259,6 +260,17 @@ export default {
         activeTabClasses(view) {
             return {
                 sel: (view == this.currentView),
+            }
+        },
+        getCorrectName(field) {
+            let result = this.form.fields.filter((f) => {
+                return f.type == field.type;
+            });
+
+            if (result.length == 0 ) {
+                return field.name;
+            } else {
+                return field.name + '_' + (result.length + 1);
             }
         },
         getOptionsFromConfig(config = []) {
