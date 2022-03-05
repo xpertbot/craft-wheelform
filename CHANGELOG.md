@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Telephone input field type
 - Date input field type
 - Time input field type
-- new afterValidate event for plugins to do custom validation
+- new beforeValidate and afterValidate events for plugins to do custom validation
 ### Fix
 - Duplicate fields in CSV Export when fields are empty.
 - Logic with multiple fields of same type to have increasing names to disallow having the same input field name.

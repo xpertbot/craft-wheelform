@@ -671,7 +671,9 @@ If you need complete control of how the Honeypot field should behave. You can ca
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)
 
-`afterValidate` Event, this allows developers to validate the Message and adjust the values and errors, this happens after the basic validation plugin happens, these changes cascade into the other Events and Mailers.
+`beforeValidate` Event, this allows developers to validate the values and add custom errors. skipping the plugin validation all together, this happens before the basic plugin vaidation.
+
+`afterValidate` Event, this allows developers to validate the Message and adjust the values and errors, this happens after the basic plugin vaidation, these changes cascade into the other Events and Mailers.
 
 `beforeSave` Event, this allows developers to modify the value Active Records objects before being saved to the database, these changes cascade into the other Events and Mailers.
 

@@ -45,6 +45,11 @@ class MessageController extends BaseController
     /**
      * @var string
      */
+    const EVENT_BEFORE_VALIDATE = "beforeValidate";
+
+    /**
+     * @var string
+     */
     const EVENT_AFTER_VALIDATE = "afterValidate";
 
     /**
@@ -115,6 +120,16 @@ class MessageController extends BaseController
                 $errors['honeypot'] = [$honeypot_error];
             }
         }
+
+        $beforeValidateEvent = new MessageEvent([
+            'form_id' => $this->formModel->id,
+            'message' => $request->post(),
+            'errors' => $errors,
+        ]);
+
+        //Trigger Event to allow plugins to do custom validation to the values
+        $this->trigger(self::EVENT_BEFORE_VALIDATE, $beforeValidateEvent);
+        $errors = $beforeValidateEvent->errors;
 
         $visualFields = FormField::getVisualFields();
         if(empty($errors)) {
