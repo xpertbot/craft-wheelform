@@ -60,64 +60,72 @@ class ExportHelper
         }
 
         $messages = $query->all();
-        $fieldModels = FormField::find()->where(['form_id' => $where['form_id']])->orderBy(['order' => SORT_ASC])->all();
-        $headers = ArrayHelper::getColumn($fieldModels, 'name');
         $formatter = Craft::$app->getFormatter();
-        array_unshift($headers, 'id');
-        $headers[] = 'date_created';
+        $headers = [
+            0 => 'id',
+            9999 => 'Date Created',
+        ];
+        $message_array = [];
+        $total_messages = count($messages);
+
+        for ($i = 0; $i < $total_messages; $i++) {
+            $message_array[$i] = [
+                'id' => $messages[$i]->id,
+                'date_created' => $formatter->asDateTime($messages[$i]->dateCreated),
+                'fields' => [],
+            ];
+            foreach ($messages[$i]->value as $v) {
+                $field = $v->field;
+                if (!array_key_exists($field->id, $headers)) {
+                    $headers[$field->id] = $field->label;
+                }
+                $message_array[$i]['fields'][$field->id] = [
+                    'type' => $field->type,
+                    'value' => $v->value,
+                ];
+            }
+        }
+        ksort($headers);
 
         $fp = fopen($file, 'w+');
-
         //Add Headers
-        fputcsv($fp, $headers);
-        if(!empty($messages)) {
-            $rows = [];
-            //create Array for easy Import into CSV
-            for ($i=0; $i < count($messages); $i++) {
-                $rows[$i]['id'] = [
-                    'value' => $messages[$i]->id,
-                    'type' => 'text',
-                ];
-                foreach($messages[$i]->value as $model) {
-                    $rows[$i][$model->field->name] = [
-                        'type' => $model->field->type,
-                        'value' => $model->value,
-                    ];
-                }
-                $rows[$i]['date_created'] = [
-                    'value' => $formatter->asDateTime($messages[$i]->dateCreated),
-                    'type' => 'text',
-                ];
-            }
-
-            foreach($rows as $data) {
-                $row = [];
-                foreach($headers as $header) {
-                    if(empty($data[$header])) {
-                        $row[] = '';
-                    } else {
-                        $m = $data[$header];
-                        switch ($m['type']) {
-                            case 'file':
-                                if (empty($m['value'])) {
-                                    $row[] = '';
-                                } else {
-                                    $attachment = json_decode($m['value']);
-                                    if(! empty($attachment) && !empty($attachment->name)) {
-                                        $row[] = $attachment->name;
-                                    } else {
+        fputcsv($fp, array_values($headers));
+        foreach ($message_array as $m) {
+            $row = [];
+            foreach (array_keys($headers) as $id) {
+                switch($id) {
+                    case 0:
+                        $row[] = $m['id'];
+                        break;
+                    case 9999:
+                        $row[] = $m['date_created'];
+                        break;
+                    default:
+                        if (array_key_exists($id, $m['fields'])) {
+                            switch ($m['fields'][$id]['type']) {
+                                case 'file':
+                                    if (empty($m['fields'][$id]['value'])) {
                                         $row[] = '';
+                                    } else {
+                                        $attachment = json_decode($m['fields'][$id]['value']);
+                                        if(! empty($attachment) && !empty($attachment->name)) {
+                                            $row[] = $attachment->name;
+                                        } else {
+                                            $row[] = '';
+                                        }
                                     }
-                                }
-                                break;
-                            default:
-                                $row[] = $m['value'];
-                                break;
+                                    break;
+                                default:
+                                    $row[] = $m['fields'][$id]['value'];
+                                    break;
+                            }
+                        } else {
+                            $row[] = '';
                         }
-                    }
+                        break;
                 }
-                fputcsv($fp, $row);
             }
+            fputcsv($fp, $row);
         }
         fclose($fp);
 
