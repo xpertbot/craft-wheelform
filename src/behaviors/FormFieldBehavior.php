@@ -15,6 +15,7 @@ class FormFieldBehavior extends Behavior
     const CHECKBOX_SCENARIO = "checkbox";
     const RADIO_SCENARIO = "radio";
     const HIDDEN_SCENARIO = "hidden";
+    const TELEPHONE_SCENARIO = "tel";
     const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";
@@ -50,6 +51,7 @@ class FormFieldBehavior extends Behavior
             self::HIDDEN_SCENARIO => \wheelform\models\fields\Hidden::class,
             self::LIST_SCENARIO => \wheelform\models\fields\ListField::class,
             self::NUMBER_SCENARIO => \wheelform\models\fields\Number::class,
+            self::TELEPHONE_SCENARIO => \wheelform\models\fields\Telephone::class,
             self::RADIO_SCENARIO => \wheelform\models\fields\Radio::class,
             self::SELECT_SCENARIO => \wheelform\models\fields\Select::class,
             self::HTML_SCENARIO => \wheelform\models\fields\HtmlField::class,

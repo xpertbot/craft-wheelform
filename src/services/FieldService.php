@@ -126,6 +126,11 @@ class FieldService extends BaseService
         return (isset($this->options->placeholder) ? Craft::t('site', $this->options->placeholder) : "");
     }
 
+    public function getPattern()
+    {
+        return (isset($this->options->pattern) ? Craft::t('site', $this->options->pattern) : "");
+    }
+
     public function getContent()
     {
         if(empty($this->options->content)) {
@@ -313,10 +318,15 @@ class FieldService extends BaseService
             case 'email':
             case 'number':
             case 'text':
-                $args = array_merge($html_default_args, [
+            case 'tel':
+                $field_args = [
                     'id' => $this->getFieldId(),
                     'placeholder' => $this->getPlaceholder(),
-                ]);
+                ];
+                if ($this->type == 'tel' && !empty($this->getPattern())) {
+                    $field_args['pattern'] = $this->getPattern();
+                }
+                $args = array_merge($html_default_args, $field_args);
                 $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
                 $html .= Html::input($this->type, $this->name, $this->value, $args);
                 break;
