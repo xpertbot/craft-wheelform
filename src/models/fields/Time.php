@@ -1,28 +1,28 @@
 <?php
 namespace wheelform\models\fields;
 
-class Date extends BaseFieldType
+class Time extends BaseFieldType
 {
-    public $name = "Date";
+    public $name = "Time";
 
-    public $type = "date";
+    public $type = "time";
 
     public function getConfig()
     {
         return [
             [
-                'name' => 'min_date',
+                'name' => 'min_time',
                 'type' => 'text',
-                'label' => 'Min Date',
+                'label' => 'Min Time',
                 'value' => '',
-                'description' => 'In format yyyy-mm-dd. Leave empty for none.',
+                'description' => 'In format hh:mm:ss. Leave empty for none.',
             ],
             [
-                'name' => 'max_date',
+                'name' => 'max_time',
                 'type' => 'text',
-                'label' => 'Max Date',
+                'label' => 'Max Time',
                 'value' => '',
-                'description' => 'In format yyyy-mm-dd. Leave empty for none.',
+                'description' => 'In format hh:mm:ss. Leave empty for none.',
             ],
             [
                 'name' => 'display_required_attribute',

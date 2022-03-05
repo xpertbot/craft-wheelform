@@ -17,6 +17,7 @@ class FormFieldBehavior extends Behavior
     const HIDDEN_SCENARIO = "hidden";
     const TELEPHONE_SCENARIO = "tel";
     const DATE_SCENARIO = "date";
+    const TIME_SCENARIO = "time";
     const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";
@@ -57,6 +58,7 @@ class FormFieldBehavior extends Behavior
             self::SELECT_SCENARIO => \wheelform\models\fields\Select::class,
             self::HTML_SCENARIO => \wheelform\models\fields\HtmlField::class,
             self::DATE_SCENARIO => \wheelform\models\fields\Date::class,
+            self::TIME_SCENARIO => \wheelform\models\fields\Time::class,
         ];
     }
 }

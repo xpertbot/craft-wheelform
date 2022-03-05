@@ -141,6 +141,16 @@ class FieldService extends BaseService
         return (isset($this->options->max_date) ? Craft::t('site', $this->options->max_date) : "");
     }
 
+    public function getMinTime()
+    {
+        return (isset($this->options->min_time) ? Craft::t('site', $this->options->min_time) : "");
+    }
+
+    public function getMaxTime()
+    {
+        return (isset($this->options->max_time) ? Craft::t('site', $this->options->max_time) : "");
+    }
+
     public function getContent()
     {
         if(empty($this->options->content)) {
@@ -325,18 +335,11 @@ class FieldService extends BaseService
                     'placeholder' => $this->getPlaceholder(),
                 ]);
                 break;
-            case 'email':
-            case 'number':
-            case 'text':
-            case 'tel':
             case 'date':
+            case 'time':
                 $field_args = [
                     'id' => $this->getFieldId(),
-                    'placeholder' => $this->getPlaceholder(),
                 ];
-                if ($this->type == 'tel' && !empty($this->getPattern())) {
-                    $field_args['pattern'] = $this->getPattern();
-                }
                 if ($this->type == 'date' && (!empty($this->getMinDate()) || !empty($this->getMaxDate()))) {
                     if (!empty($this->getMinDate())) {
                         $field_args['min'] = $this->getMinDate();
@@ -344,6 +347,29 @@ class FieldService extends BaseService
                     if (!empty($this->getMaxDate())) {
                         $field_args['max'] = $this->getMaxDate();
                     }
+                }
+                if ($this->type == 'time' && (!empty($this->getMinTime()) || !empty($this->getMaxTime()))) {
+                    if (!empty($this->getMinTime())) {
+                        $field_args['min'] = $this->getMinTime();
+                    }
+                    if (!empty($this->getMaxTime())) {
+                        $field_args['max'] = $this->getMaxTime();
+                    }
+                }
+                $args = array_merge($html_default_args, $field_args);
+                $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
+                $html .= Html::input($this->type, $this->name, $this->value, $args);
+                break;
+            case 'email':
+            case 'number':
+            case 'text':
+            case 'tel':
+                $field_args = [
+                    'id' => $this->getFieldId(),
+                    'placeholder' => $this->getPlaceholder(),
+                ];
+                if ($this->type == 'tel' && !empty($this->getPattern())) {
+                    $field_args['pattern'] = $this->getPattern();
                 }
                 $args = array_merge($html_default_args, $field_args);
                 $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
