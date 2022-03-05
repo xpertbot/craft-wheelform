@@ -17,6 +17,7 @@ class FormField extends BaseActiveRecord
     const RADIO_SCENARIO = "radio";
     const HIDDEN_SCENARIO = "hidden";
     const TELEPHONE_SCENARIO = "tel";
+    const DATE_SCENARIO = "date";
     const SELECT_SCENARIO = "select";
     const FILE_SCENARIO = "file";
     const LIST_SCENARIO = "list";

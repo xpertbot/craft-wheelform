@@ -15,6 +15,7 @@ class Telephone extends BaseFieldType
                 'type' => 'text',
                 'label' => 'Pattern',
                 'value' => '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+                'description' => 'Regex pattern for validation. Leave empty for none.',
             ],
             [
                 'name' => 'placeholder',

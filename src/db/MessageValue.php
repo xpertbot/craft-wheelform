@@ -38,6 +38,7 @@ class MessageValue extends BaseActiveRecord
                     FormField::HIDDEN_SCENARIO,
                     FormField::TELEPHONE_SCENARIO,
                     FormField::RADIO_SCENARIO,
+                    FormField::DATE_SCENARIO,
                 ],
                 'message' => $this->field->getLabel().Craft::t('wheelform', ' must be valid characters.')
             ],

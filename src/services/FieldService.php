@@ -131,6 +131,16 @@ class FieldService extends BaseService
         return (isset($this->options->pattern) ? Craft::t('site', $this->options->pattern) : "");
     }
 
+    public function getMinDate()
+    {
+        return (isset($this->options->min_date) ? Craft::t('site', $this->options->min_date) : "");
+    }
+
+    public function getMaxDate()
+    {
+        return (isset($this->options->max_date) ? Craft::t('site', $this->options->max_date) : "");
+    }
+
     public function getContent()
     {
         if(empty($this->options->content)) {
@@ -319,12 +329,21 @@ class FieldService extends BaseService
             case 'number':
             case 'text':
             case 'tel':
+            case 'date':
                 $field_args = [
                     'id' => $this->getFieldId(),
                     'placeholder' => $this->getPlaceholder(),
                 ];
                 if ($this->type == 'tel' && !empty($this->getPattern())) {
                     $field_args['pattern'] = $this->getPattern();
+                }
+                if ($this->type == 'date' && (!empty($this->getMinDate()) || !empty($this->getMaxDate()))) {
+                    if (!empty($this->getMinDate())) {
+                        $field_args['min'] = $this->getMinDate();
+                    }
+                    if (!empty($this->getMaxDate())) {
+                        $field_args['max'] = $this->getMaxDate();
+                    }
                 }
                 $args = array_merge($html_default_args, $field_args);
                 $html .= Html::label($this->getLabel(), $this->getFieldId(), ['class' => 'wf-label']);
