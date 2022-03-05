@@ -45,7 +45,7 @@ class MessageController extends BaseController
     /**
      * @var string
      */
-    const EVENT_BEFORE_VALIDATE = "beforeValidate";
+    const EVENT_AFTER_VALIDATE = "afterValidate";
 
     /**
      * @var string
@@ -116,16 +116,6 @@ class MessageController extends BaseController
             }
         }
 
-        //Trigger Event to allow plugins to modify fields before being saved to the database
-        $event = new MessageEvent([
-            'form_id' => $this->formModel->id,
-            'message' => $entryValues,
-            'errors' => $errors,
-        ]);
-        $this->trigger(self::EVENT_BEFORE_VALIDATE, $event);
-
-        $errors = $event->errors;
-
         $visualFields = FormField::getVisualFields();
         if(empty($errors)) {
             // Get Form Fields to validate them
@@ -146,6 +136,16 @@ class MessageController extends BaseController
             }
         }
 
+        //Trigger Event to allow plugins to do custom validation to the values
+        $event = new MessageEvent([
+            'form_id' => $this->formModel->id,
+            'message' => $entryValues,
+            'errors' => $errors,
+        ]);
+        $this->trigger(self::EVENT_AFTER_VALIDATE, $event);
+
+        $errors = $event->errors;
+
         if (! empty($errors)) {
             $response = [
                 'values' => $request->post(),
@@ -165,10 +165,6 @@ class MessageController extends BaseController
         }
 
         //Trigger Event to allow plugins to modify fields before being saved to the database
-        $event = new MessageEvent([
-            'form_id' => $this->formModel->id,
-            'message' => $entryValues
-        ]);
         $this->trigger(self::EVENT_BEFORE_SAVE, $event);
 
         // Values for Mailer
