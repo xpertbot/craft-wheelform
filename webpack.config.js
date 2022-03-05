@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
@@ -26,22 +25,42 @@ module.exports = {
             },
             {
                 test:/\.(s*)css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        { loader: 'css-loader', options: { importLoaders: 1 } },
-                        'postcss-loader',
+                use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: 'css/[name].css',
+                            }
+                        },
+                        {
+                            loader: 'extract-loader'
+                        },
+                        {
+                            loader: 'css-loader?url=false',
+                            options: {
+                                importLoaders: 1
+                            }
+                        },
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                postcssOptions: {
+                                    plugins: [
+                                        'autoprefixer'
+                                    ]
+                                }
+                            }
+                        },
                         {
                             loader: 'sass-loader',
                             options: {
                                 implementation: require("sass"),
                                 sassOptions: {
-                                    fiber: require('fibers'),
+                                    fiber: false,
                                 },
                             },
                         },
                     ]
-                })
             }
         ]
     },
@@ -52,11 +71,6 @@ module.exports = {
         extensions: ['*', '.js', '.vue', '.json']
     },
     plugins: [
-        new ExtractTextPlugin({
-            filename: './css/cp-wheelform.css',
-            allChunks: true
-        }),
-        new VueLoaderPlugin(),
-        require('autoprefixer')
+        new VueLoaderPlugin()
     ]
 }
