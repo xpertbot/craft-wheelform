@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 ## 2.6.5 - 2022-03-04
+### Added
+- Telephone input field type
 ### Fix
 - Duplicate fields in CSV Export when fields are empty.
+- Logic with multiple fields of same type to have increasing names to disallow having the same input field name.
 
 ## 2.6.4 - 2022-01-19
 ### Added
