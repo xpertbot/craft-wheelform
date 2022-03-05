@@ -45,6 +45,11 @@ class MessageController extends BaseController
     /**
      * @var string
      */
+    const EVENT_BEFORE_VALIDATE = "beforeValidate";
+
+    /**
+     * @var string
+     */
     const EVENT_BEFORE_RESPONSE = "beforeResponse";
 
     /**
@@ -110,6 +115,16 @@ class MessageController extends BaseController
                 $errors['honeypot'] = [$honeypot_error];
             }
         }
+
+        //Trigger Event to allow plugins to modify fields before being saved to the database
+        $event = new MessageEvent([
+            'form_id' => $this->formModel->id,
+            'message' => $entryValues,
+            'errors' => $errors,
+        ]);
+        $this->trigger(self::EVENT_BEFORE_VALIDATE, $event);
+
+        $errors = $event->errors;
 
         $visualFields = FormField::getVisualFields();
         if(empty($errors)) {

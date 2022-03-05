@@ -8,4 +8,9 @@ class MessageEvent extends Event
     public $form_id;
 
     public $message;
+
+    /**
+     * @var array
+     */
+    public $errors = [];
 }
