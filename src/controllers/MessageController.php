@@ -260,6 +260,7 @@ class MessageController extends BaseController
 
         Craft::$app->getSession()->setNotice($responseEvent->message);
         Craft::$app->getSession()->setFlash('wheelformSuccess',$responseEvent->message);
+        Craft::$app->getSession()->setFlash('wheelformSubmittedForm', $this->formModel->id);
 
         return $this->redirectToEventUrl($responseEvent->redirect, $message);
     }
