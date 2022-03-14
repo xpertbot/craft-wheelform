@@ -122,6 +122,10 @@ th.text-center, td.text-center {
             li {
                 a {
                     margin: 0px 0px 4px;
+                    border-radius: 0;
+                    &.sel {
+                        box-shadow: none;
+                    }
                 }
             }
         }

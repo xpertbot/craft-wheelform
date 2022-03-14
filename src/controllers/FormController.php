@@ -270,6 +270,7 @@ class FormController extends BaseController
         try {
             $exportHelper = new ExportHelper();
             $where['form_id'] = $form_id;
+            $where['active'] = 1;
 
             $jsonPath = $exportHelper->getFields($where);
         } catch (\Throwable $e) {

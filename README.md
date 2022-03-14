@@ -335,7 +335,11 @@ Note that if you don’t include a `redirect` input, the current page will get r
 
 ### Displaying flash messages
 
-When a contact form is submitted, the plugin will set a `success` flash message on the user session. This is so, you can have a success message after the form has been submitted and can be displayed on redirected page. You can display it in your template like this:
+When a contact form is submitted, the plugin will set a `success` flash message on the user session. This is so, you can have a success message after the form has been submitted and can be displayed on redirected page.
+The available flash variables are:
+`wheelformSubmittedForm` - ID of submitted form
+`wheelformSuccess` - message to display
+You can display it in your template like this:
 
 ```twig
 {% if craft.app.session.hasFlash('wheelformSuccess') %}
@@ -670,6 +674,10 @@ If you need complete control of how the Honeypot field should behave. You can ca
 
 ### Events
 (Note: this is mostly for developers that know basic PHP and Composer Packages)
+
+`beforeValidate` Event, this allows developers to validate the values and add custom errors. skipping the plugin validation altogether, this happens before the basic plugin vaidation.
+
+`afterValidate` Event, this allows developers to validate the Message and adjust the values and errors, this happens after the basic plugin vaidation, these changes cascade into the other Events and Mailers.
 
 `beforeSave` Event, this allows developers to modify the value Active Records objects before being saved to the database, these changes cascade into the other Events and Mailers.
 
