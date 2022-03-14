@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## 2.6.5 - 2022-03-04
+## 2.7.0 - 2022-03-14
 ### Added
 - Telephone input field type
 - Date input field type
