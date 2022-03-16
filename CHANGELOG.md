@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.7.1 - 2022-03-16
+### Fix
+- Undefined error on recaptcha
+
 ## 2.7.0 - 2022-03-14
 ### Added
 - Telephone input field type
@@ -12,6 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Time input field type
 - New beforeValidate and afterValidate events for plugins to do custom validation
 - New flash variable with submitted form ID
+
 ### Fix
 - Duplicate fields in CSV Export when fields are empty.
 - Logic with multiple fields of same type to have increasing names to disallow having the same input field name.

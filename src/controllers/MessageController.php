@@ -102,7 +102,15 @@ class MessageController extends BaseController
 
         if($this->formModel->recaptcha == 1) {
             $userRes = $request->post('g-recaptcha-response', '');
-            $recaptcha_secret = empty($this->settings->recaptcha_secret) ? "" : App::parseEnv($this->settings->recaptcha_secret);
+            $recaptcha_secret = '';
+            if (!empty($this->settings->recaptcha_secret)) {
+                if (Craft::$app->getVersion() >= '3.7.29') {
+                    $recaptcha_secret = App::parseEnv($this->settings->recaptcha_secret);
+                } else {
+                    $recaptcha_secret = Craft::parseEnv($this->settings->recaptcha_secret);
+                }
+            }
+
             if($this->validateRecaptcha($userRes, $recaptcha_secret) == false)
             {
                 $errors['recaptcha'] = [Craft::t('wheelform', "The reCAPTCHA wasn't entered correctly. Try again.")];
