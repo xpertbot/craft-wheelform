@@ -104,7 +104,7 @@ class MessageController extends BaseController
             $userRes = $request->post('g-recaptcha-response', '');
             $recaptcha_secret = '';
             if (!empty($this->settings->recaptcha_secret)) {
-                if (Craft::$app->getVersion() >= '3.7.29') {
+                if (version_compare(Craft::$app->getVersion(), '3.7.29') >= 0) {
                     $recaptcha_secret = App::parseEnv($this->settings->recaptcha_secret);
                 } else {
                     $recaptcha_secret = Craft::parseEnv($this->settings->recaptcha_secret);
