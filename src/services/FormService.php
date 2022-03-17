@@ -115,7 +115,15 @@ class FormService extends BaseService
     {
         $html = '';
         $settings = Wheelform::getInstance()->getSettings();
-        $recaptcha_public = empty($settings['recaptcha_public']) ? "" : App::parseEnv($settings['recaptcha_public']);
+        $recaptcha_public = '';
+        if (!empty($settings['recaptcha_public'])) {
+            if (Craft::$app->getVersion() >= '3.7.29') {
+                $recaptcha_public = App::parseEnv($settings['recaptcha_public']);
+            } else {
+                $recaptcha_public = Craft::parseEnv($settings['recaptcha_public']);
+            }
+        }
+
         if(intval($this->instance->recaptcha) && ! empty($recaptcha_public)) {
             if(! empty($settings['recaptcha_version'] && $settings['recaptcha_version'] == '3')) {
                 $html .= $this->renderRecaptchaV3Event();
