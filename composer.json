@@ -2,12 +2,13 @@
     "name": "xpertbot/craft-wheelform",
     "description": "Craft CMS 3 Form administrator with Database integration",
     "type": "craft-plugin",
-    "version": "2.7.2",
+    "version": "3.0.0",
     "keywords": [
         "craft",
         "cms",
         "craftcms",
         "craft-plugin",
+        "WheelForm",
         "Wheel Form"
     ],
     "support": {
@@ -22,7 +23,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0-RC1"
+        "craftcms/cms": "^4.0.0-alpha"
     },
     "autoload": {
         "psr-4": {

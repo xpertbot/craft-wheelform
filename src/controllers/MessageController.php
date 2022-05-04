@@ -30,7 +30,7 @@ class MessageController extends BaseController
     /**
      * @var boolean
      */
-    public $allowAnonymous = true;
+    public array|int|bool $allowAnonymous = true;
 
     /**
      * @var array

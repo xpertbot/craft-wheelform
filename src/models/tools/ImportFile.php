@@ -9,10 +9,18 @@ class ImportFile extends Model
 {
     public $jsonFile;
 
-    public function rules()
+    /**
+     * @inheritdoc
+     */
+    protected function defineRules(): array
     {
         return [
-            [['jsonFile'], 'file', 'skipOnEmpty' => false, 'mimeTypes' => ['application/json','text/plain']]
+            [['jsonFile'],
+                'file',
+                'skipOnEmpty' => false,
+                'extensions' => ['json'],
+                'checkExtensionByMimeType' => false, // This is very unsafe, but we need to do it because Yii does not do it correctly for PHP 8.1 https://github.com/yiisoft/yii2/issues/19243
+            ]
         ];
     }
 
@@ -24,11 +32,7 @@ class ImportFile extends Model
         }
 
         // Move the uploaded file to the temp folder
-        try {
-            $tempPath = $this->jsonFile->saveAsTempFile();
-        } catch (ErrorException $e) {
-            throw new UploadFailedException(0);
-        }
+        $tempPath = $this->jsonFile->saveAsTempFile();
 
         if ($tempPath === false) {
             throw new UploadFailedException(UPLOAD_ERR_CANT_WRITE);

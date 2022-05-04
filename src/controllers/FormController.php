@@ -20,7 +20,8 @@ use yii\web\HttpException;
 class FormController extends BaseController
 {
     protected $settings;
-    public function init()
+
+    public function init(): void
     {
         $this->settings = Plugin::getInstance()->getSettings();
         if (!$this->settings->validate()) {
@@ -105,7 +106,7 @@ class FormController extends BaseController
         $data = json_decode($request->getRawBody(), TRUE);
         if (! empty($data['id'])) {
             $form = Form::findOne(intval($data['id']));
-            if (! $form) {
+            if (empty($form)) {
                 throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
             }
         } else {
@@ -193,7 +194,7 @@ class FormController extends BaseController
         }
 
         $form = Form::findOne(intval($data['id']));
-        if (! $form) {
+        if (empty($form)) {
             throw new Exception(Craft::t('wheelform', 'No form exists with the ID “{id}”.', array('id' => $form->id)));
         }
 

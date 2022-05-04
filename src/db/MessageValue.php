@@ -2,7 +2,7 @@
 namespace wheelform\db;
 
 use Craft;
-use craft\base\LocalVolumeInterface;
+use craft\base\LocalFsInterface;
 use craft\helpers\Html;
 use craft\helpers\Template;
 use craft\helpers\Assets;
@@ -22,6 +22,9 @@ class MessageValue extends BaseActiveRecord
         return '{{%wheelform_message_values}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -184,13 +187,13 @@ class MessageValue extends BaseActiveRecord
                 $asset->avoidFilenameConflicts = true;
                 $result = Craft::$app->getElements()->saveElement($asset);
                 if($result) {
-                    $volume = $asset->getVolume();
+                    $fileSystem = $asset->getVolume()->getFs();
                     $filename = $asset->filename;
                     $assetId = $asset->id;
                     $assetUrl = $asset->getUrl();
                     // Local volume storage
-                    if ($volume instanceof LocalVolumeInterface) {
-                        $filePath = FileHelper::normalizePath($volume->getRootPath() . DIRECTORY_SEPARATOR . $asset->filename);
+                    if ($fileSystem instanceof LocalFsInterface) {
+                        $filePath = FileHelper::normalizePath($fileSystem->getRootPath() . DIRECTORY_SEPARATOR . $asset->filename);
                     }
                 }
             } else {

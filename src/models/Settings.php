@@ -31,7 +31,7 @@ class Settings extends Model
 
     private $availableFields = [];
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -47,7 +47,7 @@ class Settings extends Model
         }
     }
 
-    public function rules()
+    public function defineRules(): array
     {
         return [
             [['from_email', 'success_message'], 'required', 'message' => Craft::t('wheelform', 'From email / Success Message cannot be blank.')],

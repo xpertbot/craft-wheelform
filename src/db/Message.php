@@ -13,6 +13,9 @@ class Message extends BaseActiveRecord
         return '{{%wheelform_messages}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules(): Array
     {
         return [
