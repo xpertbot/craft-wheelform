@@ -1,8 +1,8 @@
 <?php
 namespace wheelform\models\helpers;
 
+use InvalidArgumentException;
 use yii\base\Arrayable;
-use yii\base\InvalidParamException;
 use yii\helpers\Json;
 
 class JsonField implements \ArrayAccess, Arrayable
@@ -31,13 +31,13 @@ class JsonField implements \ArrayAccess, Arrayable
             $value = Json::decode($value);
             if(! is_array($value))
             {
-                throw new InvalidParamException('Value is scalar');
+                throw new InvalidArgumentException('Value is scalar');
             }
         }
 
         if(! is_array($value))
         {
-            throw new InvalidParamException('Value is not array');
+            throw new InvalidArgumentException('Value is not array');
         }
         else
         {
@@ -65,11 +65,17 @@ class JsonField implements \ArrayAccess, Arrayable
         return !$this->value;
     }
 
-    public function offsetExists($offset)
+    /**
+     * @inheritdoc
+     */
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->value[$offset]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function &offsetGet($offset)
     {
         $null = null;
@@ -83,7 +89,10 @@ class JsonField implements \ArrayAccess, Arrayable
         }
     }
 
-    public function offsetSet($offset, $set)
+    /**
+     * @inheritdoc
+     */
+    public function offsetSet(mixed $offset, mixed $set): void
     {
         if($offset === null)
         {
@@ -94,8 +103,10 @@ class JsonField implements \ArrayAccess, Arrayable
             $this->set[$offset] = $set;
         }
     }
-
-    public function offsetUnset($offset)
+    /**
+     * @inheritdoc
+     */
+    public function offsetUnset($offset): void
     {
         unset($this->value[$offset]);
     }

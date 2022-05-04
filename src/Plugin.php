@@ -23,11 +23,11 @@ use yii\base\Event;
 class Plugin extends BasePlugin
 {
 
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     public $controllerNamespace = "wheelform\\controllers";
 
-    public $schemaVersion = '2.0.0';
+    public string $schemaVersion = '2.0.0';
 
     public function init()
     {
@@ -95,7 +95,7 @@ class Plugin extends BasePlugin
         return new Mailer();
     }
 
-    public function getCpNavItem(): Array
+    public function getCpNavItem(): ?array
     {
         $ret = [
             'label' => $this->getSettings()->cp_label ? $this->getSettings()->cp_label : $this->name,
@@ -110,12 +110,12 @@ class Plugin extends BasePlugin
         return $ret;
     }
 
-    protected function createSettingsModel(): Settings
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new Settings();
     }
 
-    protected function settingsHtml(): string
+    protected function settingsHtml(): ?string
     {
         // Get and pre-validate the settings
         $settings = $this->getSettings();

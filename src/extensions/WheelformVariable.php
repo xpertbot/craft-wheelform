@@ -8,7 +8,7 @@ use wheelform\services\WheelformService;
 class WheelformVariable extends AbstractExtension implements GlobalsInterface
 {
 
-    public function getGlobals()
+    public function getGlobals() : array
     {
         return array(
             'wheelform' => new WheelformService(),

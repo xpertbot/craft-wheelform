@@ -20,6 +20,9 @@ class Form extends BaseActiveRecord
         return '{{%wheelform_forms}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules(): Array
     {
         return [

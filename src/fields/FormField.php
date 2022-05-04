@@ -23,7 +23,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function getContentColumnType(): string
+    public function getContentColumnType(): array|string
     {
         return Schema::TYPE_INTEGER;
     }
@@ -31,7 +31,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function getSettingsHtml(): string
+    public function getSettingsHtml(): ?string
     {
         return "";
     }
@@ -39,7 +39,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function getInputHtml($service, ElementInterface $element = null): string
+    public function getInputHtml(mixed $service, ?\craft\base\ElementInterface $element = null): string
     {
         $forms = Form::find()->select('id,name')->where(['active' => 1])->all();
         $formOptions = [];
@@ -65,7 +65,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function serializeValue($service, ElementInterface $element = null)
+    public function serializeValue(mixed $service, ?\craft\base\ElementInterface $element = null): mixed
     {
         $value = $service;
         if($service) {
@@ -78,7 +78,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if($value instanceof FormService) {
             // FormService already initialized

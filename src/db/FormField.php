@@ -29,6 +29,9 @@ class FormField extends BaseActiveRecord
         return '{{%wheelform_form_fields}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
