@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.1 - 2022-05-04
+
+### Improved
+- Norwegian translate (@AlexFUNBIT)
+- Version comparison checks
+
 ## 3.0.0 - 2022-05-04
+
 ### Add
 - Added Craft 4 support
 
