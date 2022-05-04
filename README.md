@@ -1,12 +1,16 @@
-# Wheel Form plugin for Craft CMS 3.x
+# Wheel Form plugin for Craft CMS 4.x
 
 Free Form Builder with Database Integration, successor of Free Contact Form Plugin featured on [Straight Up Craft](https://straightupcraft.com/)
 
 ![Screenshot](resources/img/form-entries.jpg)
 
+
+## Craft CMS 3.x
+Use `composer require xpertbot/craft-wheelform "^2.7"`
+
 ## Requirements
 
-This plugin requires Craft CMS 3.0.0 or later.
+This plugin requires Craft CMS 4.0.0 or later
 
 ## Installation
 

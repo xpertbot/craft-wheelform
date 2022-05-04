@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.0 - 2022-05-04
+### Add
+- Added Craft 4 support
+
+
 ## 2.7.2 - 2022-03-17
 ### Fix
 - Undefined error on form.close()
