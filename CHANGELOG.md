@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.0.2 - 2022-05-06
+
+### Fix
+- Craft 4 User Permissions
+
 ## 3.0.1 - 2022-05-04
 
 ### Improved
