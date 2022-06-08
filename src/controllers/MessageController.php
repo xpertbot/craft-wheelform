@@ -2,8 +2,6 @@
 namespace wheelform\controllers;
 
 use Craft;
-use Throwable;
-use craft\errors\SiteNotFoundException;
 use craft\helpers\App;
 use wheelform\events\MessageEvent;
 use wheelform\events\ResponseEvent;
@@ -14,11 +12,9 @@ use wheelform\Plugin;
 use yii\web\HttpException;
 use yii\web\Response as YiiResponse;
 use wheelform\db\FormField;
+use wheelform\helpers\TagHelper;
 use Yii;
 use yii\web\BadRequestHttpException;
-use yii\base\InvalidConfigException;
-use yii\base\Exception;
-use yii\base\InvalidArgumentException;
 
 class MessageController extends BaseController
 {
@@ -238,7 +234,16 @@ class MessageController extends BaseController
         $success_message = $this->settings->success_message;
 
         if (! empty($this->formModel->options['submit_message'])) {
-            $success_message = $this->formModel->options['submit_message'];
+            // get submit_message tags
+            $tags = TagHelper::getTags([$this->formModel->options['submit_message']]);
+            if (!empty($tags)) {
+                foreach(array_keys($tags) as $t) {
+                    if (array_key_exists($t, $senderValues) && !empty($senderValues[$t]['value'])) {
+                        $tags[$t] = $senderValues[$t]['value'];
+                    }
+                }
+            }
+            $success_message = Taghelper::replacePlaseholders($this->formModel->options['submit_message'], $tags);
         }
 
         $responseEvent = new ResponseEvent([

@@ -7,6 +7,9 @@ class SendEvent extends Event
 {
     public $form_id;
 
+    /**
+     * @var mixed|string
+     */
     public $subject;
 
     public $message;
