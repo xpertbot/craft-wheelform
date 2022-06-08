@@ -9,7 +9,7 @@
             <div class="col">
                 <div>
                     <label class="required">{{'Name'|t('wheelform')}}:</label>
-                    <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" />
+                    <input type="text" :value="name" @input="updateFieldProperty('name', $event.target.value)" class="text" />
                     <p v-show="getErrorFor('name') !== null" style="color: #da5a47">{{ getErrorFor('name') }}</p>
                 </div>
                 <div>
