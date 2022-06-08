@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 3.1.0 - 2022-06-07
 
+### Add
+- Dynamic email notifications
+
 ### Fix
 - Text input field styles to match Craft 4 layout
 
