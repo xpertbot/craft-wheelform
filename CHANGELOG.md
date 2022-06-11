@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.0 - 2022-06-07
+
+### Add
+- Dynamic email notifications
+
+### Fix
+- Text input field styles to match Craft 4 layout
+
 ## 3.0.2 - 2022-05-06
 
 ### Fix

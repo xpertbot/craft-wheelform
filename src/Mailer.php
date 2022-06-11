@@ -7,6 +7,7 @@ use craft\helpers\StringHelper;
 use craft\mail\Message as MailMessage;
 use wheelform\events\SendEvent;
 use wheelform\db\Form;
+use wheelform\helpers\TagHelper;
 use yii\base\InvalidConfigException;
 use yii\base\Component;
 
@@ -88,6 +89,13 @@ class Mailer extends Component
 
         $this->trigger(self::EVENT_BEFORE_SEND, $beforeEvent);
 
+        // Gather Tags
+        $tags = TagHelper::getTags([
+            $beforeEvent->subject,
+            ($this->form->options['user_notification_subject'] ?? ''),
+            ($this->form->options['user_notification_message'] ?? ''),
+        ]);
+
         //gather message
         if(! empty($beforeEvent->message))
         {
@@ -131,6 +139,9 @@ class Mailer extends Component
                         break;
                     default:
                         //Text, Email, Number
+                        if (array_key_exists($k, $tags) && !empty($m['value'])) {
+                            $tags[$k] = $m['value'];
+                        }
                         $text .= $m['value'];
                         break;
                 }
@@ -142,6 +153,8 @@ class Mailer extends Component
         } else {
             $html_body = $this->compileHtmlBody($beforeEvent->message);
         }
+
+        $beforeEvent->subject = TagHelper::replacePlaseholders($beforeEvent->subject, $tags);
 
         $mailMessage->setFrom($beforeEvent->from);
         $mailMessage->setSubject($beforeEvent->subject);
@@ -193,7 +206,7 @@ class Mailer extends Component
 
                 // User CP Subject
                 if (!empty($this->form->options['user_notification_subject'])) {
-                    $notificationSubject = $this->form->options['user_notification_subject'];
+                    $notificationSubject = TagHelper::replacePlaseholders($this->form->options['user_notification_subject'], $tags);
                 }
 
                 // Generic Notification Subject
@@ -203,10 +216,13 @@ class Mailer extends Component
 
                 //Form specific Notification Subject
                 if(! empty($this->config['forms'][$this->form->id]['notification']['subject'])) {
-                    $notificationSubject = $this->config['forms'][$this->form->id]['notification']['subject'];
+                    $notificationSubject = TagHelper::replacePlaseholders($this->config['forms'][$this->form->id]['notification']['subject'], $tags);
                 }
 
-                $notificationText = (! empty($this->form->options['user_notification_message']) ? $this->form->options['user_notification_message'] : "");
+                $notificationText = "";
+                if (! empty($this->form->options['user_notification_message'])) {
+                    $notificationText = TagHelper::replacePlaseholders($this->form->options['user_notification_message'], $tags);
+                }
 
                 $notificationHtml = $this->getNotificationHtml($beforeEvent->message, $notificationText);
 

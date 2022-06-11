@@ -9,7 +9,10 @@
             />
         <div v-else-if="config.type == 'text'">
             <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
-            <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]" @input="updateFieldOptionProperty(config.name, $event.target.value)">
+            <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]"
+                @input="updateFieldOptionProperty(config.name, $event.target.value)"
+                class="text"
+                >
             <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
         </div>
         <div v-else-if="config.type == 'list'">

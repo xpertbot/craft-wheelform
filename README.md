@@ -44,6 +44,7 @@ To install the plugin, follow these instructions.
 - Save Uploaded files to Asset Manager
 - Multiple Translations
 - Export / Import Fields between different websites
+- Dynamic email notifications
 
 ## Usage
 After successful installation go to Plugin Settings and add the email you would like the forms to send `FROM`. As well as set other useful settings.
@@ -157,6 +158,9 @@ submitButton: {
 
 ### Field Service options
 - `getFileExtensions` If current Field Type is "file" you can retrieve the current "File Extension Restrictions" set on that field.
+
+### Dynamic Email notifications
+- "Email Subject", "Submit Message", "User Notification Subject" and "User Notification Message" form settings can use dynamic field values by referencing the field "name" between square brackets. e.g. "You received a form submission from `[email]`" where `email` is the `name` of a field in your form.
 
 ## Template Structure
 
