@@ -15,7 +15,7 @@ class WheelformCpAsset extends AssetBundle
         ];
 
         $this->js = [
-            'js/wheelform-bundle.js?v3.1.0',
+            'js/wheelform-bundle.js?v3.1.1',
         ];
 
         $this->css = [
