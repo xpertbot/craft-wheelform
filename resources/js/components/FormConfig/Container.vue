@@ -113,6 +113,8 @@ export default {
             nextFieldIndex: 0,
             fieldTypes: [],
             currentView: 'loading',
+            cpUrl: '',
+            cpUrlQuery: '',
             form: {
                 id: null,
                 name: "",
@@ -128,19 +130,18 @@ export default {
     },
     mounted()
     {
-        const cpUrl = window.Craft.baseCpUrl;
+        const craftCpUrlParts = window.Craft.baseCpUrl.split('?');
+        this.cpUrl = craftCpUrlParts[0];
+        if (craftCpUrlParts.length > 1) {
+            this.cpUrlQuery = craftCpUrlParts[1];
+        }
         const form_id = window.Wheelform.form_id;
         this.fieldTypes = window.Wheelform.fieldTypes;
 
         if (! form_id) {
             this.currentView = 'form';
         } else {
-            axios.get(cpUrl, {
-                params: {
-                    action: 'wheelform/form/get-settings',
-                    form_id: form_id
-                }
-            })
+            axios.get(this.cpUrl + '?action=wheelform/form/get-settings&form_id='+form_id+'&'+this.getCpUrlQuery(false))
             .then((res) => {
                 if(res.data) {
                     const form = JSON.parse(res.data);
@@ -183,8 +184,7 @@ export default {
     },
     computed: {
         getBackUrl() {
-            const  cpUrl = window.Craft.baseCpUrl;
-            return cpUrl + "/wheelform";
+            return this.cpUrl + "/wheelform" + this.getCpUrlQuery();
         },
         areExpanded()
         {
@@ -302,6 +302,12 @@ export default {
                 user_notification: 0,
             };
         },
+        getCpUrlQuery(separator = true)
+        {
+            let toReturn = (separator ? '?' : '');
+            toReturn = toReturn + (this.cpUrlQuery ? this.cpUrlQuery : '' );
+            return toReturn;
+        },
 
         // Handles
         handleSettingsInput(key, value) {
@@ -317,14 +323,12 @@ export default {
         },
         handleSaveSettings()
         {
-            const cpUrl = window.Craft.baseCpUrl;
-
             let headers = {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': Craft.csrfTokenValue,
             };
 
-            axios.post(cpUrl + "/wheelform/form/save", this.form, {headers: headers})
+            axios.post(this.cpUrl + "/wheelform/form/save" + this.getCpUrlQuery(), this.form, {headers: headers})
                 .then((res) => {
                     const success = res.data.success;
                     if(success) {
@@ -347,18 +351,16 @@ export default {
             const result = window.confirm(Craft.t('wheelform', "Are you sure you want to delete Form")+ ": " + this.form.name);
             if(result)
             {
-                const cpUrl = window.Craft.baseCpUrl;
-
                 let headers = {
                     'Content-Type': 'application/json',
                     'X-CSRF-Token': Craft.csrfTokenValue,
                 };
 
-                axios.post(cpUrl + "/wheelform/form/delete", this.form, {headers: headers})
+                axios.post(this.cpUrl + "/wheelform/form/delete" + this.getCpUrlQuery(), this.form, {headers: headers})
                     .then((res) => {
                         const success = res.data.success;
                         if(success) {
-                            window.location.replace(cpUrl + '/wheelform');
+                            window.location.replace( this.getBackUrl );
                         } else {
                             let msg = "";
                             const errors = res.data.errors;
