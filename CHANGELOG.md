@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.2 - 2022-08-06
+
+### Fix
+- Fixed AJAX requests not returning submitted entry correctly
+
 ## 3.1.1 - 2022-07-30
 
 ### Fix
