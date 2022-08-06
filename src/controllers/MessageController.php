@@ -6,15 +6,16 @@ use craft\helpers\App;
 use wheelform\events\MessageEvent;
 use wheelform\events\ResponseEvent;
 use wheelform\db\Form;
+use wheelform\db\FormField;
 use wheelform\db\Message;
 use wheelform\db\MessageValue;
 use wheelform\Plugin;
-use yii\web\HttpException;
-use yii\web\Response as YiiResponse;
-use wheelform\db\FormField;
 use wheelform\helpers\TagHelper;
+use wheelform\services\MessageService;
 use Yii;
 use yii\web\BadRequestHttpException;
+use yii\web\HttpException;
+use yii\web\Response as YiiResponse;
 
 class MessageController extends BaseController
 {
@@ -188,11 +189,16 @@ class MessageController extends BaseController
 
         // Values for Mailer
         $senderValues = [];
+        // Save Form entry to database
+        $isSaveForm = boolval($this->formModel->save_entry);
 
-        if(boolval($this->formModel->save_entry)) {
+        if($isSaveForm) {
             $message->save();
-            //$message->id does not exists if user turned off database saving
-            Craft::$app->getSession()->setFlash('wheelformLastSubmissionId', $message->id, true);
+            // Only save session values on non ajax request to prevent polluting the next request
+            if (! $request->isAjax) {
+                //$message->id does not exists if user turned off database saving
+                Craft::$app->getSession()->setFlash('wheelformLastSubmissionId', $message->id, true);
+            }
         }
 
         if(is_array($event->message)) {
@@ -204,7 +210,7 @@ class MessageController extends BaseController
                     'value' => $eventValue->value,
                 ];
 
-                if(boolval($this->formModel->save_entry)) {
+                if($isSaveForm) {
                     $message->link('value', $eventValue);
                 }
             }
@@ -246,14 +252,31 @@ class MessageController extends BaseController
             $success_message = Taghelper::replacePlaseholders($this->formModel->options['submit_message'], $tags);
         }
 
-        $responseEvent = new ResponseEvent([
+        // Ajax response
+        $responseData = [
             'success' => true,
             'message' => $success_message,
             'errors' => [],
             'data' => [],
             'headers' => [],
-            'redirect' => $this->request->getValidatedBodyParam('redirect')
-        ]);
+            'redirect' => $this->request->getValidatedBodyParam('redirect'),
+            'entry' => null,
+        ];
+
+        /**
+         * Only create entry values if request is Ajax and the form values are saved
+         */
+        if($isSaveForm && $request->isAjax) {
+            // Yii toArray does not handle nested objects correctly, need to manually create them
+            $entry = new MessageService($message->id);
+            $responseData['entry'] = $entry->toArray();
+            $responseData['entry']['fields'] = [];
+            foreach($entry->fields as $f) {
+                $responseData['entry']['fields'][] = $f->toArray();
+            }
+        }
+
+        $responseEvent = new ResponseEvent($responseData);
         $this->trigger(self::EVENT_BEFORE_RESPONSE, $responseEvent);
 
         if ($request->isAjax) {
@@ -268,6 +291,7 @@ class MessageController extends BaseController
                 'message' => $responseEvent->message,
                 'data' => $responseEvent->data,
                 'errors' => $responseEvent->errors,
+                'entry' => $responseEvent->entry,
             ]);
         }
 

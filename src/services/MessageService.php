@@ -71,4 +71,17 @@ class MessageService extends BaseService
     public function addField($field) {
         $this->fields[$field->name] = $field;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function fields()
+    {
+        return [
+            'id',
+            'form_id',
+            'date',
+            // 'fields',
+        ];
+    }
 }

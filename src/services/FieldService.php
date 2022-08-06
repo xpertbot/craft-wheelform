@@ -111,7 +111,7 @@ class FieldService extends BaseService
         return (empty($this->options) ? null : $this->options);
     }
 
-    public function getOrder($value)
+    public function getOrder()
     {
         return $this->order;
     }
@@ -386,5 +386,20 @@ class FieldService extends BaseService
     protected function generateId()
     {
         return "wf-" . trim(str_replace([' ', '_'], "-", $this->name)) . "-" . $this->order;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fields()
+    {
+        return [
+            'type',
+            // 'options',
+            'order',
+            // 'required',
+            'name',
+            'value',
+        ];
     }
 }

@@ -16,4 +16,6 @@ class ResponseEvent extends Event
     public $errors;
 
     public $redirect;
+
+    public $entry;
 }
