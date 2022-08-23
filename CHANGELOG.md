@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.3 - 2022-08-23
+
+### Added
+- Added ability to skip the field wrapper using the render function
+
 ## 3.1.2 - 2022-08-06
 
 ### Fix

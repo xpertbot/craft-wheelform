@@ -201,9 +201,13 @@ class FieldService extends BaseService
     }
 
     // Methods
-    public function render()
+    public function render($renderContainer = true)
     {
-        $html = "<div class=\"wf-group {$this->containerClass}\">";
+        $html = '';
+        if ($renderContainer) {
+            $html = "<div class=\"wf-group {$this->containerClass}\">";
+        }
+
         $html_default_args = [
             'class' => 'wf-field ' . $this->fieldClass,
         ];
@@ -379,7 +383,9 @@ class FieldService extends BaseService
                     $html .= "";
                     break;
         }
-        $html .= "</div>";
+        if ($renderContainer) {
+            $html .= "</div>";
+        }
         return Template::raw($html);
     }
 
