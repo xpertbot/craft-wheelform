@@ -305,6 +305,11 @@ class MessageController extends BaseController
     protected function validateRecaptcha(string $userRes, string $secret)
     {
         $url = "https://www.google.com/recaptcha/api/siteverify";
+
+        if (!empty($this->config['google_recaptcha_url'])) {
+            $url = $this->config['google_recaptcha_url'];
+        }
+
         $ipAddress = $_SERVER['REMOTE_ADDR'];
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
             $ipParts = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
