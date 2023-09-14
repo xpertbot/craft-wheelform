@@ -5,14 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.6 - 2023-09-13
+
+### Fix
+- Fixed bug with multiple select values
+
 ## 3.1.5 - 2023-01-07
 
-### fixed
+### Fix
 - Fixed NL translation (@DigitaleJungle)
 
 ## 3.1.4 - 2022-12-12
 
-### fixed
+### Fix
 - Fixed ability to overwrite Google Recaptcha URL
 
 ## 3.1.3 - 2022-08-23
