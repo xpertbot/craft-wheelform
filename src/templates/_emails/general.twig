@@ -23,7 +23,8 @@
                         </ul>
                     {% endif %}
                 {% case "checkbox" %}
-                    {{ field.value | join(',')}}
+                {% case "select" %}
+                    {{ field.value | join(', ')}}
 
                 {% default %}
                 {# Text based items #}

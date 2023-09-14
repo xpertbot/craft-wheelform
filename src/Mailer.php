@@ -126,6 +126,7 @@ class Mailer extends Component
                         }
                         break;
                     case 'checkbox':
+                    case 'select':
                         $text .= (is_array($m['value']) ? implode(', ', $m['value']) : $m['value']);
                         break;
                     case 'list':
