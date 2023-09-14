@@ -22,8 +22,7 @@
                         {% endfor %}
                         </ul>
                     {% endif %}
-                {% case "checkbox" %}
-                {% case "select" %}
+                {% case "checkbox" or "select" %}
                     {{ field.value | join(', ')}}
 
                 {% default %}
