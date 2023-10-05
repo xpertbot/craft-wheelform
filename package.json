@@ -18,7 +18,7 @@
     "style-loader": "^0.21.0",
     "toastr": "^2.1.4",
     "vue": "^2.6.11",
-    "vue-loader": "^15.9.3",
+    "vue-loader": "^17.2.2",
     "vue-template-compiler": "^2.6.11",
     "vuedraggable": "^2.24.0"
   },
