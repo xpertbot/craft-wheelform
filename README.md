@@ -530,6 +530,18 @@ if (contactForm) {
 
 If using getCrsfInput() make sure you are submitting it with the rest of your form.
 
+#### Recaptcha with Ajax
+If implementing Recaptcha with ajax, bare in mind that it is necessary after each ajax request to refresh the recaptcha token to avoid _invalid recaptcha_ validation error (see issue [242](https://github.com/xpertbot/craft-wheelform/issues/242)).
+
+```js
+fetch('', {bla:bla})
+   .then(r => r.json()
+   .then(r => {
+   // Refresh Recaptcha token 
+   wheelformProcessRecaptchaCallback()
+});
+```
+
 ### CSRF Meta Tags
 If submitting Ajax request and need Meta Tags inside `head` element you can use `{{ wheelform.metaTags() }}` to generate the appropriate CSRF values.
 
