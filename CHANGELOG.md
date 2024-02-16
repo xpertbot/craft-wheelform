@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.8 - 2024-02-16
+
+### Fix
+- Added ability to check if form is active on templates
+
 ## 3.1.7 - 2023-09-13
 
 ### Fix
