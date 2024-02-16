@@ -59,7 +59,7 @@ class FormService extends BaseService
     public function init()
     {
         $this->instance = Form::find()
-            ->select('id, name, recaptcha, options')
+            ->select('id, active, name, recaptcha, options')
             ->where(['id' => $this->id])
             ->one();
 
@@ -263,6 +263,14 @@ class FormService extends BaseService
     public function getName()
     {
         return $this->instance->name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return empty($this->instance) ? false : (empty($this->instance->active) ? false : true);
     }
 
     //Setters
