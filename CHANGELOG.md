@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.1.9 - 2024-03-03
+
+### Improve
+- Improve AJAX examples on documentation (@masiorama)
+
 ## 3.1.8 - 2024-02-16
 
 ### Fix
