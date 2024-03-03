@@ -11,8 +11,17 @@
             <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
             <input type="text" :id="'field' + index + '-' + config.name" :value="options[config.name]"
                 @input="updateFieldOptionProperty(config.name, $event.target.value)"
+                :placeholder="config.placeholder|t('wheelform')"
                 class="text"
                 >
+            <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
+        </div>
+        <div v-else-if="config.type == 'textarea'">
+            <label :for="'field' + index + '-' + config.name">{{config.label|t('wheelform')}}</label>
+            <textarea :id="'field' + index + '-' + config.name" :value="options[config.name]"
+                @input="updateFieldOptionProperty(config.name, $event.target.value)"
+                class="nicetext text fullwidth"
+                ></textarea>
             <div v-if="config.hasOwnProperty('description')" style="text-decoration: italic; font-size: 12px;"> {{ config.description|t('wheelform') }}</div>
         </div>
         <div v-else-if="config.type == 'list'">

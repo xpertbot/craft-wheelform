@@ -14,6 +14,7 @@ class FormField extends BaseActiveRecord
     const NUMBER_SCENARIO = "number";
     const EMAIL_SCENARIO = "email";
     const CHECKBOX_SCENARIO = "checkbox";
+    const CONSENT_SCENARIO = "consent";
     const RADIO_SCENARIO = "radio";
     const HIDDEN_SCENARIO = "hidden";
     const TELEPHONE_SCENARIO = "tel";

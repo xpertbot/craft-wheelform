@@ -13,6 +13,7 @@ class FormFieldBehavior extends Behavior
     const NUMBER_SCENARIO = "number";
     const EMAIL_SCENARIO = "email";
     const CHECKBOX_SCENARIO = "checkbox";
+    const CONSENT_SCENARIO = "consent";
     const RADIO_SCENARIO = "radio";
     const HIDDEN_SCENARIO = "hidden";
     const TELEPHONE_SCENARIO = "tel";
@@ -48,6 +49,7 @@ class FormFieldBehavior extends Behavior
             self::TEXT_SCENARIO => \wheelform\models\fields\Text::class,
             self::TEXTAREA_SCENARIO => \wheelform\models\fields\Textarea::class,
             self::CHECKBOX_SCENARIO => \wheelform\models\fields\Checkbox::class,
+            self::CONSENT_SCENARIO => \wheelform\models\fields\Consent::class,
             self::EMAIL_SCENARIO => \wheelform\models\fields\Email::class,
             self::FILE_SCENARIO => \wheelform\models\fields\File::class,
             self::HIDDEN_SCENARIO => \wheelform\models\fields\Hidden::class,

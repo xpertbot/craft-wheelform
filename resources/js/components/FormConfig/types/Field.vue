@@ -49,6 +49,18 @@
             </div>
         </div>
         <div class="row">
+            <div class="col">
+                <FieldOptions
+                    v-for="(config, i) in bothSideConfigurations"
+                    :config="config"
+                    :options="options"
+                    :index="index"
+                    :key="i"
+                >
+                </FieldOptions>
+            </div>
+        </div>
+        <div class="row">
             <div class="col"></div>
             <div class="col">
                 <div class="text-right mt-10">
@@ -106,6 +118,19 @@ export default {
         {
             return this.configuration.filter((el) => {
                 let display = (el.display_side && el.display_side == 'left');
+                if (el.condition) {
+                    const conditional_value = get(this, el.condition);
+                    if (! conditional_value) {
+                        display = false;
+                    }
+                }
+                return display;
+            });
+        },
+        bothSideConfigurations()
+        {
+            return this.configuration.filter((el) => {
+                let display = (el.display_side && el.display_side == 'both');
                 if (el.condition) {
                     const conditional_value = get(this, el.condition);
                     if (! conditional_value) {

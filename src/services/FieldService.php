@@ -278,6 +278,30 @@ class FieldService extends BaseService
                     $html .= '</div>';
                 }
                 break;
+            case "consent":
+
+                if(! empty($this->options->display_label)) {
+                    $html .= '<div class="wf-group-heading">' . Html::label($this->getLabel(), null, [
+                        'class' => 'wf-label',
+                    ]) . '</div>';
+                }
+                $consent_message = (empty($this->options->consent_message) ? $this->getLabel() : $this->options->consent_message);
+                $admin_value = (empty($this->options->admin_consent_value) ? $consent_message : $this->options->admin_consent_value);
+
+                $args = array_merge($html_default_args, [
+                    'id' => $this->getFieldId(),
+                    'value' => strip_tags($admin_value),
+                ]);
+
+                $html .= '<div class="wf-consent">';
+                $html .= Html::checkbox($this->name, false, $args);
+                $html .= Html::label(Template::raw($consent_message), $this->getFieldId(), [
+                    'id' => $this->getFieldId(),
+                    'class' => 'wf-label',
+                ]);
+                $html .= '</div>';
+
+                break;
             case "select":
                 if(empty($this->items)) {
                     break;
