@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## 2.7.3 - 2024-01-17
 ### Fix
-- Fixed ability to overwrite Google Recaptcha URL
+- Fixed ability to overwrite Google Recaptcha URL (@KasimMahroof)
 
 ## 2.7.2 - 2022-03-17
 ### Fix
