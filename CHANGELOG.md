@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 3.1.9 - 2024-03-03
 
 ### Improve
-- Improve AJAX examples on documentation (@masiorama)
+- Improve AJAX examples in documentation (@masiorama)
+- Improve Blitz examples in documentation (@holiday-jan)
 
 ## 3.1.8 - 2024-02-16
 

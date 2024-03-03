@@ -142,7 +142,7 @@ submitButton: {
     {{ form.open('', {
         'csrf': false,
     }) }}
-        {% craft.blitz.csrfInput() %}
+        {{ craft.blitz.csrfInput() }}
         ... Rest of form template ...
 #}
 ```
@@ -544,7 +544,7 @@ fetch(myRequest)
 .then((data) => {
     // Use respose `data` here
 
-    // Refresh Recaptcha token 
+    // Refresh Recaptcha token
     wheelformProcessRecaptchaCallback()
 });
 ```
