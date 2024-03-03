@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.7.3 - 2024-01-17
+### Fix
+- Fixed ability to overwrite Google Recaptcha URL
+
 ## 2.7.2 - 2022-03-17
 ### Fix
 - Undefined error on form.close()
