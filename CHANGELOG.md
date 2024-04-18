@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 3.2.1 - 2024-04-18
+
+### Fix
+- Fix hardcoded form_id for initial setup (@holiday-jan)
+
 ## 3.2.0 - 2024-03-03
 
 ### Added
