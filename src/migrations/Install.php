@@ -165,47 +165,46 @@ class Install extends Migration
 
     protected function insertDefaultData()
     {
-        $this->insert(
-            '{{%wheelform_forms}}',
-            [
-                'site_id' => Craft::$app->sites->currentSite->id,
-                'name' => 'Contact Form',
-                "to_email" => "user@example.com",
-                'active' => 1,
-                'send_email' => 1,
-                'recaptcha' => 0,
-            ]
-        );
-        $this->insert(
-            '{{%wheelform_form_fields}}',
-            [
-            "form_id" => 1,
-            "type" => 'email',
-            "name" => "email",
-            "order" => 1,
-            "required" => 1,
-            ]
-        );
-        $this->insert(
-            '{{%wheelform_form_fields}}',
-            [
-            "form_id" => 1,
-            "type" => 'text',
-            "name" => "name",
-            "order" => 2,
-            "required" => 0,
-            ]
-        );
-        $this->insert(
-            '{{%wheelform_form_fields}}',
-            [
-            "form_id" => 1,
-            "type" => 'text',
-            "name" => "message",
-            "order" => 3,
-            "required" => 1,
-            ]
-        );
+        $initialForm = new \wheelform\db\Form();
+        $initialForm->site_id = Craft::$app->sites->currentSite->id;
+        $initialForm->name = 'Contact Form';
+        $initialForm->to_email = "user@example.com";
+        $initialForm->active = 1;
+        $initialForm->send_email = 1;
+        $initialForm->recaptcha = 0;
+
+        if ($initialForm->save()) {
+            $this->insert(
+                '{{%wheelform_form_fields}}',
+                [
+                    "form_id" => $initialForm->id,
+                    "type" => 'email',
+                    "name" => "email",
+                    "order" => 1,
+                    "required" => 1,
+                ]
+            );
+            $this->insert(
+                '{{%wheelform_form_fields}}',
+                [
+                    "form_id" => $initialForm->id,
+                    "type" => 'text',
+                    "name" => "name",
+                    "order" => 2,
+                    "required" => 0,
+                ]
+            );
+            $this->insert(
+                '{{%wheelform_form_fields}}',
+                [
+                    "form_id" => $initialForm->id,
+                    "type" => 'text',
+                    "name" => "message",
+                    "order" => 3,
+                    "required" => 1,
+                ]
+            );
+        }
     }
 
     protected function removeTables()
