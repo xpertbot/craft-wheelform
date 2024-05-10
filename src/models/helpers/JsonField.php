@@ -76,7 +76,7 @@ class JsonField implements \ArrayAccess, Arrayable
     /**
      * @inheritdoc
      */
-    public function &offsetGet($offset)
+    public function &offsetGet(mixed $offset) : mixed
     {
         $null = null;
         if(isset($this->value[$offset]))
@@ -100,7 +100,7 @@ class JsonField implements \ArrayAccess, Arrayable
         }
         else
         {
-            $this->set[$offset] = $set;
+            $this->value[$offset] = $set;
         }
     }
     /**
