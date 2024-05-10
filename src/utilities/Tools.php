@@ -19,7 +19,7 @@ class Tools extends Utility
         return 'wheelform-tools';
     }
 
-    public static function iconPath(): ?string
+    public static function icon(): ?string
     {
         return Craft::getAlias('@wheelform/icon.svg');
     }

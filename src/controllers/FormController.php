@@ -60,7 +60,7 @@ class FormController extends BaseController
          return $this->renderTemplate('wheelform/_edit-form.twig', [
             'form' => $form,
             'fieldTypes' => $fieldTypes,
-            'CPLabel' => $this->settings->cp_label,
+            'CPLabel' => $this->settings->cp_label ?? "Wheel Form",
         ]);
     }
 
@@ -92,7 +92,7 @@ class FormController extends BaseController
         return $this->renderTemplate('wheelform/_edit-form.twig', [
             'form' => $form,
             'fieldTypes' => $fieldTypes,
-            'CPLabel' => $this->settings->cp_label,
+            'CPLabel' => $this->settings->cp_label ?? "Wheel Form",
         ]);
     }
 

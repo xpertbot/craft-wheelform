@@ -70,7 +70,7 @@ class Plugin extends BasePlugin
             }
         );
 
-        Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITY_TYPES, function($event)
+        Event::on(Utilities::class, Utilities::EVENT_REGISTER_UTILITIES, function($event)
         {
             if(is_array($event->types))
             {

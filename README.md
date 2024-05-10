@@ -5,12 +5,15 @@ Free Form Builder with Database Integration, successor of Free Contact Form Plug
 ![Screenshot](resources/img/form-entries.jpg)
 
 
+## Craft CMS 4.x
+Use `composer require xpertbot/craft-wheelform "^3.2"`
+
 ## Craft CMS 3.x
 Use `composer require xpertbot/craft-wheelform "^2.7"`
 
 ## Requirements
 
-This plugin requires Craft CMS 4.0.0 or later
+This plugin requires Craft CMS 5.0.0 or later
 
 ## Installation
 

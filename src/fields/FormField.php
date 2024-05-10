@@ -21,6 +21,14 @@ class FormField extends Field
     }
 
     /**
+     * @inheritDoc
+     */
+    public static function icon(): string
+    {
+        return 'ballot-check';
+    }
+
+    /**
      * @inheritdoc
      */
     public function getContentColumnType(): array|string
@@ -39,7 +47,7 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function getInputHtml(mixed $service, ?\craft\base\ElementInterface $element = null): string
+    public function getInputHtml(mixed $service, ?ElementInterface $element = null): string
     {
         $forms = Form::find()->select('id,name')->where(['active' => 1])->all();
         $formOptions = [];
@@ -65,20 +73,20 @@ class FormField extends Field
     /**
      * @inheritdoc
      */
-    public function serializeValue(mixed $service, ?\craft\base\ElementInterface $element = null): mixed
+    public function serializeValue(mixed $service, ?ElementInterface $element = null): mixed
     {
         $value = $service;
         if($service) {
             $value = $service->id;
         }
 
-        return parent::serializeValue($value);
+        return parent::serializeValue($value, $element);
     }
 
     /**
      * @inheritdoc
      */
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if($value instanceof FormService) {
             // FormService already initialized
