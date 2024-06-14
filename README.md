@@ -1,4 +1,4 @@
-# Wheel Form plugin for Craft CMS 4.x
+# Wheel Form plugin for Craft CMS 5.x
 
 Free Form Builder with Database Integration, successor of Free Contact Form Plugin featured on [Straight Up Craft](https://straightupcraft.com/)
 
