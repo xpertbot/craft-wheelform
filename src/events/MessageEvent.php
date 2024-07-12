@@ -13,4 +13,14 @@ class MessageEvent extends Event
      * @var array
      */
     public $errors = [];
+
+    /**
+     * @var bool
+     */
+    public bool $saveMessage = true;
+
+    /**
+     * @var bool
+     */
+    public bool $sendMessage = true;
 }

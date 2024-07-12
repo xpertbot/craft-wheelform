@@ -192,7 +192,7 @@ class MessageController extends BaseController
         // Save Form entry to database
         $isSaveForm = boolval($this->formModel->save_entry);
 
-        if($isSaveForm) {
+        if($isSaveForm && $event->saveMessage) {
             $message->save();
             // Only save session values on non ajax request to prevent polluting the next request
             if (! $request->isAjax) {
@@ -210,13 +210,13 @@ class MessageController extends BaseController
                     'value' => $eventValue->value,
                 ];
 
-                if($isSaveForm) {
+                if($isSaveForm && $event->saveMessage) {
                     $message->link('value', $eventValue);
                 }
             }
         }
 
-        if($this->formModel->send_email) {
+        if($this->formModel->send_email && $event->sendMessage) {
             if (!$plugin->getMailer()->send($this->formModel, $senderValues)) {
                 if ($request->isAjax) {
                     return $this->asJson(['errors' => $errors]);
