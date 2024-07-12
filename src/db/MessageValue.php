@@ -147,7 +147,9 @@ class MessageValue extends BaseActiveRecord
         if($this->field->type == FormField::CHECKBOX_SCENARIO && ! empty($this->value)) {
             $this->value = implode(', ', $this->value);
         } elseif ($this->field->type == FormField::SELECT_SCENARIO && (bool)$this->field->options['multiple']) {
-            $this->value = implode(', ', $this->value);
+            if (is_array($this->value)) {
+                $this->value = implode(', ', $this->value);
+            }
         } elseif (!empty($this->value) && $this->field->type == FormField::LIST_SCENARIO) {
             $this->value = json_encode($this->value);
         }
