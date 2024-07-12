@@ -11,6 +11,7 @@ use wheelform\db\Message;
 use wheelform\db\MessageValue;
 use wheelform\Plugin;
 use wheelform\helpers\TagHelper;
+use wheelform\services\FormService;
 use wheelform\services\MessageService;
 use Yii;
 use yii\web\BadRequestHttpException;
@@ -59,6 +60,10 @@ class MessageController extends BaseController
      */
     private $config = [];
 
+    /**
+     * @throws \yii\web\HttpException
+     * @return Yii\web\Response|null
+     */
     public function actionSend()
     {
         $this->requirePostRequest();
@@ -70,14 +75,12 @@ class MessageController extends BaseController
         $form_id = intval($request->post('form_id', "0"));
         if($form_id <= 0){
             throw new HttpException(404);
-            return null;
         }
 
         $this->formModel = Form::find()->where(['id' => $form_id])->with('fields')->one();
 
         if(empty($this->formModel)) {
             throw new HttpException(404);
-            return null;
         }
 
         $configService = Craft::$app->getConfig();
@@ -101,11 +104,7 @@ class MessageController extends BaseController
             $userRes = $request->post('g-recaptcha-response', '');
             $recaptcha_secret = '';
             if (!empty($this->settings->recaptcha_secret)) {
-                if (version_compare(Craft::$app->getVersion(), '3.7.29') >= 0) {
-                    $recaptcha_secret = App::parseEnv($this->settings->recaptcha_secret);
-                } else {
-                    $recaptcha_secret = Craft::parseEnv($this->settings->recaptcha_secret);
-                }
+                $recaptcha_secret = App::parseEnv($this->settings->recaptcha_secret);
             }
 
             if($this->validateRecaptcha($userRes, $recaptcha_secret) == false)
@@ -180,6 +179,8 @@ class MessageController extends BaseController
                 Craft::$app->getUrlManager()->setRouteParams([
                     'variables' => $response,
                 ]);
+                // Set errors for next session
+                (new FormService(['id' => $form_id]))->setErrors($errors);
                 return null;
             }
         }
@@ -260,7 +261,7 @@ class MessageController extends BaseController
             'data' => [],
             'headers' => [],
             'redirect' => $this->request->getValidatedBodyParam('redirect'),
-            'entry' => null,
+            'entry' => [],
         ];
 
         /**

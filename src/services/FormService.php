@@ -197,7 +197,7 @@ class FormService extends BaseService
         }
 
         $fields = FormField::find()->select('type, name, required, order, options')
-            ->orderBy('order', 'ASC')
+            ->orderBy('order ASC')
             ->where(['form_id' => $this->id, 'active' => 1])
             ->asArray()
             ->all();
@@ -266,6 +266,14 @@ class FormService extends BaseService
     }
 
     /**
+     * @return array
+     */
+    public function getErrors()
+    {
+        return Craft::$app->getSession()->getFlash('wheelformErrors', []);
+    }
+
+    /**
      * @return bool
      */
     public function isActive()
@@ -330,6 +338,11 @@ class FormService extends BaseService
     public function setRefreshCsrf($value)
     {
         $this->_refreshCsrf = $value;
+    }
+
+    public function setErrors($errors = [])
+    {
+        Craft::$app->getSession()->setFlash('wheelformErrors', $errors, true);
     }
 
     // Protected
