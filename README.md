@@ -97,6 +97,7 @@ Current Field types supported are:
                 - value
                 - type
             - date
+        - getErrors()
     - lastSubmission
         - id
         - formId
@@ -728,6 +729,8 @@ You can also trigger other custom functionality such as gathering custom field v
 * `to` - Email Address message is being send To (This can be an array of multiple emails).
 * `reply_to` - Email Address message can be Reply To.
 * `email_html` - Full HTML String that will be sent in the email. This overwrites other email templates.
+* `saveMessage` - Allow the message to be saved on the database (Default: True).
+* `sendMessage` - Allow the message to be sent (Default: True).
 
 Example Plugin to handle these events. [wheelformhelper](https://github.com/xpertbot/wheelformhelper)
 

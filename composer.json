@@ -2,7 +2,7 @@
     "name": "xpertbot/craft-wheelform",
     "description": "Craft CMS 5 Form administrator with Database integration",
     "type": "craft-plugin",
-    "version": "4.0.1",
+    "version": "4.0.2",
     "keywords": [
         "craft",
         "cms",

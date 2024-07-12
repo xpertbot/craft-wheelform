@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 4.0.2 - 2024-07-11
+
+### Fixed
+- Error on checkboxes multiple choice not saving correctly
+
+### Added
+- Added ability to stop Saving to database and/or sending emails on Plugin Event. (@cloudgrayau)
+- Added ability to get Errors from the Form Service class (@maartenheideman)
+
 ## 4.0.1 - 2024-06-14
 
 ### Fixed
