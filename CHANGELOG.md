@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.2 - 2024-11-28
+
+### Fix
+- Craft request parameter not working correctly
 
 ## 3.2.1 - 2024-04-18
 

@@ -259,7 +259,7 @@ class MessageController extends BaseController
             'errors' => [],
             'data' => [],
             'headers' => [],
-            'redirect' => $this->request->getValidatedBodyParam('redirect'),
+            'redirect' => Craft::$app->request->getValidatedBodyParam('redirect'),
             'entry' => null,
         ];
 
@@ -353,7 +353,7 @@ class MessageController extends BaseController
             if ($default !== null) {
                 $url = $default;
             } else {
-                $url = $this->request->getPathInfo();
+                $url = Craft::$app->request->getPathInfo();
             }
         } else if ($object) {
             $url = $this->getView()->renderObjectTemplate($url, $object);
