@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 4.0.4 - 2025-10-13
+
+### Fixed
+-  Some fields not translating correctly. (@nikolenko-dmitriy)
+
 ## 4.0.3 - 2024-11-28
 
 ### Fixed
